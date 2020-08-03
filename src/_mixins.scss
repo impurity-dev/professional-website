@@ -1,0 +1,15 @@
+@mixin background-color-generator($colors) {
+    @each $name, $hex in $colors {
+        &-#{$name} {
+            background-color: $hex;
+        }
+    }
+}
+
+@mixin color-generator($colors) {
+    @each $name, $hex in $colors {
+        &-#{$name} {
+            color: $hex;
+        }
+    }
+}

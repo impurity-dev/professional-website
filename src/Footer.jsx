@@ -1,8 +1,8 @@
 import React from 'react';
 import './Footer.scss';
 
-function Header() {
-    return <footer>Footer</footer>;
+function Footer() {
+    return <div className="d-flex flex-row">TODO</div>;
 }
 
-export default Header;
+export default Footer;

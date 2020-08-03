@@ -1,1 +1,15 @@
+@import 'mixins';
+@import 'variables';
 @import '~bootstrap/scss/bootstrap.scss';
+
+.text {
+    @include color-generator($colors);
+}
+
+.bg {
+    @include background-color-generator($colors);
+}
+
+.btn {
+    @include background-color-generator($colors);
+}

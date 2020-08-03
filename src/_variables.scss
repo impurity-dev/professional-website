@@ -1,0 +1,77 @@
+@import 'colors';
+
+$primary-1: $purple-900;
+$primary-2: $purple-800;
+$primary-3: $purple-700;
+$primary-4: $purple-600;
+$primary-5: $purple-500;
+$primary-6: $purple-400;
+$primary-7: $purple-300;
+$primary-8: $purple-200;
+$primary-9: $purple-100;
+$primary-10: $purple-50;
+
+$secondary-1: $pink-900;
+$secondary-2: $pink-800;
+$secondary-3: $pink-700;
+$secondary-4: $pink-600;
+$secondary-5: $pink-500;
+$secondary-6: $pink-400;
+$secondary-7: $pink-300;
+$secondary-8: $pink-200;
+$secondary-9: $pink-100;
+$secondary-10: $pink-50;
+
+$tertiary-1: $orange-900;
+$tertiary-2: $orange-800;
+$tertiary-3: $orange-700;
+$tertiary-4: $orange-600;
+$tertiary-5: $orange-500;
+$tertiary-6: $orange-400;
+$tertiary-7: $orange-300;
+$tertiary-8: $orange-200;
+$tertiary-9: $orange-100;
+$tertiary-10: $orange-50;
+
+$colors: (
+    primary-1: $primary-1,
+    primary-2: $primary-2,
+    primary-3: $primary-3,
+    primary-4: $primary-4,
+    primary-5: $primary-5,
+    primary-6: $primary-6,
+    primary-7: $primary-7,
+    primary-8: $primary-8,
+    primary-9: $primary-9,
+    primary-10: $primary-10,
+    secondary-1: $secondary-1,
+    secondary-2: $secondary-2,
+    secondary-3: $secondary-3,
+    secondary-4: $secondary-4,
+    secondary-5: $secondary-5,
+    secondary-6: $secondary-6,
+    secondary-7: $secondary-7,
+    secondary-8: $secondary-8,
+    secondary-9: $secondary-9,
+    secondary-10: $secondary-10,
+    tertiary-1: $tertiary-1,
+    tertiary-2: $tertiary-2,
+    tertiary-3: $tertiary-3,
+    tertiary-4: $tertiary-4,
+    tertiary-5: $tertiary-5,
+    tertiary-6: $tertiary-6,
+    tertiary-7: $tertiary-7,
+    tertiary-8: $tertiary-8,
+    tertiary-9: $tertiary-9,
+    tertiary-10: $tertiary-10,
+    gray-1: $gray-900,
+    gray-2: $gray-800,
+    gray-3: $gray-700,
+    gray-4: $gray-600,
+    gray-5: $gray-500,
+    gray-6: $gray-400,
+    gray-7: $gray-300,
+    gray-8: $gray-200,
+    gray-9: $gray-100,
+    gray-10: $gray-50,
+);
