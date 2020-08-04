@@ -13,5 +13,7 @@
         "sourceType": "module"
     },
     "plugins": ["react", "jest"],
-    "rules": {}
+    "rules": {
+        "no-plusplus": "off"
+    }
 }
