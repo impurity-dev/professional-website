@@ -1,0 +1,49 @@
+{
+    "skills": [
+        {
+            "name": "C",
+            "rating": 7,
+            "maxRating": 10
+        },
+        {
+            "name": "C++",
+            "rating": 8,
+            "maxRating": 10
+        },
+        {
+            "name": "Java",
+            "rating": 10,
+            "maxRating": 10
+        },
+        {
+            "name": "Kotlin",
+            "rating": 10,
+            "maxRating": 10
+        },
+        {
+            "name": "Scala",
+            "rating": 10,
+            "maxRating": 10
+        },
+        {
+            "name": "OpenGL",
+            "rating": 2,
+            "maxRating": 10
+        },
+        {
+            "name": "Angular",
+            "rating": 10,
+            "maxRating": 10
+        },
+        {
+            "name": "ReactJS",
+            "rating": 10,
+            "maxRating": 10
+        },
+        {
+            "name": "VueJS",
+            "rating": 4,
+            "maxRating": 10
+        }
+    ]
+}

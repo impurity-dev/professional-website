@@ -5,18 +5,18 @@ import { ReactComponent as FilledStar } from './assets/FilledStar.svg';
 import { ReactComponent as EmptyStar } from './assets/EmptyStar.svg';
 
 function Skill({ name, rating, maxRating }) {
-    const stars = [];
+    const starElements = [];
     for (let i = 0; i < rating; i++) {
-        stars.push(<FilledStar className="text-primary-8" width={24} key={i} />);
+        starElements.push(<FilledStar className="text-primary-8" width={24} key={i} />);
     }
     const emptyStars = maxRating - rating;
     for (let i = 0; i < emptyStars; i++) {
-        stars.push(<EmptyStar className="text-primary-8" width={24} key={i} />);
+        starElements.push(<EmptyStar className="text-primary-8" width={24} key={i} />);
     }
     return (
         <div className="d-flex flex-row">
             <div className="flex-grow-1">{name}</div>
-            <div>{stars}</div>
+            <div>{starElements}</div>
         </div>
     );
 }
