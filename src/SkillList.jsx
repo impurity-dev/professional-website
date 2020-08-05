@@ -7,7 +7,7 @@ function SkillList({ skills }) {
     const skillElements = [];
     skills.forEach((skill) =>
         skillElements.push(
-            <li className="list-group-item bg-gray-1">
+            <li className="list-group-item bg-gray-1" key={`${skill.name}-skill-list-item`}>
                 <Skill name={skill.name} rating={skill.rating} maxRating={skill.maxRating} />
             </li>,
         ),
