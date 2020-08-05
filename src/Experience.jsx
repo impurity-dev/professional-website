@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Experience.scss';
+import PositionList from './PositionList';
 
 function Experience({ experience }) {
     return (
-        <div className="d-flex flex-row">
-            <span>{JSON.stringify(experience)}</span>
+        <div className="d-flex flex-column">
+            <span>{experience.company}</span>
+            <span>{experience.location}</span>
+            <span>{experience.website}</span>
+            <PositionList positions={experience.positions} />
         </div>
     );
 }
@@ -18,8 +22,8 @@ Experience.propTypes = {
         positions: PropTypes.arrayOf(
             PropTypes.exact({
                 title: PropTypes.string,
-                'start-date': PropTypes.string,
-                'end-date': PropTypes.string,
+                startDate: PropTypes.string,
+                endDate: PropTypes.string,
             }),
         ),
     }),

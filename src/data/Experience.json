@@ -7,13 +7,13 @@
             "positions": [
                 {
                     "title": "Senior Software Developer and G.Fast Technician",
-                    "start-date": "August 2017",
-                    "end-date": "May 2018"
+                    "startDate": "August 2017",
+                    "endDate": "May 2018"
                 },
                 {
                     "title": "Full Stack Software Engineer Intern",
-                    "start-date": "October 2015",
-                    "end-date": "May 2017"
+                    "startDate": "October 2015",
+                    "endDate": "May 2017"
                 }
             ]
         },
@@ -24,13 +24,13 @@
             "positions": [
                 {
                     "title": "Senior Software Developer and G.Fast Technician",
-                    "start-date": "August 2017",
-                    "end-date": "May 2018"
+                    "startDate": "August 2017",
+                    "endDate": "May 2018"
                 },
                 {
                     "title": "Software Developer and Test Technician",
-                    "start-date": "October 2015",
-                    "end-date": "May 2017"
+                    "startDate": "October 2015",
+                    "endDate": "May 2017"
                 }
             ]
         },
@@ -41,8 +41,8 @@
             "positions": [
                 {
                     "title": "High School Intern",
-                    "start-date": "April 2014",
-                    "end-date": "May 2014"
+                    "startDate": "April 2014",
+                    "endDate": "May 2014"
                 }
             ]
         }

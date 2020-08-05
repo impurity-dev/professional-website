@@ -29,8 +29,8 @@ ExperienceList.propTypes = {
             positions: PropTypes.arrayOf(
                 PropTypes.exact({
                     title: PropTypes.string,
-                    'start-date': PropTypes.string,
-                    'end-date': PropTypes.string,
+                    startDate: PropTypes.string,
+                    endDate: PropTypes.string,
                 }),
             ),
         }),
