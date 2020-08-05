@@ -13,3 +13,8 @@
 .btn {
     @include background-color-generator($colors);
 }
+
+hr {
+    border: 1px solid $primary-6;
+    width: 90%;
+}
