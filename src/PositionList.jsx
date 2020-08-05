@@ -7,7 +7,7 @@ function PositionList({ positions }) {
     const positionElements = [];
     positions.forEach((position) =>
         positionElements.push(
-            <li className="list-group-item bg-gray-3" key={`${position.title}-position-list-item`}>
+            <li className="list-group-item bg-gray-2" key={`${position.title}-position-list-item`}>
                 <Position position={position} />
             </li>,
         ),
