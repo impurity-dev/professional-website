@@ -4,10 +4,13 @@ import './MainPanel.scss';
 import AboutMe from './AboutMe';
 import SkillList from './SkillList';
 import SkillListData from './data/SkillList.json';
+import ExperienceList from './ExperienceList';
+import ExperienceData from './data/Experience.json';
 
 function MainPanel({ className }) {
     const containerClassName = `d-flex flex-column align-items-center p-5 shadow rounded bg-gray-2 ${className}`;
     const { skills } = SkillListData;
+    const { experiences } = ExperienceData;
     return (
         <div className={containerClassName}>
             <div className="mb-2 w-100">
@@ -16,6 +19,10 @@ function MainPanel({ className }) {
             <hr />
             <div className="mb-2 w-100">
                 <SkillList skills={skills} />
+            </div>
+            <hr />
+            <div className="mb-2 w-100">
+                <ExperienceList experiences={experiences} />
             </div>
         </div>
     );
