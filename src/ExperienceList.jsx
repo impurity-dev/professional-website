@@ -7,11 +7,7 @@ function ExperienceList({ experiences }) {
     const experienceElements = [];
     experiences.forEach((experience) =>
         experienceElements.push(
-            <Experience
-                className={`p-4 my-1 ${getStyle(experience)}`}
-                key={`${experience.company}-${experience.title}-experience`}
-                experience={experience}
-            />,
+            <Experience className="p-4 my-1" key={`${experience.company}-${experience.title}-experience`} experience={experience} />,
         ),
     );
     return (
@@ -20,19 +16,6 @@ function ExperienceList({ experiences }) {
             {experienceElements}
         </div>
     );
-}
-
-function getStyle(experience) {
-    switch (experience.company) {
-        case 'Liberty Mutual Insurance':
-            return 'bg-liberty-yellow-1 text-liberty-blue-1';
-        case 'UNH InterOperability Lab':
-            return 'bg-white text-gray-1';
-        case 'BEAM Interactive':
-            return 'bg-liberty-yellow-100 text-liberty-blue-100';
-        default:
-            return 'bg-gray-2 text-white';
-    }
 }
 
 ExperienceList.propTypes = {

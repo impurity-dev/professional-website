@@ -1,5 +1,6 @@
 @import 'liberty';
 @import 'unh';
+@import 'beam';
 @import 'colors';
 
 $primary-1: $purple-900;
@@ -105,4 +106,9 @@ $colors: (
     unh-gray-2: $unh-gray-2,
     unh-gray-3: $unh-gray-3,
     unh-gray-4: $unh-gray-4,
+    beam-accent: $beam-accent,
+    beam-gray-1: $beam-gray-1,
+    beam-gray-2: $beam-gray-2,
+    beam-gray-3: $beam-gray-3,
+    beam-gray-4: $beam-gray-4,
 );
