@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import './Experience.scss';
 import PositionList from './PositionList';
 
-function Experience({ experience }) {
+function Experience({ experience, className }) {
+    const containerClass = `d-flex flex-column rounded ${className}`;
     return (
-        <div className="d-flex flex-column">
-            <span>{experience.company}</span>
-            <span>{experience.location}</span>
-            <span>{experience.website}</span>
+        <div className={containerClass}>
+            <div className="d-flex flex-row">
+                <h4 className="flex-grow-1">
+                    <u>{experience.company}</u>
+                </h4>
+                <h5>{experience.location}</h5>
+            </div>
+            <div className="d-flex flex-row">
+                <h6 className="flex-grow-1">{experience.website}</h6>
+                <span>
+                    {experience.startDate} - {experience.endDate}
+                </span>
+            </div>
             <PositionList positions={experience.positions} />
         </div>
     );
@@ -27,10 +37,12 @@ Experience.propTypes = {
             }),
         ),
     }),
+    className: PropTypes.string,
 };
 
 Experience.defaultProps = {
     experience: [],
+    className: '',
 };
 
 export default Experience;

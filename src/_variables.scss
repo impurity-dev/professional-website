@@ -1,3 +1,5 @@
+@import 'liberty';
+@import 'unh';
 @import 'colors';
 
 $primary-1: $purple-900;
@@ -74,4 +76,33 @@ $colors: (
     gray-8: $gray-200,
     gray-9: $gray-100,
     gray-10: $gray-50,
+    liberty-yellow-1: $liberty-yellow-100,
+    liberty-yellow-2: $liberty-yellow-80,
+    liberty-yellow-3: $liberty-yellow-60,
+    liberty-yellow-4: $liberty-yellow-40,
+    liberty-blue-1: $liberty-blue-100,
+    liberty-blue-2: $liberty-blue-90,
+    liberty-teal-1: $liberty-dark-teal,
+    liberty-teal-2: $liberty-medium-teal,
+    liberty-teal-3: $liberty-teal-100,
+    liberty-teal-4: $liberty-teal-80,
+    liberty-teal-5: $liberty-teal-60,
+    liberty-teal-6: $liberty-teal-40,
+    liberty-teal-7: $liberty-teal-10,
+    liberty-gray-1: $liberty-gray-100,
+    liberty-gray-2: $liberty-gray-90,
+    liberty-gray-3: $liberty-gray-81,
+    liberty-gray-4: $liberty-gray-69,
+    liberty-gray-5: $liberty-gray-29,
+    liberty-gray-6: $liberty-gray-10,
+    liberty-gray-7: $liberty-gray-4,
+    unh-blue-1: $unh-blue-1,
+    unh-blue-2: $unh-blue-2,
+    unh-blue-3: $unh-blue-3,
+    unh-orange-1: $unh-orange-1,
+    unh-orange-2: $unh-orange-2,
+    unh-gray-1: $unh-gray-1,
+    unh-gray-2: $unh-gray-2,
+    unh-gray-3: $unh-gray-3,
+    unh-gray-4: $unh-gray-4,
 );
