@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import './Position.scss';
 
 function Position({ position, className }) {
-    const containerClass = `d-flex flex-column ${className}`;
+    const containerClass = `d-flex flex-row ${className}`;
     return (
         <div className={containerClass}>
-            <span>{position.title}</span>
-            <span>{position.startDate}</span>
-            <span>{position.endDate}</span>
+            <h6 className="flex-grow-1">{position.title}</h6>
+            <span>
+                {position.startDate} - {position.endDate}
+            </span>
         </div>
     );
 }

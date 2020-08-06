@@ -26,7 +26,7 @@ function Experience({ experience, className }) {
                     {positions[0].startDate} - {positions[positions.length - 1].endDate}
                 </span>
             </div>
-            <PositionList positions={positions} />
+            <PositionList company={company} positions={positions} />
         </div>
     );
 }
@@ -95,19 +95,12 @@ Experience.propTypes = {
                 endDate: PropTypes.string,
             }),
         ),
-    }),
+    }).isRequired,
     className: PropTypes.string,
-    textColor: PropTypes.string,
-    headerColor: PropTypes.string,
-    backgroundColor: PropTypes.string,
 };
 
 Experience.defaultProps = {
-    experience: [],
     className: '',
-    textColor: '',
-    headerColor: '',
-    backgroundColor: '',
 };
 
 export default Experience;
