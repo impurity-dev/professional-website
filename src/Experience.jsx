@@ -7,31 +7,32 @@ import IolLogo from './assets/IOL.jpg';
 import BeamLogo from './assets/Beam.png';
 
 function Experience({ experience, className }) {
-    const backgroundColor = getBackgroundColor(experience);
-    const textColor = getTextColor(experience);
-    const headerColor = getHeaderColor(experience);
-    const image = getImage(experience);
+    const { company, positions, location } = experience;
+    const backgroundColor = getBackgroundColor(company);
+    const textColor = getTextColor(company);
+    const headerColor = getHeaderColor(company);
+    const image = getImage(company);
     return (
         <div className={`d-flex flex-column rounded ${className} ${backgroundColor} ${textColor}`}>
             <div className="d-flex flex-row">
                 <h4 className={`flex-grow-1 ${headerColor}`}>
-                    <u>{experience.company}</u>
+                    <u>{company}</u>
                 </h4>
-                <img className="ml-auto img-fluid experience-image mb-3" src={image} alt={`${experience.company}-brand`} />
+                <img className="ml-auto img-fluid experience-image mb-3" src={image} alt={`${company}-brand`} />
             </div>
             <div className="d-flex flex-row">
-                <h6 className="flex-grow-1">{experience.location}</h6>
+                <h6 className="flex-grow-1">{location}</h6>
                 <span>
-                    {experience.positions[0].startDate} - {experience.positions[experience.positions.length - 1].endDate}
+                    {positions[0].startDate} - {positions[positions.length - 1].endDate}
                 </span>
             </div>
-            <PositionList positions={experience.positions} />
+            <PositionList positions={positions} />
         </div>
     );
 }
 
-function getImage(experience) {
-    switch (experience.company) {
+function getImage(company) {
+    switch (company) {
         case 'Liberty Mutual Insurance':
             return LibertyLogo;
         case 'UNH InterOperability Lab':
@@ -39,12 +40,12 @@ function getImage(experience) {
         case 'BEAM Interactive':
             return BeamLogo;
         default:
-            throw new Error(`Invalid image for company: ${experience.company}`);
+            throw new Error(`Invalid image for company: ${company}`);
     }
 }
 
-function getTextColor(experience) {
-    switch (experience.company) {
+function getTextColor(company) {
+    switch (company) {
         case 'Liberty Mutual Insurance':
             return 'text-liberty-blue-1';
         case 'UNH InterOperability Lab':
@@ -52,12 +53,12 @@ function getTextColor(experience) {
         case 'BEAM Interactive':
             return 'text-beam-gray-3';
         default:
-            throw new Error(`Invalid text color for company: ${experience.company}`);
+            throw new Error(`Invalid text color for company: ${company}`);
     }
 }
 
-function getBackgroundColor(experience) {
-    switch (experience.company) {
+function getBackgroundColor(company) {
+    switch (company) {
         case 'Liberty Mutual Insurance':
             return 'bg-liberty-yellow-1';
         case 'UNH InterOperability Lab':
@@ -65,12 +66,12 @@ function getBackgroundColor(experience) {
         case 'BEAM Interactive':
             return 'bg-beam-gray-4';
         default:
-            throw new Error(`Invalid background color for company: ${experience.company}`);
+            throw new Error(`Invalid background color for company: ${company}`);
     }
 }
 
-function getHeaderColor(experience) {
-    switch (experience.company) {
+function getHeaderColor(company) {
+    switch (company) {
         case 'Liberty Mutual Insurance':
             return 'text-liberty-blue-1';
         case 'UNH InterOperability Lab':
@@ -78,7 +79,7 @@ function getHeaderColor(experience) {
         case 'BEAM Interactive':
             return 'text-beam-accent';
         default:
-            throw new Error(`Invalid header color for company: ${experience.company}`);
+            throw new Error(`Invalid header color for company: ${company}`);
     }
 }
 
