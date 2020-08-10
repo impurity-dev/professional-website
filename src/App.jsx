@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './App.scss';
-import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
+import Header from './Header';
 
 class App extends Component {
     constructor() {
@@ -19,19 +20,20 @@ class App extends Component {
 
     render() {
         const { theme } = this.state;
-        const appContainerClass = `${theme} bg-gray-1 text-white`;
         return (
-            <div className={appContainerClass}>
-                <header>
-                    <Header onChangeTheme={this.changeTheme} />
-                </header>
-                <main className="p-5">
-                    <Body />
-                </main>
-                <footer>
-                    <Footer />
-                </footer>
-            </div>
+            <Router>
+                <div className={`${theme} bg-gray-1 text-white`}>
+                    <header>
+                        <Header onChangeTheme={this.changeTheme} />
+                    </header>
+                    <main className="p-5">
+                        <Body />
+                    </main>
+                    <footer>
+                        <Footer />
+                    </footer>
+                </div>
+            </Router>
         );
     }
 }
