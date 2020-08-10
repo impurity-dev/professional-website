@@ -56,6 +56,7 @@ PositionList.propTypes = {
             'end-date': PropTypes.string,
         }),
     ),
+    company: PropTypes.string.isRequired
 };
 
 PositionList.defaultProps = {
