@@ -84,18 +84,18 @@ $stars-3: generate-stars(500);
 
 @keyframes move-stars-1 {
     from {
-        transform: translateY(0px);
+        transform: translateY(1000px);
     }
     to {
-        transform: translateY(-2000px);
+        transform: translateY(-1000px);
     }
 }
 
 @keyframes move-stars-2 {
     from {
-        transform: translateY(2000px);
+        transform: translateY(-1000px);
     }
     to {
-        transform: translateY(0px);
+        transform: translateY(-3000px);
     }
 }

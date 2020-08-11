@@ -7,7 +7,7 @@ import { ReactComponent as Flask } from './assets/Flask.svg';
 import Stars from './Stars';
 
 function Home() {
-    document.getElementsByTagName('HTML')[0].style.overflow = 'hidden';
+    configureGlobalStyles();
     return (
         <>
             <Stars />
@@ -57,6 +57,14 @@ function Home() {
             </div>
         </>
     );
+}
+
+/**
+ * Hides the overflow such that the stars will not misalign page
+ */
+function configureGlobalStyles() {
+    document.getElementsByTagName('HTML')[0].style.overflow = 'hidden';
+    document.getElementsByTagName('HTML')[0].className = 'w-100 h-100';
 }
 
 export default Home;

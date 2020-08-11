@@ -80,9 +80,11 @@ class App extends Component {
                         </div>
                     </Route>
                     <Route path="/">
-                        <main className="d-flex flex-row p-5 bg-gray-1">
+                        <header />
+                        <main className="d-flex flex-row justify-content-center align-items-center bg-gray-1 w-100 h-100 position-absolute">
                             <Home />
                         </main>
+                        <footer />
                     </Route>
                 </Switch>
             </Router>
