@@ -4,6 +4,7 @@ import './App.scss';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
+import Stars from './Stars';
 
 class App extends Component {
     constructor() {
@@ -27,6 +28,7 @@ class App extends Component {
                         <Header onChangeTheme={this.changeTheme} />
                     </header>
                     <main>
+                        <Stars />
                         <Body />
                     </main>
                     <footer>

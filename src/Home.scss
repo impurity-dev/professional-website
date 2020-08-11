@@ -2,13 +2,11 @@
 @import 'mixins';
 
 .home-menu-container {
-    @include circle-placement($item-count: 8, $circle-size: 50rem, $item-size: 5em);
+    @include circle-placement($item-count: 8, $circle-size: 50rem, $item-size: 3em);
     box-shadow: 0 0 2rem 0.5rem $primary-1, inset 0 0 2rem 0.5rem $primary-1;
 }
 
 .home-menu-item {
-    display: block;
-    max-width: 100%;
     border-radius: 50%;
     filter: grayscale(100%);
     border: solid 0.1rem $primary-8;
@@ -18,24 +16,5 @@
     &:active {
         filter: grayscale(0);
         box-shadow: 0 0 1rem 0 $primary-7;
-    }
-}
-
-@keyframes spin-container {
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@-webkit-keyframes spin-container {
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@-moz-keyframes spin-container {
-    100% {
-        -moz-transform: rotate(360deg);
     }
 }

@@ -11,42 +11,42 @@ function Home() {
             <ul className="home-menu-container">
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/experiences">
-                        <BriefCase className="text-primary-6 home-menu-item" width={100} />
+                        <BriefCase className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/skills">
-                        <Flask className="text-primary-6 home-menu-item" width={100} />
+                        <Flask className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
                 <li>
                     <Link to="/about">
-                        <User className="text-primary-6 home-menu-item" width={100} />
+                        <User className="text-primary-6 home-menu-item" />
                     </Link>
                 </li>
             </ul>
