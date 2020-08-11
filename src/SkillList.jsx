@@ -3,7 +3,7 @@ import './SkillList.scss';
 import PropTypes from 'prop-types';
 import Skill from './Skill';
 
-function SkillList({ skills }) {
+function SkillList({ skills, className }) {
     const skillElements = [];
     skills.forEach((skill) =>
         skillElements.push(
@@ -12,8 +12,9 @@ function SkillList({ skills }) {
             </li>,
         ),
     );
+
     return (
-        <div className="d-flex flex-column">
+        <div className={`d-flex flex-column ${className}`}>
             <h2 className="text-center mb-3">Technical Skillset</h2>
             <div className="d-flex flex-row px-2">
                 <h4 className="flex-grow-1">Tool</h4>

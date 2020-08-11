@@ -1,9 +1,9 @@
 import React from 'react';
 import './AboutMe.scss';
 
-function AboutMe() {
+function AboutMe({ className }) {
     return (
-        <div className="d-flex flex-column">
+        <div className={`d-flex flex-column ${className}`}>
             <h1 className="mb-5">About Me</h1>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

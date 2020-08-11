@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './ExperienceList.scss';
 import Experience from './Experience';
 
-function ExperienceList({ experiences }) {
+function ExperienceList({ experiences, className }) {
     const experienceElements = [];
     experiences.forEach((experience) =>
         experienceElements.push(
@@ -11,7 +11,7 @@ function ExperienceList({ experiences }) {
         ),
     );
     return (
-        <div className="d-flex flex-column">
+        <div className={`d-flex flex-column ${className}`}>
             <h2 className="text-center mb-3">Professional Experience</h2>
             {experienceElements}
         </div>

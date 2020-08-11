@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AboutMe from './AboutMe';
 import './App.scss';
-import Body from './Body';
+import './Body.scss';
+import ExperienceData from './data/Experience.json';
+import SkillListData from './data/SkillList.json';
+import ExperienceList from './ExperienceList';
 import Footer from './Footer';
 import Header from './Header';
+import Home from './Home';
+import SidePanel from './SidePanel';
+import SkillList from './SkillList';
 import Stars from './Stars';
+
+const { skills } = SkillListData;
+const { experiences } = ExperienceData;
 
 class App extends Component {
     constructor() {
@@ -23,18 +33,58 @@ class App extends Component {
         const { theme } = this.state;
         return (
             <Router>
-                <div className={`${theme} bg-gray-1 text-white`}>
-                    <header>
-                        <Header onChangeTheme={this.changeTheme} />
-                    </header>
-                    <main>
-                        <Stars />
-                        <Body />
-                    </main>
-                    <footer>
-                        <Footer />
-                    </footer>
-                </div>
+                <Switch>
+                    <Route path="/about">
+                        <div className={`${theme} bg-gray-1 text-white`}>
+                            <header>
+                                <Header onChangeTheme={this.changeTheme} />
+                            </header>
+                            <main className="d-flex flex-row p-5">
+                                <SidePanel className="w-25 mr-2" />
+                                <AboutMe className="d-flex flex-column p-5 shadow rounded bg-gray-2 w-75 ml-2" />
+                            </main>
+                            <footer>
+                                <Footer />
+                            </footer>
+                        </div>
+                    </Route>
+                    <Route path="/skills">
+                        <div className={`${theme} bg-gray-1 text-white`}>
+                            <header>
+                                <Header onChangeTheme={this.changeTheme} />
+                            </header>
+                            <main className="d-flex flex-row p-5">
+                                <SidePanel className="w-25 mr-2" />
+                                <SkillList className="d-flex flex-column p-5 shadow rounded bg-gray-2 w-75 ml-2" skills={skills} />
+                            </main>
+                            <footer>
+                                <Footer />
+                            </footer>
+                        </div>
+                    </Route>
+                    <Route path="/experiences">
+                        <div className={`${theme} bg-gray-1 text-white`}>
+                            <header>
+                                <Header onChangeTheme={this.changeTheme} />
+                            </header>
+                            <main className="d-flex flex-row p-5">
+                                <SidePanel className="w-25 mr-2" />
+                                <ExperienceList
+                                    className="d-flex flex-column p-5 shadow rounded bg-gray-2 w-75 ml-2"
+                                    experiences={experiences}
+                                />
+                            </main>
+                            <footer>
+                                <Footer />
+                            </footer>
+                        </div>
+                    </Route>
+                    <Route path="/">
+                        <main className="d-flex flex-row p-5 bg-gray-1">
+                            <Home />
+                        </main>
+                    </Route>
+                </Switch>
             </Router>
         );
     }
