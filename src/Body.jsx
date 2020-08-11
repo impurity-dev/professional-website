@@ -14,7 +14,7 @@ const { experiences } = ExperienceData;
 
 function Body() {
     return (
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row p-5">
             <Switch>
                 <Route path="/about">
                     <SidePanel className="w-25 mr-2" />

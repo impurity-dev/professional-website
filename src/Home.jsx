@@ -3,6 +3,7 @@ import './Home.scss';
 import { Link } from 'react-router-dom';
 import { ReactComponent as BriefCase } from './assets/BriefCase.svg';
 import { ReactComponent as User } from './assets/User.svg';
+import { ReactComponent as Flask } from './assets/Flask.svg';
 
 function Home() {
     return (
@@ -14,8 +15,13 @@ function Home() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/experience">
+                    <Link to="/experiences">
                         <BriefCase className="text-primary-6 home-menu-item" width={100} />
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/skills">
+                        <Flask className="text-primary-6 home-menu-item" width={100} />
                     </Link>
                 </li>
                 <li>
@@ -24,8 +30,8 @@ function Home() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/experience">
-                        <BriefCase className="text-primary-6 home-menu-item" width={100} />
+                    <Link to="/about">
+                        <User className="text-primary-6 home-menu-item" width={100} />
                     </Link>
                 </li>
                 <li>
@@ -34,18 +40,13 @@ function Home() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/experience">
-                        <BriefCase className="text-primary-6 home-menu-item" width={100} />
-                    </Link>
-                </li>
-                <li>
                     <Link to="/about">
                         <User className="text-primary-6 home-menu-item" width={100} />
                     </Link>
                 </li>
                 <li>
-                    <Link to="/experience">
-                        <BriefCase className="text-primary-6 home-menu-item" width={100} />
+                    <Link to="/about">
+                        <User className="text-primary-6 home-menu-item" width={100} />
                     </Link>
                 </li>
             </ul>

@@ -2,8 +2,8 @@
 @import 'mixins';
 
 .home-menu-container {
-    @include circle-placement($item-count: 8, $circle-size: 50em, $item-size: 6em);
-    border: solid 0.5rem $primary-1;
+    @include circle-placement($item-count: 8, $circle-size: 50rem, $item-size: 5em);
+    box-shadow: 0 0 2rem 0.5rem $primary-1, inset 0 0 2rem 0.5rem $primary-1;
 }
 
 .home-menu-item {
@@ -11,12 +11,13 @@
     max-width: 100%;
     border-radius: 50%;
     filter: grayscale(100%);
-    border: solid 0.4rem $tertiary-3;
-    transition: 0.15s;
+    border: solid 0.1rem $primary-8;
+    transition: 0.1s;
 
     &:hover,
     &:active {
         filter: grayscale(0);
+        box-shadow: 0 0 1rem 0 $primary-7;
     }
 }
 

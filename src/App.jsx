@@ -26,7 +26,7 @@ class App extends Component {
                     <header>
                         <Header onChangeTheme={this.changeTheme} />
                     </header>
-                    <main className="p-5">
+                    <main>
                         <Body />
                     </main>
                     <footer>
