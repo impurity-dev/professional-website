@@ -81,7 +81,7 @@ class App extends Component {
                     </Route>
                     <Route path="/">
                         <header />
-                        <main className="d-flex flex-row justify-content-center align-items-center bg-gray-1 w-100 h-100 position-absolute">
+                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
                             <Home />
                         </main>
                         <footer />
