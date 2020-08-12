@@ -33,10 +33,12 @@ ExperienceList.propTypes = {
             ),
         }),
     ),
+    className: PropTypes.string,
 };
 
 ExperienceList.defaultProps = {
     experiences: [],
+    className: '',
 };
 
 export default ExperienceList;

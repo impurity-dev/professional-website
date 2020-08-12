@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AboutMe from './AboutMe';
 import './App.scss';
-import ExperienceData from './data/Experience.json';
+import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
 import ExperienceList from './ExperienceList';
 import Footer from './Footer';
@@ -12,7 +12,7 @@ import SidePanel from './SidePanel';
 import SkillList from './SkillList';
 
 const { skills } = SkillListData;
-const { experiences } = ExperienceData;
+const { experiences } = ExperienceListData;
 
 class App extends Component {
     constructor() {
