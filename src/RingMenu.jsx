@@ -1,5 +1,6 @@
 import React from 'react';
 import './RingMenu.scss';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { ReactComponent as BriefCase } from './assets/BriefCase.svg';
 import { ReactComponent as User } from './assets/User.svg';
@@ -53,5 +54,13 @@ function RingMenu({ className }) {
         </div>
     );
 }
+
+RingMenu.propTypes = {
+    className: PropTypes.string,
+};
+
+RingMenu.defaultProps = {
+    className: '',
+};
 
 export default RingMenu;

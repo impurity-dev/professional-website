@@ -33,10 +33,12 @@ SkillList.propTypes = {
             maxRating: PropTypes.number,
         }),
     ),
+    className: PropTypes.string,
 };
 
 SkillList.defaultProps = {
     skills: [],
+    className: '',
 };
 
 export default SkillList;

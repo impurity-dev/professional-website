@@ -1,5 +1,6 @@
 import React from 'react';
 import './AboutMe.scss';
+import PropTypes from 'prop-types';
 
 function AboutMe({ className }) {
     return (
@@ -14,5 +15,13 @@ function AboutMe({ className }) {
         </div>
     );
 }
+
+AboutMe.propTypes = {
+    className: PropTypes.string,
+};
+
+AboutMe.defaultProps = {
+    className: '',
+};
 
 export default AboutMe;
