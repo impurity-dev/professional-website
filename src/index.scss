@@ -1,6 +1,7 @@
+@import '~bootstrap/scss/bootstrap.scss';
 @import 'mixins';
 @import 'variables';
-@import '~bootstrap/scss/bootstrap.scss';
+@import 'fonts';
 
 .text {
     @include color-generator($colors);
