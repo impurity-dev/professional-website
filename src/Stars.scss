@@ -19,7 +19,6 @@ $stars-3: generate-stars(500);
     animation: move-stars-1 100s linear infinite;
 
     &::after {
-        content: ' ';
         position: absolute;
         width: 1px;
         height: 1px;
@@ -37,7 +36,6 @@ $stars-3: generate-stars(500);
     animation: move-stars-2 100s linear infinite;
 
     &::after {
-        content: ' ';
         position: absolute;
         width: 1px;
         height: 1px;
@@ -55,7 +53,6 @@ $stars-3: generate-stars(500);
     animation: move-stars-1 50s linear infinite;
 
     &::after {
-        content: ' ';
         position: absolute;
         width: 2px;
         height: 2px;
@@ -73,7 +70,6 @@ $stars-3: generate-stars(500);
     animation: move-stars-2 50s linear infinite;
 
     &::after {
-        content: ' ';
         position: absolute;
         width: 2px;
         height: 2px;

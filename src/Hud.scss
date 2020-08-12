@@ -1,5 +1,6 @@
 @import 'variables';
 
+// Hud
 #top-left-hud {
     top: 0;
     left: 0;
@@ -39,4 +40,31 @@
     to {
         stroke-dashoffset: 0;
     }
+}
+
+// Mini Map
+#mini-map-hud {
+    bottom: 0;
+    right: 0;
+}
+
+.mini-map-container {
+    background-color: red;
+}
+
+.mini-map-border {
+    stroke: $primary-1;
+}
+
+.mini-map-view {
+    fill: $primary-1;
+    fill-opacity: 0.3;
+}
+
+.mini-map-container {
+    z-index: 999999 !important;
+}
+
+.mini-map-bar {
+    stroke: $primary-8;
 }
