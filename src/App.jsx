@@ -11,14 +11,13 @@ import Home from './Home';
 import SidePanel from './SidePanel';
 import SkillList from './SkillList';
 
-const { skills } = SkillListData;
-const { experiences } = ExperienceListData;
-
 class App extends Component {
     constructor() {
         super();
         this.state = {
             theme: 'dark',
+            skills: SkillListData.skills,
+            experiences: ExperienceListData.experiences,
         };
         this.changeTheme = this.changeTheme.bind(this);
     }
@@ -28,7 +27,7 @@ class App extends Component {
     }
 
     render() {
-        const { theme } = this.state;
+        const { theme, skills, experiences } = this.state;
         return (
             <Router>
                 <Switch>
