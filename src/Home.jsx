@@ -3,6 +3,7 @@ import './Home.scss';
 import Stars from './Stars';
 import RingMenu from './RingMenu';
 import { ReactComponent as HomeSpinner } from './assets/HomeSpinner.svg';
+import Hud from './Hud';
 
 function Home() {
     useEffect(() => {
@@ -15,12 +16,13 @@ function Home() {
 
     return (
         <>
-            <div className="position-fixed w-100 h-100 ">
-                <HomeSpinner className="w-100 h-100 text-cyan" />
+            <Hud />
+            <div className="d-lg-flex d-none position-fixed w-100 h-100">
+                <HomeSpinner className="w-100 h-100 text-primary-1" />
             </div>
             <Stars />
-            <RingMenu className="d-flex flex-row justify-content-center w-100" />
-            <div className="d-flex flex-column position-fixed">
+            <RingMenu className="d-lg-flex d-none flex-row justify-content-center w-100" />
+            <div className="d-lg-flex d-none  flex-column position-fixed">
                 <h1 className="text-white">Tyler Kokoszka</h1>
                 <hr />
                 <h2 className="text-white">Software Engineer</h2>

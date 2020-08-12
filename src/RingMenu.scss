@@ -3,23 +3,24 @@
 
 #home-menu-container {
     @include circle-placement(8, 50rem, 5em);
-    box-shadow: 0 0 2rem 0.5rem cyan, inset 0 0 2rem 0.5rem $primary-1;
+    box-shadow: 0 0 2rem 0.5rem $primary-1, inset 0 0 2rem 0.5rem black;
+    background-color: rgba($color: $primary-1, $alpha: 0.3);
 }
 
 .home-menu-item {
-    border-radius: 50%;
+    border-radius: 20%;
     filter: grayscale(100%);
     border: solid 0.1rem transparent;
-    transition: 0.5s;
+    transition: 0.2s;
     width: 100%;
-    color: cyan;
+    color: $primary-4;
     opacity: 0.6;
 
     &:hover,
     &:active {
         filter: grayscale(0);
         border-radius: 50%;
-        border: solid 0.1rem cyan;
+        border: solid 0.1rem $primary-4;
         opacity: 1;
     }
 }
