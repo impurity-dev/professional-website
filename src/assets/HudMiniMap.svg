@@ -1,6 +1,7 @@
 <svg class="mini-map-container" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <circle class="mini-map-border" stroke-width="2" cx="50" cy="50" r="49" />
+    <!-- View -->
     <circle class="mini-map-view" cx="50" cy="50" r="49" />
+    <circle class="mini-map-pulse" stroke-width="2" cx="50" cy="50" />
     <!-- Vertical Lines -->
     <path class="mini-map-bar" d="M 50 0 Q -30 50 50 100" fill="transparent"/>
     <path class="mini-map-bar" d="M 50 0 Q 0 50 50 100" fill="transparent"/>
@@ -13,4 +14,6 @@
     <path class="mini-map-bar" d="M 0 50 100 50" fill="transparent"/>
     <path class="mini-map-bar" d="M 0 50 Q 50 100 100 50" fill="transparent"/>
     <path class="mini-map-bar" d="M 0 50 Q 50 130 100 50" fill="transparent"/>
+    <!-- Border -->
+    <circle class="mini-map-border" stroke-width="2" cx="50" cy="50" r="49" />
 </svg>

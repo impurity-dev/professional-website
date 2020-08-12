@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 function Stars({ className }) {
     return (
-        <div className={className}>
+        <div id="star-container" className={className}>
             <div id="stars-1" />
             <div id="stars-2" />
             <div id="stars-3" />

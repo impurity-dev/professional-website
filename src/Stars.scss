@@ -1,7 +1,7 @@
 @function generate-stars($amount) {
-    $result: #{random(2000)}px #{random(2000)}px #fff;
+    $result: #{random(5000)}px #{random(5000)}px #fff;
     @for $i from 1 through $amount {
-        $result: #{$result}, #{random(2000)}px #{random(2000)}px #fff;
+        $result: #{$result}, #{random(5000)}px #{random(5000)}px #fff;
     }
     @return $result;
 }

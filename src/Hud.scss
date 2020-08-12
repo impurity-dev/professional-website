@@ -48,23 +48,36 @@
     right: 0;
 }
 
-.mini-map-container {
-    background-color: red;
-}
-
 .mini-map-border {
     stroke: $primary-1;
+    fill: transparent;
 }
 
 .mini-map-view {
-    fill: $primary-1;
-    fill-opacity: 0.3;
-}
-
-.mini-map-container {
-    z-index: 999999 !important;
+    fill: black;
 }
 
 .mini-map-bar {
     stroke: $primary-8;
+}
+
+.mini-map-pulse {
+    stroke: $primary-6;
+    fill: $primary-9;
+    fill-opacity: 0.2;
+    animation: minimap-pulse-ring 3s ease-in infinite;
+}
+
+@keyframes minimap-pulse-ring {
+    30%,
+    100% {
+        opacity: 0;
+        r: 49;
+    }
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
 }

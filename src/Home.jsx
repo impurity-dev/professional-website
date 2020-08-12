@@ -17,11 +17,11 @@ function Home() {
 
     return (
         <>
-            <Hud />
+            <Stars className="position-fixed w-100 h-100" />
+            <Hud className="d-lg-block d-none position-fixed w-100 h-100" />
             <HomeSpinner className="d-lg-flex d-none position-fixed w-100 h-100 text-primary-1" />
             <HomeTitle className="position-fixed" />
-            <Stars />
-            <RingMenu className="d-lg-flex d-none justify-content-center w-100" />
+            <RingMenu className="d-lg-flex d-none justify-content-center" />
         </>
     );
 }
