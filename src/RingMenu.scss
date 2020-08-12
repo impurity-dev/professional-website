@@ -1,13 +1,15 @@
 @import 'variables';
 @import 'mixins';
 
+$list-length: 8;
+
 #home-menu-container {
-    @include circle-placement(8, 50rem, 5em);
+    @include circle-placement($list-length, 50rem, 5em);
     box-shadow: 0 0 2rem 0.5rem $primary-1, inset 0 0 2rem 0.5rem black;
     background-color: rgba($color: $primary-1, $alpha: 0.3);
 }
 
-@for $i from 0 through 7 {
+@for $i from 0 through $list-length - 1 {
     #home-menu-container li:nth-child(#{$i}) .home-menu-item {
         animation-delay: $i * 0.25s;
     }
@@ -17,7 +19,7 @@
     border-radius: 20%;
     filter: grayscale(100%);
     border: solid 0.1rem transparent;
-    transition: 0.2s;
+    transition: filter 5s, box-shadow 5s, opacity 5s;
     width: 100%;
     color: $primary-4;
     opacity: 0.6;
@@ -27,8 +29,7 @@
     &:hover,
     &:active {
         filter: grayscale(0);
-        border-radius: 50%;
-        border: solid 0.1rem $primary-4;
+        box-shadow: 0 0 0.5rem 0.1rem $primary-4;
         opacity: 1;
     }
 }
@@ -39,6 +40,7 @@
     75% {
         transform: scale(1.2);
         filter: grayscale(0);
+        box-shadow: 0 0 0.5rem 0.1rem $primary-4;
         opacity: 1;
     }
     100% {
