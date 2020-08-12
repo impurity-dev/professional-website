@@ -11,7 +11,7 @@ $list-length: 8;
 
 @for $i from 0 through $list-length - 1 {
     #home-menu-container li:nth-child(#{$i}) .home-menu-item {
-        animation-delay: $i * 0.25s;
+        animation-delay: $i * 0.2s;
     }
 }
 
@@ -19,12 +19,12 @@ $list-length: 8;
     border-radius: 20%;
     filter: grayscale(100%);
     border: solid 0.1rem transparent;
-    transition: filter 5s, box-shadow 5s, opacity 5s;
     width: 100%;
     color: $primary-4;
     opacity: 0.6;
     animation: pop-in 1s ease-in-out forwards;
     transform: scale(0);
+    transition: all 0.25s;
 
     &:hover,
     &:active {
@@ -39,9 +39,6 @@ $list-length: 8;
     }
     75% {
         transform: scale(1.2);
-        filter: grayscale(0);
-        box-shadow: 0 0 0.5rem 0.1rem $primary-4;
-        opacity: 1;
     }
     100% {
         transform: scale(1);
