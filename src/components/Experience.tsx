@@ -1,12 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Experience.scss';
 import PositionList from './PositionList';
 import LibertyLogo from '../assets/Liberty.png';
 import IolLogo from '../assets/IOL.jpg';
 import BeamLogo from '../assets/Beam.png';
 
-function Experience({ experience, className }) {
+type Position = { title: string; startDate: string; endDate: string };
+type Positions = Array<Position>;
+
+export type ExperienceCargo = {
+    company: string;
+    location: string;
+    website: string;
+    positions: Positions;
+};
+type ExperienceProps = { experience: ExperienceCargo; className?: string };
+
+function Experience({ experience, className }: ExperienceProps) {
     const { company, positions, location } = experience;
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);
@@ -31,7 +41,7 @@ function Experience({ experience, className }) {
     );
 }
 
-function getImage(company) {
+function getImage(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return LibertyLogo;
@@ -44,7 +54,7 @@ function getImage(company) {
     }
 }
 
-function getTextColor(company) {
+function getTextColor(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return 'text-liberty-blue-1';
@@ -57,7 +67,7 @@ function getTextColor(company) {
     }
 }
 
-function getBackgroundColor(company) {
+function getBackgroundColor(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return 'bg-liberty-yellow-1';
@@ -70,7 +80,7 @@ function getBackgroundColor(company) {
     }
 }
 
-function getHeaderColor(company) {
+function getHeaderColor(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return 'text-liberty-blue-1';
@@ -82,22 +92,6 @@ function getHeaderColor(company) {
             throw new Error(`Invalid header color for company: ${company}`);
     }
 }
-
-Experience.propTypes = {
-    experience: PropTypes.exact({
-        company: PropTypes.string,
-        location: PropTypes.string,
-        website: PropTypes.string,
-        positions: PropTypes.arrayOf(
-            PropTypes.exact({
-                title: PropTypes.string,
-                startDate: PropTypes.string,
-                endDate: PropTypes.string,
-            }),
-        ),
-    }).isRequired,
-    className: PropTypes.string,
-};
 
 Experience.defaultProps = {
     className: '',

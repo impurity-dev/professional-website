@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './SidePanel.scss';
 import ProfessionalPicture from '../assets/ProfessionalPicture.jpg';
 import { ReactComponent as Github } from '../assets/Github.svg';
@@ -7,7 +6,9 @@ import { ReactComponent as LinkedIn } from '../assets/LinkedIn.svg';
 import { ReactComponent as StackOverflow } from '../assets/StackOverflow.svg';
 import { ReactComponent as Codepen } from '../assets/Codepen.svg';
 
-function SidePanel({ className }) {
+type SidePanelProps = { className?: string };
+
+function SidePanel({ className }: SidePanelProps) {
     return (
         <div className={`d-flex flex-column ${className}`}>
             <div id="side-panel-container" className="d-flex flex-column align-items-center py-4 px-3 shadow rounded-top bg-gray-2">
@@ -35,10 +36,6 @@ function SidePanel({ className }) {
         </div>
     );
 }
-
-SidePanel.propTypes = {
-    className: PropTypes.string,
-};
 
 SidePanel.defaultProps = {
     className: '',

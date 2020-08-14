@@ -1,12 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './PositionList.scss';
-import Position from './Position';
+import Position, { PositionCargo } from './Position';
 
-function PositionList({ positions, company }) {
+export type PositionsCargoList = Array<PositionCargo>;
+
+type PositionListProps = { positions: PositionsCargoList; company: string };
+
+function PositionList({ positions, company }: PositionListProps) {
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);
-    const positionElements = [];
+    const positionElements: Array<JSX.Element> = [];
     positions.forEach((position) =>
         positionElements.push(
             <li className={`list-group-item ${backgroundColor} ${textColor}`} key={`${position.title}-position-list-item`}>
@@ -22,7 +25,7 @@ function PositionList({ positions, company }) {
     );
 }
 
-function getBackgroundColor(company) {
+function getBackgroundColor(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return 'bg-liberty-blue-1';
@@ -35,7 +38,7 @@ function getBackgroundColor(company) {
     }
 }
 
-function getTextColor(company) {
+function getTextColor(company: string): string {
     switch (company) {
         case 'Liberty Mutual Insurance':
             return 'text-white';
@@ -47,17 +50,6 @@ function getTextColor(company) {
             throw new Error(`Invalid background color for company: ${company}`);
     }
 }
-
-PositionList.propTypes = {
-    positions: PropTypes.arrayOf(
-        PropTypes.exact({
-            title: PropTypes.string,
-            'start-date': PropTypes.string,
-            'end-date': PropTypes.string,
-        }),
-    ),
-    company: PropTypes.string.isRequired
-};
 
 PositionList.defaultProps = {
     positions: [],

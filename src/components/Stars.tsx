@@ -1,8 +1,9 @@
 import React from 'react';
 import './Stars.scss';
-import PropTypes from 'prop-types';
 
-function Stars({ className }) {
+type StarsProps = { className?: string };
+
+function Stars({ className }: StarsProps) {
     return (
         <div id="star-container" className={className}>
             <div id="stars-1" />
@@ -12,10 +13,6 @@ function Stars({ className }) {
         </div>
     );
 }
-
-Stars.propTypes = {
-    className: PropTypes.string,
-};
 
 Stars.defaultProps = {
     className: '',

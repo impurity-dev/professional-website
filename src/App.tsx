@@ -4,31 +4,30 @@ import AboutMe from './components/AboutMe';
 import './App.scss';
 import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
-import ExperienceList from './components/ExperienceList';
+import ExperienceList, { ExperienceCargoList } from './components/ExperienceList';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './components/Home';
 import SidePanel from './components/SidePanel';
-import SkillList from './components/SkillList';
+import SkillList, { SkillCargoList } from './components/SkillList';
 import Cube3D from './components/Cube3D';
 
-class App extends Component {
-    constructor() {
-        super();
+type AppState = {
+    skills: SkillCargoList;
+    experiences: ExperienceCargoList;
+};
+
+class App extends Component<{}, AppState> {
+    constructor(props: {}) {
+        super(props);
         this.state = {
-            theme: 'dark',
             skills: SkillListData.skills,
             experiences: ExperienceListData.experiences,
-        };
-        this.changeTheme = this.changeTheme.bind(this);
-    }
-
-    changeTheme(theme) {
-        this.setState({ theme });
+        } as AppState;
     }
 
     render() {
-        const { theme, skills, experiences } = this.state;
+        const { skills, experiences } = this.state;
         return (
             <Router>
                 <Switch>
@@ -40,9 +39,9 @@ class App extends Component {
                         </div>
                     </Route>
                     <Route path="/about">
-                        <div className={`${theme} bg-gray-1 text-white`}>
+                        <div className="bg-gray-1 text-white">
                             <header>
-                                <Header onChangeTheme={this.changeTheme} />
+                                <Header />
                             </header>
                             <main className="d-flex flex-row p-5">
                                 <SidePanel className="w-25 mr-2" />
@@ -54,9 +53,9 @@ class App extends Component {
                         </div>
                     </Route>
                     <Route path="/skills">
-                        <div className={`${theme} bg-gray-1 text-white`}>
+                        <div className="bg-gray-1 text-white">
                             <header>
-                                <Header onChangeTheme={this.changeTheme} />
+                                <Header />
                             </header>
                             <main className="d-flex flex-row p-5">
                                 <SidePanel className="w-25 mr-2" />
@@ -68,9 +67,9 @@ class App extends Component {
                         </div>
                     </Route>
                     <Route path="/experiences">
-                        <div className={`${theme} bg-gray-1 text-white`}>
+                        <div className="bg-gray-1 text-white">
                             <header>
-                                <Header onChangeTheme={this.changeTheme} />
+                                <Header />
                             </header>
                             <main className="d-flex flex-row p-5">
                                 <SidePanel className="w-25 mr-2" />

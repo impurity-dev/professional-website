@@ -1,14 +1,17 @@
 import React from 'react';
 import './SkillList.scss';
-import PropTypes from 'prop-types';
-import Skill from './Skill';
+import Skill, { SkillCargo } from './Skill';
 
-function SkillList({ skills, className }) {
-    const skillElements = [];
+export type SkillCargoList = Array<SkillCargo>;
+
+type SkillCargoProps = { skills: SkillCargoList; className?: string };
+
+function SkillList({ skills, className }: SkillCargoProps) {
+    const skillElements: Array<JSX.Element> = [];
     skills.forEach((skill) =>
         skillElements.push(
             <li className="list-group-item bg-gray-1" key={`${skill.name}-skill-list-item`}>
-                <Skill name={skill.name} rating={skill.rating} maxRating={skill.maxRating} />
+                <Skill skill={skill} />
             </li>,
         ),
     );
@@ -24,17 +27,6 @@ function SkillList({ skills, className }) {
         </div>
     );
 }
-
-SkillList.propTypes = {
-    skills: PropTypes.arrayOf(
-        PropTypes.exact({
-            name: PropTypes.string,
-            rating: PropTypes.number,
-            maxRating: PropTypes.number,
-        }),
-    ),
-    className: PropTypes.string,
-};
 
 SkillList.defaultProps = {
     skills: [],

@@ -1,10 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Skill.scss';
 import { ReactComponent as FilledStar } from '../assets/FilledStar.svg';
 import { ReactComponent as EmptyStar } from '../assets/EmptyStar.svg';
 
-function Skill({ name, rating, maxRating }) {
+export type SkillCargo = { name: string; rating: number; maxRating: number };
+
+type SkillProps = { skill: SkillCargo };
+
+function Skill({ skill }: SkillProps) {
+    const { name, rating, maxRating } = skill;
     const starElements = [];
     for (let i = 0; i < rating; i++) {
         starElements.push(<FilledStar className="text-primary-8" width={24} key={`${name}-filled-star-${i}`} />);
@@ -20,12 +24,6 @@ function Skill({ name, rating, maxRating }) {
         </div>
     );
 }
-
-Skill.propTypes = {
-    name: PropTypes.string.isRequired,
-    rating: PropTypes.number.isRequired,
-    maxRating: PropTypes.number,
-};
 
 Skill.defaultProps = {
     maxRating: 10,

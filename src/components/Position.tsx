@@ -1,8 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Position.scss';
 
-function Position({ position, className }) {
+export type PositionCargo = { title: string; startDate: string; endDate: string };
+
+type PositionProps = { position: PositionCargo; className?: string };
+
+function Position({ position, className }: PositionProps) {
     const containerClass = `d-flex flex-row ${className}`;
     return (
         <div className={containerClass}>
@@ -13,15 +16,6 @@ function Position({ position, className }) {
         </div>
     );
 }
-
-Position.propTypes = {
-    position: PropTypes.exact({
-        title: PropTypes.string,
-        startDate: PropTypes.string,
-        endDate: PropTypes.string,
-    }).isRequired,
-    className: PropTypes.string,
-};
 
 Position.defaultProps = {
     className: '',

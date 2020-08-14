@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './HomeTitle.scss';
 
-function HomeTitle({ className }) {
+type HomeTitleProps = { className?: string };
+
+function HomeTitle({ className }: HomeTitleProps) {
     return (
         <div className={`d-lg-flex d-none flex-column align-items-center ${className}`}>
             <h1 id="home-title-name" className="text-white">
@@ -15,10 +16,6 @@ function HomeTitle({ className }) {
         </div>
     );
 }
-
-HomeTitle.propTypes = {
-    className: PropTypes.string,
-};
 
 HomeTitle.defaultProps = {
     className: '',
