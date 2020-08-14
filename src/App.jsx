@@ -33,7 +33,7 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route path="/test">
-                        <div className="w-100 h-100 position-fixed d-flex flex-column align-items-center justify-content-center">
+                        <div className="w-100 h-100 position-fixed d-flex flex-column align-items-center justify-content-center bg-gray-1 text-white">
                             <h1>Test Page</h1>
                             <hr className="w-25 mb-5" />
                             <Cube3D id="cube" size={5} />
