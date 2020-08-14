@@ -32,7 +32,7 @@ $stars-3: generate-stars(500);
     height: 2px;
     background: transparent;
     box-shadow: $stars-2;
-    top: 2000px;
+    top: 5000px;
     animation: move-stars-2 100s linear infinite;
 
     &::after {
@@ -66,7 +66,7 @@ $stars-3: generate-stars(500);
     height: 1px;
     background: transparent;
     box-shadow: $stars-3;
-    top: 2000px;
+    top: 5000px;
     animation: move-stars-2 50s linear infinite;
 
     &::after {
