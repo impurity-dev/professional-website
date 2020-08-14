@@ -33,7 +33,9 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route path="/test">
-                        <Cube3D id="cube" className="w-100 h-100 position-fixed" />
+                        <div className="w-100 h-100 position-fixed d-flex align-items-center justify-content-center">
+                            <Cube3D id="cube" size={5} />
+                        </div>
                     </Route>
                     <Route path="/about">
                         <div className={`${theme} bg-gray-1 text-white`}>
