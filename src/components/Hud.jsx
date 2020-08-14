@@ -1,11 +1,11 @@
 import React from 'react';
 import './Hud.scss';
 import PropTypes from 'prop-types';
-import { ReactComponent as HudTopLeft } from './assets/HudTopLeft.svg';
-import { ReactComponent as HudTopRight } from './assets/HudTopRight.svg';
-import { ReactComponent as HudBottomLeft } from './assets/HudBottomLeft.svg';
-import { ReactComponent as HudBottomRight } from './assets/HudBottomRight.svg';
-import { ReactComponent as HudMiniMap } from './assets/HudMiniMap.svg';
+import { ReactComponent as HudTopLeft } from '../assets/HudTopLeft.svg';
+import { ReactComponent as HudTopRight } from '../assets/HudTopRight.svg';
+import { ReactComponent as HudBottomLeft } from '../assets/HudBottomLeft.svg';
+import { ReactComponent as HudBottomRight } from '../assets/HudBottomRight.svg';
+import { ReactComponent as HudMiniMap } from '../assets/HudMiniMap.svg';
 
 function Hud({ className }) {
     return (

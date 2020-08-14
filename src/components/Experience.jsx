@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Experience.scss';
 import PositionList from './PositionList';
-import LibertyLogo from './assets/Liberty.png';
-import IolLogo from './assets/IOL.jpg';
-import BeamLogo from './assets/Beam.png';
+import LibertyLogo from '../assets/Liberty.png';
+import IolLogo from '../assets/IOL.jpg';
+import BeamLogo from '../assets/Beam.png';
 
 function Experience({ experience, className }) {
     const { company, positions, location } = experience;

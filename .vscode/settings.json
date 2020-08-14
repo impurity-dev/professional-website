@@ -3,5 +3,5 @@
     "editor.formatOnSave": true,
     "prettier.configPath": ".prettierrc.json",
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "svg.preview.background": "black"
+    "svg.preview.background": "transparent"
 }

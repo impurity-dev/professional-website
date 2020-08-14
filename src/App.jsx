@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AboutMe from './AboutMe';
+import AboutMe from './components/AboutMe';
 import './App.scss';
 import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
-import ExperienceList from './ExperienceList';
-import Footer from './Footer';
-import Header from './Header';
-import Home from './Home';
-import SidePanel from './SidePanel';
-import SkillList from './SkillList';
+import ExperienceList from './components/ExperienceList';
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Home from './components/Home';
+import SidePanel from './components/SidePanel';
+import SkillList from './components/SkillList';
+import Cube3D from './components/Cube3D';
 
 class App extends Component {
     constructor() {
@@ -31,6 +32,9 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
+                    <Route path="/test">
+                        <Cube3D id="cube" className="w-100 h-100 position-fixed" />
+                    </Route>
                     <Route path="/about">
                         <div className={`${theme} bg-gray-1 text-white`}>
                             <header>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './Home.scss';
 import Stars from './Stars';
 import RingMenu from './RingMenu';
-import { ReactComponent as HomeSpinner } from './assets/HomeSpinner.svg';
+import { ReactComponent as HomeSpinner } from '../assets/HomeSpinner.svg';
 import Hud from './Hud';
 import HomeTitle from './HomeTitle';
 

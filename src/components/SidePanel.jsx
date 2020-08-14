@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './SidePanel.scss';
-import ProfessionalPicture from './assets/ProfessionalPicture.jpg';
-import { ReactComponent as Github } from './assets/Github.svg';
-import { ReactComponent as LinkedIn } from './assets/LinkedIn.svg';
-import { ReactComponent as StackOverflow } from './assets/StackOverflow.svg';
-import { ReactComponent as Codepen } from './assets/Codepen.svg';
+import ProfessionalPicture from '../assets/ProfessionalPicture.jpg';
+import { ReactComponent as Github } from '../assets/Github.svg';
+import { ReactComponent as LinkedIn } from '../assets/LinkedIn.svg';
+import { ReactComponent as StackOverflow } from '../assets/StackOverflow.svg';
+import { ReactComponent as Codepen } from '../assets/Codepen.svg';
 
 function SidePanel({ className }) {
     return (

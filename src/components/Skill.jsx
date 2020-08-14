@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Skill.scss';
-import { ReactComponent as FilledStar } from './assets/FilledStar.svg';
-import { ReactComponent as EmptyStar } from './assets/EmptyStar.svg';
+import { ReactComponent as FilledStar } from '../assets/FilledStar.svg';
+import { ReactComponent as EmptyStar } from '../assets/EmptyStar.svg';
 
 function Skill({ name, rating, maxRating }) {
     const starElements = [];
