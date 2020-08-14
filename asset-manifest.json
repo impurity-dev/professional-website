@@ -1,0 +1,41 @@
+{
+  "files": {
+    "main.css": "/static/css/main.cf0afcd4.chunk.css",
+    "main.js": "/static/js/main.0cf83b51.chunk.js",
+    "main.js.map": "/static/js/main.0cf83b51.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.1276ff11.js",
+    "runtime-main.js.map": "/static/js/runtime-main.1276ff11.js.map",
+    "static/js/2.ba1f82ee.chunk.js": "/static/js/2.ba1f82ee.chunk.js",
+    "static/js/2.ba1f82ee.chunk.js.map": "/static/js/2.ba1f82ee.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.a6d76051e994dc09709eaf28717aeeeb.js": "/precache-manifest.a6d76051e994dc09709eaf28717aeeeb.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.cf0afcd4.chunk.css.map": "/static/css/main.cf0afcd4.chunk.css.map",
+    "static/js/2.ba1f82ee.chunk.js.LICENSE.txt": "/static/js/2.ba1f82ee.chunk.js.LICENSE.txt",
+    "static/media/index.scss": "/static/media/Azonix.3b372e98.otf",
+    "static/media/BriefCase.6fb6435a.svg": "/static/media/BriefCase.6fb6435a.svg",
+    "static/media/Codepen.97a23418.svg": "/static/media/Codepen.97a23418.svg",
+    "static/media/EmptyStar.a0da6c47.svg": "/static/media/EmptyStar.a0da6c47.svg",
+    "static/media/FilledStar.63421297.svg": "/static/media/FilledStar.63421297.svg",
+    "static/media/Flask.08a46edb.svg": "/static/media/Flask.08a46edb.svg",
+    "static/media/Github.b3e29180.svg": "/static/media/Github.b3e29180.svg",
+    "static/media/HomeSpinner.8c2fa1e6.svg": "/static/media/HomeSpinner.8c2fa1e6.svg",
+    "static/media/HudBottomLeft.30c56097.svg": "/static/media/HudBottomLeft.30c56097.svg",
+    "static/media/HudBottomRight.9d7b9e6c.svg": "/static/media/HudBottomRight.9d7b9e6c.svg",
+    "static/media/HudMiniMap.b0bc2848.svg": "/static/media/HudMiniMap.b0bc2848.svg",
+    "static/media/HudTopLeft.9b89d442.svg": "/static/media/HudTopLeft.9b89d442.svg",
+    "static/media/HudTopRight.e113d189.svg": "/static/media/HudTopRight.e113d189.svg",
+    "static/media/IOL.jpg": "/static/media/IOL.fb79066c.jpg",
+    "static/media/Liberty.png": "/static/media/Liberty.6607e315.png",
+    "static/media/LinkedIn.e8208662.svg": "/static/media/LinkedIn.e8208662.svg",
+    "static/media/ProfessionalPicture.jpg": "/static/media/ProfessionalPicture.81931aea.jpg",
+    "static/media/StackOverflow.b3835c0b.svg": "/static/media/StackOverflow.b3835c0b.svg",
+    "static/media/User.3cf72de2.svg": "/static/media/User.3cf72de2.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1276ff11.js",
+    "static/js/2.ba1f82ee.chunk.js",
+    "static/css/main.cf0afcd4.chunk.css",
+    "static/js/main.0cf83b51.chunk.js"
+  ]
+}
