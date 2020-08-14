@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { createCube } from '../webgl/Cube3D';
 
 function Cube3D({ id, className }) {
-    console.log(JSON.stringify(id));
     useEffect(() => createCube(id));
     return <canvas id={id} className={className} />;
 }
