@@ -23,7 +23,7 @@ class App extends Component<{}, AppState> {
         this.state = {
             skills: SkillListData.skills,
             experiences: ExperienceListData.experiences,
-        } as AppState;
+        };
     }
 
     render() {

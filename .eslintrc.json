@@ -4,7 +4,7 @@
         "es6": true,
         "jest/globals": true
     },
-    "extends": ["plugin:react/recommended", "airbnb", "prettier", "prettier/react"],
+    "extends": ["plugin:react/recommended", "prettier", "prettier/react"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -19,6 +19,7 @@
     },
     "plugins": ["react", "@typescript-eslint", "jest"],
     "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
         "no-plusplus": "off",
         "no-use-before-define": "off",
         "import/prefer-default-export": "off"
