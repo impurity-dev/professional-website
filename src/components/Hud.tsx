@@ -8,7 +8,7 @@ import { ReactComponent as HudMiniMap } from '../assets/HudMiniMap.svg';
 
 type HudProps = { className?: string };
 
-function Hud({ className }: HudProps) {
+function Hud({ className }: HudProps): JSX.Element {
     return (
         <div id="hud" className={className}>
             <HudTopLeft id="top-left-hud" className="position-fixed" width={200} />

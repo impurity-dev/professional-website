@@ -8,7 +8,7 @@ import { ReactComponent as Codepen } from '../assets/Codepen.svg';
 
 type SidePanelProps = { className?: string };
 
-function SidePanel({ className }: SidePanelProps) {
+function SidePanel({ className }: SidePanelProps): JSX.Element {
     return (
         <div className={`d-flex flex-column ${className}`}>
             <div id="side-panel-container" className="d-flex flex-column align-items-center py-4 px-3 shadow rounded-top bg-gray-2">

@@ -7,7 +7,7 @@ import { ReactComponent as Flask } from '../assets/Flask.svg';
 
 type RingMenuProps = { className?: string };
 
-function RingMenu({ className }: RingMenuProps) {
+function RingMenu({ className }: RingMenuProps): JSX.Element {
     return (
         <div className={className}>
             <ul id="home-menu-container">

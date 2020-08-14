@@ -16,7 +16,7 @@ export type ExperienceCargo = {
 };
 type ExperienceProps = { experience: ExperienceCargo; className?: string };
 
-function Experience({ experience, className }: ExperienceProps) {
+function Experience({ experience, className }: ExperienceProps): JSX.Element {
     const { company, positions, location } = experience;
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);

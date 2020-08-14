@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.scss';
 
-function Footer() {
+function Footer(): JSX.Element {
     return (
         <div className="d-flex flex-row px-5">
             <p>

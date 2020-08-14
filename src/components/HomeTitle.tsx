@@ -3,7 +3,7 @@ import './HomeTitle.scss';
 
 type HomeTitleProps = { className?: string };
 
-function HomeTitle({ className }: HomeTitleProps) {
+function HomeTitle({ className }: HomeTitleProps): JSX.Element {
     return (
         <div className={`d-lg-flex d-none flex-column align-items-center ${className}`}>
             <h1 id="home-title-name" className="text-white">

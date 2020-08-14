@@ -6,7 +6,7 @@ import { ReactComponent as HomeSpinner } from '../assets/HomeSpinner.svg';
 import Hud from './Hud';
 import HomeTitle from './HomeTitle';
 
-function Home() {
+function Home(): JSX.Element {
     useEffect(() => {
         const htmlElement = document.getElementsByTagName('HTML')[0];
         htmlElement.classList.add('custom-html');

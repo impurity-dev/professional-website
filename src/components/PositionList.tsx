@@ -6,7 +6,7 @@ export type PositionsCargoList = Array<PositionCargo>;
 
 type PositionListProps = { positions: PositionsCargoList; company: string };
 
-function PositionList({ positions, company }: PositionListProps) {
+function PositionList({ positions, company }: PositionListProps): JSX.Element {
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);
     const positionElements: Array<JSX.Element> = [];

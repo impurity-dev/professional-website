@@ -16,9 +16,10 @@ type AppState = {
     skills: SkillCargoList;
     experiences: ExperienceCargoList;
 };
+type AppProps = {};
 
-class App extends Component<{}, AppState> {
-    constructor(props: {}) {
+class App extends Component<AppProps, AppState> {
+    constructor(props: string) {
         super(props);
         this.state = {
             skills: SkillListData.skills,
@@ -26,7 +27,7 @@ class App extends Component<{}, AppState> {
         };
     }
 
-    render() {
+    render(): JSX.Element {
         const { skills, experiences } = this.state;
         return (
             <Router>

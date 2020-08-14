@@ -3,7 +3,7 @@ import './Stars.scss';
 
 type StarsProps = { className?: string };
 
-function Stars({ className }: StarsProps) {
+function Stars({ className }: StarsProps): JSX.Element {
     return (
         <div id="star-container" className={className}>
             <div id="stars-1" />

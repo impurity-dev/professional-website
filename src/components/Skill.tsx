@@ -7,7 +7,7 @@ export type SkillCargo = { name: string; rating: number; maxRating: number };
 
 type SkillProps = { skill: SkillCargo };
 
-function Skill({ skill }: SkillProps) {
+function Skill({ skill }: SkillProps): JSX.Element {
     const { name, rating, maxRating } = skill;
     const starElements = [];
     for (let i = 0; i < rating; i++) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.scss';
 
-function Header() {
+function Header(): JSX.Element {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark shadow">
             <button
