@@ -2,6 +2,7 @@
     "name": "@impurity/professional-website",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://impurity-dev.github.io/professional-website/",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
