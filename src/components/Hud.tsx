@@ -5,6 +5,7 @@ import { ReactComponent as HudTopRight } from '../assets/HudTopRight.svg';
 import { ReactComponent as HudBottomLeft } from '../assets/HudBottomLeft.svg';
 import { ReactComponent as HudBottomRight } from '../assets/HudBottomRight.svg';
 import { ReactComponent as HudMiniMap } from '../assets/HudMiniMap.svg';
+import Cube3D from './Cube3D';
 
 type HudProps = { className?: string };
 
@@ -15,7 +16,8 @@ function Hud({ className }: HudProps): JSX.Element {
             <HudTopRight id="top-right-hud" className="position-fixed" width={200} />
             <HudBottomLeft id="bottom-left-hud" className="position-fixed" width={200} />
             <HudBottomRight id="bottom-right-hud" className="position-fixed" width={200} />
-            <HudMiniMap id="mini-map-hud" className="position-fixed" width={200} />
+            {/* <HudMiniMap id="mini-map-hud" className="position-fixed" width={200} /> */}
+            <Cube3D id="sphere-hud" className="position-fixed m-2" size={185} />
         </div>
     );
 }

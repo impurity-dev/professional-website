@@ -8,10 +8,12 @@
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint ./src/**/*.{ts,tsx}",
+        "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
         "lint:fix": "npm run lint -- --fix"
     },
     "dependencies": {
+        "@babylonjs/core": "^4.1.0",
+        "@babylonjs/materials": "^4.1.0",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.5.0",
         "@testing-library/user-event": "^7.2.1",
