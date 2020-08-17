@@ -1,9 +1,9 @@
 import React from 'react';
 import './Experience.scss';
 import PositionList, { PositionsCargoList } from './PositionList';
-import LibertyLogo from '../assets/Liberty.png';
-import IolLogo from '../assets/IOL.jpg';
-import BeamLogo from '../assets/Beam.png';
+import LibertyLogo from '../../assets/Liberty.png';
+import IolLogo from '../../assets/IOL.jpg';
+import BeamLogo from '../../assets/Beam.png';
 
 export type ExperienceCargo = {
     company: string;

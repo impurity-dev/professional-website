@@ -1,7 +1,7 @@
 import React from 'react';
 import './Skill.scss';
-import { ReactComponent as FilledStar } from '../assets/FilledStar.svg';
-import { ReactComponent as EmptyStar } from '../assets/EmptyStar.svg';
+import { ReactComponent as FilledStar } from '../../assets/FilledStar.svg';
+import { ReactComponent as EmptyStar } from '../../assets/EmptyStar.svg';
 
 export type SkillCargo = { name: string; rating: number; maxRating: number };
 

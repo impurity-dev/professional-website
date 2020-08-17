@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import AboutMe from './components/AboutMe';
+import AboutMe from './components/v1/AboutMe';
 import './App.scss';
 import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
-import ExperienceList, { ExperienceCargoList } from './components/ExperienceList';
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Home from './components/Home';
-import HudV2 from './components/HudV2';
-import SidePanel from './components/SidePanel';
-import SkillList, { SkillCargoList } from './components/SkillList';
+import ExperienceList, { ExperienceCargoList } from './components/v1/ExperienceList';
+import Footer from './components/v1/Footer';
+import Header from './components/v1/Header';
+import Home from './components/v1/Home';
+import HudV2 from './components/v2/HudV2';
+import SidePanel from './components/v1/SidePanel';
+import SkillList, { SkillCargoList } from './components/v1/SkillList';
 
 type AppState = {
     skills: SkillCargoList;

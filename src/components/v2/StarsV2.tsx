@@ -7,7 +7,7 @@ import '@babylonjs/core/Meshes/meshBuilder';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
 import { Scene } from '@babylonjs/core/scene';
 import React, { useEffect } from 'react';
-import StarTexture from '../textures/Star.png';
+import StarTexture from '../../textures/Star.png';
 import './StarsV2.scss';
 
 type StarsV2Props = { id: string; className?: string };

@@ -1,9 +1,9 @@
 import React from 'react';
 import './RingMenu.scss';
 import { Link } from 'react-router-dom';
-import { ReactComponent as BriefCase } from '../assets/BriefCase.svg';
-import { ReactComponent as User } from '../assets/User.svg';
-import { ReactComponent as Flask } from '../assets/Flask.svg';
+import { ReactComponent as BriefCase } from '../../assets/BriefCase.svg';
+import { ReactComponent as User } from '../../assets/User.svg';
+import { ReactComponent as Flask } from '../../assets/Flask.svg';
 
 type RingMenuProps = { className?: string };
 
