@@ -8,11 +8,11 @@ import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
 import { Scene } from '@babylonjs/core/scene';
 import React, { useEffect } from 'react';
 import StarTexture from '../../textures/Star.png';
-import './StarsV2.scss';
+import './Stars.scss';
 
-type StarsV2Props = { id: string; className?: string };
+type StarsProps = { id: string; className?: string };
 
-function StarsV2({ id, className = '' }: StarsV2Props): JSX.Element {
+function Stars({ id, className = '' }: StarsProps): JSX.Element {
     useEffect(() => {
         createStars(id);
     });
@@ -57,4 +57,4 @@ function createStars(id: string): Scene {
     return scene;
 }
 
-export default StarsV2;
+export default Stars;

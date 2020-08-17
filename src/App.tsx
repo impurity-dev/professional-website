@@ -7,8 +7,8 @@ import SkillListData from './data/SkillList.json';
 import ExperienceList, { ExperienceCargoList } from './components/v1/ExperienceList';
 import Footer from './components/v1/Footer';
 import Header from './components/v1/Header';
-import Home from './components/v1/Home';
-import HudV2 from './components/v2/HudV2';
+import HomeV1 from './components/v1/Home';
+import HomeV2 from './components/v2/Home';
 import SidePanel from './components/v1/SidePanel';
 import SkillList, { SkillCargoList } from './components/v1/SkillList';
 
@@ -35,7 +35,7 @@ class App extends Component<AppProps, AppState> {
                     <Route path="/test">
                         <header />
                         <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
-                            <HudV2 />
+                            <HomeV2 />
                         </main>
                         <footer />
                     </Route>
@@ -87,7 +87,7 @@ class App extends Component<AppProps, AppState> {
                     <Route path="/">
                         <header />
                         <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
-                            <Home />
+                            <HomeV1 />
                         </main>
                         <footer />
                     </Route>
