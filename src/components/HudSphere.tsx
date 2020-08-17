@@ -1,7 +1,11 @@
-import { Color3, Color4, Engine, FreeCamera, Mesh, Scene, Vector3 } from '@babylonjs/core';
+import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
+import { Engine } from '@babylonjs/core/Engines/engine';
+import { Color3, Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import '@babylonjs/core/Meshes/meshBuilder';
-import { GridMaterial } from '@babylonjs/materials';
+import { Scene } from '@babylonjs/core/scene';
+import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
 import React, { useEffect } from 'react';
 
 type HudSphereProps = { id: string; className?: string; size: number };

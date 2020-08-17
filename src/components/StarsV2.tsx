@@ -1,6 +1,11 @@
-import { Color4, Engine, FreeCamera, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
+import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
+import { Engine } from '@babylonjs/core/Engines/engine';
+import { Texture } from '@babylonjs/core/Materials/Textures/texture';
+import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import '@babylonjs/core/Meshes/meshBuilder';
+import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
+import { Scene } from '@babylonjs/core/scene';
 import React, { useEffect } from 'react';
 import StarTexture from '../textures/Star.png';
 import './StarsV2.scss';
