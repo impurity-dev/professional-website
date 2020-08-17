@@ -34,7 +34,7 @@ class App extends Component<AppProps, AppState> {
                 <Switch>
                     <Route path="/test">
                         <header />
-                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute bg-black">
+                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
                             <HudV2 />
                         </main>
                         <footer />
