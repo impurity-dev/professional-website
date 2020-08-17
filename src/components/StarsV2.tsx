@@ -1,15 +1,15 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
-import { Color4, Vector3, Color3 } from '@babylonjs/core/Maths/math';
+import { Texture } from '@babylonjs/core/Materials/Textures/texture';
+import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import '@babylonjs/core/Meshes/meshBuilder';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
 import { Scene } from '@babylonjs/core/scene';
 import React, { useEffect } from 'react';
-import './StarsV2.scss';
-import { Mesh } from '@babylonjs/core/Meshes/mesh';
-import { Texture } from '@babylonjs/core/Materials/Textures/texture';
 import StarTexture from '../textures/Star.png';
+import './StarsV2.scss';
 
 type StarsV2Props = { id: string; className?: string };
 

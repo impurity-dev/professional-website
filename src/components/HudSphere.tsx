@@ -1,6 +1,5 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
-import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
 import { Color3, Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
@@ -38,10 +37,7 @@ function createSphere(id: string): Scene {
     engine.runRenderLoop(() => {
         scene.render();
     });
-
-    let time = 0;
     scene.onBeforeRenderObservable.add(() => {
-        time += (2 * Math.PI) / 60 / 2;
         const rotation = (2 * Math.PI) / 60;
         sphere.rotation.y += rotation / 12;
         sphere.rotation.x += rotation / 24;
