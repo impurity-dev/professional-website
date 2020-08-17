@@ -1,9 +1,9 @@
 import React from 'react';
 import './AboutMe.scss';
 
-type AboutMeProps = { className: string };
+type AboutMeProps = { className?: string };
 
-function AboutMe({ className }: AboutMeProps): JSX.Element {
+function AboutMe({ className = '' }: AboutMeProps): JSX.Element {
     return (
         <div className={`d-flex flex-column ${className}`}>
             <h1 className="mb-5">About Me</h1>
@@ -16,9 +16,5 @@ function AboutMe({ className }: AboutMeProps): JSX.Element {
         </div>
     );
 }
-
-AboutMe.defaultProps = {
-    className: '',
-};
 
 export default AboutMe;

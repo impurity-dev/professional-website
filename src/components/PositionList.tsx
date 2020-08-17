@@ -6,7 +6,7 @@ export type PositionsCargoList = Array<PositionCargo>;
 
 type PositionListProps = { positions: PositionsCargoList; company: string };
 
-function PositionList({ positions, company }: PositionListProps): JSX.Element {
+function PositionList({ positions = [], company }: PositionListProps): JSX.Element {
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);
     const positionElements: Array<JSX.Element> = [];
@@ -50,9 +50,5 @@ function getTextColor(company: string): string {
             throw new Error(`Invalid background color for company: ${company}`);
     }
 }
-
-PositionList.defaultProps = {
-    positions: [],
-};
 
 export default PositionList;

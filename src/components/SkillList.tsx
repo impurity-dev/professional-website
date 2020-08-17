@@ -6,7 +6,7 @@ export type SkillCargoList = Array<SkillCargo>;
 
 type SkillCargoProps = { skills: SkillCargoList; className?: string };
 
-function SkillList({ skills, className }: SkillCargoProps): JSX.Element {
+function SkillList({ skills = [], className = '' }: SkillCargoProps): JSX.Element {
     const skillElements: Array<JSX.Element> = [];
     skills.forEach((skill) =>
         skillElements.push(
@@ -27,10 +27,5 @@ function SkillList({ skills, className }: SkillCargoProps): JSX.Element {
         </div>
     );
 }
-
-SkillList.defaultProps = {
-    skills: [],
-    className: '',
-};
 
 export default SkillList;

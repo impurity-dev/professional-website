@@ -8,9 +8,9 @@ import ExperienceList, { ExperienceCargoList } from './components/ExperienceList
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Home from './components/Home';
+import HudV2 from './components/HudV2';
 import SidePanel from './components/SidePanel';
 import SkillList, { SkillCargoList } from './components/SkillList';
-import Cube3D from './components/Cube3D';
 
 type AppState = {
     skills: SkillCargoList;
@@ -33,11 +33,11 @@ class App extends Component<AppProps, AppState> {
             <Router>
                 <Switch>
                     <Route path="/test">
-                        <div className="w-100 h-100 position-fixed d-flex flex-column align-items-center justify-content-center bg-gray-1 text-white">
-                            <h1>Test Page</h1>
-                            <hr className="w-25 mb-5" />
-                            <Cube3D id="cube" size={5} />
-                        </div>
+                        <header />
+                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute bg-black">
+                            <HudV2 />
+                        </main>
+                        <footer />
                     </Route>
                     <Route path="/about">
                         <div className="bg-gray-1 text-white">

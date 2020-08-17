@@ -1,22 +1,19 @@
 import React from 'react';
 import './Experience.scss';
-import PositionList from './PositionList';
+import PositionList, { PositionsCargoList } from './PositionList';
 import LibertyLogo from '../assets/Liberty.png';
 import IolLogo from '../assets/IOL.jpg';
 import BeamLogo from '../assets/Beam.png';
-
-type Position = { title: string; startDate: string; endDate: string };
-type Positions = Array<Position>;
 
 export type ExperienceCargo = {
     company: string;
     location: string;
     website: string;
-    positions: Positions;
+    positions: PositionsCargoList;
 };
 type ExperienceProps = { experience: ExperienceCargo; className?: string };
 
-function Experience({ experience, className }: ExperienceProps): JSX.Element {
+function Experience({ experience, className = '' }: ExperienceProps): JSX.Element {
     const { company, positions, location } = experience;
     const backgroundColor = getBackgroundColor(company);
     const textColor = getTextColor(company);
@@ -92,9 +89,5 @@ function getHeaderColor(company: string): string {
             throw new Error(`Invalid header color for company: ${company}`);
     }
 }
-
-Experience.defaultProps = {
-    className: '',
-};
 
 export default Experience;

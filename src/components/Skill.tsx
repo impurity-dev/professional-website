@@ -25,8 +25,4 @@ function Skill({ skill }: SkillProps): JSX.Element {
     );
 }
 
-Skill.defaultProps = {
-    maxRating: 10,
-};
-
 export default Skill;

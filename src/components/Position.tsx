@@ -5,7 +5,7 @@ export type PositionCargo = { title: string; startDate: string; endDate: string 
 
 type PositionProps = { position: PositionCargo; className?: string };
 
-function Position({ position, className }: PositionProps): JSX.Element {
+function Position({ position, className = '' }: PositionProps): JSX.Element {
     const containerClass = `d-flex flex-row ${className}`;
     return (
         <div className={containerClass}>
@@ -16,9 +16,5 @@ function Position({ position, className }: PositionProps): JSX.Element {
         </div>
     );
 }
-
-Position.defaultProps = {
-    className: '',
-};
 
 export default Position;

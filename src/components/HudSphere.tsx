@@ -9,23 +9,23 @@ import { Scene } from '@babylonjs/core/scene';
 import { GridMaterial } from '@babylonjs/materials/grid';
 import React, { useEffect } from 'react';
 
-type Cube3DProps = { id: string; className?: string; size: number };
+type HudSphereProps = { id: string; className?: string; size: number };
 
-function Cube3D({ id, className = '', size }: Cube3DProps): JSX.Element {
+function HudSphere({ id, className = '', size }: HudSphereProps): JSX.Element {
     useEffect(() => {
-        createCube3D(id);
+        createSphere(id);
     });
     return <canvas id={id} className={className} width={size} height={size} />;
 }
 
-function createCube3D(id: string): Scene {
+function createSphere(id: string): Scene {
     const canvas = document.getElementById(id) as HTMLCanvasElement;
     const engine = new Engine(canvas);
 
     const scene = new Scene(engine);
     scene.clearColor = new Color4(0, 0, 0, 0);
 
-    const camera = new FreeCamera('camera1', new Vector3(0, 0, -10), scene);
+    const camera = new FreeCamera('camera1', new Vector3(0, 0, -11), scene);
     camera.setTarget(Vector3.Zero());
 
     const light = new HemisphericLight('light1', new Vector3(0, 1, 0), scene);
@@ -53,4 +53,4 @@ function createCube3D(id: string): Scene {
     return scene;
 }
 
-export default Cube3D;
+export default HudSphere;

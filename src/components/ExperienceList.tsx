@@ -9,7 +9,7 @@ type ExperienceListProps = {
     className?: string;
 };
 
-function ExperienceList({ experiences, className }: ExperienceListProps): JSX.Element {
+function ExperienceList({ experiences = [], className = '' }: ExperienceListProps): JSX.Element {
     const experienceElements: Array<JSX.Element> = [];
     experiences.forEach((experience) =>
         experienceElements.push(<Experience className="p-4 my-1" key={`${experience.company}-experience`} experience={experience} />),
@@ -21,10 +21,5 @@ function ExperienceList({ experiences, className }: ExperienceListProps): JSX.El
         </div>
     );
 }
-
-ExperienceList.defaultProps = {
-    experiences: [],
-    className: '',
-};
 
 export default ExperienceList;
