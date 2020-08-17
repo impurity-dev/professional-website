@@ -1,7 +1,7 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
-import { Vector3, Color4, Color3 } from '@babylonjs/core/Maths/math';
+import { Color3, Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import '@babylonjs/core/Meshes/meshBuilder';
@@ -25,16 +25,13 @@ function createSphere(id: string): Scene {
     const scene = new Scene(engine);
     scene.clearColor = new Color4(0, 0, 0, 0);
 
-    const camera = new FreeCamera('camera1', new Vector3(0, 0, -11), scene);
+    const camera = new FreeCamera('Camera', new Vector3(0, 0, -11), scene);
     camera.setTarget(Vector3.Zero());
 
-    const light = new HemisphericLight('light1', new Vector3(0, 1, 0), scene);
-    light.intensity = 0.7;
-
-    const material = new GridMaterial('grid', scene);
+    const material = new GridMaterial('Grid', scene);
     material.lineColor = new Color3(0, 1, 1);
     material.mainColor = new Color3(0, 0, 0);
-    const sphere = Mesh.CreateSphere('sphere1', 20, 8, scene);
+    const sphere = Mesh.CreateSphere('Sphere', 20, 8, scene);
     sphere.position.y = 0;
     sphere.material = material;
 
@@ -48,6 +45,10 @@ function createSphere(id: string): Scene {
         const rotation = (2 * Math.PI) / 60;
         sphere.rotation.y += rotation / 12;
         sphere.rotation.x += rotation / 24;
+    });
+
+    window.addEventListener('resize', () => {
+        engine.resize();
     });
 
     return scene;
