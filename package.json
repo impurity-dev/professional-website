@@ -6,7 +6,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test --passWithNoTests",
+        "test": "react-scripts test --transformIgnorePatterns \"<rootDir>/node_modules/(?!@babylonjs/core)/\" --env=jsdom",
         "eject": "react-scripts eject",
         "lint": "eslint ./src/**/*.{js,jsx,ts,tsx}",
         "lint:fix": "npm run lint -- --fix"
