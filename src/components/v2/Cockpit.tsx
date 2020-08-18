@@ -23,7 +23,7 @@ function createCockpit(id: string): Scene {
     const engine = new Engine(canvas);
 
     const scene = new Scene(engine);
-    scene.clearColor = new Color4(1, 0, 0, 0);
+    scene.clearColor = new Color4(0, 0, 0, 0);
 
     const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
     camera.setTarget(Vector3.Zero());
@@ -33,7 +33,7 @@ function createCockpit(id: string): Scene {
     material.mainColor = new Color3(0, 0, 1);
     const metalMaterial = new StandardMaterial('Metal', scene);
     metalMaterial.ambientTexture = new Texture(SpaceMetalTexture, scene);
-    metalMaterial.diffuseTexture = new Texture(SpaceMetalTexture, scene);
+    // metalMaterial.diffuseTexture = new Texture(SpaceMetalTexture, scene);
     metalMaterial.emissiveTexture = new Texture(SpaceMetalTexture, scene);
 
     const cornersTop: Array<Vector2> = [new Vector2(-8, -8), new Vector2(-2, 0), new Vector2(2, 0), new Vector2(8, -8)];
