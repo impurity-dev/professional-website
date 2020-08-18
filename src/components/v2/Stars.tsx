@@ -39,7 +39,7 @@ class Stars extends Component<Props, State> {
         starParticleSystem.maxSize = 0.01;
         starParticleSystem.minLifeTime = 5;
         starParticleSystem.maxLifeTime = 6;
-        starParticleSystem.createBoxEmitter(new Vector3(1, 1, 1), new Vector3(-1, -1, -1), new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+        starParticleSystem.createPointEmitter(new Vector3(1, 1, 1), new Vector3(-1, -1, -1));
         starParticleSystem.minEmitPower = 0.5;
         starParticleSystem.maxEmitPower = 4;
         starParticleSystem.emitRate = 400;
@@ -63,12 +63,16 @@ class Stars extends Component<Props, State> {
         hyperSpeedButton.thickness = 1;
         hyperSpeedButton.background = 'green';
         hyperSpeedButton.onPointerUpObservable.add(() => {
-            console.log('THERE');
+            starParticleSystem.minAngularSpeed = -1;
+            starParticleSystem.maxAngularSpeed = 1;
             starParticleSystem.minEmitPower = 10;
-            starParticleSystem.maxEmitPower = 400;
+            starParticleSystem.maxEmitPower = 100;
             starParticleSystem.minSize = 0.01;
             starParticleSystem.maxSize = 0.02;
-            starParticleSystem.emitRate = 4000;
+            starParticleSystem.emitRate = 2000;
+            starParticleSystem.preWarmCycles = 10;
+            starParticleSystem.preWarmStepOffset = 1;
+            starParticleSystem.reset();
         });
         hyperSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         const diftingSpeedButton = Button.CreateSimpleButton('HyperSpeed Button', 'Difting Speed');
@@ -78,7 +82,8 @@ class Stars extends Component<Props, State> {
         diftingSpeedButton.thickness = 1;
         diftingSpeedButton.background = 'red';
         diftingSpeedButton.onPointerUpObservable.add(() => {
-            console.log('YOYOYOYO');
+            starParticleSystem.minAngularSpeed = -0.5;
+            starParticleSystem.maxAngularSpeed = 0.5;
             starParticleSystem.minEmitPower = 0.5;
             starParticleSystem.maxEmitPower = 4;
             starParticleSystem.minSize = 0.005;
