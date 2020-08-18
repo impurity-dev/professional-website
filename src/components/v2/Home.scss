@@ -1,3 +1,8 @@
 #space-container {
-    background: radial-gradient(ellipse at bottom, #030303 0%, black 100%);
+    background: radial-gradient(ellipse at bottom, #030303 0%, #010111 100%);
+}
+
+#sphere-hud {
+    bottom: 0;
+    right: 0;
 }
