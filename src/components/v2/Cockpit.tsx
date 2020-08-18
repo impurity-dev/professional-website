@@ -1,11 +1,10 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
-import { Color4, Vector3, Color3 } from '@babylonjs/core/Maths/math';
+import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { Scene } from '@babylonjs/core/scene';
 import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 import { Button3D } from '@babylonjs/gui/3D/controls/button3D';
-import { Container3D } from '@babylonjs/gui/3D/controls/container3D';
 import { StackPanel3D } from '@babylonjs/gui/3D/controls/stackPanel3D';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { useEffect } from 'react';
