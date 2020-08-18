@@ -3,7 +3,7 @@ import { FresnelParameters } from '@babylonjs/core/Materials/fresnelParameters';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { Color3 } from '@babylonjs/core/Maths/math';
 
-function HologramMaterial(scene: Scene): StandardMaterial {
+function createHologramMaterial(scene: Scene): StandardMaterial {
     const xray_mat = new StandardMaterial('xray', scene);
     xray_mat.emissiveColor = new Color3(1, 1, 1);
     xray_mat.alpha = 0.1;
@@ -24,4 +24,4 @@ function HologramMaterial(scene: Scene): StandardMaterial {
     return xray_mat;
 }
 
-export default HologramMaterial;
+export default createHologramMaterial;
