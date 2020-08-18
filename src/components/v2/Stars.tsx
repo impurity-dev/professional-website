@@ -6,55 +6,97 @@ import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import '@babylonjs/core/Meshes/meshBuilder';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
 import { Scene } from '@babylonjs/core/scene';
-import React, { useEffect } from 'react';
+import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture';
+import { Control } from '@babylonjs/gui/2D/controls/control';
+import { Rectangle } from '@babylonjs/gui/2D/controls/rectangle';
+import { StackPanel } from '@babylonjs/gui/2D/controls/stackPanel';
+import { Button } from '@babylonjs/gui/2D/controls/button';
+import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
 import './Stars.scss';
 
-type StarsProps = { id: string; className?: string };
+type Props = { id: string; className?: string };
+type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
 
-function Stars({ id, className = '' }: StarsProps): JSX.Element {
-    useEffect(() => {
-        createStars(id);
-    });
-    return <canvas id={id} className={className} />;
-}
+class Stars extends Component<Props, State> {
+    componentDidMount(): void {
+        const { id } = this.props;
+        const canvas = document.getElementById(id) as HTMLCanvasElement;
+        const engine = new Engine(canvas);
 
-function createStars(id: string): Scene {
-    const canvas = document.getElementById(id) as HTMLCanvasElement;
-    const engine = new Engine(canvas);
+        const scene = new Scene(engine);
+        scene.clearColor = new Color4(0, 0, 0, 0);
 
-    const scene = new Scene(engine);
-    scene.clearColor = new Color4(0, 0, 0, 0);
+        const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
+        camera.setTarget(Vector3.Zero());
 
-    const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
-    camera.setTarget(Vector3.Zero());
+        const starParticleSystem = new ParticleSystem('Particles', 20_000, scene);
+        starParticleSystem.particleTexture = new Texture(StarTexture, scene);
 
-    const particleSystem = new ParticleSystem('Particles', 2000, scene);
-    particleSystem.particleTexture = new Texture(StarTexture, scene);
-    particleSystem.minAngularSpeed = -0.5;
-    particleSystem.maxAngularSpeed = 0.5;
-    particleSystem.minSize = 0.005;
-    particleSystem.maxSize = 0.01;
-    particleSystem.minLifeTime = 5;
-    particleSystem.maxLifeTime = 6;
-    particleSystem.createBoxEmitter(new Vector3(1, 1, 1), new Vector3(-1, -1, -1), new Vector3(0, 0, 0), new Vector3(0, 0, 0));
-    particleSystem.minEmitPower = 0.5;
-    particleSystem.maxEmitPower = 4.0;
-    particleSystem.emitRate = 400;
-    particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-    particleSystem.color1 = new Color4(1, 1, 1);
-    particleSystem.color2 = new Color4(1, 1, 1);
-    particleSystem.start();
+        starParticleSystem.minAngularSpeed = -0.5;
+        starParticleSystem.maxAngularSpeed = 0.5;
+        starParticleSystem.minSize = 0.005;
+        starParticleSystem.maxSize = 0.01;
+        starParticleSystem.minLifeTime = 5;
+        starParticleSystem.maxLifeTime = 6;
+        starParticleSystem.createBoxEmitter(new Vector3(1, 1, 1), new Vector3(-1, -1, -1), new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+        starParticleSystem.minEmitPower = 0.5;
+        starParticleSystem.maxEmitPower = 4;
+        starParticleSystem.emitRate = 400;
+        starParticleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        starParticleSystem.color1 = new Color4(1, 1, 1);
+        starParticleSystem.color2 = new Color4(1, 1, 1);
+        starParticleSystem.preWarmCycles = 100;
+        starParticleSystem.preWarmStepOffset = 5;
+        starParticleSystem.start();
 
-    engine.runRenderLoop(() => {
-        scene.render();
-    });
+        const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI('Cockpit Ui', true, scene);
+        const stackPanel = new StackPanel('Left Side Ui');
+        stackPanel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        stackPanel.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        advancedTexture.addControl(stackPanel);
 
-    window.addEventListener('resize', () => {
-        engine.resize();
-    });
+        const hyperSpeedButton = Button.CreateSimpleButton('HyperSpeed Button', 'Hyper Speed');
+        hyperSpeedButton.width = '250px';
+        hyperSpeedButton.height = '50px';
+        hyperSpeedButton.color = 'cyan';
+        hyperSpeedButton.thickness = 1;
+        hyperSpeedButton.background = 'green';
+        hyperSpeedButton.onPointerUpObservable.add(() => {
+            console.log('THERE');
+            starParticleSystem.minEmitPower = 10;
+            starParticleSystem.maxEmitPower = 400;
+            starParticleSystem.minSize = 0.01;
+            starParticleSystem.maxSize = 0.02;
+            starParticleSystem.emitRate = 4000;
+        });
+        hyperSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        const diftingSpeedButton = Button.CreateSimpleButton('HyperSpeed Button', 'Difting Speed');
+        diftingSpeedButton.width = '250px';
+        diftingSpeedButton.height = '50px';
+        diftingSpeedButton.color = 'cyan';
+        diftingSpeedButton.thickness = 1;
+        diftingSpeedButton.background = 'red';
+        diftingSpeedButton.onPointerUpObservable.add(() => {
+            console.log('YOYOYOYO');
+            starParticleSystem.minEmitPower = 0.5;
+            starParticleSystem.maxEmitPower = 4;
+            starParticleSystem.minSize = 0.005;
+            starParticleSystem.maxSize = 0.01;
+            starParticleSystem.emitRate = 400;
+        });
+        diftingSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        stackPanel.addControl(hyperSpeedButton);
+        stackPanel.addControl(diftingSpeedButton);
 
-    return scene;
+        engine.runRenderLoop(() => scene.render());
+        window.addEventListener('resize', () => engine.resize());
+    }
+
+    render(): JSX.Element {
+        const { id, className } = this.props;
+        return <canvas id={id} className={className} />;
+    }
 }
 
 export default Stars;
