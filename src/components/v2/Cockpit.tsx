@@ -1,13 +1,14 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
-import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
-import { Texture } from '@babylonjs/core/Materials/Textures/';
-import { Color3, Color4, Vector2, Vector3 } from '@babylonjs/core/Maths/math';
-import { PolygonMeshBuilder } from '@babylonjs/core/Meshes/polygonMesh';
+import { Color4, Vector3, Color3 } from '@babylonjs/core/Maths/math';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { Scene } from '@babylonjs/core/scene';
-import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
+import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
+import { Button3D } from '@babylonjs/gui/3D/controls/button3D';
+import { Container3D } from '@babylonjs/gui/3D/controls/container3D';
+import { StackPanel3D } from '@babylonjs/gui/3D/controls/stackPanel3D';
+import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { useEffect } from 'react';
-import SpaceMetalTexture from '../../textures/SpaceMetal.jpg';
 
 type CockpitProps = { id: string; className?: string };
 
@@ -25,28 +26,25 @@ function createCockpit(id: string): Scene {
     const scene = new Scene(engine);
     scene.clearColor = new Color4(0, 0, 0, 0);
 
-    const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
+    const camera = new FreeCamera('Camera', new Vector3(0, -4, -10), scene);
     camera.setTarget(Vector3.Zero());
 
-    const material = new GridMaterial('Grid', scene);
-    material.lineColor = new Color3(1, 1, 0);
-    material.mainColor = new Color3(0, 0, 1);
-    const metalMaterial = new StandardMaterial('Metal', scene);
-    metalMaterial.ambientTexture = new Texture(SpaceMetalTexture, scene);
-    // metalMaterial.diffuseTexture = new Texture(SpaceMetalTexture, scene);
-    metalMaterial.emissiveTexture = new Texture(SpaceMetalTexture, scene);
-
-    const cornersTop: Array<Vector2> = [new Vector2(-8, -8), new Vector2(-2, 0), new Vector2(2, 0), new Vector2(8, -8)];
-    const polygonMeshTop = new PolygonMeshBuilder('PolygonMeshTop', cornersTop, scene);
-    const polygonTop = polygonMeshTop.build(false, 1);
-    polygonTop.position.y += 3;
-    polygonTop.material = metalMaterial;
-
-    const cornersBottom: Array<Vector2> = [new Vector2(-8, -8), new Vector2(-2, 0), new Vector2(2, 0), new Vector2(8, -8)];
-    const polygonMeshBottom = new PolygonMeshBuilder('PolygonMeshBottom', cornersBottom, scene);
-    const polygonBottom = polygonMeshBottom.build(false, 1);
-    polygonBottom.position.y -= 2.75;
-    polygonBottom.material = metalMaterial;
+    const anchor = new TransformNode('');
+    const gui3DManager = new GUI3DManager(scene);
+    const stackPanel3D = new StackPanel3D();
+    stackPanel3D.margin = 0.5;
+    gui3DManager.addControl(stackPanel3D);
+    for (let i = 0; i < 3; i++) {
+        const button = new Button3D('Experience');
+        const text = new TextBlock();
+        text.text = 'Go';
+        text.color = 'white';
+        text.fontSize = 24;
+        button.content = text;
+        stackPanel3D.addControl(button);
+    }
+    stackPanel3D.linkToTransformNode(anchor);
+    stackPanel3D.position.y -= 3.5;
 
     engine.runRenderLoop(() => {
         scene.render();
