@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/professional-website/static/css/main.ef12c3de.chunk.css",
-    "main.js": "/professional-website/static/js/main.73c9c45b.chunk.js",
-    "main.js.map": "/professional-website/static/js/main.73c9c45b.chunk.js.map",
+    "main.css": "/professional-website/static/css/main.5bd11da2.chunk.css",
+    "main.js": "/professional-website/static/js/main.5acef611.chunk.js",
+    "main.js.map": "/professional-website/static/js/main.5acef611.chunk.js.map",
     "runtime-main.js": "/professional-website/static/js/runtime-main.1eaa2358.js",
     "runtime-main.js.map": "/professional-website/static/js/runtime-main.1eaa2358.js.map",
-    "static/js/2.135d24a2.chunk.js": "/professional-website/static/js/2.135d24a2.chunk.js",
-    "static/js/2.135d24a2.chunk.js.map": "/professional-website/static/js/2.135d24a2.chunk.js.map",
+    "static/js/2.cf6d195d.chunk.js": "/professional-website/static/js/2.cf6d195d.chunk.js",
+    "static/js/2.cf6d195d.chunk.js.map": "/professional-website/static/js/2.cf6d195d.chunk.js.map",
     "index.html": "/professional-website/index.html",
-    "precache-manifest.9d72d0a3802975886f41449dd5abd9c2.js": "/professional-website/precache-manifest.9d72d0a3802975886f41449dd5abd9c2.js",
+    "precache-manifest.f91a93b56197504c1ee0fc3eb72f1aa8.js": "/professional-website/precache-manifest.f91a93b56197504c1ee0fc3eb72f1aa8.js",
     "service-worker.js": "/professional-website/service-worker.js",
-    "static/css/main.ef12c3de.chunk.css.map": "/professional-website/static/css/main.ef12c3de.chunk.css.map",
-    "static/js/2.135d24a2.chunk.js.LICENSE.txt": "/professional-website/static/js/2.135d24a2.chunk.js.LICENSE.txt",
+    "static/css/main.5bd11da2.chunk.css.map": "/professional-website/static/css/main.5bd11da2.chunk.css.map",
+    "static/js/2.cf6d195d.chunk.js.LICENSE.txt": "/professional-website/static/js/2.cf6d195d.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/professional-website/static/media/Azonix.3b372e98.otf",
     "static/media/BriefCase.6fb6435a.svg": "/professional-website/static/media/BriefCase.6fb6435a.svg",
     "static/media/Codepen.97a23418.svg": "/professional-website/static/media/Codepen.97a23418.svg",
@@ -34,8 +34,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.1eaa2358.js",
-    "static/js/2.135d24a2.chunk.js",
-    "static/css/main.ef12c3de.chunk.css",
-    "static/js/main.73c9c45b.chunk.js"
+    "static/js/2.cf6d195d.chunk.js",
+    "static/css/main.5bd11da2.chunk.css",
+    "static/js/main.5acef611.chunk.js"
   ]
 }
