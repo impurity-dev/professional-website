@@ -69,8 +69,6 @@ class Stars extends Component<Props, State> {
             starParticleSystem.minSize = 0.01;
             starParticleSystem.maxSize = 0.02;
             starParticleSystem.emitRate = 2000;
-            starParticleSystem.preWarmCycles = 10;
-            starParticleSystem.preWarmStepOffset = 1;
             starParticleSystem.reset();
         });
         hyperSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
