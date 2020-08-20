@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import AboutMe from './components/v1/AboutMe';
 import './App.scss';
-import ExperienceListData from './data/ExperienceList.json';
-import SkillListData from './data/SkillList.json';
+import AboutMe from './components/v1/AboutMe';
 import ExperienceList, { ExperienceCargoList } from './components/v1/ExperienceList';
 import Footer from './components/v1/Footer';
 import Header from './components/v1/Header';
 import HomeV1 from './components/v1/Home';
-import HomeV2 from './components/v2/Home';
 import SidePanel from './components/v1/SidePanel';
 import SkillList, { SkillCargoList } from './components/v1/SkillList';
-import Demo from './components/v2/Demo';
+import HomeV2 from './components/v2/Home';
+import ExperienceListData from './data/ExperienceList.json';
+import SkillListData from './data/SkillList.json';
 
 type AppState = {
     skills: SkillCargoList;
@@ -33,13 +32,6 @@ class App extends Component<AppProps, AppState> {
         return (
             <Router>
                 <Switch>
-                    <Route path="/issue-demo">
-                        <header />
-                        <main>
-                            <Demo id="demo" className="position-fixed w-100 h-100" />
-                        </main>
-                        <footer />
-                    </Route>
                     <Route path="/test">
                         <header />
                         <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
