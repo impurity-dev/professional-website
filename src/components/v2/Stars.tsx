@@ -15,7 +15,10 @@ import { SpherePanel } from '@babylonjs/gui/3D/controls/spherePanel';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
+import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
+import { Button3D } from '@babylonjs/gui/3D/controls/button3D';
+import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
 
 type Props = { id: string; className?: string };
 type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
@@ -126,14 +129,9 @@ class Stars extends Component<Props, State> {
         gui3DManager.addControl(spherePanel);
 
         for (let i = 0; i < 10; i++) {
-            const button = new HolographicButton('orientation');
-            button.text = 'Button #' + i;
+            const button = new Button3D('orientation');
+            button.content = new TextBlock('Button #' + i, 'Button #' + i);
             button.onPointerClickObservable.add(() => alert('hello'));
-            button.onPointerDownObservable.add(() => alert('hello'));
-            button.onPointerEnterObservable.add(() => alert('hello'));
-            button.onPointerMoveObservable.add(() => alert('hello'));
-            button.onPointerOutObservable.add(() => alert('hello'));
-            button.onPointerUpObservable.add(() => alert('hello'));
             spherePanel.addControl(button);
         }
 

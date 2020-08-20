@@ -1,24 +1,28 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
-import { AbstractMesh } from '@babylonjs/core/Meshes/abstractMesh';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import '@babylonjs/core/Meshes/meshBuilder';
 import { Scene } from '@babylonjs/core/scene';
 import { HolographicButton } from '@babylonjs/gui/3D/controls/holographicButton';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Stars.scss';
+import createHologramMaterial from './HologramMaterial';
 
 type Props = { id: string; className?: string };
 
 function Demo({ id, className = '' }: Props): JSX.Element {
+    const reactCanvas = useRef(null);
+
     useEffect(() => {
-        const canvas = document.getElementById(id) as HTMLCanvasElement;
-        const engine = new Engine(canvas);
+        const engine = new Engine(reactCanvas.current);
         const scene = new Scene(engine);
-        scene.clearColor = new Color4(1, 0, 0, 0);
+        scene.clearColor = new Color4(0, 0, 0, 1);
+        const canvas = scene.getEngine().getRenderingCanvas() as HTMLCanvasElement;
+        // scene.debugLayer.show();
+        // scene.autoClear = true;
         // Create the 3D UI manager
         const manager = new GUI3DManager(scene);
 
@@ -27,17 +31,15 @@ function Demo({ id, className = '' }: Props): JSX.Element {
         camera.attachControl(canvas, true);
         const donut = Mesh.CreateTorusKnot('donut', 2, 0.5, 48, 32, 3, 2, scene);
         donut.position = new Vector3(0, 0, 0);
-        const anchor = new AbstractMesh('anchor', scene);
+        donut.material = createHologramMaterial(scene);
 
         // Let's add a button
         const button = new HolographicButton('down');
         manager.addControl(button);
-        button.linkToTransformNode(anchor);
         button.position.z = -1.5;
 
         button.text = 'rotate';
-        button.imageUrl = './textures/down.png';
-        button.onPointerUpObservable.add(function () {
+        button.onPointerClickObservable.add(() => {
             donut.rotation.x -= 0.05;
         });
 
@@ -45,7 +47,7 @@ function Demo({ id, className = '' }: Props): JSX.Element {
         window.addEventListener('resize', () => engine.resize());
     });
 
-    return <canvas id={id} className={className} />;
+    return <canvas ref={reactCanvas} className={className} />;
 }
 
 export default Demo;
