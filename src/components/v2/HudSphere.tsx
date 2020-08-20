@@ -1,5 +1,6 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
+import '@babylonjs/core/Loading/loadingScreen';
 import { Color3, Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
