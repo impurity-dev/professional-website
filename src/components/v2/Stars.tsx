@@ -1,7 +1,7 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
-import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
+import { Color4, Vector3, Space } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import '@babylonjs/core/Meshes/meshBuilder';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
@@ -10,15 +10,15 @@ import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture
 import { Button } from '@babylonjs/gui/2D/controls/button';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { StackPanel } from '@babylonjs/gui/2D/controls/stackPanel';
-import { HolographicButton } from '@babylonjs/gui/3D/controls/holographicButton';
+import { MeshButton3D } from '@babylonjs/gui/3D/controls/meshButton3D';
 import { SpherePanel } from '@babylonjs/gui/3D/controls/spherePanel';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
-import { Button3D } from '@babylonjs/gui/3D/controls/button3D';
-import { TextBlock } from '@babylonjs/gui/2D/controls/textBlock';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 
 type Props = { id: string; className?: string };
 type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
@@ -45,6 +45,7 @@ class Stars extends Component<Props, State> {
 
         const scene = new Scene(engine);
         scene.clearColor = new Color4(0, 0, 0, 0);
+        scene.debugLayer.show();
 
         const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
         camera.setTarget(Vector3.Zero());
@@ -82,7 +83,6 @@ class Stars extends Component<Props, State> {
         hyperSpeedButton.height = '50px';
         hyperSpeedButton.color = 'cyan';
         hyperSpeedButton.thickness = 1;
-        hyperSpeedButton.background = 'green';
         hyperSpeedButton.onPointerUpObservable.add(() => {
             starParticleSystem.minAngularSpeed = -1;
             starParticleSystem.maxAngularSpeed = 1;
@@ -100,7 +100,6 @@ class Stars extends Component<Props, State> {
         diftingSpeedButton.height = '50px';
         diftingSpeedButton.color = 'cyan';
         diftingSpeedButton.thickness = 1;
-        diftingSpeedButton.background = 'red';
         diftingSpeedButton.onPointerUpObservable.add(() => {
             starParticleSystem.minAngularSpeed = -0.5;
             starParticleSystem.maxAngularSpeed = 0.5;
@@ -112,28 +111,53 @@ class Stars extends Component<Props, State> {
         });
         diftingSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         stackPanel.addControl(diftingSpeedButton);
-        const showSphereHudButton = Button.CreateSimpleButton('Sphere Hud', 'Show Hud');
+        const showSphereHudButton = Button.CreateSimpleButton('Sphere Hud', 'Show Sphere Hud');
         showSphereHudButton.width = '250px';
         showSphereHudButton.height = '50px';
         showSphereHudButton.color = 'cyan';
         showSphereHudButton.thickness = 1;
-        showSphereHudButton.background = 'blue';
-        showSphereHudButton.onPointerUpObservable.add(() => alert('TODO: Show Shere Hud'));
+        showSphereHudButton.onPointerUpObservable.add(() => alert('TODO: Show Sphere Hud'));
         showSphereHudButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         stackPanel.addControl(showSphereHudButton);
+        const hideSphereHudButton = Button.CreateSimpleButton('Sphere Hud', 'Hide Sphere Hud');
+        hideSphereHudButton.width = '250px';
+        hideSphereHudButton.height = '50px';
+        hideSphereHudButton.color = 'cyan';
+        hideSphereHudButton.thickness = 1;
+        hideSphereHudButton.onPointerUpObservable.add(() => alert('TODO: Hide Sphere Hud'));
+        hideSphereHudButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        stackPanel.addControl(hideSphereHudButton);
 
         // 3D Ui
         const gui3DManager = new GUI3DManager(scene);
         const spherePanel = new SpherePanel();
-        spherePanel.margin = 0.2;
+        spherePanel.name = 'Sphere Panel';
+        spherePanel.margin = 1;
         gui3DManager.addControl(spherePanel);
+        const sphereAnchor = new TransformNode('Sphere Panel Anchor');
+        sphereAnchor.rotate(new Vector3(1, 0, 0), Math.PI / 2);
+        sphereAnchor.position = new Vector3(0, 0, 5);
+        spherePanel.linkToTransformNode(sphereAnchor);
 
+        const holographicMaterial = createHologramMaterial(scene);
+        spherePanel.blockLayout = true;
         for (let i = 0; i < 10; i++) {
-            const button = new HolographicButton('Sphere Button');
-            button.text = 'Button #' + i;
-            button.onPointerClickObservable.add(() => alert('hello'));
+            const mesh = Mesh.CreateIcoSphere('Sphere Button Mesh', { radius: 0.5 }, scene);
+            mesh.material = holographicMaterial;
+            const button = new MeshButton3D(mesh, 'Sphere Button');
+            button.onPointerClickObservable.add(() => alert('Todo: Hud Actions'));
+
+            scene.onBeforeRenderObservable.add(() => {
+                const rotation = (2 * Math.PI) / 60;
+                mesh.rotation.y += rotation / 12;
+                mesh.rotation.x += rotation / 24;
+                mesh.rotation.z += rotation / 36;
+            });
+
             spherePanel.addControl(button);
         }
+        spherePanel.blockLayout = false;
+        spherePanel.isVisible = false;
 
         engine.runRenderLoop(() => scene.render());
         window.addEventListener('resize', () => engine.resize());
