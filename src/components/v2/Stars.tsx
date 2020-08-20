@@ -1,9 +1,11 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
-import { Color4, Vector3, Space } from '@babylonjs/core/Maths/math';
+import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import '@babylonjs/core/Meshes/Builders/sphereBuilder';
+import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import '@babylonjs/core/Meshes/meshBuilder';
+import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 import { ParticleSystem } from '@babylonjs/core/Particles/particleSystem';
 import { Scene } from '@babylonjs/core/scene';
 import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture';
@@ -17,8 +19,6 @@ import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
-import { Mesh } from '@babylonjs/core/Meshes/mesh';
-import { TransformNode } from '@babylonjs/core/Meshes/transformNode';
 
 type Props = { id: string; className?: string };
 type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
@@ -45,7 +45,7 @@ class Stars extends Component<Props, State> {
 
         const scene = new Scene(engine);
         scene.clearColor = new Color4(0, 0, 0, 0);
-        scene.debugLayer.show();
+        // scene.debugLayer.show();
 
         const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
         camera.setTarget(Vector3.Zero());
