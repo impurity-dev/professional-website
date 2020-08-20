@@ -129,8 +129,8 @@ class Stars extends Component<Props, State> {
         gui3DManager.addControl(spherePanel);
 
         for (let i = 0; i < 10; i++) {
-            const button = new Button3D('orientation');
-            button.content = new TextBlock('Button #' + i, 'Button #' + i);
+            const button = new HolographicButton('Sphere Button');
+            button.text = 'Button #' + i;
             button.onPointerClickObservable.add(() => alert('hello'));
             spherePanel.addControl(button);
         }

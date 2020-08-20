@@ -10,7 +10,6 @@ import Header from './components/v1/Header';
 import HomeV1 from './components/v1/Home';
 import SidePanel from './components/v1/SidePanel';
 import SkillList, { SkillCargoList } from './components/v1/SkillList';
-import Demo from './components/v2/Demo';
 import HomeV2 from './components/v2/Home';
 import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
@@ -35,13 +34,6 @@ class App extends Component<AppProps, AppState> {
         return (
             <Router>
                 <Switch>
-                    <Route path="/issue-demo">
-                        <header />
-                        <main>
-                            <Demo id="demo" className="position-fixed w-100 h-100" />
-                        </main>
-                        <footer />
-                    </Route>
                     <Route path="/test">
                         <header />
                         <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
