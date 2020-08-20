@@ -1,4 +1,3 @@
-import { AssetsManager } from '@babylonjs/core/Misc/assetsManager';
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
 import { Engine } from '@babylonjs/core/Engines/engine';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
