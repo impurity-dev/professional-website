@@ -34,3 +34,7 @@ Runs eslint linter on the project.
 ### `npm run lint:fix`
 
 Runs eslint linter on the project and attempts to fix trivial issues.
+
+### .env
+
+The `src/services/SceneManager.ts` relies on `REACT_APP_DEBUG` to determine if the inspector should be attached.
