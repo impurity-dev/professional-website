@@ -10,6 +10,9 @@ import { AdvancedDynamicTexture } from '@babylonjs/gui/2D/advancedDynamicTexture
 import { Button } from '@babylonjs/gui/2D/controls/button';
 import { Control } from '@babylonjs/gui/2D/controls/control';
 import { StackPanel } from '@babylonjs/gui/2D/controls/stackPanel';
+import { HolographicButton } from '@babylonjs/gui/3D/controls/holographicButton';
+import { SpherePanel } from '@babylonjs/gui/3D/controls/spherePanel';
+import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
 import './Stars.scss';
@@ -18,7 +21,21 @@ type Props = { id: string; className?: string };
 type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
 
 class Stars extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.createScene = this.createScene.bind(this);
+    }
+
     componentDidMount(): void {
+        this.createScene();
+    }
+
+    render(): JSX.Element {
+        const { id, className } = this.props;
+        return <canvas id={id} className={className} />;
+    }
+
+    private createScene(): void {
         const { id } = this.props;
         const canvas = document.getElementById(id) as HTMLCanvasElement;
         const engine = new Engine(canvas);
@@ -29,6 +46,7 @@ class Stars extends Component<Props, State> {
         const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
         camera.setTarget(Vector3.Zero());
 
+        // Stars
         const starParticleSystem = new ParticleSystem('Particles', 20_000, scene);
         starParticleSystem.particleTexture = new Texture(StarTexture, scene);
 
@@ -49,6 +67,7 @@ class Stars extends Component<Props, State> {
         starParticleSystem.preWarmStepOffset = 5;
         starParticleSystem.start();
 
+        // 2D Ui
         const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI('Cockpit Ui', true, scene);
         const stackPanel = new StackPanel('Left Side Ui');
         stackPanel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
@@ -72,6 +91,7 @@ class Stars extends Component<Props, State> {
             starParticleSystem.reset();
         });
         hyperSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        stackPanel.addControl(hyperSpeedButton);
         const diftingSpeedButton = Button.CreateSimpleButton('HyperSpeed Button', 'Difting Speed');
         diftingSpeedButton.width = '250px';
         diftingSpeedButton.height = '50px';
@@ -88,16 +108,37 @@ class Stars extends Component<Props, State> {
             starParticleSystem.emitRate = 400;
         });
         diftingSpeedButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        stackPanel.addControl(hyperSpeedButton);
         stackPanel.addControl(diftingSpeedButton);
+        const showSphereHudButton = Button.CreateSimpleButton('Sphere Hud', 'Show Hud');
+        showSphereHudButton.width = '250px';
+        showSphereHudButton.height = '50px';
+        showSphereHudButton.color = 'cyan';
+        showSphereHudButton.thickness = 1;
+        showSphereHudButton.background = 'blue';
+        showSphereHudButton.onPointerUpObservable.add(() => alert('TODO: Show Shere Hud'));
+        showSphereHudButton.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        stackPanel.addControl(showSphereHudButton);
+
+        // 3D Ui
+        const gui3DManager = new GUI3DManager(scene);
+        const spherePanel = new SpherePanel();
+        spherePanel.margin = 0.2;
+        gui3DManager.addControl(spherePanel);
+
+        for (let i = 0; i < 10; i++) {
+            const button = new HolographicButton('orientation');
+            button.text = 'Button #' + i;
+            button.onPointerClickObservable.add(() => alert('hello'));
+            button.onPointerDownObservable.add(() => alert('hello'));
+            button.onPointerEnterObservable.add(() => alert('hello'));
+            button.onPointerMoveObservable.add(() => alert('hello'));
+            button.onPointerOutObservable.add(() => alert('hello'));
+            button.onPointerUpObservable.add(() => alert('hello'));
+            spherePanel.addControl(button);
+        }
 
         engine.runRenderLoop(() => scene.render());
         window.addEventListener('resize', () => engine.resize());
-    }
-
-    render(): JSX.Element {
-        const { id, className } = this.props;
-        return <canvas id={id} className={className} />;
     }
 }
 
