@@ -19,6 +19,7 @@ import React, { Component } from 'react';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
+import { SceneManager } from '../../services/SceneManager';
 
 type Props = { id: string; className?: string };
 type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
@@ -45,7 +46,7 @@ class Stars extends Component<Props, State> {
 
         const scene = new Scene(engine);
         scene.clearColor = new Color4(0, 0, 0, 0);
-        // scene.debugLayer.show();
+        SceneManager.attachInspector(scene);
 
         const camera = new FreeCamera('Camera', new Vector3(0, 0, -10), scene);
         camera.setTarget(Vector3.Zero());
