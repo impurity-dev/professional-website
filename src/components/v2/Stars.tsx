@@ -133,7 +133,7 @@ class Stars extends Component<Props, State> {
         const gui3DManager = new GUI3DManager(scene);
         const spherePanel = new SpherePanel();
         spherePanel.name = 'Sphere Panel';
-        spherePanel.margin = 1;
+        spherePanel.margin = 1.14;
         gui3DManager.addControl(spherePanel);
         const sphereAnchor = new TransformNode('Sphere Panel Anchor');
         sphereAnchor.rotate(new Vector3(1, 0, 0), Math.PI / 2);
@@ -143,7 +143,7 @@ class Stars extends Component<Props, State> {
         const holographicMaterial = createHologramMaterial(scene);
         spherePanel.blockLayout = true;
         for (let i = 0; i < 10; i++) {
-            const mesh = Mesh.CreateIcoSphere('Sphere Button Mesh', { radius: 0.5 }, scene);
+            const mesh = Mesh.CreateIcoSphere('Sphere Button Mesh', { radius: 0.5, subdivisions: 1 }, scene);
             mesh.material = holographicMaterial;
             const button = new MeshButton3D(mesh, 'Sphere Button');
             button.onPointerClickObservable.add(() => alert('Todo: Hud Actions'));
