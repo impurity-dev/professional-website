@@ -8,7 +8,7 @@ import '@babylonjs/core/Meshes/meshBuilder';
 import { Scene } from '@babylonjs/core/scene';
 import { HolographicButton } from '@babylonjs/gui/3D/controls/holographicButton';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
-import React, { Component, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './Stars.scss';
 
 type Props = { id: string; className?: string };
