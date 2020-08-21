@@ -1,15 +1,16 @@
 import { Scene } from '@babylonjs/core/scene';
 
 export class SceneManager {
-    static get isDebug(): boolean {
-        return !!process.env.REACT_APP_DEBUG;
-    }
-
     public static attachInspector(scene: Scene): void {
-        if (SceneManager.isDebug) {
-            require('@babylonjs/core/Debug/debugLayer');
-            require('@babylonjs/inspector');
-            (scene as any).debugLayer.show();
+        // eslint-disable-next-line no-extra-boolean-cast
+        if (process.env.REACT_APP_DEBUG === 'true') {
+            import('@babylonjs/inspector')
+                .then(() =>
+                    import('@babylonjs/core/Debug/debugLayer')
+                        .then(() => (scene as any).debugLayer.show())
+                        .catch((e) => console.error(`Could not load debug layer: ${e}`)),
+                )
+                .catch((e) => console.error(`Could not load inspector: ${e}`));
         }
     }
 }
