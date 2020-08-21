@@ -1,6 +1,4 @@
 import { Scene } from '@babylonjs/core/scene';
-import '@babylonjs/core/Debug/debugLayer';
-import '@babylonjs/inspector';
 
 export class SceneManager {
     static get isDebug(): boolean {
@@ -9,7 +7,9 @@ export class SceneManager {
 
     public static attachInspector(scene: Scene): void {
         if (SceneManager.isDebug) {
-            scene.debugLayer.show();
+            require('@babylonjs/core/Debug/debugLayer');
+            require('@babylonjs/inspector');
+            (scene as any).debugLayer.show();
         }
     }
 }
