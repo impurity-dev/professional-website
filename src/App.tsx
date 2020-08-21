@@ -5,12 +5,13 @@ import AboutMe from './components/v1/AboutMe';
 import ExperienceList, { ExperienceCargoList } from './components/v1/ExperienceList';
 import Footer from './components/v1/Footer';
 import Header from './components/v1/Header';
-import HomeV1 from './components/v1/Home';
+import HomeOld from './components/v1/Home';
 import SidePanel from './components/v1/SidePanel';
 import SkillList, { SkillCargoList } from './components/v1/SkillList';
-import HomeV2 from './components/v2/Home';
+import Home from './components/v2/Home';
 import ExperienceListData from './data/ExperienceList.json';
 import SkillListData from './data/SkillList.json';
+import Playground from './components/v2/Playground';
 
 type AppState = {
     skills: SkillCargoList;
@@ -32,13 +33,6 @@ class App extends Component<AppProps, AppState> {
         return (
             <Router>
                 <Switch>
-                    <Route path="/test">
-                        <header />
-                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
-                            <HomeV2 />
-                        </main>
-                        <footer />
-                    </Route>
                     <Route path="/about">
                         <div className="bg-gray-1 text-white">
                             <header>
@@ -84,10 +78,26 @@ class App extends Component<AppProps, AppState> {
                             </footer>
                         </div>
                     </Route>
+                    <Route path="/old">
+                        <header />
+                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
+                            <HomeOld />
+                        </main>
+                        <footer />
+                    </Route>
+                    <Route path="/test">
+                        <header />
+                        <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-fixed">
+                            <div className="position-fixed w-100 h-100">
+                                <Playground id="playground" className="position-absolute w-100 h-100" />
+                            </div>
+                        </main>
+                        <footer />
+                    </Route>
                     <Route path="/">
                         <header />
                         <main className="d-flex flex-row justify-content-center align-items-center w-100 h-100 position-absolute">
-                            <HomeV1 />
+                            <Home />
                         </main>
                         <footer />
                     </Route>
