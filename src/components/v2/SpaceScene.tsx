@@ -17,12 +17,11 @@ import React, { Component } from 'react';
 import { SceneManager } from '../../services/SceneManager';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
-import './Stars.scss';
 
 type Props = { id: string; className?: string };
 type State = { hasError: boolean };
 
-class Stars extends Component<Props, State> {
+class SpaceScene extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = { hasError: false };
@@ -44,6 +43,8 @@ class Stars extends Component<Props, State> {
 
     render(): JSX.Element {
         const { id, className } = this.props;
+        const { hasError } = this.state;
+        if (hasError) return <span>Uh oh! An error has occured!</span>;
         return <canvas id={id} className={className} />;
     }
 
@@ -179,4 +180,4 @@ class Stars extends Component<Props, State> {
     }
 }
 
-export default Stars;
+export default SpaceScene;
