@@ -20,13 +20,22 @@ import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
 
 type Props = { id: string; className?: string };
-type State = {};
+type State = { hasError: boolean };
 
 class Stars extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = {};
+        this.state = { hasError: false };
         this.createScene = this.createScene.bind(this);
+    }
+
+    static getDerivedStateFromError(error: any): State {
+        return { hasError: true };
+    }
+
+    componentDidCatch(error: any, errorInfo: any): void {
+        console.error(error);
+        console.error(errorInfo);
     }
 
     componentDidMount(): void {
