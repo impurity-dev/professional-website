@@ -2,7 +2,27 @@
     "name": "@impurity/professional-website",
     "version": "0.1.0",
     "private": true,
+    "author": "Tyler Kokoszka",
     "homepage": "https://impurity-dev.github.io/professional-website/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/impurity-dev/professional-website"
+    },
+    "description": "Portfolio website utilizing react and babylonjs",
+    "keywords": [
+        "babylon",
+        "babylonjs",
+        "@babylonjs",
+        "react",
+        "reactjs",
+        "scss",
+        "sass",
+        "3d",
+        "webgl"
+    ],
+    "engines": {
+        "node": ">=12.0.0"
+    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -15,8 +35,10 @@
     "dependencies": {
         "@babylonjs/core": "^4.1.0",
         "@babylonjs/gui": "^4.1.0",
+        "@babylonjs/inspector": "^4.1.0",
         "@babylonjs/loaders": "^4.1.0",
         "@babylonjs/materials": "^4.1.0",
+        "@babylonjs/procedural-textures": "^4.1.0",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.5.0",
         "@testing-library/user-event": "^7.2.1",
@@ -28,7 +50,6 @@
         "react-scripts": "3.4.1"
     },
     "devDependencies": {
-        "@babylonjs/inspector": "^4.1.0",
         "@types/jest": "^24.9.1",
         "@types/node": "^12.12.54",
         "@types/react": "^16.9.46",
