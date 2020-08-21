@@ -16,17 +16,18 @@ import { MeshButton3D } from '@babylonjs/gui/3D/controls/meshButton3D';
 import { SpherePanel } from '@babylonjs/gui/3D/controls/spherePanel';
 import { GUI3DManager } from '@babylonjs/gui/3D/gui3DManager';
 import React, { Component } from 'react';
+import { SceneManager } from '../../services/SceneManager';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
 import './Stars.scss';
-import { SceneManager } from '../../services/SceneManager';
 
 type Props = { id: string; className?: string };
-type State = { isHyperspeed: boolean; starParticleSystem: ParticleSystem };
+type State = {};
 
 class Stars extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        this.state = {};
         this.createScene = this.createScene.bind(this);
     }
 
@@ -54,7 +55,6 @@ class Stars extends Component<Props, State> {
         // Stars
         const starParticleSystem = new ParticleSystem('Particles', 20_000, scene);
         starParticleSystem.particleTexture = new Texture(StarTexture, scene);
-
         starParticleSystem.minAngularSpeed = -0.5;
         starParticleSystem.maxAngularSpeed = 0.5;
         starParticleSystem.minSize = 0.005;
@@ -158,10 +158,17 @@ class Stars extends Component<Props, State> {
             spherePanel.addControl(button);
         }
         spherePanel.blockLayout = false;
-        spherePanel.isVisible = false;
 
-        engine.runRenderLoop(() => scene.render());
-        window.addEventListener('resize', () => engine.resize());
+        engine.runRenderLoop(() => this.runRenderLoop(scene));
+        window.addEventListener('resize', () => this.resizeEventListener(engine));
+    }
+
+    private runRenderLoop(scene: Scene): void {
+        scene.render();
+    }
+
+    private resizeEventListener(engine: Engine): void {
+        engine.resize();
     }
 }
 
