@@ -1,5 +1,4 @@
 import { Scene } from '@babylonjs/core/scene';
-import '@babylonjs/core/XR/features/WebXRControllerTeleportation'; // NOTE: This enables 3d mouse events
 
 export class SceneManager {
     public static attachInspector(scene: Scene): void {
