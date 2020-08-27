@@ -1,5 +1,4 @@
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
-import { Engine } from '@babylonjs/core/Engines/engine';
 import { Texture } from '@babylonjs/core/Materials/Textures/texture';
 import { Color4, Vector3 } from '@babylonjs/core/Maths/math';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
