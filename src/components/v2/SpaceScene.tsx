@@ -17,6 +17,7 @@ import React, { Component } from 'react';
 import { SceneManager } from '../../services/SceneManager';
 import StarTexture from '../../textures/Star.png';
 import createHologramMaterial from './HologramMaterial';
+import SceneComponent from './SceneComponent';
 
 type Props = { id: string; className?: string };
 type State = { hasError: boolean };
@@ -25,7 +26,7 @@ class SpaceScene extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = { hasError: false };
-        this.createScene = this.createScene.bind(this);
+        this.onSceneReady = this.onSceneReady.bind(this);
     }
 
     static getDerivedStateFromError(error: any): State {
@@ -37,23 +38,14 @@ class SpaceScene extends Component<Props, State> {
         console.error(errorInfo);
     }
 
-    componentDidMount(): void {
-        this.createScene();
-    }
-
     render(): JSX.Element {
         const { id, className } = this.props;
         const { hasError } = this.state;
         if (hasError) return <span>Uh oh! An error has occured!</span>;
-        return <canvas id={id} className={className} />;
+        return <SceneComponent id={id} className={className} antialias onSceneReady={this.onSceneReady} />;
     }
 
-    private createScene(): void {
-        const { id } = this.props;
-        const canvas = document.getElementById(id) as HTMLCanvasElement;
-        const engine = new Engine(canvas);
-
-        const scene = new Scene(engine);
+    private onSceneReady(scene: Scene): void {
         scene.clearColor = new Color4(0, 0, 0, 0);
         SceneManager.attachInspector(scene);
 
@@ -166,17 +158,6 @@ class SpaceScene extends Component<Props, State> {
             spherePanel.addControl(button);
         }
         spherePanel.blockLayout = false;
-
-        engine.runRenderLoop(() => this.runRenderLoop(scene));
-        window.addEventListener('resize', () => this.resizeEventListener(engine));
-    }
-
-    private runRenderLoop(scene: Scene): void {
-        scene.render();
-    }
-
-    private resizeEventListener(engine: Engine): void {
-        engine.resize();
     }
 }
 
