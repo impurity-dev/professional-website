@@ -23,11 +23,7 @@ class Playground extends Component<Props, State> {
 
     render(): JSX.Element {
         const { id, className } = this.props;
-        return (
-            <div className={className}>
-                <SceneComponent id={id} antialias onSceneReady={this.onSceneReady} />
-            </div>
-        );
+        return <SceneComponent id={id} className={className} antialias onSceneReady={this.onSceneReady} />;
     }
 
     private onSceneReady(scene: Scene): void {
