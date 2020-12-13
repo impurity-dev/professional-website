@@ -1,28 +1,39 @@
 {
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier/@typescript-eslint",
-        "plugin:prettier/recommended"
-    ],
-    "plugins": ["react", "@typescript-eslint", "prettier"],
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "plugins": ["prettier"],
     "env": {
-        "browser": true,
-        "jasmine": true,
-        "jest": true,
-        "amd": true,
-        "node": true
+        "es6": true,
+        "node": true,
+        "browser": true
     },
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "ignorePatterns": ["node_modules/**", "dist/**", ".vscode/**", ".github/**", "package-lock.json"],
     "rules": {
-        "@typescript-eslint/ban-types": "off",
         "prettier/prettier": ["error", { "singleQuote": true }]
     },
     "settings": {
-        "react": {
-            "pragma": "React",
-            "version": "detect"
+        "import/resolver": {
+            "webpack": {
+                "config": "./config/webpack.config.js"
+            }
         }
     },
-    "parser": "@typescript-eslint/parser"
+    "overrides": [
+        {
+            "extends": ["plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"],
+            "files": ["*.ts", "*.tsx"],
+            "parser": "@typescript-eslint/parser",
+            "plugins": ["@typescript-eslint"],
+            "rules": {
+                "@typescript-eslint/ban-types": "off",
+                "@typescript-eslint/no-unused-vars": "error",
+                "@typescript-eslint/class-name-casing": "error",
+                "@typescript-eslint/member-delimiter-style": "error",
+                "@typescript-eslint/member-ordering": "error",
+                "@typescript-eslint/type-annotation-spacing": "error"
+            }
+        }
+    ]
 }
