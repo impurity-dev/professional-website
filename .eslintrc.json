@@ -28,6 +28,7 @@
             "plugins": ["@typescript-eslint"],
             "rules": {
                 "@typescript-eslint/ban-types": "off",
+                "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": "error",
                 "@typescript-eslint/class-name-casing": "error",
                 "@typescript-eslint/member-delimiter-style": "error",
