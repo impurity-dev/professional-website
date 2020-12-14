@@ -1,9 +1,9 @@
+import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import { Color4, Scene, Vector3, FreeCamera, HemisphericLight, MeshBuilder, Mesh } from '@babylonjs/core';
 import State from '../game/state';
+import { attachInspector } from '../utils';
 import Orbit from './orbit';
 import Start from './start';
-import { attachInspector } from '../utils';
 
 export default class Travel extends State {
     async run(): Promise<void> {
@@ -11,8 +11,8 @@ export default class Travel extends State {
         engine.displayLoadingUI();
         this.scene = new Scene(engine);
         this.scene.detachControl();
-        this.scene.clearColor = new Color4(0.01568627450980392, 0.01568627450980392, 0.20392156862745098);
-        const camera = new FreeCamera('camera1', new Vector3(0, 0, 0), this.scene);
+        this.scene.clearColor = new Color4(0, 1, 0, 0);
+        const camera: ArcRotateCamera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
         camera.setTarget(Vector3.Zero());
 
         const playerUI = AdvancedDynamicTexture.CreateFullscreenUI('UI');
