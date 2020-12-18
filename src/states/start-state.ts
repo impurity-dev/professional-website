@@ -38,21 +38,7 @@ export default class StartState extends State {
         this.scene.activeCamera = this.camera;
 
         const frameRate = 10;
-        const cameraAnimation = new Animation(
-            'CameraRotation',
-            'alpha',
-            frameRate,
-            Animation.ANIMATIONTYPE_FLOAT,
-            Animation.ANIMATIONLOOPMODE_RELATIVE,
-        );
-        const keyFrames = [];
-        keyFrames.push({ frame: 0, value: 0 });
-        keyFrames.push({ frame: frameRate, value: 2 });
-        keyFrames.push({ frame: frameRate * 2, value: 4 });
-        keyFrames.push({ frame: frameRate * 3, value: 6 });
-        keyFrames.push({ frame: frameRate * 4, value: 8 });
-        keyFrames.push({ frame: frameRate * 5, value: 10 });
-        cameraAnimation.setKeys(keyFrames);
+        const cameraAnimation = this.createCameraRotationAnimation(frameRate);
         this.camera.animations.push(cameraAnimation);
         this.scene.beginAnimation(this.camera, 0, 5 * frameRate, true, 0.1);
 
@@ -70,6 +56,25 @@ export default class StartState extends State {
         this.gameManager.setState(new TravelState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
+    }
+
+    private createCameraRotationAnimation(frameRate: number): Animation {
+        const cameraAnimation = new Animation(
+            'CameraRotation',
+            'alpha',
+            frameRate,
+            Animation.ANIMATIONTYPE_FLOAT,
+            Animation.ANIMATIONLOOPMODE_RELATIVE,
+        );
+        const keyFrames = [];
+        keyFrames.push({ frame: 0, value: 0 });
+        keyFrames.push({ frame: frameRate, value: 2 });
+        keyFrames.push({ frame: frameRate * 2, value: 4 });
+        keyFrames.push({ frame: frameRate * 3, value: 6 });
+        keyFrames.push({ frame: frameRate * 4, value: 8 });
+        keyFrames.push({ frame: frameRate * 5, value: 10 });
+        cameraAnimation.setKeys(keyFrames);
+        return cameraAnimation;
     }
 
     private createUI(): void {

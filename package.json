@@ -33,15 +33,13 @@
         "@babylonjs/loaders": "^4.1.0",
         "@babylonjs/materials": "^4.1.0",
         "@babylonjs/procedural-textures": "^4.1.0",
-        "bootstrap": "^4.5.0",
-        "jquery": "^1.9.1",
-        "node-sass": "^4.14.1",
-        "popper.js": "^1.16.1"
+        "node-sass": "^4.14.1"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^3.9.0",
         "@typescript-eslint/parser": "^3.9.0",
         "clean-webpack-plugin": "^3.0.0",
+        "dotenv": "^8.2.0",
         "eslint": "^6.6.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.22.0",
