@@ -34,7 +34,7 @@ export default class Orbit extends State {
     }
 
     goToTravel(): void {
-        this.gameManager.setState(new TravelState(this.gameManager));
+        this.gameManager.state = new TravelState(this.gameManager);
         this.scene.detachControl();
         this.scene.dispose();
     }

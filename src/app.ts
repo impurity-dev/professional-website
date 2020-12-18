@@ -8,13 +8,13 @@ class App {
     private manager: GameManager;
 
     constructor() {
-        const canvas = this._createCanvas();
+        const canvas = this.createCanvas();
         const engine = new Engine(canvas, true);
         window.addEventListener('resize', () => engine.resize());
         this.manager = new GameManager(canvas, engine);
     }
 
-    private _createCanvas(): HTMLCanvasElement {
+    private createCanvas(): HTMLCanvasElement {
         document.documentElement.style['overflow'] = 'hidden';
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.style.width = '100%';

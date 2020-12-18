@@ -37,13 +37,13 @@ export default class TravelState extends State {
     }
 
     goToStart(): void {
-        this.gameManager.setState(new StartState(this.gameManager));
+        this.gameManager.state = new StartState(this.gameManager);
         this.scene.detachControl();
         this.scene.dispose();
     }
 
     goToOrbit(): void {
-        this.gameManager.setState(new OrbitState(this.gameManager));
+        this.gameManager.state = new OrbitState(this.gameManager);
         this.scene.detachControl();
         this.scene.dispose();
     }
