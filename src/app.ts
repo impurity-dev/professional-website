@@ -2,7 +2,7 @@ import { Engine } from '@babylonjs/core';
 import '@babylonjs/core/Debug/debugLayer';
 import '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
-import GameManager from './game/game-manager';
+import GameManager from './game-managers/game-manager';
 
 class App {
     private manager: GameManager;
