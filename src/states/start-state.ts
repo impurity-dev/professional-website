@@ -37,7 +37,6 @@ export default class StartState extends State {
 
         this.spaceship = this.createSpaceship();
         this.camera.setTarget(this.spaceship.position);
-        this.camera.attachControl(this.gameManager.canvas);
 
         const frameRate = 10;
         const xSlide = new Animation(
