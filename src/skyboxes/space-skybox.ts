@@ -4,13 +4,16 @@ export default class SpaceSkybox {
     private SPACE_TEXTURE_PATH: string = 'textures/space';
 
     constructor(scene: Scene) {
-        const skybox = MeshBuilder.CreateBox('skyBox', { size: 1000.0 }, scene);
         const skyboxMaterial = new StandardMaterial('skyBox', scene);
         skyboxMaterial.backFaceCulling = false;
+        skyboxMaterial.disableLighting = true;
         skyboxMaterial.reflectionTexture = new CubeTexture(this.SPACE_TEXTURE_PATH, scene);
         skyboxMaterial.reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE;
         skyboxMaterial.diffuseColor = new Color3(0, 0, 0);
         skyboxMaterial.specularColor = new Color3(0, 0, 0);
+
+        const skybox = MeshBuilder.CreateBox('skyBox', { size: 10000 }, scene);
+        skybox.infiniteDistance = true;
         skybox.material = skyboxMaterial;
     }
 }
