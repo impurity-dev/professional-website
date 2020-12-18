@@ -3,13 +3,9 @@ import Start from '../states/start-state';
 import StateMachine from './state-machine';
 
 export default class GameManager extends StateMachine {
-    constructor(private engine: Engine) {
+    constructor(public readonly canvas: HTMLCanvasElement, public readonly engine: Engine) {
         super();
         this.setState(new Start(this));
         engine.runRenderLoop(() => this.getState().render());
-    }
-
-    public getEngine(): Engine {
-        return this.engine;
     }
 }

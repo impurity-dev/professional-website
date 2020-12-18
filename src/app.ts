@@ -11,7 +11,7 @@ class App {
         const canvas = this._createCanvas();
         const engine = new Engine(canvas, true);
         window.addEventListener('resize', () => engine.resize());
-        this.manager = new GameManager(engine);
+        this.manager = new GameManager(canvas, engine);
     }
 
     private _createCanvas(): HTMLCanvasElement {

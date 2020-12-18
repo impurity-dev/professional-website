@@ -6,7 +6,7 @@ import TravelState from './travel-state';
 
 export default class Orbit extends State {
     async run(): Promise<void> {
-        const engine = this.gameManager.getEngine();
+        const engine = this.gameManager.engine;
         engine.displayLoadingUI();
         this.scene = new Scene(engine);
         this.scene.detachControl();
