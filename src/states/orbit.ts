@@ -23,11 +23,7 @@ export default class Orbit extends State {
         loseBtn.thickness = 0;
         loseBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         playerUI.addControl(loseBtn);
-        loseBtn.onPointerDownObservable.add(() => {
-            this.goToTravel();
-            this.scene.detachControl();
-            this.scene.dispose();
-        });
+        loseBtn.onPointerDownObservable.add(() => this.goToTravel());
         const light1: HemisphericLight = new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         const sphere: Mesh = MeshBuilder.CreateSphere('sphere', { diameter: 1 }, this.scene);
 
@@ -39,5 +35,7 @@ export default class Orbit extends State {
 
     goToTravel(): void {
         this.gameManager.setState(new Travel(this.gameManager));
+        this.scene.detachControl();
+        this.scene.dispose();
     }
 }

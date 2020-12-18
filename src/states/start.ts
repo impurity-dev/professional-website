@@ -23,11 +23,7 @@ export default class Start extends State {
         startBtn.thickness = 0;
         startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         guiMenu.addControl(startBtn);
-        startBtn.onPointerDownObservable.add(() => {
-            this.goToTravel();
-            this.scene.detachControl();
-            this.scene.dispose();
-        });
+        startBtn.onPointerDownObservable.add(() => this.goToTravel());
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
@@ -36,5 +32,7 @@ export default class Start extends State {
 
     goToTravel(): void {
         this.gameManager.setState(new Travel(this.gameManager));
+        this.scene.detachControl();
+        this.scene.dispose();
     }
 }
