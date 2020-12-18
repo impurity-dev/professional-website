@@ -1,7 +1,7 @@
 import { Scene, MeshBuilder, StandardMaterial, Color3, Texture, CubeTexture } from '@babylonjs/core';
 
 export default class SpaceSkybox {
-    private SPACE_TEXTURE_PATH: string = 'textures/space';
+    private SPACE_TEXTURE_PATH: string = 'textures/skyboxes/space';
 
     constructor(scene: Scene) {
         const skyboxMaterial = new StandardMaterial('skyBox', scene);

@@ -12,6 +12,7 @@ import {
     AbstractMesh,
     Node,
     TransformNode,
+    ParticleSystem,
 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import State from './state';
@@ -24,6 +25,7 @@ export default class StartState extends State {
     private lightSource: HemisphericLight;
     private skybox: SpaceSkybox;
     private assetsManager: AssetsManager;
+    private particleSystem: ParticleSystem;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -31,6 +33,7 @@ export default class StartState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.assetsManager = new AssetsManager(this.scene);
+        this.particleSystem = new ParticleSystem('ParticleSystem', 2000, this.scene);
         this.spaceship = this.createSpaceship();
         this.camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
         this.camera.setTarget(this.spaceship.position);
