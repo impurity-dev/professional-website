@@ -1,6 +1,6 @@
 import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Space, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import State from '../game-managers/state';
+import State from './state';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import { attachInspector } from '../utils';
 import OrbitState from './orbit-state';

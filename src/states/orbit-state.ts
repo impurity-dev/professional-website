@@ -1,6 +1,6 @@
 import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import State from '../game-managers/state';
+import State from './state';
 import { attachInspector } from '../utils';
 import TravelState from './travel-state';
 

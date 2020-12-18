@@ -1,4 +1,4 @@
-import State from './state';
+import State from '../states/state';
 
 export default abstract class StateMachine {
     private _state: State;

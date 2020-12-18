@@ -14,9 +14,8 @@ import {
     TransformNode,
 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import State from '../game-managers/state';
+import State from './state';
 import SpaceSkybox from '../skyboxes/space-skybox';
-import { attachInspector } from '../utils';
 import TravelState from './travel-state';
 
 export default class StartState extends State {
@@ -49,7 +48,6 @@ export default class StartState extends State {
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
-        attachInspector(this.scene);
     }
 
     goToTravel(): void {
