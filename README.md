@@ -1,40 +1,11 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Professional Website
 
-## Available Scripts
+## Space Skybox
 
-In the project directory, you can run:
+-   Seed: `2mrlhhgnk3k0`
+-   Generator: http://wwwtyro.github.io/space-3d/
+-   Docs: https://doc.babylonjs.com/divingDeeper/environment/environment_introduction#skybox
 
-### `npm start`
+## Planets
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run lint`
-
-Runs eslint linter on the project.
-
-### `npm run lint:fix`
-
-Runs eslint linter on the project and attempts to fix trivial issues.
-
-### .env
-
-The `src/services/SceneManager.ts` relies on `REACT_APP_DEBUG` to determine if the inspector should be attached.
+-   Sun: https://playground.babylonjs.com/#MX2Z99#8
