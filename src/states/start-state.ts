@@ -32,14 +32,13 @@ export default class StartState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.assetsManager = new AssetsManager(this.scene);
+        this.spaceship = this.createSpaceship();
         this.camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 
-        this.spaceship = this.createSpaceship();
-        this.camera.setTarget(this.spaceship.position);
-
         const frameRate = 10;
-        const xSlide = new Animation(
+        const cameraAnimation = new Animation(
             'CameraRotation',
             'alpha',
             frameRate,
@@ -53,8 +52,8 @@ export default class StartState extends State {
         keyFrames.push({ frame: frameRate * 3, value: 6 });
         keyFrames.push({ frame: frameRate * 4, value: 8 });
         keyFrames.push({ frame: frameRate * 5, value: 10 });
-        xSlide.setKeys(keyFrames);
-        this.camera.animations.push(xSlide);
+        cameraAnimation.setKeys(keyFrames);
+        this.camera.animations.push(cameraAnimation);
         this.scene.beginAnimation(this.camera, 0, 5 * frameRate, true, 0.1);
 
         this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
