@@ -40,15 +40,23 @@ export default class StartState extends State {
         this.camera.attachControl(this.gameManager.canvas);
 
         const frameRate = 10;
-        const xSlide = new Animation('xSlide', 'alpha', frameRate, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
+        const xSlide = new Animation(
+            'CameraRotation',
+            'alpha',
+            frameRate,
+            Animation.ANIMATIONTYPE_FLOAT,
+            Animation.ANIMATIONLOOPMODE_RELATIVE,
+        );
         const keyFrames = [];
         keyFrames.push({ frame: 0, value: 0 });
-        keyFrames.push({ frame: frameRate / 2, value: 2 });
-        keyFrames.push({ frame: frameRate, value: 4 });
-        keyFrames.push({ frame: frameRate + frameRate / 2, value: 6 });
+        keyFrames.push({ frame: frameRate, value: 2 });
+        keyFrames.push({ frame: frameRate * 2, value: 4 });
+        keyFrames.push({ frame: frameRate * 3, value: 6 });
+        keyFrames.push({ frame: frameRate * 4, value: 8 });
+        keyFrames.push({ frame: frameRate * 5, value: 10 });
         xSlide.setKeys(keyFrames);
         this.camera.animations.push(xSlide);
-        // this.scene.beginAnimation(this.camera, 0, 2 * frameRate, true);
+        this.scene.beginAnimation(this.camera, 0, 5 * frameRate, true, 0.1);
 
         this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         this.skybox = new SpaceSkybox(this.scene);
