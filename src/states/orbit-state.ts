@@ -2,7 +2,7 @@ import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Ve
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import State from '../game-managers/state';
 import { attachInspector } from '../utils';
-import Travel from './travel-state';
+import TravelState from './travel-state';
 
 export default class Orbit extends State {
     async run(): Promise<void> {
@@ -34,7 +34,7 @@ export default class Orbit extends State {
     }
 
     goToTravel(): void {
-        this.gameManager.setState(new Travel(this.gameManager));
+        this.gameManager.setState(new TravelState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }

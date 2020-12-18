@@ -1,12 +1,12 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Space, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import State from '../game-managers/state';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import { attachInspector } from '../utils';
-import Orbit from './orbit-state';
-import Start from './start-state';
+import OrbitState from './orbit-state';
+import StartState from './start-state';
 
-export default class Travel extends State {
+export default class TravelState extends State {
     async run(): Promise<void> {
         const engine = this.gameManager.getEngine();
         engine.displayLoadingUI();
@@ -37,13 +37,13 @@ export default class Travel extends State {
     }
 
     goToStart(): void {
-        this.gameManager.setState(new Start(this.gameManager));
+        this.gameManager.setState(new StartState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }
 
     goToOrbit(): void {
-        this.gameManager.setState(new Orbit(this.gameManager));
+        this.gameManager.setState(new OrbitState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }
