@@ -13,6 +13,8 @@ import {
     Node,
     TransformNode,
     ParticleSystem,
+    Texture,
+    MeshBuilder,
 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import State from './state';
@@ -104,6 +106,31 @@ export default class StartState extends State {
         spaceshipMeshTask.onSuccess = (res) => this.onSpaceShipSuccess(res, spaceship);
         spaceshipMeshTask.onError = this.onSpaceShipError;
         this.assetsManager.load();
+
+        this.particleSystem.particleTexture = new Texture('textures/square.png', this.scene);
+        const box = MeshBuilder.CreateBox('box', { size: 50 });
+        box.parent = spaceship;
+        box.isVisible = false;
+        box.position = new Vector3(0, 50, -200);
+        this.particleSystem.emitter = box;
+        this.particleSystem.emitRate = 1000;
+        this.particleSystem.minSize = 0.5;
+        this.particleSystem.maxSize = 1;
+        this.particleSystem.minLifeTime = 0.2;
+        this.particleSystem.maxLifeTime = 0.5;
+        this.particleSystem.minEmitPower = 1000;
+        this.particleSystem.maxEmitPower = 3000;
+        this.particleSystem.addColorGradient(0, new Color4(0, 1, 1, 1));
+        this.particleSystem.addColorGradient(1, new Color4(1, 0, 1, 0));
+        this.particleSystem.preWarmStepOffset = 10;
+        this.particleSystem.preWarmCycles = 100;
+        this.particleSystem.direction1 = new Vector3(0, 0, -1);
+        this.particleSystem.direction2 = new Vector3(0, 0, -1);
+        this.particleSystem.minEmitBox = new Vector3(-25, -25, -25);
+        this.particleSystem.maxEmitBox = new Vector3(25, 25, 25);
+        this.particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        this.particleSystem.isLocal = true;
+        this.particleSystem.start();
 
         return spaceship;
     }
