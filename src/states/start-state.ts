@@ -13,6 +13,13 @@ import {
     Node,
     TransformNode,
     ParticleSystem,
+    Texture,
+    MeshBuilder,
+    BackEase,
+    BezierCurveEase,
+    CubicEase,
+    SineEase,
+    EasingFunction,
 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import State from './state';
@@ -39,10 +46,14 @@ export default class StartState extends State {
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 
-        const frameRate = 10;
-        const cameraAnimation = this.createCameraRotationAnimation(frameRate);
+        const cameraFrameRate = 10;
+        const shipFrameRate = 10;
+        const cameraAnimation = this.createCameraRotationAnimation(cameraFrameRate);
+        const shipAnimation = this.createShipRotationAnimation(shipFrameRate);
         this.camera.animations.push(cameraAnimation);
-        this.scene.beginAnimation(this.camera, 0, 5 * frameRate, true, 0.1);
+        this.spaceship.animations.push(shipAnimation);
+        this.scene.beginAnimation(this.camera, 0, 5 * cameraFrameRate, true, 0.1);
+        this.scene.beginAnimation(this.spaceship, 0, 2 * shipFrameRate, true);
 
         this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         this.skybox = new SpaceSkybox(this.scene);
@@ -78,6 +89,29 @@ export default class StartState extends State {
         return cameraAnimation;
     }
 
+    private createShipRotationAnimation(frameRate: number): Animation {
+        const shipAnimation = new Animation(
+            'ShipAnimation',
+            'rotation',
+            frameRate,
+            Animation.ANIMATIONTYPE_VECTOR3,
+            Animation.ANIMATIONLOOPMODE_CYCLE,
+        );
+        const easeFunction = new BackEase();
+        easeFunction.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT);
+        shipAnimation.setEasingFunction(easeFunction);
+        const keyFrames = [];
+        const alpha = Math.PI;
+        const xAmp = Math.tan(alpha) / 20;
+        const yAmp = Math.sin(alpha) / 20;
+        const zAmp = Math.cos(alpha / 4) / 20;
+        keyFrames.push({ frame: 0, value: new Vector3(xAmp, yAmp, zAmp) });
+        keyFrames.push({ frame: frameRate, value: new Vector3(-xAmp, -yAmp, -zAmp) });
+        keyFrames.push({ frame: frameRate * 2, value: new Vector3(xAmp, yAmp, zAmp) });
+        shipAnimation.setKeys(keyFrames);
+        return shipAnimation;
+    }
+
     private createUI(): void {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('UI');
         guiMenu.idealHeight = 720;
@@ -98,12 +132,37 @@ export default class StartState extends State {
         spaceship.scaling = new Vector3(scale, scale, scale);
         spaceship.position = new Vector3(0, -25, -100);
         spaceship.rotate(new Vector3(0, 1, 0), Math.PI);
-        spaceship.rotate(new Vector3(1, 0, 0), -Math.PI / 12);
+        // spaceship.rotate(new Vector3(1, 0, 0), -Math.PI / 12);
 
         const spaceshipMeshTask = this.assetsManager.addMeshTask('SpaceShipTask', '', '/assets/', 'spaceship.obj');
         spaceshipMeshTask.onSuccess = (res) => this.onSpaceShipSuccess(res, spaceship);
         spaceshipMeshTask.onError = this.onSpaceShipError;
         this.assetsManager.load();
+
+        this.particleSystem.particleTexture = new Texture('textures/square.png', this.scene);
+        const box = MeshBuilder.CreateBox('box', { size: 50 });
+        box.parent = spaceship;
+        box.isVisible = false;
+        box.position = new Vector3(0, 50, -200);
+        this.particleSystem.emitter = box;
+        this.particleSystem.emitRate = 1000;
+        this.particleSystem.minSize = 0.5;
+        this.particleSystem.maxSize = 1;
+        this.particleSystem.minLifeTime = 0.2;
+        this.particleSystem.maxLifeTime = 0.5;
+        this.particleSystem.minEmitPower = 1000;
+        this.particleSystem.maxEmitPower = 3000;
+        this.particleSystem.addColorGradient(0, new Color4(0, 1, 1, 1));
+        this.particleSystem.addColorGradient(1, new Color4(1, 0, 1, 0));
+        this.particleSystem.preWarmStepOffset = 10;
+        this.particleSystem.preWarmCycles = 100;
+        this.particleSystem.direction1 = new Vector3(0, 0, -1);
+        this.particleSystem.direction2 = new Vector3(0, 0, -1);
+        this.particleSystem.minEmitBox = new Vector3(-25, -25, -25);
+        this.particleSystem.maxEmitBox = new Vector3(25, 25, 25);
+        this.particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        this.particleSystem.isLocal = true;
+        this.particleSystem.start();
 
         return spaceship;
     }

@@ -23,6 +23,7 @@
         "build": "webpack",
         "start": "webpack-dev-server --port 8080 --progress --colors",
         "serve": "webpack serve --config config/webpack.dev.js --progress --profile --watch --content-base src/",
+        "test": "echo \"TODO: Tests\" && exit 0",
         "lint": "eslint ./**/*.{js,jsx,ts,tsx,.json}",
         "lint:fix": "npm run lint -- --fix"
     },
