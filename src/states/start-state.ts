@@ -70,7 +70,7 @@ export default class StartState extends State {
     private createUI(): void {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('UI');
         guiMenu.idealHeight = 720;
-        const startBtn = Button.CreateSimpleButton('start', 'PLAY');
+        const startBtn = Button.CreateSimpleButton('launch', 'LAUNCH');
         startBtn.width = 0.2;
         startBtn.height = '40px';
         startBtn.color = 'white';
