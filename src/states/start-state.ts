@@ -1,36 +1,14 @@
-import {
-    Animation,
-    ArcRotateCamera,
-    AssetsManager,
-    Color4,
-    HemisphericLight,
-    MeshAssetTask,
-    Scene,
-    Vector3,
-    StandardMaterial,
-    Color3,
-    AbstractMesh,
-    Node,
-    TransformNode,
-    ParticleSystem,
-    Texture,
-    MeshBuilder,
-    BackEase,
-    BezierCurveEase,
-    CubicEase,
-    SineEase,
-    EasingFunction,
-} from '@babylonjs/core';
+import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import State from './state';
-import SpaceSkybox from '../skyboxes/space-skybox';
-import TravelState from './travel-state';
-import SpaceShip from '../entities/spaceship';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
+import SpaceShipEntity from '../entities/spaceship-entity';
+import SpaceSkybox from '../skyboxes/space-skybox';
+import State from './state';
+import TravelState from './travel-state';
 
 export default class StartState extends State {
-    private spaceship: SpaceShip;
+    private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;
     private lightSource: HemisphericLight;
     private skybox: SpaceSkybox;
@@ -40,17 +18,17 @@ export default class StartState extends State {
         engine.displayLoadingUI();
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
-        this.spaceship = new SpaceShip(this.scene);
+        this.spaceship = new SpaceShipEntity(this.scene);
         this.camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
-        this.camera.setTarget(this.spaceship.spaceship.position);
+        this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 
         const cameraAnimation = new CameraRotationAnimation(10);
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
-        this.spaceship.spaceship.animations.push(shipAnimation);
+        this.spaceship.animations.push(shipAnimation);
         this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
-        this.scene.beginAnimation(this.spaceship.spaceship, 0, 2 * shipAnimation.frameRate, true);
+        this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         this.skybox = new SpaceSkybox(this.scene);
