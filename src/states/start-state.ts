@@ -3,6 +3,7 @@ import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
+import GasCloudParticles from '../particles/gas-cloud-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
 import TravelState from './travel-state';
@@ -34,6 +35,7 @@ export default class StartState extends State {
         this.skybox = new SpaceSkybox(this.scene);
 
         this.createUI();
+        const gasClouds = new GasCloudParticles(this.scene);
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
