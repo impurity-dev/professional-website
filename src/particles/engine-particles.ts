@@ -18,13 +18,10 @@ export default class EngineParticles extends ParticleSystem {
         this.maxEmitPower = 3000;
         this.addColorGradient(0, new Color4(0, 1, 1, 1));
         this.addColorGradient(1, new Color4(1, 0, 1, 0));
-        this.preWarmStepOffset = 10;
-        this.preWarmCycles = 100;
         this.direction1 = new Vector3(0, 0, -1);
         this.direction2 = new Vector3(0, 0, -1);
         this.minEmitBox = new Vector3(-25, -25, -25);
         this.maxEmitBox = new Vector3(25, 25, 25);
         this.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-        this.isLocal = true;
     }
 }
