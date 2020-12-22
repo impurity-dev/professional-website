@@ -7,21 +7,9 @@ const appDirectory = fs.realpathSync(process.cwd());
 
 module.exports = (env, argv) => {
     return {
-        entry: path.resolve(appDirectory, 'src/app.ts'), //path to the main .ts file
-        output: {
-            filename: 'js/main.js', //name for the js file that is created/compiled in memory
-            publicPath: argv.mode === 'production' ? '/professional-website/' : '/',
-        },
+        entry: path.resolve(appDirectory, 'src/app.ts'),
         resolve: {
             extensions: ['.tsx', '.ts', '.js'],
-        },
-        devServer: {
-            host: 'localhost',
-            port: 8080, //port that we're using for local host (localhost:8080)
-            disableHostCheck: true,
-            contentBase: path.resolve(appDirectory, 'public'), //tells webpack to serve from the public folder
-            publicPath: '/',
-            hot: true,
         },
         module: {
             rules: [
@@ -32,9 +20,14 @@ module.exports = (env, argv) => {
                 },
             ],
         },
+        output: {
+            path: path.resolve(__dirname, './dist'),
+            filename: 'js/main.js',
+        },
         plugins: [
             new HtmlWebpackPlugin({
                 inject: true,
+                publicPath: argv.mode === 'production' ? '/professional-website/' : '/',
                 template: path.resolve(appDirectory, 'public/index.html'),
             }),
             new CopyPlugin({
@@ -45,5 +38,13 @@ module.exports = (env, argv) => {
             }),
             new CleanWebpackPlugin(),
         ],
+        devServer: {
+            host: 'localhost',
+            port: 8080,
+            disableHostCheck: true,
+            contentBase: path.resolve(appDirectory, 'public'),
+            publicPath: '/',
+            hot: true,
+        },
     };
 };
