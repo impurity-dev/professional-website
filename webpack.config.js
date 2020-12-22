@@ -9,6 +9,7 @@ module.exports = {
     entry: path.resolve(appDirectory, 'src/app.ts'), //path to the main .ts file
     output: {
         filename: 'js/main.js', //name for the js file that is created/compiled in memory
+        publicPath: '/professional-website/',
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
