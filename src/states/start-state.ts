@@ -52,14 +52,7 @@ export default class StartState extends State {
                 gasClouds.stop();
                 const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
                 this.spaceship.animations.push(shipAnimation);
-                this.shipAnimatable = this.scene.beginAnimation(
-                    this.spaceship,
-                    0,
-                    shipAnimation.frameRate,
-                    false,
-                    1,
-                    async () => await this.goToTravel(),
-                );
+                this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.goToTravel());
             });
         });
 

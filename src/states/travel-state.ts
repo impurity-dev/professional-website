@@ -1,5 +1,6 @@
 import { ArcRotateCamera, Color4, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import TravelGui from '../guis/travel-gui';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
@@ -17,18 +18,11 @@ export default class TravelState extends State {
         camera.setTarget(Vector3.Zero());
         this.scene.activeCamera = camera;
 
-        const playerUI = AdvancedDynamicTexture.CreateFullscreenUI('UI');
-        const loseBtn = Button.CreateSimpleButton('lose', 'LOSE');
-        loseBtn.width = 0.2;
-        loseBtn.height = '40px';
-        loseBtn.color = 'white';
-        loseBtn.top = '-14px';
-        loseBtn.thickness = 0;
-        loseBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-        playerUI.addControl(loseBtn);
-        loseBtn.onPointerDownObservable.add(() => this.goToOrbit());
+        new TravelGui(this.scene, () => {
+            this.goToOrbit();
+        });
+
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        MeshBuilder.CreateSphere('sphere', { diameter: 1 }, this.scene);
         new SpaceSkybox(this.scene);
 
         await this.scene.whenReadyAsync();
