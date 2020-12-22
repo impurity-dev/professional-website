@@ -4,7 +4,7 @@ import { randomColor, randomNumberBetween } from '../utils';
 export default class GasCloudParticles extends ParticleSystem {
     public readonly fountain: Mesh;
 
-    constructor(private readonly scene: Scene) {
+    constructor(readonly scene: Scene) {
         super('GasClouds', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.fountain = Mesh.CreateBox('GasCloudsFountain', 0.01, scene);
