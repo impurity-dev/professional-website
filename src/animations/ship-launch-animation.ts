@@ -1,9 +1,9 @@
-import { Animation, EasingFunction, SineEase, Vector3 } from '@babylonjs/core';
+import { Animation, EasingFunction, ExponentialEase, Vector3 } from '@babylonjs/core';
 
 export default class ShipLaunchAnimation extends Animation {
-    constructor(private readonly startingPosition: Vector3, public readonly frameRate: number) {
+    constructor(readonly startingPosition: Vector3, public readonly frameRate: number) {
         super('ShipLaunchAnimation', 'position', frameRate, Animation.ANIMATIONTYPE_VECTOR3, Animation.ANIMATIONLOOPMODE_CONSTANT);
-        const easeFunction = new SineEase();
+        const easeFunction = new ExponentialEase();
         easeFunction.setEasingMode(EasingFunction.EASINGMODE_EASEIN);
         this.setEasingFunction(easeFunction);
         const keyFrames = [];
