@@ -54,24 +54,23 @@ export default class StartState extends State {
                 gasClouds.stop();
                 const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
                 this.spaceship.animations.push(shipAnimation);
-                this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => {
-                    await this.gameManager.setState(new TravelState(this.gameManager));
-                    this.scene.detachControl();
-                    this.scene.dispose();
-                });
+                this.shipAnimatable = this.scene.beginAnimation(
+                    this.spaceship,
+                    0,
+                    shipAnimation.frameRate,
+                    false,
+                    1,
+                    async () => await this.goToTravel(),
+                );
             });
-            // this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
-
-            // Change Scene
-            // this.goToTravel();
         });
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
     }
 
-    goToTravel(): void {
-        this.gameManager.setState(new TravelState(this.gameManager));
+    async goToTravel(): Promise<void> {
+        await this.gameManager.setState(new TravelState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }

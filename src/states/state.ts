@@ -20,15 +20,15 @@ export default abstract class State {
         this.scene.render();
     }
 
-    goToStart(): void {
+    async goToStart(): Promise<void> {
         throw new Error('Go to start not implemented');
     }
 
-    goToTravel(): void {
+    async goToTravel(): Promise<void> {
         throw new Error('Go to travel not implemented');
     }
 
-    goToOrbit(): void {
+    async goToOrbit(): Promise<void> {
         throw new Error('Go to Start not implemented');
     }
 

@@ -33,7 +33,7 @@ export default class Orbit extends State {
         attachInspector(this.scene);
     }
 
-    goToTravel(): void {
+    async goToTravel(): Promise<void> {
         // this.gameManager.state = new TravelState(this.gameManager);
         // this.scene.detachControl();
         // this.scene.dispose();

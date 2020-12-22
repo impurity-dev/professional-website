@@ -36,14 +36,14 @@ export default class TravelState extends State {
         this.scene.attachControl();
     }
 
-    goToStart(): void {
-        this.gameManager.setState( new StartState(this.gameManager));
+    async goToStart(): Promise<void> {
+        await this.gameManager.setState(new StartState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }
 
-    goToOrbit(): void {
-        this.gameManager.setState(new OrbitState(this.gameManager));
+    async goToOrbit(): Promise<void> {
+        await this.gameManager.setState(new OrbitState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
     }
