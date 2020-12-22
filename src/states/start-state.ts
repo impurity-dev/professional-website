@@ -1,11 +1,9 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3, Animatable } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import { Animatable, ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
 import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
 import ShipLaunchAnimation from '../animations/ship-launch-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
-import GameManager from '../game-managers/game-manager';
 import StartGui from '../guis/start-gui';
 import GasCloudParticles from '../particles/gas-cloud-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
