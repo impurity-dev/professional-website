@@ -3,12 +3,12 @@ import State from '../states/state';
 export default abstract class StateMachine {
     private _state: State;
 
-    public set state(state: State) {
+    public async setState(state: State): Promise<void> {
         this._state = state;
-        this._state.run();
+        await this._state.run();
     }
 
-    public get state(): State {
+    public getState(): State {
         return this._state;
     }
 }
