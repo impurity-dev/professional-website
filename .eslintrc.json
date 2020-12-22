@@ -11,7 +11,8 @@
     },
     "ignorePatterns": ["node_modules/**", "dist/**", ".vscode/**", ".github/**", "package-lock.json"],
     "rules": {
-        "prettier/prettier": ["error", { "singleQuote": true }]
+        "prettier/prettier": ["error", { "singleQuote": true }],
+        "no-extra-boolean-cast": ["off"]
     },
     "settings": {
         "import/resolver": {
