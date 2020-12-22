@@ -1,8 +1,12 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3, Animatable } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
+import ShipLaunchAnimation from '../animations/ship-launch-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
+import GameManager from '../game-managers/game-manager';
+import StartGui from '../guis/start-gui';
 import GasCloudParticles from '../particles/gas-cloud-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
@@ -11,8 +15,8 @@ import TravelState from './travel-state';
 export default class StartState extends State {
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;
-    private lightSource: HemisphericLight;
-    private skybox: SpaceSkybox;
+    private cameraAnimatable: Animatable;
+    private shipAnimatable: Animatable;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -28,38 +32,46 @@ export default class StartState extends State {
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
         this.spaceship.animations.push(shipAnimation);
-        this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
-        this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
+        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
+        this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
-        this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        this.skybox = new SpaceSkybox(this.scene);
+        new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
+        new SpaceSkybox(this.scene);
 
-        this.createUI();
         const gasClouds = new GasCloudParticles(this.scene);
-        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 100));
+        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
         gasClouds.start();
+
+        new StartGui(this.scene, () => {
+            // Stop Passive animation
+            this.cameraAnimatable.stop();
+            this.shipAnimatable.stop();
+
+            // Start Launch
+            const cameraAnimation = new CameraPrelaunchAnimation(this.camera.alpha, 10);
+            this.camera.animations.push(cameraAnimation);
+            this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
+                gasClouds.stop();
+                const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
+                this.spaceship.animations.push(shipAnimation);
+                this.shipAnimatable = this.scene.beginAnimation(
+                    this.spaceship,
+                    0,
+                    shipAnimation.frameRate,
+                    false,
+                    1,
+                    async () => await this.goToTravel(),
+                );
+            });
+        });
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
     }
 
-    goToTravel(): void {
-        this.gameManager.state = new TravelState(this.gameManager);
+    async goToTravel(): Promise<void> {
+        await this.gameManager.setState(new TravelState(this.gameManager));
         this.scene.detachControl();
         this.scene.dispose();
-    }
-
-    private createUI(): void {
-        const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('UI');
-        guiMenu.idealHeight = 720;
-        const startBtn = Button.CreateSimpleButton('launch', 'LAUNCH');
-        startBtn.width = 0.2;
-        startBtn.height = '40px';
-        startBtn.color = 'white';
-        startBtn.top = '-14px';
-        startBtn.thickness = 0;
-        startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-        guiMenu.addControl(startBtn);
-        startBtn.onPointerDownObservable.add(() => this.goToTravel());
     }
 }

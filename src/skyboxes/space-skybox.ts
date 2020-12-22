@@ -4,7 +4,7 @@ export default class SpaceSkybox {
     private SPACE_TEXTURE_PATH: string = 'textures/skyboxes/space';
 
     constructor(scene: Scene) {
-        const skyboxMaterial = new StandardMaterial('skyBox', scene);
+        const skyboxMaterial = new StandardMaterial('SkyBox', scene);
         skyboxMaterial.backFaceCulling = false;
         skyboxMaterial.disableLighting = true;
         skyboxMaterial.reflectionTexture = new CubeTexture(this.SPACE_TEXTURE_PATH, scene);
