@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3, Animatable } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
@@ -13,6 +13,7 @@ export default class StartState extends State {
     private camera: ArcRotateCamera;
     private lightSource: HemisphericLight;
     private skybox: SpaceSkybox;
+    private cameraRotationAnimatable: Animatable;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -28,7 +29,7 @@ export default class StartState extends State {
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
         this.spaceship.animations.push(shipAnimation);
-        this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
+        this.cameraRotationAnimatable = this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
         this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         this.lightSource = new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
@@ -44,6 +45,7 @@ export default class StartState extends State {
     }
 
     goToTravel(): void {
+        this.cameraRotationAnimatable.stop();
         this.gameManager.state = new TravelState(this.gameManager);
         this.scene.detachControl();
         this.scene.dispose();
