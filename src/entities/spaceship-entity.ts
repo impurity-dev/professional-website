@@ -62,8 +62,10 @@ export default class SpaceShipEntity extends TransformNode {
     }
 
     private onSpaceShipError(task: MeshAssetTask, message: string, exception?: any): void {
-        console.error(`Could not load spaceship with error: ${message}`);
-        throw new Error('Error loading spaceship assets');
+        console.error(`Task: ${JSON.stringify(task)}`);
+        console.error(`Message: ${message}`);
+        console.error(`Exception: ${JSON.stringify(exception)}`);
+        // throw new Error('Error loading spaceship assets');
     }
 
     private onSpaceShipSuccess(task: MeshAssetTask, parent: Node): void {
