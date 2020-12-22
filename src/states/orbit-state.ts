@@ -24,18 +24,15 @@ export default class Orbit extends State {
         loseBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         playerUI.addControl(loseBtn);
         loseBtn.onPointerDownObservable.add(() => this.goToTravel());
-        const light1: HemisphericLight = new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        const sphere: Mesh = MeshBuilder.CreateSphere('sphere', { diameter: 1 }, this.scene);
+        new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
+        MeshBuilder.CreateSphere('sphere', { diameter: 1 }, this.scene);
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
-        this.scene.attachControl();
-        attachInspector(this.scene);
     }
 
     async goToTravel(): Promise<void> {
-        // this.gameManager.state = new TravelState(this.gameManager);
-        // this.scene.detachControl();
-        // this.scene.dispose();
+        this.gameManager.setState(new TravelState(this.gameManager));
+        this.dispose();
     }
 }

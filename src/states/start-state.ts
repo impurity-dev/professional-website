@@ -22,7 +22,7 @@ export default class StartState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
-        this.camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 
@@ -52,14 +52,7 @@ export default class StartState extends State {
                 gasClouds.stop();
                 const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
                 this.spaceship.animations.push(shipAnimation);
-                this.shipAnimatable = this.scene.beginAnimation(
-                    this.spaceship,
-                    0,
-                    shipAnimation.frameRate,
-                    false,
-                    1,
-                    async () => await this.goToTravel(),
-                );
+                this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.goToTravel());
             });
         });
 
@@ -69,7 +62,6 @@ export default class StartState extends State {
 
     async goToTravel(): Promise<void> {
         await this.gameManager.setState(new TravelState(this.gameManager));
-        this.scene.detachControl();
-        this.scene.dispose();
+        this.dispose();
     }
 }

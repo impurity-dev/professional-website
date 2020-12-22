@@ -1,28 +1,20 @@
-import {
-    AbstractMesh,
-    AssetsManager,
-    Color3,
-    Color4,
-    MeshAssetTask,
-    MeshBuilder,
-    Node,
-    ParticleSystem,
-    Scene,
-    StandardMaterial,
-    Texture,
-    TransformNode,
-    Vector3,
-} from '@babylonjs/core';
+import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
+import EngineParticles from '../particles/engine-particles';
 
 export default class SpaceShipEntity extends TransformNode {
-    constructor(private readonly scene: Scene) {
+    constructor(private readonly scene: Scene, readonly enableEngineParticles: boolean = true) {
         super('Spaceship');
         const scale: number = 0.1;
         this.scaling = new Vector3(scale, scale, scale);
         this.position = new Vector3(0, -25, -100);
         this.rotate(new Vector3(0, 1, 0), Math.PI);
         this.setupMesh();
-        this.setupEngineParticles();
+        if (enableEngineParticles) {
+            const engineParticles: EngineParticles = new EngineParticles(this.scene);
+            engineParticles.fountain.parent = this;
+            engineParticles.fountain.position = new Vector3(0, 50, -200);
+            engineParticles.start();
+        }
     }
 
     private setupMesh(): void {
@@ -31,34 +23,6 @@ export default class SpaceShipEntity extends TransformNode {
         spaceshipMeshTask.onSuccess = (res) => this.onSpaceShipSuccess(res, this);
         spaceshipMeshTask.onError = this.onSpaceShipError;
         assetsManager.load();
-    }
-
-    private setupEngineParticles(): void {
-        const engineParticles = new ParticleSystem('EngineParticles', 2000, this.scene);
-        engineParticles.particleTexture = new Texture('textures/square.png', this.scene);
-        const box = MeshBuilder.CreateBox('box', { size: 50 });
-        box.parent = this;
-        box.isVisible = false;
-        box.position = new Vector3(0, 50, -200);
-        engineParticles.emitter = box;
-        engineParticles.emitRate = 1000;
-        engineParticles.minSize = 0.5;
-        engineParticles.maxSize = 1;
-        engineParticles.minLifeTime = 0.2;
-        engineParticles.maxLifeTime = 0.5;
-        engineParticles.minEmitPower = 1000;
-        engineParticles.maxEmitPower = 3000;
-        engineParticles.addColorGradient(0, new Color4(0, 1, 1, 1));
-        engineParticles.addColorGradient(1, new Color4(1, 0, 1, 0));
-        engineParticles.preWarmStepOffset = 10;
-        engineParticles.preWarmCycles = 100;
-        engineParticles.direction1 = new Vector3(0, 0, -1);
-        engineParticles.direction2 = new Vector3(0, 0, -1);
-        engineParticles.minEmitBox = new Vector3(-25, -25, -25);
-        engineParticles.maxEmitBox = new Vector3(25, 25, 25);
-        engineParticles.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-        engineParticles.isLocal = true;
-        engineParticles.start();
     }
 
     private onSpaceShipError(task: MeshAssetTask, message: string, exception?: any): void {
