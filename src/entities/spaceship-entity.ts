@@ -27,7 +27,7 @@ export default class SpaceShipEntity extends TransformNode {
 
     private setupMesh(): void {
         const assetsManager = new AssetsManager(this.scene);
-        const spaceshipMeshTask = assetsManager.addMeshTask('SpaceShipTask', '', '/assets/', 'spaceship.obj');
+        const spaceshipMeshTask = assetsManager.addMeshTask('SpaceShipTask', '', 'assets/', 'spaceship.obj');
         spaceshipMeshTask.onSuccess = (res) => this.onSpaceShipSuccess(res, this);
         spaceshipMeshTask.onError = this.onSpaceShipError;
         assetsManager.load();

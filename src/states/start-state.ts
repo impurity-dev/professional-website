@@ -1,11 +1,9 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3, Animatable } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import { Animatable, ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
 import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation';
 import CameraRotationAnimation from '../animations/camera-rotation-animation';
 import ShipLaunchAnimation from '../animations/ship-launch-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
-import GameManager from '../game-managers/game-manager';
 import StartGui from '../guis/start-gui';
 import GasCloudParticles from '../particles/gas-cloud-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
@@ -32,7 +30,7 @@ export default class StartState extends State {
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
         this.spaceship.animations.push(shipAnimation);
-        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
+        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 4 * cameraAnimation.frameRate, true, 0.5);
         this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
