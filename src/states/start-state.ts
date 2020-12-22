@@ -36,7 +36,7 @@ export default class StartState extends State {
 
         this.createUI();
         const gasClouds = new GasCloudParticles(this.scene);
-        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 100));
+        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
         gasClouds.start();
 
         await this.scene.whenReadyAsync();

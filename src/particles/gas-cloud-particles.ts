@@ -15,8 +15,8 @@ export default class GasCloudParticles extends ParticleSystem {
         this.emitter = this.fountain;
         this.minSize = 35;
         this.maxSize = 100;
-        this.minLifeTime = 10;
-        this.maxLifeTime = 20;
+        this.minLifeTime = 20;
+        this.maxLifeTime = 30;
         this.blendMode = ParticleSystem.BLENDMODE_STANDARD;
         this.gravity = new Vector3(0, 0, 0);
         this.direction1 = new Vector3(0, 0, -1);
