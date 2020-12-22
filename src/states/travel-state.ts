@@ -16,7 +16,7 @@ export default class TravelState extends State {
         engine.displayLoadingUI();
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
-        this.spaceship = new SpaceShipEntity(this.scene);
+        this.spaceship = new SpaceShipEntity(this.scene, false);
         this.camera = new FollowCamera('FollowCamera', Vector3.Zero(), this.scene);
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
@@ -30,18 +30,15 @@ export default class TravelState extends State {
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
-        this.scene.attachControl();
     }
 
     async goToStart(): Promise<void> {
         await this.gameManager.setState(new StartState(this.gameManager));
-        this.scene.detachControl();
-        this.scene.dispose();
+        this.dispose();
     }
 
     async goToOrbit(): Promise<void> {
         await this.gameManager.setState(new OrbitState(this.gameManager));
-        this.scene.detachControl();
-        this.scene.dispose();
+        this.dispose();
     }
 }
