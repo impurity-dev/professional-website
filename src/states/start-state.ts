@@ -30,7 +30,7 @@ export default class StartState extends State {
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
         this.spaceship.animations.push(shipAnimation);
-        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 5 * cameraAnimation.frameRate, true, 0.1);
+        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 4 * cameraAnimation.frameRate, true, 0.5);
         this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
