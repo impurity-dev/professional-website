@@ -6,7 +6,7 @@ export default abstract class State {
 
     protected set scene(newScene: Scene) {
         this._scene = newScene;
-        if (window.location.href.includes('localhost')) this.attachInspector(this._scene);
+        if (window.location.href.includes('localhost')) this.attachInspector(newScene);
     }
 
     protected get scene(): Scene {
