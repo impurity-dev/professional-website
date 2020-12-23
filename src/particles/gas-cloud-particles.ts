@@ -8,7 +8,7 @@ export default class GasCloudParticles extends ParticleSystem {
         super('GasClouds', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.fountain = Mesh.CreateBox('GasCloudsFountain', 0.01, scene);
-        this.fountain.visibility = 0;
+        this.fountain.isVisible = false;
         this.minEmitBox = new Vector3(-100, -100, 100);
         this.maxEmitBox = new Vector3(100, 100, 100);
         this.particleTexture = fogTexture.clone();

@@ -1,5 +1,4 @@
 import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4 } from '@babylonjs/core';
-import { randomColor, randomNumberBetween } from '../utils';
 
 export default class WarpSpeedParticles extends ParticleSystem {
     public readonly fountain: Mesh;
@@ -8,7 +7,7 @@ export default class WarpSpeedParticles extends ParticleSystem {
         super('WarpSpeed', 2500, scene);
         const fogTexture = new Texture('textures/square.png', scene);
         this.fountain = Mesh.CreateBox('WarpSpeedFountain', 0.01, scene);
-        this.fountain.visibility = 0;
+        this.fountain.isVisible = false;
         this.minEmitBox = new Vector3(-100, -100, 100);
         this.maxEmitBox = new Vector3(100, 100, 100);
         this.particleTexture = fogTexture.clone();

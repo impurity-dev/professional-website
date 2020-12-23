@@ -1,5 +1,4 @@
-import { ArcRotateCamera, Color4, FollowCamera, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import WarpSpeedParticles from '../particles/warpspeed-particles';
