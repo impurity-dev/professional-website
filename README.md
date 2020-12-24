@@ -10,13 +10,11 @@
 
 -   Sun: https://playground.babylonjs.com/#MX2Z99#8
 
-## Gas Clouds
+## Particle System
 
--   Example: https://www.babylonjs-playground.com/#BHNVUE#2
-
-## Reverse Particle System
-
--   Example: https://playground.babylonjs.com/#PSK6N1
+-   Gas Clouds: https://www.babylonjs-playground.com/#BHNVUE#2
+-   Reverse Particle System: https://playground.babylonjs.com/#PSK6N1
+-   Stretched (hit space to start): https://playground.babylonjs.com/#5A4TP5
 
 ## Music
 

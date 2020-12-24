@@ -6,7 +6,7 @@ export default class WarpSpeedParticles extends ParticleSystem {
         this.particleTexture = new Texture('textures/square.png', scene);
         this.minLifeTime = 2;
         this.maxLifeTime = 2;
-        this.blendMode = ParticleSystem.BLENDMODE_STANDARD;
+        this.blendMode = ParticleSystem.BILLBOARDMODE_STRETCHED;
         this.gravity = new Vector3(0, 0, 0);
         this.minEmitPower = 750;
         this.maxEmitPower = 750;
