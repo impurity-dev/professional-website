@@ -2,12 +2,10 @@ import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, Standa
 import EngineParticles from '../particles/engine-particles';
 
 export default class SpaceShipEntity extends TransformNode {
+    private readonly scale: number = 0.1;
     constructor(private readonly scene: Scene, readonly enableEngineParticles: boolean = true) {
         super('Spaceship');
-        const scale: number = 0.1;
-        this.scaling = new Vector3(scale, scale, scale);
-        this.position = new Vector3(0, -25, -100);
-        this.rotate(new Vector3(0, 1, 0), Math.PI);
+        this.scaling = new Vector3(this.scale, this.scale, this.scale);
         this.setupMesh();
         if (enableEngineParticles) {
             const engineParticles: EngineParticles = new EngineParticles(this.scene);

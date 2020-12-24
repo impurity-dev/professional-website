@@ -1,29 +1,20 @@
-import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4 } from '@babylonjs/core';
+import { Color4, CylinderDirectedParticleEmitter, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 
 export default class WarpSpeedParticles extends ParticleSystem {
-    public readonly fountain: Mesh;
+    public readonly cylinderEmitter: CylinderDirectedParticleEmitter;
 
-    constructor(readonly scene: Scene) {
+    constructor(readonly scene: Scene, radius: number, height: number, radiusRange: number, direction1: Vector3, direction2: Vector3) {
         super('WarpSpeed', 5000, scene);
-        const fogTexture = new Texture('textures/square.png', scene);
-        this.fountain = Mesh.CreateBox('WarpSpeedFountain', 0.01, scene);
-        this.fountain.isVisible = false;
-        this.minEmitBox = new Vector3(-200, -200, 200);
-        this.maxEmitBox = new Vector3(200, 200, 200);
-        this.particleTexture = fogTexture.clone();
-        this.emitter = this.fountain;
+        this.cylinderEmitter = this.createDirectedCylinderEmitter(radius, height, radiusRange, direction1, direction2);
+        this.particleTexture = new Texture('textures/square.png', scene);
         this.minLifeTime = 5;
         this.maxLifeTime = 30;
         this.blendMode = ParticleSystem.BLENDMODE_STANDARD;
         this.gravity = new Vector3(0, 0, 0);
-        this.direction1 = new Vector3(0, 0, -1);
-        this.direction2 = new Vector3(0, 0, -1);
-        this.minAngularSpeed = -2;
-        this.maxAngularSpeed = 2;
         this.minEmitPower = 50;
         this.maxEmitPower = 100;
         this.updateSpeed = 0.05;
-        this.emitRate = 1000;
+        this.emitRate = 10000;
         this.addSizeGradient(0, 0, 0);
         this.addSizeGradient(0.1, 0.5, 1);
         this.addSizeGradient(1, 0.5, 0);

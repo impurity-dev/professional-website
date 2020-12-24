@@ -22,7 +22,8 @@ export default class StartState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
-        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.spaceship.position = Vector3.Zero();
+        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, this.scene);
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 

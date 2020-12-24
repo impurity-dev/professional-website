@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, Color4, FollowCamera, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import WarpSpeedParticles from '../particles/warpspeed-particles';
@@ -9,7 +9,7 @@ import State from './state';
 
 export default class TravelState extends State {
     private spaceship: SpaceShipEntity;
-    private camera: ArcRotateCamera;
+    private camera: FollowCamera;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -17,8 +17,15 @@ export default class TravelState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
-        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.spaceship.position = Vector3.Zero();
+        this.spaceship.rotate(new Vector3(0, 1, 0), Math.PI);
+        this.camera = new FollowCamera('FollowCamera', this.spaceship.position.subtract(new Vector3(0, -25, -100)), this.scene);
+        this.camera.setTarget(this.spaceship.position.subtract(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
+
+        const warpspeed = new WarpSpeedParticles(this.scene, 100, 100, 100, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
+        warpspeed.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
+        warpspeed.start();
 
         new TravelGui(
             this.scene,

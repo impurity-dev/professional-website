@@ -1,4 +1,4 @@
-import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4, TransformNode, SphereParticleEmitter } from '@babylonjs/core';
+import { Color4, ParticleSystem, Scene, SphereParticleEmitter, Texture, Vector3 } from '@babylonjs/core';
 import { randomColor, randomNumberBetween } from '../utils';
 
 export default class GasCloudParticles extends ParticleSystem {
@@ -8,10 +8,7 @@ export default class GasCloudParticles extends ParticleSystem {
         super('GasClouds', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.sphereEmitter = this.createDirectedSphereEmitter(radius, direction1, direction2);
-        this.minEmitBox = new Vector3(-100, -100, 100);
-        this.maxEmitBox = new Vector3(100, 100, 100);
         this.particleTexture = fogTexture.clone();
-        // this.emitter = this.fountain;
         this.minLifeTime = 20;
         this.maxLifeTime = 30;
         this.blendMode = ParticleSystem.BLENDMODE_STANDARD;
