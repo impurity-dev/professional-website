@@ -2,12 +2,10 @@ import { Color4, ParticleSystem, Scene, SphereParticleEmitter, Texture, Vector3 
 import { randomColor, randomNumberBetween } from '../utils';
 
 export default class GasCloudParticles extends ParticleSystem {
-    public readonly sphereEmitter: SphereParticleEmitter;
-
     constructor(readonly scene: Scene, radius: number, direction1: Vector3, direction2: Vector3) {
         super('GasClouds', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
-        this.sphereEmitter = this.createDirectedSphereEmitter(radius, direction1, direction2);
+        this.particleEmitterType = this.createDirectedSphereEmitter(radius, direction1, direction2);
         this.particleTexture = fogTexture.clone();
         this.minLifeTime = 20;
         this.maxLifeTime = 30;
