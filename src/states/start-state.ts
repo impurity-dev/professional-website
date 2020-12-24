@@ -36,8 +36,8 @@ export default class StartState extends State {
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
 
-        const gasClouds = new GasCloudParticles(this.scene);
-        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
+        const gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
+        gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
         gasClouds.start();
 
         new StartGui(this.scene, () => {
