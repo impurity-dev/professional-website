@@ -24,7 +24,7 @@ export default class TravelState extends State {
 
         const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50, new Vector3(1, 0, 0), Math.PI / 2);
         const warpspeedAnchor = new TransformNode('');
-        warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 0, 1000));
+        warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 0, 500));
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
         warpspeed.emitter = warpspeedAnchor as any;
         warpspeed.start();
@@ -33,6 +33,9 @@ export default class TravelState extends State {
             this.scene,
             () => {
                 this.goToOrbit();
+            },
+            () => {
+                warpspeed.toggleWarp();
             },
             () => {
                 this.goToStart();
