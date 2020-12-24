@@ -35,7 +35,7 @@ export default class StartState extends State {
         this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new SpaceSkybox('Skybox', this.scene);
 
         const gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
         gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));

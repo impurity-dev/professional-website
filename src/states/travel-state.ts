@@ -18,9 +18,8 @@ export default class TravelState extends State {
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
         this.spaceship.position = Vector3.Zero();
-        this.spaceship.rotate(new Vector3(0, 1, 0), Math.PI);
-        this.camera = new FollowCamera('FollowCamera', this.spaceship.position.subtract(new Vector3(0, -25, -100)), this.scene);
-        this.camera.setTarget(this.spaceship.position.subtract(new Vector3(0, 0, 250)));
+        this.camera = new FollowCamera('FollowCamera', this.spaceship.position.add(new Vector3(0, 25, -100)), this.scene);
+        this.camera.setTarget(this.spaceship.position.add(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
 
         const warpspeed = new WarpSpeedParticles(this.scene, 100, 100, 100, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
@@ -37,8 +36,8 @@ export default class TravelState extends State {
             },
         );
 
-        new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
+        new SpaceSkybox('Skybox', this.scene);
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
