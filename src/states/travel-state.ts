@@ -20,13 +20,15 @@ export default class TravelState extends State {
         this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
         this.scene.activeCamera = this.camera;
 
-        const warpSpeed = new WarpSpeedParticles(this.scene);
-        warpSpeed.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
-        warpSpeed.start();
-
-        new TravelGui(this.scene, () => {
-            this.goToOrbit();
-        });
+        new TravelGui(
+            this.scene,
+            () => {
+                this.goToOrbit();
+            },
+            () => {
+                this.goToStart();
+            },
+        );
 
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
