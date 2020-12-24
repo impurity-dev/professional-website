@@ -1,47 +1,35 @@
-import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4 } from '@babylonjs/core';
-import { randomColor, randomNumberBetween } from '../utils';
+import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 
 export default class WarpSpeedParticles extends ParticleSystem {
-    public readonly fountain: Mesh;
-
-    constructor(readonly scene: Scene) {
-        super('WarpSpeed', 2500, scene);
-        const fogTexture = new Texture('textures/square.png', scene);
-        this.fountain = Mesh.CreateBox('WarpSpeedFountain', 0.01, scene);
-        this.fountain.visibility = 0;
-        this.minEmitBox = new Vector3(-100, -100, 100);
-        this.maxEmitBox = new Vector3(100, 100, 100);
-        this.particleTexture = fogTexture.clone();
-        this.emitter = this.fountain;
-        this.minLifeTime = 20;
-        this.maxLifeTime = 30;
-        this.blendMode = ParticleSystem.BLENDMODE_STANDARD;
-        this.gravity = new Vector3(0, 0, 0);
-        this.direction1 = new Vector3(0, 0, -1);
-        this.direction2 = new Vector3(0, 0, -1);
-        this.minAngularSpeed = -2;
-        this.maxAngularSpeed = 2;
-        this.minEmitPower = 50;
+    constructor(readonly scene: Scene, radius: number, height: number, rotationAxis: Vector3, rotationAmount: number) {
+        super('WarpSpeed', 10_000, scene);
+        this.particleTexture = new Texture(
+            'https://raw.githubusercontent.com/PatrickRyanMS/BabylonJStextures/master/ParticleSystems/Sparks/sparkStretched.png',
+            scene,
+        );
+        this.minLifeTime = 10;
+        this.maxLifeTime = 10;
+        this.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        // this.billboardMode = ParticleSystem.BLENDMODE_MULTIPLY;
+        this.minEmitPower = 100;
         this.maxEmitPower = 100;
         this.updateSpeed = 0.05;
-        this.emitRate = 1000;
-        this.addSizeGradient(0, 0, 0);
-        this.addSizeGradient(0.1, 0.5, 1);
-        this.addSizeGradient(1, 0.5, 0);
-        this.addAngularSpeedGradient(0, -2, 2);
-        this.addAngularSpeedGradient(0.2, -1, 1);
-        this.addAngularSpeedGradient(1, -0.5, 0.5);
-        const color1 = new Color4(1, 1, 1, 1);
-        const color2 = new Color4(1, 1, 1, 1);
-        this.addColorGradient(0, this.changeAlpha(color1, 0), this.changeAlpha(color2, 0));
-        this.addColorGradient(0.1, this.changeAlpha(color1, 1), this.changeAlpha(color2, 1));
-        this.addColorGradient(0.8, this.changeAlpha(color1, 0.8), this.changeAlpha(color2, 0.8));
-        this.addColorGradient(1, this.changeAlpha(color1, 0.5), this.changeAlpha(color2, 0.5));
+        this.emitRate = 500;
+        this.preWarmCycles = 100;
+        this.preWarmStepOffset = 5;
+        this.minSize = 1;
+        this.maxSize = 1;
+        this.addColorGradient(0, new Color4(0, 0, 1, 0.5));
+        this.addColorGradient(0.1, new Color4(0, 1, 1, 1));
+        this.addColorGradient(1, new Color4(1, 0, 1, 0));
+        this.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
     }
 
-    private changeAlpha(color: Color4, alpha: number): Color4 {
-        const newColor = color;
-        newColor.a = alpha;
-        return newColor;
+    public toggleWarp(): void {
+        this.emitRate = 2000;
+        this.minLifeTime = 1;
+        this.maxLifeTime = 1.5;
+        this.minEmitPower = 500;
+        this.maxEmitPower = 1000;
     }
 }

@@ -1,5 +1,4 @@
-import { ArcRotateCamera, Color4, FollowCamera, HemisphericLight, Mesh, MeshBuilder, Scene, Vector3 } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import { ArcRotateCamera, Color4, FollowCamera, HemisphericLight, Scene, Vector3, TransformNode } from '@babylonjs/core';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import WarpSpeedParticles from '../particles/warpspeed-particles';
@@ -10,7 +9,7 @@ import State from './state';
 
 export default class TravelState extends State {
     private spaceship: SpaceShipEntity;
-    private camera: ArcRotateCamera;
+    private camera: FollowCamera;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -18,19 +17,33 @@ export default class TravelState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
-        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.spaceship.position = Vector3.Zero();
+        this.camera = new FollowCamera('FollowCamera', this.spaceship.position.add(new Vector3(0, 25, -100)), this.scene);
+        this.camera.setTarget(this.spaceship.position.add(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
 
-        const warpSpeed = new WarpSpeedParticles(this.scene);
-        warpSpeed.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
-        warpSpeed.start();
+        const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50, new Vector3(1, 0, 0), Math.PI / 2);
+        const warpspeedAnchor = new TransformNode('');
+        warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 0, 500));
+        warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
+        warpspeed.emitter = warpspeedAnchor as any;
+        warpspeed.start();
 
-        new TravelGui(this.scene, () => {
-            this.goToOrbit();
-        });
+        new TravelGui(
+            this.scene,
+            () => {
+                this.goToOrbit();
+            },
+            () => {
+                warpspeed.toggleWarp();
+            },
+            () => {
+                this.goToStart();
+            },
+        );
 
-        new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
+        new SpaceSkybox('Skybox', this.scene);
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();

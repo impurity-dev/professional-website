@@ -22,7 +22,8 @@ export default class StartState extends State {
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.spaceship = new SpaceShipEntity(this.scene);
-        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this.scene);
+        this.spaceship.position = Vector3.Zero();
+        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, this.scene);
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
 
@@ -34,10 +35,10 @@ export default class StartState extends State {
         this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new SpaceSkybox('Skybox', this.scene);
 
-        const gasClouds = new GasCloudParticles(this.scene);
-        gasClouds.fountain.position = this.spaceship.position.add(new Vector3(0, -25, 250));
+        const gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
+        gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
         gasClouds.start();
 
         new StartGui(this.scene, () => {
@@ -50,6 +51,7 @@ export default class StartState extends State {
             this.camera.animations.push(cameraAnimation);
             this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
                 gasClouds.stop();
+
                 const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
                 this.spaceship.animations.push(shipAnimation);
                 this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.goToTravel());
