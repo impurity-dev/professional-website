@@ -15,6 +15,7 @@
 -   Gas Clouds: https://www.babylonjs-playground.com/#BHNVUE#2
 -   Reverse Particle System: https://playground.babylonjs.com/#PSK6N1
 -   Stretched (hit space to start): https://playground.babylonjs.com/#5A4TP5
+-   Spinning Emitter: https://www.babylonjs-playground.com/#U64HVU#4
 
 ## Music
 

@@ -1,6 +1,5 @@
 import { Engine } from '@babylonjs/core';
 import StartState from '../states/start-state';
-import TravelState from '../states/travel-state';
 import StateMachine from './state-machine';
 
 export default class GameManager extends StateMachine {
