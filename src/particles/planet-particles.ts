@@ -1,17 +1,21 @@
 import { Color4, MeshBuilder, Scalar, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
 
 export default class PlanetParticles extends SolidParticleSystem {
-    private speed = 5;
+    public speed = 1;
+    public recycleDepth: number = 1;
 
-    constructor(readonly scene: Scene, position: Vector3) {
+    public set emitter(position: Vector3) {
+        this.mesh.position = position;
+    }
+
+    constructor(readonly scene: Scene) {
         super('PlanetParticles', scene);
 
         const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 50 });
         this.addShape(sphere, 1);
         sphere.dispose();
 
-        const mesh = this.buildMesh();
-        mesh.position = position;
+        this.buildMesh();
     }
 
     public start(): void {
@@ -23,7 +27,7 @@ export default class PlanetParticles extends SolidParticleSystem {
     }
 
     public updateParticle(particle: SolidParticle): SolidParticle {
-        if (particle.position.z < -650) {
+        if (particle.position.z < this.recycleDepth) {
             this.recycleParticle(particle);
         }
         const speed = new Vector3(0, 0, particle.velocity.z - this.speed);

@@ -25,8 +25,17 @@ export default class TravelState extends State {
         this.camera.setTarget(this.spaceship.position.add(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
 
-        const planets: PlanetParticles = new PlanetParticles(this.scene, this.spaceship.position.add(new Vector3(0, 25, 500)));
+        const planets: PlanetParticles = new PlanetParticles(this.scene);
+        planets.emitter = this.spaceship.position.add(new Vector3(100, 50, 2_000));
+        planets.speed = 4;
+        planets.recycleDepth = -2_100;
         planets.start();
+
+        const planets1: PlanetParticles = new PlanetParticles(this.scene);
+        planets1.emitter = this.spaceship.position.add(new Vector3(-100, 50, 100));
+        planets1.speed = 10;
+        planets1.recycleDepth = -200;
+        planets1.start();
 
         const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50);
         const warpspeedAnchor = new TransformNode('Warpspeed Emitter Anchor');
