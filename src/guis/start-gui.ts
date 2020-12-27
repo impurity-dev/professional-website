@@ -3,7 +3,7 @@ import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
 import createButton from './button';
 
 export default class StartGui {
-    constructor(private readonly scene: Scene, readonly onLaunch: () => void) {
+    constructor(readonly scene: Scene, readonly onLaunch: () => void) {
         const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
         gui.idealHeight = 720;
 

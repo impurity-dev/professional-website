@@ -1,12 +1,18 @@
-import { Scene } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control, StackPanel } from '@babylonjs/gui';
+import { Scene, TransformNode } from '@babylonjs/core';
+import { AdvancedDynamicTexture, Control, StackPanel } from '@babylonjs/gui';
 import createButton from './button';
 
 export default class TravelGui {
-    constructor(private readonly scene: Scene, readonly onOrbit: () => void, readonly onWarp: () => void, readonly onStart: () => void) {
+    constructor(
+        readonly scene: Scene,
+        readonly anchor: TransformNode,
+        readonly onOrbit: () => void,
+        readonly onWarp: () => void,
+        readonly onStart: () => void,
+    ) {
         const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
 
-        const panel = new StackPanel();
+        const panel = new StackPanel('Button Stack Panel');
         panel.isVertical = false;
         panel.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         panel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;

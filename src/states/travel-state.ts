@@ -38,6 +38,7 @@ export default class TravelState extends State {
 
         new TravelGui(
             this.scene,
+            this.spaceship,
             () => {
                 this.goToOrbit();
             },
