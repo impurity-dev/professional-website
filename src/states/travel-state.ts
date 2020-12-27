@@ -4,6 +4,7 @@ import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-anim
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import WarpSpeedParticles from '../particles/warpspeed-particles';
+import PlanetParticles from '../particles/planet-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
@@ -24,8 +25,11 @@ export default class TravelState extends State {
         this.camera.setTarget(this.spaceship.position.add(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
 
-        const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50, new Vector3(1, 0, 0), Math.PI / 2);
-        const warpspeedAnchor = new TransformNode('');
+        const planets: PlanetParticles = new PlanetParticles(this.scene, this.spaceship.position.add(new Vector3(0, 25, 500)));
+        planets.start();
+
+        const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50);
+        const warpspeedAnchor = new TransformNode('Warpspeed Emitter Anchor');
         warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 25, 500));
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
         warpspeed.emitter = warpspeedAnchor as any;
@@ -51,7 +55,7 @@ export default class TravelState extends State {
         );
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox('Skybox', this.scene);
+        new SpaceSkybox(this.scene);
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
