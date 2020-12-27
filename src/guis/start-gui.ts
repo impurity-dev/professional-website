@@ -1,18 +1,16 @@
 import { Scene } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import createButton from './button';
 
 export default class StartGui {
     constructor(private readonly scene: Scene, readonly onLaunch: () => void) {
-        const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('UI');
-        guiMenu.idealHeight = 720;
-        const startBtn = Button.CreateSimpleButton('launch', 'LAUNCH');
-        startBtn.width = 0.2;
-        startBtn.height = '40px';
-        startBtn.color = 'white';
-        startBtn.top = '-14px';
-        startBtn.thickness = 5;
+        const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
+        gui.idealHeight = 720;
+
+        const startBtn = createButton('launch', 'LAUNCH');
         startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-        guiMenu.addControl(startBtn);
+        startBtn.top = '-14px';
         startBtn.onPointerDownObservable.add(onLaunch);
+        gui.addControl(startBtn);
     }
 }

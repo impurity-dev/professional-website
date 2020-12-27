@@ -15,6 +15,7 @@ export default class StartState extends State {
     private camera: ArcRotateCamera;
     private cameraAnimatable: Animatable;
     private shipAnimatable: Animatable;
+    private isWarping: boolean = false;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -42,6 +43,9 @@ export default class StartState extends State {
         gasClouds.start();
 
         new StartGui(this.scene, () => {
+            if (this.isWarping) return;
+
+            this.isWarping = true;
             // Stop Passive animation
             this.cameraAnimatable.stop();
             this.shipAnimatable.stop();
