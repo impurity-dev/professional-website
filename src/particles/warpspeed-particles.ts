@@ -1,16 +1,12 @@
-import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
+import { Color4, ParticleSystem, Scene, Texture, Vector2, Vector3 } from '@babylonjs/core';
 
 export default class WarpSpeedParticles extends ParticleSystem {
     constructor(readonly scene: Scene, radius: number, height: number, rotationAxis: Vector3, rotationAmount: number) {
         super('WarpSpeed', 10_000, scene);
-        this.particleTexture = new Texture(
-            'https://raw.githubusercontent.com/PatrickRyanMS/BabylonJStextures/master/ParticleSystems/Sparks/sparkStretched.png',
-            scene,
-        );
+        this.particleTexture = new Texture('textures/square.png', scene);
         this.minLifeTime = 10;
         this.maxLifeTime = 10;
         this.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-        // this.billboardMode = ParticleSystem.BLENDMODE_MULTIPLY;
         this.minEmitPower = 100;
         this.maxEmitPower = 100;
         this.updateSpeed = 0.05;
@@ -20,7 +16,7 @@ export default class WarpSpeedParticles extends ParticleSystem {
         this.minSize = 1;
         this.maxSize = 1;
         this.addColorGradient(0, new Color4(0, 0, 1, 0.5));
-        this.addColorGradient(0.1, new Color4(0, 1, 1, 1));
+        this.addColorGradient(0.25, new Color4(0, 1, 1, 1));
         this.addColorGradient(1, new Color4(1, 0, 1, 0));
         this.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
     }

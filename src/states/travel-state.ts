@@ -1,4 +1,6 @@
-import { ArcRotateCamera, Color4, FollowCamera, HemisphericLight, Scene, Vector3, TransformNode } from '@babylonjs/core';
+import { Color4, FollowCamera, HemisphericLight, Scene, Vector3, TransformNode } from '@babylonjs/core';
+import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation';
+import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import WarpSpeedParticles from '../particles/warpspeed-particles';
@@ -24,10 +26,15 @@ export default class TravelState extends State {
 
         const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50, new Vector3(1, 0, 0), Math.PI / 2);
         const warpspeedAnchor = new TransformNode('');
-        warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 0, 500));
+        warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 25, 500));
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
         warpspeed.emitter = warpspeedAnchor as any;
         warpspeed.start();
+
+        const frameRate = 64;
+        this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));
+        this.spaceship.animations.push(new ShipTravelRotationAnimation(frameRate));
+        this.scene.beginAnimation(this.spaceship, 0, frameRate, true, 0.8);
 
         new TravelGui(
             this.scene,
