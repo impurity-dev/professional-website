@@ -3,6 +3,7 @@ import EngineParticles from '../particles/engine-particles';
 
 export default class SpaceShipEntity extends TransformNode {
     private readonly scale: number = 0.1;
+
     constructor(private readonly scene: Scene, readonly enableEngineParticles: boolean = true) {
         super('Spaceship');
         this.scaling = new Vector3(this.scale, this.scale, this.scale);

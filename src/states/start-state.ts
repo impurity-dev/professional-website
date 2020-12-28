@@ -15,6 +15,7 @@ export default class StartState extends State {
     private camera: ArcRotateCamera;
     private cameraAnimatable: Animatable;
     private shipAnimatable: Animatable;
+    private isWarping: boolean = false;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -35,13 +36,16 @@ export default class StartState extends State {
         this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox('Skybox', this.scene);
+        new SpaceSkybox(this.scene);
 
         const gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
         gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
         gasClouds.start();
 
         new StartGui(this.scene, () => {
+            if (this.isWarping) return;
+
+            this.isWarping = true;
             // Stop Passive animation
             this.cameraAnimatable.stop();
             this.shipAnimatable.stop();

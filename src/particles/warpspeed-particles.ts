@@ -1,7 +1,9 @@
-import { Color4, ParticleSystem, Scene, Texture, Vector2, Vector3 } from '@babylonjs/core';
+import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 
 export default class WarpSpeedParticles extends ParticleSystem {
-    constructor(readonly scene: Scene, radius: number, height: number, rotationAxis: Vector3, rotationAmount: number) {
+    private isWarping: boolean = false;
+
+    constructor(readonly scene: Scene, radius: number, height: number) {
         super('WarpSpeed', 10_000, scene);
         this.particleTexture = new Texture('textures/square.png', scene);
         this.minLifeTime = 10;
@@ -22,10 +24,21 @@ export default class WarpSpeedParticles extends ParticleSystem {
     }
 
     public toggleWarp(): void {
-        this.emitRate = 2000;
-        this.minLifeTime = 1;
-        this.maxLifeTime = 1.5;
-        this.minEmitPower = 500;
-        this.maxEmitPower = 1000;
+        this.isWarping = !this.isWarping;
+        if (this.isWarping) {
+            this.emitRate = 2000;
+            this.minLifeTime = 2;
+            this.maxLifeTime = 2;
+            this.minEmitPower = 500;
+            this.maxEmitPower = 500;
+            this.reset();
+        } else {
+            this.emitRate = 500;
+            this.minLifeTime = 10;
+            this.maxLifeTime = 10;
+            this.minEmitPower = 100;
+            this.maxEmitPower = 100;
+            this.reset();
+        }
     }
 }
