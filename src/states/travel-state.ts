@@ -32,9 +32,9 @@ export default class TravelState extends State {
         planets.start();
 
         const planets1: PlanetParticles = new PlanetParticles(this.scene);
-        planets1.emitter = this.spaceship.position.add(new Vector3(-100, 50, 100));
+        planets1.emitter = this.spaceship.position.add(new Vector3(-100, 50, 5_000));
         planets1.speed = 10;
-        planets1.recycleDepth = -200;
+        planets1.recycleDepth = -5_100;
         planets1.start();
 
         const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50);
