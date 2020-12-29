@@ -39,9 +39,9 @@ export default class TravelState extends State {
         planets1.recycleDepth = -5_100;
         planets1.start();
 
-        const solidStars: WarpspeedStarsSolidParticles = new WarpspeedStarsSolidParticles(this.scene);
+        const solidStars: WarpspeedStarsSolidParticles = new WarpspeedStarsSolidParticles(this.scene, 500, 75);
         solidStars.emitter = this.spaceship.position.add(new Vector3(0, 0, 500));
-        solidStars.speed = 4;
+        solidStars.speed = 5;
         solidStars.recycleDepth = -600;
         solidStars.start();
 
