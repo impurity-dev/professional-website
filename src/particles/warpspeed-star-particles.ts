@@ -13,8 +13,6 @@ export default class WarpspeedStarParticles extends ParticleSystem {
         this.maxEmitPower = 100;
         this.updateSpeed = 0.05;
         this.emitRate = 500;
-        this.preWarmCycles = 100;
-        this.preWarmStepOffset = 5;
         this.minSize = 1;
         this.maxSize = 1;
         this.addColorGradient(0, new Color4(0, 0, 1, 0.5));

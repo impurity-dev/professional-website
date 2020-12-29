@@ -23,6 +23,10 @@ export default class GasCloudParticles extends ParticleSystem {
         this.addAngularSpeedGradient(0.2, -1, 1);
         this.addAngularSpeedGradient(1, -0.5, 0.5);
         this.setColorsAndEmit();
+    }
+
+    public start(delay?: number): void {
+        super.start(delay);
         setInterval(() => this.setColorsAndEmit(), 50 * randomNumberBetween(100, 200));
     }
 

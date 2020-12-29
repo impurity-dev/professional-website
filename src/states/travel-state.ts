@@ -5,7 +5,7 @@ import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
 import PlanetParticles from '../particles/planet-particles';
 import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles';
-import WarpspeedStarParticles from '../particles/warpspeed-particles';
+import WarpspeedStarParticles from '../particles/warpspeed-star-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
@@ -44,11 +44,11 @@ export default class TravelState extends State {
 
         const warpspeedStars: WarpspeedStarParticles = new WarpspeedStarParticles(this.scene, 50, 50);
         warpspeedStars.emitter = warpspeedAnchor as any;
-        warpspeedStars.start();
+        warpspeedStars.start(2_000);
 
         const warpspeedClouds: WarpspeedCloudParticles = new WarpspeedCloudParticles(this.scene, 50, 50);
         warpspeedClouds.emitter = warpspeedAnchor as any;
-        warpspeedClouds.start();
+        warpspeedClouds.start(1_000);
 
         const frameRate = 64;
         this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));
