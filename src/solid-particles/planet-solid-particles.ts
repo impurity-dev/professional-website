@@ -1,6 +1,6 @@
-import { Color4, MeshBuilder, Scalar, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
+import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
 
-export default class PlanetParticles extends SolidParticleSystem {
+export default class PlanetSolidParticles extends SolidParticleSystem {
     public speed = 1;
     public recycleDepth: number = 1;
 
@@ -9,7 +9,7 @@ export default class PlanetParticles extends SolidParticleSystem {
     }
 
     constructor(readonly scene: Scene) {
-        super('PlanetParticles', scene);
+        super('PlanetSolidParticles', scene);
 
         const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 50 });
         this.addShape(sphere, 1);

@@ -1,9 +1,9 @@
-import { Color4, ParticleSystem, Scene, SphereParticleEmitter, Texture, Vector3 } from '@babylonjs/core';
-import { randomColor, randomNumberBetween } from '../utils';
+import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
+import { randomColor, randomIntBetween } from '../utils';
 
 export default class GasCloudParticles extends ParticleSystem {
     constructor(readonly scene: Scene, radius: number, direction1: Vector3, direction2: Vector3) {
-        super('GasClouds', 2500, scene);
+        super('GasCloudParticles', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.particleEmitterType = this.createDirectedSphereEmitter(radius, direction1, direction2);
         this.particleTexture = fogTexture.clone();
@@ -23,7 +23,11 @@ export default class GasCloudParticles extends ParticleSystem {
         this.addAngularSpeedGradient(0.2, -1, 1);
         this.addAngularSpeedGradient(1, -0.5, 0.5);
         this.setColorsAndEmit();
-        setInterval(() => this.setColorsAndEmit(), 50 * randomNumberBetween(100, 200));
+    }
+
+    public start(delay?: number): void {
+        super.start(delay);
+        setInterval(() => this.setColorsAndEmit(), 50 * randomIntBetween(100, 200));
     }
 
     private setColorsAndEmit(): void {
@@ -37,7 +41,7 @@ export default class GasCloudParticles extends ParticleSystem {
         this.addColorGradient(0.1, this.changeAlpha(color1, 1), this.changeAlpha(color2, 1));
         this.addColorGradient(0.8, this.changeAlpha(color1, 0.8), this.changeAlpha(color2, 0.8));
         this.addColorGradient(1, this.changeAlpha(color1, 0.5), this.changeAlpha(color2, 0.5));
-        this.manualEmitCount = randomNumberBetween(10, 75);
+        this.manualEmitCount = randomIntBetween(10, 75);
     }
 
     private changeAlpha(color: Color4, alpha: number): Color4 {
