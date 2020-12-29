@@ -1,10 +1,11 @@
-import { Color4, FollowCamera, HemisphericLight, Scene, Vector3, TransformNode } from '@babylonjs/core';
+import { Color4, FollowCamera, HemisphericLight, Scene, TransformNode, Vector3 } from '@babylonjs/core';
 import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation';
 import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
-import WarpSpeedParticles from '../particles/warpspeed-particles';
 import PlanetParticles from '../particles/planet-particles';
+import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles';
+import WarpspeedStarParticles from '../particles/warpspeed-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
@@ -37,12 +38,17 @@ export default class TravelState extends State {
         planets1.recycleDepth = -5_100;
         planets1.start();
 
-        const warpspeed: WarpSpeedParticles = new WarpSpeedParticles(this.scene, 50, 50);
         const warpspeedAnchor = new TransformNode('Warpspeed Emitter Anchor');
         warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 25, 500));
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
-        warpspeed.emitter = warpspeedAnchor as any;
-        warpspeed.start();
+
+        const warpspeedStars: WarpspeedStarParticles = new WarpspeedStarParticles(this.scene, 50, 50);
+        warpspeedStars.emitter = warpspeedAnchor as any;
+        warpspeedStars.start();
+
+        const warpspeedClouds: WarpspeedCloudParticles = new WarpspeedCloudParticles(this.scene, 50, 50);
+        warpspeedClouds.emitter = warpspeedAnchor as any;
+        warpspeedClouds.start();
 
         const frameRate = 64;
         this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));
@@ -56,7 +62,8 @@ export default class TravelState extends State {
                 this.goToOrbit();
             },
             () => {
-                warpspeed.toggleWarp();
+                warpspeedStars.toggleWarp();
+                warpspeedClouds.toggleWarp();
             },
             () => {
                 this.goToStart();
