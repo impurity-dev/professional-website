@@ -6,8 +6,10 @@ export default abstract class State {
     private _scene: Scene;
 
     protected set scene(newScene: Scene) {
+        const oldScene = this._scene;
         this._scene = newScene;
         if (window.location.href.includes('localhost')) this.attachInspector(this._scene);
+        if (!!oldScene) oldScene.dispose();
     }
 
     protected get scene(): Scene {

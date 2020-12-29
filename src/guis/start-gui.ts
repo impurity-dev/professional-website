@@ -1,5 +1,5 @@
 import { Scene } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
+import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import createButton from './button';
 
 export default class StartGui {

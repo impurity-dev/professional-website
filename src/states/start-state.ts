@@ -68,6 +68,5 @@ export default class StartState extends State {
 
     async goToTravel(): Promise<void> {
         await this.gameManager.setState(new TravelState(this.gameManager));
-        this.dispose();
     }
 }
