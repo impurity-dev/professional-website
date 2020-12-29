@@ -1,4 +1,4 @@
-import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
+import { Color4, GlowLayer, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
 import { randomPointOnCylinder } from '../utils';
 
 export default class WarpspeedStarsSolidParticles extends SolidParticleSystem {
@@ -16,8 +16,8 @@ export default class WarpspeedStarsSolidParticles extends SolidParticleSystem {
         this.height = height;
         this.radius = radius;
 
-        const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 0.5, segments: 1 });
-        this.addShape(sphere, 1000);
+        const sphere = MeshBuilder.CreateSphere('Sphere', { diameter: 0.5, segments: 1 });
+        this.addShape(sphere, 1_000);
         sphere.dispose();
 
         this.buildMesh();
@@ -44,15 +44,15 @@ export default class WarpspeedStarsSolidParticles extends SolidParticleSystem {
     }
 
     public initParticles(): void {
-        for (let p = 0; p < this.nbParticles; p++) {
-            this.recycleParticle(this.particles[p]);
-            this.particles[p].color = new Color4(1, 1, 1, 1);
+        for (let i = 0; i < this.nbParticles; i++) {
+            this.recycleParticle(this.particles[i]);
         }
     }
 
     public recycleParticle(particle: SolidParticle): SolidParticle {
         particle.position = randomPointOnCylinder(this.height, this.radius);
         particle.scale = new Vector3(1, 1, 1);
+        particle.color = new Color4(1, 1, 1, 1);
         return particle;
     }
 }
