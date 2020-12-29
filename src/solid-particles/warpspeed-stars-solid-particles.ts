@@ -56,7 +56,6 @@ export default class WarpspeedStarsSolidParticles extends SolidParticleSystem {
         const x = r * Math.cos(theta);
         const y = r * Math.sin(theta);
         const z = randomNumberBetween(0, height);
-        console.debug(`S: ${s} Theta: ${theta} R: ${r}`);
         return new Vector3(x, y, z);
     }
 }
