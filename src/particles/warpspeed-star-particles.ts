@@ -9,8 +9,8 @@ export default class WarpspeedStarParticles extends ParticleSystem {
         this.minLifeTime = 10;
         this.maxLifeTime = 10;
         this.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-        this.minEmitPower = 100;
-        this.maxEmitPower = 100;
+        this.minEmitPower = 200;
+        this.maxEmitPower = 200;
         this.updateSpeed = 0.05;
         this.emitRate = 500;
         this.minSize = 1;
