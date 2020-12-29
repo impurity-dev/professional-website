@@ -3,13 +3,14 @@ import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillatio
 import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import TravelGui from '../guis/travel-gui';
-import PlanetParticles from '../particles/planet-particles';
+import PlanetSolidParticles from '../solid-particles/planet-solid-particles';
 import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles';
 import WarpspeedStarParticles from '../particles/warpspeed-star-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
 import State from './state';
+import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles';
 
 export default class TravelState extends State {
     private spaceship: SpaceShipEntity;
@@ -26,17 +27,23 @@ export default class TravelState extends State {
         this.camera.setTarget(this.spaceship.position.add(new Vector3(0, 0, 250)));
         this.scene.activeCamera = this.camera;
 
-        const planets: PlanetParticles = new PlanetParticles(this.scene);
+        const planets: PlanetSolidParticles = new PlanetSolidParticles(this.scene);
         planets.emitter = this.spaceship.position.add(new Vector3(100, 50, 2_000));
         planets.speed = 4;
         planets.recycleDepth = -2_100;
         planets.start();
 
-        const planets1: PlanetParticles = new PlanetParticles(this.scene);
+        const planets1: PlanetSolidParticles = new PlanetSolidParticles(this.scene);
         planets1.emitter = this.spaceship.position.add(new Vector3(-100, 50, 5_000));
         planets1.speed = 10;
         planets1.recycleDepth = -5_100;
         planets1.start();
+
+        const solidStars: WarpspeedStarsSolidParticles = new WarpspeedStarsSolidParticles(this.scene);
+        solidStars.emitter = this.spaceship.position.add(new Vector3(0, 0, 500));
+        solidStars.speed = 4;
+        solidStars.recycleDepth = -600;
+        solidStars.start();
 
         const warpspeedAnchor = new TransformNode('Warpspeed Emitter Anchor');
         warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 25, 500));

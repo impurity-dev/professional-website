@@ -1,6 +1,7 @@
-import { Color4, MeshBuilder, Scalar, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
+import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
+import { randomNumberBetween } from '../utils';
 
-export default class PlanetParticles extends SolidParticleSystem {
+export default class WarpspeedStarsSolidParticles extends SolidParticleSystem {
     public speed = 1;
     public recycleDepth: number = 1;
 
@@ -9,9 +10,9 @@ export default class PlanetParticles extends SolidParticleSystem {
     }
 
     constructor(readonly scene: Scene) {
-        super('PlanetParticles', scene);
+        super('WarpspeedStarsSolidParticles', scene);
 
-        const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 50 });
+        const sphere = MeshBuilder.CreateSphere('sphere', { diameter: 5 });
         this.addShape(sphere, 1);
         sphere.dispose();
 
@@ -43,8 +44,19 @@ export default class PlanetParticles extends SolidParticleSystem {
     }
 
     public recycleParticle(particle: SolidParticle): SolidParticle {
-        particle.position = new Vector3(particle.position.x, particle.position.y, this.mesh.position.z);
+        particle.position = this.getRandomPoint(50, 50);
         particle.color = new Color4(Math.random(), Math.random(), Math.random(), 1);
         return particle;
+    }
+
+    public getRandomPoint(height: number, radius: number): Vector3 {
+        const s = randomNumberBetween(0, 1);
+        const theta = randomNumberBetween(0, 2 * Math.PI);
+        const r = Math.sqrt(s) * radius;
+        const x = r * Math.cos(theta);
+        const y = r * Math.sin(theta);
+        const z = randomNumberBetween(0, height);
+        console.debug(`S: ${s} Theta: ${theta} R: ${r}`);
+        return new Vector3(x, y, z);
     }
 }

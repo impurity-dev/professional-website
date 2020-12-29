@@ -4,7 +4,7 @@ export default class WarpspeedCloudParticles extends ParticleSystem {
     private isWarping: boolean = false;
 
     constructor(readonly scene: Scene, radius: number, height: number) {
-        super('WarpSpeed', 10_000, scene);
+        super('WarpspeedCloudParticles', 10_000, scene);
         this.particleTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.minLifeTime = 2;
         this.maxLifeTime = 2;

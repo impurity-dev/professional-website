@@ -9,8 +9,12 @@ export function attachInspector(scene: Scene): void {
     });
 }
 
-export function randomNumberBetween(min: number, max: number): number {
+export function randomIntBetween(min: number, max: number): number {
     return Math.floor(Math.random() * max) + min;
+}
+
+export function randomNumberBetween(min: number, max: number): number {
+    return Math.random() * max + min;
 }
 
 export function randomColor(x?: number, y?: number, z?: number, a?: number): Color4 {
