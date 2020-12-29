@@ -6,10 +6,8 @@ export default abstract class State {
     private _scene: Scene;
 
     protected set scene(newScene: Scene) {
-        const oldScene = this._scene;
         this._scene = newScene;
         if (window.location.href.includes('localhost')) this.attachInspector(this._scene);
-        if (!!oldScene) oldScene.dispose();
     }
 
     protected get scene(): Scene {
@@ -36,6 +34,7 @@ export default abstract class State {
     }
 
     protected dispose(): void {
+        console.debug('Scene Disposed');
         window.removeEventListener('keydown', this.inspectorEventListener);
         this.scene.detachControl();
         this.scene.dispose();

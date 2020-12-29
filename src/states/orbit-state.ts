@@ -28,5 +28,6 @@ export default class Orbit extends State {
 
     async goToTravel(): Promise<void> {
         this.gameManager.setState(new TravelState(this.gameManager));
+        this.dispose();
     }
 }
