@@ -1,11 +1,16 @@
-import { TransformNode, Scene, Mesh } from '@babylonjs/core';
+import { Color3, Mesh, MeshBuilder, Scene, Texture } from '@babylonjs/core';
+import { LavaMaterial } from '@babylonjs/materials';
 
-export default class PlanetEntity extends TransformNode {
+export default class PlanetEntity {
     public readonly sphere: Mesh;
 
-    constructor(private readonly scene: Scene, id: string) {
-        super(id);
-        const sphere: Mesh = Mesh.CreateSphere(`${id} Sphere`, 10, 1, scene);
-        sphere.parent = this;
+    constructor(private readonly scene: Scene, diameter: number) {
+        const sphere: Mesh = MeshBuilder.CreateSphere('Sphere', { diameter });
+        const lavaMaterial = new LavaMaterial('Lava', this.scene);
+        lavaMaterial.noiseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/cloud.png', this.scene); // Set the bump texture
+        lavaMaterial.diffuseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/lavatile.jpg', this.scene); // Set the diffuse texture
+        lavaMaterial.speed = 1.5;
+        lavaMaterial.fogColor = new Color3(1, 0, 0);
+        sphere.material = lavaMaterial;
     }
 }
