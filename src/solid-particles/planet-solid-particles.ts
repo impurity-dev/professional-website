@@ -21,7 +21,7 @@ export default class PlanetSolidParticles extends SolidParticleSystem {
         lavaMaterial.noiseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/cloud.png', this.scene); // Set the bump texture
         lavaMaterial.diffuseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/lavatile.jpg', this.scene); // Set the diffuse texture
         lavaMaterial.speed = 0.25;
-        lavaMaterial.fogColor = new Color3(1, 0, 0);
+        lavaMaterial.fogColor = new Color3(0.5, 0, 0);
         mesh.material = lavaMaterial;
     }
 
