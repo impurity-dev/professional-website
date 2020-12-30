@@ -32,6 +32,7 @@ module.exports = (env, argv) => {
             }),
             new CopyPlugin({
                 patterns: [
+                    { from: 'favicon.ico', to: 'favicon.ico' },
                     { from: 'public/assets', to: 'assets' },
                     { from: 'public/textures', to: 'textures' },
                 ],
