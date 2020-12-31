@@ -35,6 +35,10 @@ export default abstract class State {
         throw new Error('Go to Start not implemented');
     }
 
+    async goToMap(): Promise<void> {
+        throw new Error('Go to Map not implemented');
+    }
+
     public dispose(): void {
         console.debug('Scene Disposed');
         window.removeEventListener('keydown', this.inspectorEventListener);
