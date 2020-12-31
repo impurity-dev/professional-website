@@ -1,4 +1,5 @@
 import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import PlanetEntity from '../entities/planet-entity';
 import SpaceShipEntity from '../entities/spaceship-entity';
 import OrbitGui from '../guis/orbit-gui';
@@ -30,6 +31,10 @@ export default class Orbit extends State {
         const planetDiameter = 1000;
         const planet = new PlanetEntity(this.scene, planetDiameter);
         planet.position = this.spaceship.position.add(new Vector3(-(planetDiameter / 2 + 100), -50, -100));
+
+        const shipAnimation = new ShipRockingAnimation(10);
+        this.spaceship.animations.push(shipAnimation);
+        this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         let angle = 0;
         this.scene.registerBeforeRender(function () {
