@@ -20,23 +20,4 @@ export default class WarpspeedStarParticles extends ParticleSystem {
         this.addColorGradient(1, new Color4(1, 0, 1, 0));
         this.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
     }
-
-    public toggleWarp(): void {
-        this.isWarping = !this.isWarping;
-        if (this.isWarping) {
-            this.emitRate = 2000;
-            this.minLifeTime = 2;
-            this.maxLifeTime = 2;
-            this.minEmitPower = 500;
-            this.maxEmitPower = 500;
-            this.reset();
-        } else {
-            this.emitRate = 500;
-            this.minLifeTime = 10;
-            this.maxLifeTime = 10;
-            this.minEmitPower = 100;
-            this.maxEmitPower = 100;
-            this.reset();
-        }
-    }
 }

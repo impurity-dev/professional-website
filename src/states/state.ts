@@ -14,7 +14,9 @@ export default abstract class State {
         return this._scene;
     }
 
-    constructor(protected gameManager: GameManager) {}
+    constructor(protected gameManager: GameManager) {
+        console.debug('Scene Created');
+    }
 
     render(): void {
         if (!this.scene) throw new Error('Scene has not been initialized');
@@ -33,7 +35,8 @@ export default abstract class State {
         throw new Error('Go to Start not implemented');
     }
 
-    protected dispose(): void {
+    public dispose(): void {
+        console.debug('Scene Disposed');
         window.removeEventListener('keydown', this.inspectorEventListener);
         this.scene.detachControl();
         this.scene.dispose();

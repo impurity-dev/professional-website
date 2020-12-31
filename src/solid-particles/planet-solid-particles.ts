@@ -1,4 +1,5 @@
-import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
+import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3, Texture, Color3 } from '@babylonjs/core';
+import { LavaMaterial } from '@babylonjs/materials';
 
 export default class PlanetSolidParticles extends SolidParticleSystem {
     public speed = 1;
@@ -15,7 +16,13 @@ export default class PlanetSolidParticles extends SolidParticleSystem {
         this.addShape(sphere, 1);
         sphere.dispose();
 
-        this.buildMesh();
+        const mesh = this.buildMesh();
+        const lavaMaterial = new LavaMaterial('Lava', this.scene);
+        lavaMaterial.noiseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/cloud.png', this.scene); // Set the bump texture
+        lavaMaterial.diffuseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/lavatile.jpg', this.scene); // Set the diffuse texture
+        lavaMaterial.speed = 0.25;
+        lavaMaterial.fogColor = new Color3(0.5, 0, 0);
+        mesh.material = lavaMaterial;
     }
 
     public start(): void {
@@ -44,7 +51,7 @@ export default class PlanetSolidParticles extends SolidParticleSystem {
 
     public recycleParticle(particle: SolidParticle): SolidParticle {
         particle.position = new Vector3(particle.position.x, particle.position.y, this.mesh.position.z);
-        particle.color = new Color4(Math.random(), Math.random(), Math.random(), 1);
+        // particle.color = new Color4(Math.random(), Math.random(), Math.random(), 1);
         return particle;
     }
 }

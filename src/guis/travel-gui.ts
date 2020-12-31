@@ -1,8 +1,10 @@
-import { Scene, TransformNode } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Control, StackPanel } from '@babylonjs/gui';
+import { Scene, TransformNode, Color3 } from '@babylonjs/core';
+import { AdvancedDynamicTexture, Control, DisplayGrid, StackPanel } from '@babylonjs/gui';
 import createButton from './button';
 
 export default class TravelGui {
+    private gui: AdvancedDynamicTexture;
+
     constructor(
         readonly scene: Scene,
         readonly anchor: TransformNode,
@@ -10,13 +12,33 @@ export default class TravelGui {
         readonly onWarp: () => void,
         readonly onStart: () => void,
     ) {
-        const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
+        this.gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
 
         const panel = new StackPanel('Button Stack Panel');
         panel.isVertical = false;
         panel.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         panel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
-        gui.addControl(panel);
+        this.gui.addControl(panel);
+
+        const mapBtn = createButton('map', 'MAP');
+        const displayGrid = new DisplayGrid();
+        displayGrid.width = '500px';
+        displayGrid.height = '500px';
+        let mapIsOpen = false;
+        mapBtn.onPointerDownObservable.add(() => {
+            mapIsOpen = !mapIsOpen;
+            if (mapIsOpen) {
+                this.gui.addControl(displayGrid);
+            } else {
+                this.gui.removeControl(displayGrid);
+            }
+        });
+        mapBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+        mapBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
+        mapBtn.paddingRight = '5px';
+        mapBtn.paddingLeft = '5px';
+        mapBtn.top = '-14px';
+        this.gui.addControl(mapBtn);
 
         const orbitBtn = createButton('orbit', 'ORBIT');
         orbitBtn.onPointerDownObservable.add(onOrbit);

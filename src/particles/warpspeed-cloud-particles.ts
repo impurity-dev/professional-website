@@ -2,6 +2,7 @@ import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core
 
 export default class WarpspeedCloudParticles extends ParticleSystem {
     private isWarping: boolean = false;
+    private emitHandler: any;
 
     constructor(readonly scene: Scene, radius: number, height: number) {
         super('WarpspeedCloudParticles', 10_000, scene);
@@ -23,27 +24,12 @@ export default class WarpspeedCloudParticles extends ParticleSystem {
 
     public start(delay?: number): void {
         super.start(delay);
-        setInterval(() => {
-            this.manualEmitCount = 500;
-        }, 400);
+        this.emitHandler = setInterval(() => (this.manualEmitCount = 500), 400);
     }
 
-    public toggleWarp(): void {
-        this.isWarping = !this.isWarping;
-        if (this.isWarping) {
-            this.emitRate = 2000;
-            this.minLifeTime = 2;
-            this.maxLifeTime = 2;
-            this.minEmitPower = 500;
-            this.maxEmitPower = 500;
-            this.reset();
-        } else {
-            this.emitRate = 500;
-            this.minLifeTime = 10;
-            this.maxLifeTime = 10;
-            this.minEmitPower = 100;
-            this.maxEmitPower = 100;
-            this.reset();
-        }
+    public stop(stopSubEmitters?: boolean): void {
+        super.stop(stopSubEmitters);
+        clearInterval(this.emitHandler);
+        this.emitHandler = 0;
     }
 }

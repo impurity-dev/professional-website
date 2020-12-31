@@ -27,6 +27,7 @@ module.exports = (env, argv) => {
         plugins: [
             new HtmlWebpackPlugin({
                 inject: true,
+                favicon: 'public/favicon.ico',
                 publicPath: argv.mode === 'production' ? '/professional-website/' : '/',
                 template: path.resolve(appDirectory, 'public/index.html'),
             }),
