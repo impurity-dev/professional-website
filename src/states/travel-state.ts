@@ -15,6 +15,7 @@ import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-sol
 export default class TravelState extends State {
     private spaceship: SpaceShipEntity;
     private camera: FollowCamera;
+    private isWarping: boolean = false;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -51,11 +52,9 @@ export default class TravelState extends State {
 
         const warpspeedStars: WarpspeedStarParticles = new WarpspeedStarParticles(this.scene, 50, 50);
         warpspeedStars.emitter = warpspeedAnchor as any;
-        warpspeedStars.start(2_000);
 
         const warpspeedClouds: WarpspeedCloudParticles = new WarpspeedCloudParticles(this.scene, 50, 50);
         warpspeedClouds.emitter = warpspeedAnchor as any;
-        warpspeedClouds.start(1_000);
 
         const frameRate = 64;
         this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));
@@ -69,8 +68,11 @@ export default class TravelState extends State {
                 this.goToOrbit();
             },
             () => {
-                warpspeedStars.toggleWarp();
-                warpspeedClouds.toggleWarp();
+                this.isWarping = !this.isWarping;
+                if (this.isWarping) {
+                    warpspeedStars.start(2_000);
+                    warpspeedClouds.start(1_000);
+                }
             },
             () => {
                 this.goToStart();
