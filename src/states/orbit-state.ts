@@ -1,4 +1,5 @@
 import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import PlanetRotationAnimation from '../animations/planet-rotation-animation';
 import ShipRockingAnimation from '../animations/ship-rocking-animation';
 import PlanetEntity from '../entities/planet-entity';
 import SpaceShipEntity from '../entities/spaceship-entity';
@@ -8,6 +9,7 @@ import State from './state';
 import TravelState from './travel-state';
 
 export default class Orbit extends State {
+    private planet: PlanetEntity;
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;
 
@@ -29,18 +31,16 @@ export default class Orbit extends State {
         this.scene.activeCamera = this.camera;
 
         const planetDiameter = 1000;
-        const planet = new PlanetEntity(this.scene, planetDiameter);
-        planet.position = this.spaceship.position.add(new Vector3(-(planetDiameter / 2 + 100), -50, -100));
+        this.planet = new PlanetEntity(this.scene, planetDiameter);
+        this.planet.position = this.spaceship.position.add(new Vector3(-(planetDiameter / 2 + 100), -50, -100));
 
         const shipAnimation = new ShipRockingAnimation(10);
         this.spaceship.animations.push(shipAnimation);
         this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
-        let angle = 0;
-        this.scene.registerBeforeRender(function () {
-            planet.rotation.y = angle;
-            angle += 0.00025;
-        });
+        const planetAnimation = new PlanetRotationAnimation(10);
+        this.planet.animations.push(planetAnimation);
+        this.scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
 
         new OrbitGui(this.scene, () => {
             this.goToTravel();
