@@ -1,35 +1,60 @@
-import { Mesh, Color4, HemisphericLight, Scene, Vector3, MeshBuilder, FreeCamera } from '@babylonjs/core';
+import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera } from '@babylonjs/core';
+import MapRingEntity from '../entities/map-ring-entity';
+import MapSunEntity from '../entities/map-sun-entity';
+import PlanetEntity from '../entities/planet-entity';
 import MapGui from '../guis/map-gui';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
 import TravelState from './travel-state';
 
 export default class MapState extends State {
-    private camera: FreeCamera;
+    private camera: FollowCamera;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
         engine.displayLoadingUI();
         this.scene = new Scene(engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
-        this.camera = new FreeCamera('Camera', Vector3.Zero(), this.scene);
+        this.camera = new FollowCamera('Camera', Vector3.Zero(), this.scene);
         this.scene.activeCamera = this.camera;
-        this.camera.attachControl(this.gameManager.canvas, true);
 
-        const sun = Mesh.CreateSphere('Sun', 10, 100, this.scene);
-        sun.position = this.camera.position.add(new Vector3(0, 50, 1_000));
+        const sun = new MapSunEntity(this.scene, 100);
+        sun.position = this.camera.position.add(new Vector3(0, 100, 1_000));
 
-        const innerDisc = MeshBuilder.CreateTube(
-            'tube',
-            {
-                path: [new Vector3(0, 0, 0), new Vector3(0, 0.5, 0)],
-                radius: 200,
-                sideOrientation: Mesh.DOUBLESIDE,
-            },
-            this.scene,
-        );
-        innerDisc.position = sun.position.subtract(new Vector3(0, 0, 0));
-        innerDisc.rotation.addInPlace(new Vector3(-Math.PI / 8, 0, 0));
+        const rotation = new Vector3(-Math.PI / 8, 0, 0);
+
+        const innerRadius = 200;
+        const innerDisc = new MapRingEntity(this.scene, innerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        innerDisc.position = sun.position.clone();
+        innerDisc.rotation.addInPlace(rotation);
+
+        const innerPlanet = new PlanetEntity(this.scene, 50);
+        innerPlanet.position = new Vector3(0, 0, innerRadius);
+        innerPlanet.parent = innerDisc;
+
+        const middleRadius = 400;
+        const middleDisc = new MapRingEntity(this.scene, middleRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        middleDisc.position = sun.position.clone();
+        middleDisc.rotation.addInPlace(rotation);
+
+        const middlePlanet = new PlanetEntity(this.scene, 50);
+        middlePlanet.position = new Vector3(0, 0, middleRadius);
+        middlePlanet.parent = middleDisc;
+
+        const outerRadius = 600;
+        const outerDisc = new MapRingEntity(this.scene, outerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        outerDisc.position = sun.position.clone();
+        outerDisc.rotation.addInPlace(rotation);
+
+        const outerPlanet = new PlanetEntity(this.scene, 50);
+        outerPlanet.position = new Vector3(0, 0, outerRadius);
+        outerPlanet.parent = outerDisc;
+
+        this.scene.registerAfterRender(() => {
+            innerDisc.rotate(new Vector3(0, 1, 0), 0.004, Space.LOCAL);
+            middleDisc.rotate(new Vector3(0, 1, 0), -0.005, Space.LOCAL);
+            outerDisc.rotate(new Vector3(0, 1, 0), 0.005, Space.LOCAL);
+        });
 
         new MapGui(this.scene, () => {
             this.goToTravel();
