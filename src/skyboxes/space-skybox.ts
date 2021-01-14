@@ -15,5 +15,6 @@ export default class SpaceSkybox {
         const skybox = MeshBuilder.CreateBox(`${id} Mesh`, { size: 10000 }, scene);
         skybox.infiniteDistance = true;
         skybox.material = skyboxMaterial;
+        skybox.metadata = 'skybox';
     }
 }

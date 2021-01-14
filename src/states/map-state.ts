@@ -1,4 +1,4 @@
-import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera } from '@babylonjs/core';
+import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera, Matrix } from '@babylonjs/core';
 import MapRingEntity from '../entities/map-ring-entity';
 import MapSunEntity from '../entities/map-sun-entity';
 import PlanetEntity from '../entities/planet-entity';
@@ -55,6 +55,20 @@ export default class MapState extends State {
             middleDisc.rotate(new Vector3(0, 1, 0), -0.005, Space.LOCAL);
             outerDisc.rotate(new Vector3(0, 1, 0), 0.005, Space.LOCAL);
         });
+
+        const checkMouseSelection = () => {
+            const ray = this.scene.createPickingRay(this.scene.pointerX, this.scene.pointerY, Matrix.Identity(), this.camera);
+            const hit = this.scene.pickWithRay(ray);
+            const pickedMesh = hit.pickedMesh;
+
+            if (pickedMesh && pickedMesh.metadata != 'skybox' && pickedMesh.metadata == 'planet') {
+                pickedMesh.scaling = new Vector3(2, 2, 2);
+            }
+        };
+
+        this.scene.onPointerMove = () => {
+            checkMouseSelection();
+        };
 
         new MapGui(this.scene, () => {
             this.goToTravel();

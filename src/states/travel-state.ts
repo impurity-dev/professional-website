@@ -44,7 +44,6 @@ export default class TravelState extends State {
         solidStars.emitter = this.spaceship.position.add(new Vector3(0, 0, 500));
         solidStars.speed = 5;
         solidStars.recycleDepth = -600;
-        solidStars.start();
 
         const warpspeedAnchor = new TransformNode('Warpspeed Emitter Anchor');
         warpspeedAnchor.position = this.spaceship.position.add(new Vector3(0, 25, 500));
@@ -70,8 +69,9 @@ export default class TravelState extends State {
             () => {
                 this.isWarping = !this.isWarping;
                 if (this.isWarping) {
-                    warpspeedStars.start(2_000);
-                    warpspeedClouds.start(1_000);
+                    solidStars.start();
+                    warpspeedStars.start();
+                    warpspeedClouds.start();
                 }
             },
             () => {

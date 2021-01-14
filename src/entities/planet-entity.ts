@@ -15,5 +15,6 @@ export default class PlanetEntity extends TransformNode {
         lavaMaterial.speed = 1.5;
         lavaMaterial.fogColor = new Color3(1, 0, 0);
         sphere.material = lavaMaterial;
+        sphere.metadata = 'planet';
     }
 }
