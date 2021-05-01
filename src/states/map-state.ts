@@ -1,7 +1,7 @@
-import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera, Matrix } from '@babylonjs/core';
+import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera, Matrix, Color3 } from '@babylonjs/core';
+import MapPlanetEntity from '../entities/map-planet-entity';
 import MapRingEntity from '../entities/map-ring-entity';
 import MapSunEntity from '../entities/map-sun-entity';
-import PlanetEntity from '../entities/planet-entity';
 import MapGui from '../guis/map-gui';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
@@ -28,7 +28,7 @@ export default class MapState extends State {
         innerDisc.position = sun.position.clone();
         innerDisc.rotation.addInPlace(rotation);
 
-        const innerPlanet = new PlanetEntity(this.scene, 50);
+        const innerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(0, 1, 1));
         innerPlanet.position = new Vector3(0, 0, innerRadius);
         innerPlanet.parent = innerDisc;
 
@@ -37,7 +37,7 @@ export default class MapState extends State {
         middleDisc.position = sun.position.clone();
         middleDisc.rotation.addInPlace(rotation);
 
-        const middlePlanet = new PlanetEntity(this.scene, 50);
+        const middlePlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 1, 0));
         middlePlanet.position = new Vector3(0, 0, middleRadius);
         middlePlanet.parent = middleDisc;
 
@@ -46,7 +46,7 @@ export default class MapState extends State {
         outerDisc.position = sun.position.clone();
         outerDisc.rotation.addInPlace(rotation);
 
-        const outerPlanet = new PlanetEntity(this.scene, 50);
+        const outerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 0, 1));
         outerPlanet.position = new Vector3(0, 0, outerRadius);
         outerPlanet.parent = outerDisc;
 
