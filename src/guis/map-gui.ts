@@ -1,6 +1,6 @@
 import { Scene } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
-import createButton from './button';
+import createButton from './components/button';
 
 export default class MapGui {
     constructor(readonly scene: Scene, readonly onTravel: () => void) {

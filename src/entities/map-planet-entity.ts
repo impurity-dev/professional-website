@@ -9,15 +9,15 @@ export default class MapPlanetEntity extends TransformNode {
         super('Map Planet');
         const glowLayer = new GlowLayer('Map Planet Glow Layer', scene);
 
-        const innerSphere: Mesh = Mesh.CreateSphere('Inner Planet Map Sphere', this.segments, innerDiameter, scene);
-        innerSphere.material = this.innterSphereMateral;
-        innerSphere.parent = this;
+        this.sphere = Mesh.CreateSphere('Inner Planet Map Sphere', this.segments, innerDiameter, scene);
+        this.sphere.material = this.innterSphereMateral;
+        this.sphere.parent = this;
 
         const mapPlanetParticles: ParticleSystem = new MapPlanetParticles(scene, color, outerDiameter);
-        mapPlanetParticles.emitter = innerSphere;
+        mapPlanetParticles.emitter = this.sphere;
         mapPlanetParticles.start();
 
-        glowLayer.addIncludedOnlyMesh(innerSphere);
+        glowLayer.addIncludedOnlyMesh(this.sphere);
     }
 
     get innterSphereMateral(): Material {

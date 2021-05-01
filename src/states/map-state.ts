@@ -1,3 +1,4 @@
+import { AdvancedDynamicTexture } from '@babylonjs/gui';
 import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera, Matrix, Color3 } from '@babylonjs/core';
 import MapPlanetEntity from '../entities/map-planet-entity';
 import MapRingEntity from '../entities/map-ring-entity';
@@ -6,6 +7,7 @@ import MapGui from '../guis/map-gui';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
 import TravelState from './travel-state';
+import createMapPlanetLabel from '../guis/components/map-planet-label';
 
 export default class MapState extends State {
     private camera: FollowCamera;
@@ -49,6 +51,11 @@ export default class MapState extends State {
         const outerPlanet = new MapPlanetEntity(this.scene, 25, 100, new Color3(1, 0, 1));
         outerPlanet.position = new Vector3(0, 0, outerRadius);
         outerPlanet.parent = outerDisc;
+
+        const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
+        createMapPlanetLabel('Personal', innerPlanet.sphere, gui);
+        createMapPlanetLabel('Projects', middlePlanet.sphere, gui);
+        createMapPlanetLabel('Experience', outerPlanet.sphere, gui);
 
         this.scene.registerAfterRender(() => {
             innerDisc.rotate(new Vector3(0, 1, 0), 0.004, Space.LOCAL);
