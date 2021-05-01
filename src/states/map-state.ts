@@ -37,7 +37,7 @@ export default class MapState extends State {
         middleDisc.position = sun.position.clone();
         middleDisc.rotation.addInPlace(rotation);
 
-        const middlePlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 1, 0));
+        const middlePlanet = new MapPlanetEntity(this.scene, 5, 100, new Color3(1, 1, 0));
         middlePlanet.position = new Vector3(0, 0, middleRadius);
         middlePlanet.parent = middleDisc;
 
@@ -46,7 +46,7 @@ export default class MapState extends State {
         outerDisc.position = sun.position.clone();
         outerDisc.rotation.addInPlace(rotation);
 
-        const outerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 0, 1));
+        const outerPlanet = new MapPlanetEntity(this.scene, 25, 100, new Color3(1, 0, 1));
         outerPlanet.position = new Vector3(0, 0, outerRadius);
         outerPlanet.parent = outerDisc;
 

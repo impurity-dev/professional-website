@@ -1,10 +1,10 @@
-import { Mesh, MeshBuilder, Scene, Space, TransformNode, Vector3 } from '@babylonjs/core';
+import { Mesh, MeshBuilder, Scene, Space, TransformNode, Vector3, StandardMaterial, Color3 } from '@babylonjs/core';
 
 export default class MapRingEntity extends TransformNode {
     public readonly sphere: Mesh;
 
     constructor(private readonly scene: Scene, radius: number, path: Array<Vector3>) {
-        super('MapRing');
+        super('Map Ring');
         const ring: Mesh = MeshBuilder.CreateTube(
             'Map Ring Tube',
             {
@@ -15,6 +15,14 @@ export default class MapRingEntity extends TransformNode {
             },
             this.scene,
         );
+        ring.material = this.ringMaterial;
         ring.parent = this;
+    }
+
+    get ringMaterial(): StandardMaterial {
+        const material = new StandardMaterial('Map Ring Material', this.scene);
+        material.disableLighting = true;
+        material.emissiveColor = new Color3(1, 1, 1);
+        return material;
     }
 }
