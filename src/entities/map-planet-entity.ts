@@ -10,7 +10,11 @@ export default class MapPlanetEntity extends TransformNode {
         const glowLayer = new GlowLayer('Map Planet Glow Layer', scene);
 
         this.sphere = Mesh.CreateSphere('Inner Planet Map Sphere', this.segments, innerDiameter, scene);
-        this.sphere.material = this.innterSphereMateral;
+        this.sphere.material = this.innerSphereMateral;
+        this.sphere.metadata = {
+            type: 'map-planet',
+            goTo: () => console.log('HERHE'),
+        };
         this.sphere.parent = this;
 
         const mapPlanetParticles: ParticleSystem = new MapPlanetParticles(scene, color, outerDiameter);
@@ -22,7 +26,7 @@ export default class MapPlanetEntity extends TransformNode {
         glowLayer.addIncludedOnlyMesh(this.sphere);
     }
 
-    get innterSphereMateral(): Material {
+    get innerSphereMateral(): Material {
         const material = new StandardMaterial('Inner Planet Map Sphere Material', this.scene);
         material.alphaMode = Engine.ALPHA_COMBINE;
         material.disableLighting = true;

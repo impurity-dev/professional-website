@@ -1,4 +1,4 @@
-import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
+import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, TransformNode, Vector3, GlowLayer } from '@babylonjs/core';
 
 export default class MapRingEntity extends TransformNode {
     public readonly sphere: Mesh;
@@ -11,12 +11,16 @@ export default class MapRingEntity extends TransformNode {
                 path: path,
                 radius: radius,
                 sideOrientation: Mesh.DOUBLESIDE,
-                tessellation: 200,
+                tessellation: 1000,
             },
             this.scene,
         );
         ring.material = this.ringMaterial;
         ring.parent = this;
+
+        const glowLayer = new GlowLayer('Map Ring Glow Layer', this.scene);
+        glowLayer.addIncludedOnlyMesh(ring);
+        glowLayer.intensity = 0.5;
     }
 
     get ringMaterial(): StandardMaterial {

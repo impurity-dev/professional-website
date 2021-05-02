@@ -1,12 +1,12 @@
-import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4, MeshBuilder, Color3 } from '@babylonjs/core';
+import { Color3, Color4, Mesh, MeshBuilder, ParticleSystem, Scene, Texture } from '@babylonjs/core';
 
 export default class MapPlanetParticles extends ParticleSystem {
     public readonly fountain: Mesh;
 
     constructor(readonly scene: Scene, readonly color: Color3, readonly size: number) {
-        super('EngineParticles', 3, scene);
+        super('Map Planet Particles', 3, scene);
         this.particleTexture = new Texture('textures/hollow-flare.png', scene);
-        this.fountain = MeshBuilder.CreateBox('EngineFountain', { size: 50 });
+        this.fountain = MeshBuilder.CreateBox('Map Planet Fountain', { size: 50 });
         this.fountain.isVisible = false;
         this.isLocal = true;
         this.emitter = this.fountain;

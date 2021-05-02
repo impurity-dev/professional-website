@@ -57,31 +57,38 @@ export default class MapState extends State {
         createMapPlanetLabel('Projects', middlePlanet.sphere, gui);
         createMapPlanetLabel('Experience', outerPlanet.sphere, gui);
 
+        const DISC_AXIS = new Vector3(0, 1, 0);
+        let discSpeed = 0.06;
+        const INTERVAL = 100;
+        const discAnimationSpeedDecay = setInterval(() => {
+            if (discSpeed > 0.002) {
+                discSpeed -= 0.002;
+            } else {
+                clearInterval(discAnimationSpeedDecay);
+            }
+        }, INTERVAL);
         this.scene.registerAfterRender(() => {
-            innerDisc.rotate(new Vector3(0, 1, 0), 0.004, Space.LOCAL);
-            middleDisc.rotate(new Vector3(0, 1, 0), -0.005, Space.LOCAL);
-            outerDisc.rotate(new Vector3(0, 1, 0), 0.005, Space.LOCAL);
+            innerDisc.rotate(DISC_AXIS, discSpeed + 0.0005, Space.LOCAL);
+            middleDisc.rotate(DISC_AXIS, -discSpeed + 0.0005, Space.LOCAL);
+            outerDisc.rotate(DISC_AXIS, discSpeed, Space.LOCAL);
         });
 
-        const checkMouseSelection = () => {
+        this.scene.onPointerDown = () => {
             const ray = this.scene.createPickingRay(this.scene.pointerX, this.scene.pointerY, Matrix.Identity(), this.camera);
             const hit = this.scene.pickWithRay(ray);
             const pickedMesh = hit.pickedMesh;
 
-            if (pickedMesh && pickedMesh.metadata != 'skybox' && pickedMesh.metadata == 'planet') {
+            if (pickedMesh && pickedMesh.metadata != 'skybox' && pickedMesh.metadata?.type == 'map-planet') {
                 pickedMesh.scaling = new Vector3(2, 2, 2);
+                this.goToTravel();
             }
-        };
-
-        this.scene.onPointerMove = () => {
-            checkMouseSelection();
         };
 
         new MapGui(this.scene, () => {
             this.goToTravel();
         });
 
-        new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
+        // new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
 
         await this.scene.whenReadyAsync();
