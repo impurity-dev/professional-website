@@ -1,19 +1,32 @@
-import { Color3, Mesh, Scene, Texture, TransformNode } from '@babylonjs/core';
-import { LavaMaterial } from '@babylonjs/materials';
+import { Color3, Engine, GlowLayer, Material, Mesh, ParticleSystem, Scene, StandardMaterial, TransformNode } from '@babylonjs/core';
+import MapPlanetParticles from '../particles/map-planet-particles';
 
 export default class MapSunEntity extends TransformNode {
     public readonly sphere: Mesh;
+    private readonly segments = 100;
 
-    constructor(private readonly scene: Scene, diameter: number) {
-        super('MapSun');
-        const sphere: Mesh = Mesh.CreateSphere('Map Sun Sphere', 100, diameter, scene);
-        sphere.parent = this;
+    constructor(readonly scene: Scene, readonly innerDiameter: number, readonly outerDiameter: number, readonly color: Color3) {
+        super('Map Sun');
+        const glowLayer = new GlowLayer('Map Planet Glow Layer', scene);
 
-        const lavaMaterial = new LavaMaterial('Lava', this.scene);
-        lavaMaterial.noiseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/cloud.png', this.scene); // Set the bump texture
-        lavaMaterial.diffuseTexture = new Texture('https://www.babylonjs-playground.com/textures/lava/lavatile.jpg', this.scene); // Set the diffuse texture
-        lavaMaterial.speed = 1.5;
-        lavaMaterial.fogColor = new Color3(1, 0, 0);
-        sphere.material = lavaMaterial;
+        this.sphere = Mesh.CreateSphere('Inner Planet Map Sphere', this.segments, innerDiameter, scene);
+        this.sphere.material = this.innterSphereMateral;
+        this.sphere.parent = this;
+
+        const mapPlanetParticles: ParticleSystem = new MapPlanetParticles(scene, color, outerDiameter);
+        mapPlanetParticles.emitter = this.sphere;
+        mapPlanetParticles.preWarmCycles = 10;
+        mapPlanetParticles.preWarmStepOffset = 10;
+        mapPlanetParticles.start();
+
+        glowLayer.addIncludedOnlyMesh(this.sphere);
+    }
+
+    get innterSphereMateral(): Material {
+        const material = new StandardMaterial('Inner Sun Map Sphere Material', this.scene);
+        material.alphaMode = Engine.ALPHA_COMBINE;
+        material.disableLighting = true;
+        material.emissiveColor = this.color;
+        return material;
     }
 }

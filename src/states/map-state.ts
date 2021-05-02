@@ -1,13 +1,13 @@
+import { Color3, Color4, FollowCamera, HemisphericLight, Matrix, Scene, Space, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture } from '@babylonjs/gui';
-import { Color4, FreeCamera, HemisphericLight, Scene, Space, Vector3, FollowCamera, Matrix, Color3 } from '@babylonjs/core';
 import MapPlanetEntity from '../entities/map-planet-entity';
 import MapRingEntity from '../entities/map-ring-entity';
 import MapSunEntity from '../entities/map-sun-entity';
+import createMapPlanetLabel from '../guis/components/map-planet-label';
 import MapGui from '../guis/map-gui';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
 import TravelState from './travel-state';
-import createMapPlanetLabel from '../guis/components/map-planet-label';
 
 export default class MapState extends State {
     private camera: FollowCamera;
@@ -20,7 +20,7 @@ export default class MapState extends State {
         this.camera = new FollowCamera('Camera', Vector3.Zero(), this.scene);
         this.scene.activeCamera = this.camera;
 
-        const sun = new MapSunEntity(this.scene, 100);
+        const sun = new MapSunEntity(this.scene, 100, 200, new Color3(0, 1, 1));
         sun.position = this.camera.position.add(new Vector3(0, 100, 1_000));
 
         const rotation = new Vector3(-Math.PI / 8, 0, 0);
@@ -30,7 +30,7 @@ export default class MapState extends State {
         innerDisc.position = sun.position.clone();
         innerDisc.rotation.addInPlace(rotation);
 
-        const innerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(0, 1, 1));
+        const innerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 1, 0));
         innerPlanet.position = new Vector3(0, 0, innerRadius);
         innerPlanet.parent = innerDisc;
 
@@ -48,7 +48,7 @@ export default class MapState extends State {
         outerDisc.position = sun.position.clone();
         outerDisc.rotation.addInPlace(rotation);
 
-        const outerPlanet = new MapPlanetEntity(this.scene, 25, 100, new Color3(1, 0, 1));
+        const outerPlanet = new MapPlanetEntity(this.scene, 25, 100, new Color3(1, 1, 0));
         outerPlanet.position = new Vector3(0, 0, outerRadius);
         outerPlanet.parent = outerDisc;
 
