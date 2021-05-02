@@ -7,7 +7,7 @@ export default abstract class StateMachine {
         const oldState = this._state;
         this._state = state;
         await this._state.run();
-        if (!!oldState) oldState.dispose();
+        if (oldState) oldState.dispose();
     }
 
     public getState(): State {

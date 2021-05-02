@@ -1,33 +1,27 @@
 {
-    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
-    "plugins": ["prettier"],
     "env": {
         "es6": true,
         "node": true,
         "browser": true
     },
-    "parserOptions": {
-        "ecmaVersion": 6
-    },
+    "parserOptions": { "ecmaVersion": 6 },
     "ignorePatterns": ["node_modules/**", "dist/**", ".vscode/**", ".github/**", "package-lock.json"],
-    "rules": {
-        "prettier/prettier": ["error", { "singleQuote": true }],
-        "no-extra-boolean-cast": ["off"]
-    },
     "settings": {
-        "import/resolver": {
-            "webpack": {
-                "config": "./config/webpack.config.js"
-            }
-        }
+        "import/resolver": { "webpack": { "config": "./config/webpack.config.js" } }
     },
     "overrides": [
         {
-            "extends": ["plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"],
-            "files": ["*.ts", "*.tsx"],
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended",
+                "prettier"
+            ],
+            "plugins": ["@typescript-eslint", "prettier"],
+            "files": ["*.ts"],
             "parser": "@typescript-eslint/parser",
-            "plugins": ["@typescript-eslint"],
             "rules": {
+                "prettier/prettier": ["error"],
                 "@typescript-eslint/ban-types": "off",
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": "warn",
