@@ -21,7 +21,7 @@
     },
     "scripts": {
         "build": "webpack --mode=production",
-        "start": "webpack-dev-server --progress --colors --mode=development",
+        "start": "webpack serve --progress --mode=development",
         "test": "echo \"TODO: Tests\" && exit 0",
         "lint": "eslint ./**/*.{js,jsx,ts,tsx,.json}",
         "lint:fix": "npm run lint -- --fix"
