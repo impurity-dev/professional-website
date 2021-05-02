@@ -15,6 +15,8 @@ export default class MapPlanetEntity extends TransformNode {
 
         const mapPlanetParticles: ParticleSystem = new MapPlanetParticles(scene, color, outerDiameter);
         mapPlanetParticles.emitter = this.sphere;
+        mapPlanetParticles.preWarmCycles = 10;
+        mapPlanetParticles.preWarmStepOffset = 10;
         mapPlanetParticles.start();
 
         glowLayer.addIncludedOnlyMesh(this.sphere);
