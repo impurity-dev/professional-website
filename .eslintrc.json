@@ -11,6 +11,11 @@
     },
     "overrides": [
         {
+            "extends": ["eslint:recommended", "prettier"],
+            "plugins": ["prettier"],
+            "files": ["*.js"]
+        },
+        {
             "extends": [
                 "eslint:recommended",
                 "plugin:@typescript-eslint/eslint-recommended",
