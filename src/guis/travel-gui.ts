@@ -1,6 +1,6 @@
 import { Scene, TransformNode, Color3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Control, DisplayGrid, StackPanel } from '@babylonjs/gui';
-import createButton from './button';
+import createButton from './components/button';
 
 export default class TravelGui {
     private gui: AdvancedDynamicTexture;

@@ -2,7 +2,7 @@ import { Scene } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Control } from '@babylonjs/gui';
 import createButton from './components/button';
 
-export default class OrbitGui {
+export default class MapGui {
     constructor(readonly scene: Scene, readonly onTravel: () => void) {
         const gui = AdvancedDynamicTexture.CreateFullscreenUI('UI');
         gui.idealHeight = 720;

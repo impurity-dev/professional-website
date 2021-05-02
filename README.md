@@ -6,6 +6,10 @@
 -   Generator: http://wwwtyro.github.io/space-3d/
 -   Docs: https://doc.babylonjs.com/divingDeeper/environment/environment_introduction#skybox
 
+## Glow
+
+-   Sphere: https://playground.babylonjs.com/#IEW571
+
 ## Planets
 
 -   Sun: https://playground.babylonjs.com/#MX2Z99#8
@@ -16,6 +20,10 @@
 -   Reverse Particle System: https://playground.babylonjs.com/#PSK6N1
 -   Stretched (hit space to start): https://playground.babylonjs.com/#5A4TP5
 -   Spinning Emitter: https://www.babylonjs-playground.com/#U64HVU#4
+
+## Decals
+
+-   Rings: https://www.babylonjs-playground.com/#PSKRF#5
 
 ## Music
 

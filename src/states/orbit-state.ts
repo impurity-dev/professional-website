@@ -8,7 +8,7 @@ import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
 import TravelState from './travel-state';
 
-export default class Orbit extends State {
+export default class OrbitState extends State {
     private planet: PlanetEntity;
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;

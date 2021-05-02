@@ -8,7 +8,7 @@ import StartGui from '../guis/start-gui';
 import GasCloudParticles from '../particles/gas-cloud-particles';
 import SpaceSkybox from '../skyboxes/space-skybox';
 import State from './state';
-import TravelState from './travel-state';
+import MapState from './map-state';
 
 export default class StartState extends State {
     private spaceship: SpaceShipEntity;
@@ -67,6 +67,6 @@ export default class StartState extends State {
     }
 
     async goToTravel(): Promise<void> {
-        await this.gameManager.setState(new TravelState(this.gameManager));
+        await this.gameManager.setState(new MapState(this.gameManager));
     }
 }
