@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "author": "Tyler Kokoszka",
+    "type": "module",
     "homepage": "https://impurity-dev.github.io/professional-website/",
     "repository": {
         "type": "git",
@@ -14,14 +15,16 @@
         "babylonjs",
         "@babylonjs",
         "3d",
-        "webgl"
+        "webgl",
+        "vite"
     ],
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=18.0.0"
     },
     "scripts": {
-        "build": "webpack --mode=production",
-        "start": "webpack serve --progress --mode=development",
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
         "test": "echo \"TODO: Tests\" && exit 0",
         "lint": "eslint ./**/*.{js,jsx,ts,tsx,.json}",
         "lint:fix": "npm run lint -- --fix"
@@ -35,36 +38,17 @@
         "@babylonjs/procedural-textures": "^4.2.0"
     },
     "devDependencies": {
-        "@types/react": "^17.0.4",
-        "@types/react-dom": "^17.0.3",
-        "@typescript-eslint/eslint-plugin": "^4.22.0",
-        "@typescript-eslint/parser": "^4.22.0",
-        "clean-webpack-plugin": "^4.0.0-alpha.0",
-        "copy-webpack-plugin": "^8.1.1",
+        "@typescript-eslint/eslint-plugin": "^6.5.0",
+        "@typescript-eslint/parser": "^6.5.0",
         "dotenv": "^8.2.0",
-        "eslint": "^7.25.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-import": "^2.22.0",
-        "eslint-plugin-prettier": "^3.4.0",
-        "html-webpack-plugin": "^5.3.1",
-        "husky": "^6.0.0",
-        "lint-staged": "^10.5.4",
-        "prettier": "^2.0.5",
-        "ts-loader": "^9.1.1",
-        "typescript": "^4.2.4",
-        "webpack": "^5.36.2",
-        "webpack-cli": "^4.6.0"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
+        "eslint": "^8.48.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-prettier": "^5.0.0",
+        "husky": "^8.0.3",
+        "lint-staged": "^14.0.1",
+        "prettier": "^3.0.3",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5"
     }
 }
