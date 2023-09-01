@@ -1,8 +1,13 @@
 import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
-import { randomColor, randomIntBetween } from '../utils';
+import { randomColor, randomIntBetween } from '../utils.js';
 
 export default class GasCloudParticles extends ParticleSystem {
-    constructor(readonly scene: Scene, radius: number, direction1: Vector3, direction2: Vector3) {
+    constructor(
+        readonly scene: Scene,
+        radius: number,
+        direction1: Vector3,
+        direction2: Vector3,
+    ) {
         super('GasCloudParticles', 2500, scene);
         const fogTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.particleEmitterType = this.createDirectedSphereEmitter(radius, direction1, direction2);

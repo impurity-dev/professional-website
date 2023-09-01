@@ -2,9 +2,14 @@ import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core
 
 export default class WarpspeedCloudParticles extends ParticleSystem {
     private isWarping: boolean = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private emitHandler: any;
 
-    constructor(readonly scene: Scene, radius: number, height: number) {
+    constructor(
+        readonly scene: Scene,
+        radius: number,
+        height: number,
+    ) {
         super('WarpspeedCloudParticles', 10_000, scene);
         this.particleTexture = new Texture('https://raw.githubusercontent.com/aWeirdo/Babylon.js/master/smoke_15.png', scene);
         this.minLifeTime = 2;

@@ -3,7 +3,11 @@ import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core
 export default class WarpspeedStarParticles extends ParticleSystem {
     private isWarping: boolean = false;
 
-    constructor(readonly scene: Scene, radius: number, height: number) {
+    constructor(
+        readonly scene: Scene,
+        radius: number,
+        height: number,
+    ) {
         super('WarpspeedStarParticles', 10_000, scene);
         this.particleTexture = new Texture('textures/square.png', scene);
         this.minLifeTime = 10;

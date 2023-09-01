@@ -4,7 +4,10 @@ import { LavaMaterial } from '@babylonjs/materials';
 export default class PlanetEntity extends TransformNode {
     public readonly sphere: Mesh;
 
-    constructor(private readonly scene: Scene, diameter: number) {
+    constructor(
+        private readonly scene: Scene,
+        diameter: number,
+    ) {
         super('Planet');
         const sphere: Mesh = Mesh.CreateSphere('Planet Sphere', 100, diameter, scene);
         sphere.parent = this;

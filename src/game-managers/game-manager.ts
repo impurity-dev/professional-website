@@ -1,9 +1,12 @@
 import { Engine } from '@babylonjs/core';
-import StartState from '../states/start-state';
-import StateMachine from './state-machine';
+import StartState from '../states/start-state.js';
+import StateMachine from './state-machine.js';
 
 export default class GameManager extends StateMachine {
-    constructor(public readonly canvas: HTMLCanvasElement, public readonly engine: Engine) {
+    constructor(
+        public readonly canvas: HTMLCanvasElement,
+        public readonly engine: Engine,
+    ) {
         super();
     }
 

@@ -3,7 +3,10 @@ import { Scene, MeshBuilder, StandardMaterial, Color3, Texture, CubeTexture } fr
 export default class SpaceSkybox {
     private SPACE_TEXTURE_PATH: string = 'textures/skyboxes/space';
 
-    constructor(readonly scene: Scene, readonly id: string = 'SpaceSkybox') {
+    constructor(
+        readonly scene: Scene,
+        readonly id: string = 'SpaceSkybox',
+    ) {
         const skyboxMaterial = new StandardMaterial(`${id} Material`, scene);
         skyboxMaterial.backFaceCulling = false;
         skyboxMaterial.disableLighting = true;

@@ -1,14 +1,14 @@
 import { Animatable, ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
-import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation';
-import CameraRotationAnimation from '../animations/camera-rotation-animation';
-import ShipLaunchAnimation from '../animations/ship-launch-animation';
-import ShipRockingAnimation from '../animations/ship-rocking-animation';
-import SpaceShipEntity from '../entities/spaceship-entity';
-import StartGui from '../guis/start-gui';
-import GasCloudParticles from '../particles/gas-cloud-particles';
-import SpaceSkybox from '../skyboxes/space-skybox';
-import State from './state';
-import MapState from './map-state';
+import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation.js';
+import CameraRotationAnimation from '../animations/camera-rotation-animation.js';
+import ShipLaunchAnimation from '../animations/ship-launch-animation.js';
+import ShipRockingAnimation from '../animations/ship-rocking-animation.js';
+import SpaceShipEntity from '../entities/spaceship-entity.js';
+import StartGui from '../guis/start-gui.js';
+import GasCloudParticles from '../particles/gas-cloud-particles.js';
+import SpaceSkybox from '../skyboxes/space-skybox.js';
+import State from './state.js';
+import MapState from './map-state.js';
 
 export default class StartState extends State {
     private spaceship: SpaceShipEntity;

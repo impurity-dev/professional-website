@@ -3,7 +3,11 @@ import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, TransformNode, Vect
 export default class MapRingEntity extends TransformNode {
     public readonly sphere: Mesh;
 
-    constructor(private readonly scene: Scene, radius: number, path: Array<Vector3>) {
+    constructor(
+        private readonly scene: Scene,
+        radius: number,
+        path: Array<Vector3>,
+    ) {
         super('Map Ring');
         const ring: Mesh = MeshBuilder.CreateTube(
             'Map Ring Tube',

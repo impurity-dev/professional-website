@@ -1,4 +1,4 @@
-import State from '../states/state';
+import State from '../states/state.js';
 
 export default abstract class StateMachine {
     private _state: State;

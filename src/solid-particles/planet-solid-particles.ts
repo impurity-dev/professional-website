@@ -1,13 +1,9 @@
-import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3, Texture, Color3 } from '@babylonjs/core';
+import { MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3, Texture, Color3 } from '@babylonjs/core';
 import { LavaMaterial } from '@babylonjs/materials';
 
 export default class PlanetSolidParticles extends SolidParticleSystem {
     public speed = 1;
     public recycleDepth: number = 1;
-
-    public set emitter(position: Vector3) {
-        this.mesh.position = position;
-    }
 
     constructor(readonly scene: Scene) {
         super('PlanetSolidParticles', scene);
@@ -23,6 +19,10 @@ export default class PlanetSolidParticles extends SolidParticleSystem {
         lavaMaterial.speed = 0.25;
         lavaMaterial.fogColor = new Color3(0.5, 0, 0);
         mesh.material = lavaMaterial;
+    }
+
+    public set emitter(position: Vector3) {
+        this.mesh.position = position;
     }
 
     public start(): void {

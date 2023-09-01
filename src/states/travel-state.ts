@@ -10,7 +10,7 @@ import SpaceSkybox from '../skyboxes/space-skybox';
 import OrbitState from './orbit-state';
 import StartState from './start-state';
 import State from './state';
-import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles';
+import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles.js';
 
 export default class TravelState extends State {
     private spaceship: SpaceShipEntity;
@@ -50,10 +50,10 @@ export default class TravelState extends State {
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
 
         const warpspeedStars: WarpspeedStarParticles = new WarpspeedStarParticles(this.scene, 50, 50);
-        warpspeedStars.emitter = warpspeedAnchor as any;
+        warpspeedStars.emitter = warpspeedAnchor;
 
         const warpspeedClouds: WarpspeedCloudParticles = new WarpspeedCloudParticles(this.scene, 50, 50);
-        warpspeedClouds.emitter = warpspeedAnchor as any;
+        warpspeedClouds.emitter = warpspeedAnchor;
 
         const frameRate = 64;
         this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));

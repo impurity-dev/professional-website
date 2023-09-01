@@ -1,11 +1,16 @@
 import { Color3, Engine, GlowLayer, Material, Mesh, ParticleSystem, Scene, StandardMaterial, TransformNode } from '@babylonjs/core';
-import MapPlanetParticles from '../particles/map-planet-particles';
+import MapPlanetParticles from '../particles/map-planet-particles.js';
 
 export default class MapSunEntity extends TransformNode {
     public readonly sphere: Mesh;
     private readonly segments = 100;
 
-    constructor(readonly scene: Scene, readonly innerDiameter: number, readonly outerDiameter: number, readonly color: Color3) {
+    constructor(
+        readonly scene: Scene,
+        readonly innerDiameter: number,
+        readonly outerDiameter: number,
+        readonly color: Color3,
+    ) {
         super('Map Sun');
         const glowLayer = new GlowLayer('Map Planet Glow Layer', scene);
 

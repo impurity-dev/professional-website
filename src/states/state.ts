@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Scene } from '@babylonjs/core';
-import GameManager from '../game-managers/game-manager';
+import GameManager from '../game-managers/game-manager.js';
 
 export default abstract class State {
     protected inspectorEventListener: (ev: KeyboardEvent) => void;

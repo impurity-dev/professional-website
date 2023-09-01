@@ -1,7 +1,6 @@
 {
     "files.autoSave": "afterDelay",
     "editor.formatOnSave": true,
-    "prettier.configPath": ".prettierrc.json",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "svg.preview.background": "transparent"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "svg.preview.background": "transparent",
 }

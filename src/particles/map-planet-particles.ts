@@ -3,7 +3,11 @@ import { Color3, Color4, Mesh, MeshBuilder, ParticleSystem, Scene, Texture } fro
 export default class MapPlanetParticles extends ParticleSystem {
     public readonly fountain: Mesh;
 
-    constructor(readonly scene: Scene, readonly color: Color3, readonly size: number) {
+    constructor(
+        readonly scene: Scene,
+        readonly color: Color3,
+        readonly size: number,
+    ) {
         super('Map Planet Particles', 3, scene);
         this.particleTexture = new Texture('textures/hollow-flare.png', scene);
         this.fountain = MeshBuilder.CreateBox('Map Planet Fountain', { size: 50 });
