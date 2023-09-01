@@ -6,9 +6,6 @@
     },
     "parserOptions": { "ecmaVersion": 6 },
     "ignorePatterns": ["node_modules/**", "dist/**", ".vscode/**", ".github/**", "package-lock.json"],
-    "settings": {
-        "import/resolver": { "webpack": { "config": "./config/webpack.config.js" } }
-    },
     "overrides": [
         {
             "extends": ["eslint:recommended", "prettier"],
@@ -26,7 +23,7 @@
             "files": ["*.ts"],
             "parser": "@typescript-eslint/parser",
             "rules": {
-                "prettier/prettier": ["error"],
+                "prettier/prettier": "error",
                 "@typescript-eslint/ban-types": "off",
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": "warn",
