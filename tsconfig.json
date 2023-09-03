@@ -9,10 +9,10 @@
         "sourceMap": true,
         "preserveConstEnums": true,
         "lib": ["dom", "ESNext"],
-        "rootDir": "src"
+        "types": ["vite/client"]
     },
     "include": [
         "./src",
-        "vite.config.js",
+        "./vite.config.ts",
     ]
 }

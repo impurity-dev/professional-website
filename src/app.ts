@@ -1,6 +1,5 @@
 import { Engine } from '@babylonjs/core';
-import '@babylonjs/core/Debug/debugLayer';
-import '@babylonjs/inspector';
+import { Inspector } from '@babylonjs/inspector';
 import '@babylonjs/loaders/glTF';
 import GameManager from './game-managers/game-manager.js';
 
@@ -37,4 +36,5 @@ class App {
         return canvas;
     }
 }
+
 new App();

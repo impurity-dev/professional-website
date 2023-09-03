@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Scene } from '@babylonjs/core';
 import GameManager from '../game-managers/game-manager.js';
+import { Inspector } from '@babylonjs/inspector';
 
 export default abstract class State {
     protected inspectorEventListener: (ev: KeyboardEvent) => void;
@@ -8,7 +9,7 @@ export default abstract class State {
 
     protected set scene(newScene: Scene) {
         this._scene = newScene;
-        if (window.location.href.includes('localhost')) this.attachInspector(this._scene);
+        if (import.meta.env.DEV) this.attachInspector(this._scene);
     }
 
     protected get scene(): Scene {
@@ -53,7 +54,7 @@ export default abstract class State {
             // Shift+Ctrl+Alt+I
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
                 console.debug('Toggle Inspector');
-                scene.debugLayer.isVisible() ? scene.debugLayer.hide() : scene.debugLayer.show();
+                Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(scene, {});
             }
         };
         window.addEventListener('keydown', this.inspectorEventListener);
