@@ -1,15 +1,15 @@
 import { Color4, FollowCamera, HemisphericLight, Scene, TransformNode, Vector3 } from '@babylonjs/core';
-import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation';
-import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation';
-import SpaceShipEntity from '../entities/spaceship-entity';
-import TravelGui from '../guis/travel-gui';
-import PlanetSolidParticles from '../solid-particles/planet-solid-particles';
-import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles';
-import WarpspeedStarParticles from '../particles/warpspeed-star-particles';
-import SpaceSkybox from '../skyboxes/space-skybox';
-import OrbitState from './orbit-state';
-import StartState from './start-state';
-import State from './state';
+import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation.js';
+import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation.js';
+import SpaceShipEntity from '../entities/spaceship-entity.js';
+import TravelGui from '../guis/travel-gui.js';
+import PlanetSolidParticles from '../solid-particles/planet-solid-particles.js';
+import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles.js';
+import WarpspeedStarParticles from '../particles/warpspeed-star-particles.js';
+import SpaceSkybox from '../skyboxes/space-skybox.js';
+import OrbitState from './orbit-state.js';
+import StartState from './start-state.js';
+import State from './state.js';
 import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles.js';
 
 export default class TravelState extends State {
@@ -50,10 +50,12 @@ export default class TravelState extends State {
         warpspeedAnchor.rotation.x = Math.PI / 2 + Math.PI;
 
         const warpspeedStars: WarpspeedStarParticles = new WarpspeedStarParticles(this.scene, 50, 50);
-        warpspeedStars.emitter = warpspeedAnchor;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        warpspeedStars.emitter = warpspeedAnchor as any;
 
         const warpspeedClouds: WarpspeedCloudParticles = new WarpspeedCloudParticles(this.scene, 50, 50);
-        warpspeedClouds.emitter = warpspeedAnchor;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        warpspeedClouds.emitter = warpspeedAnchor as any;
 
         const frameRate = 64;
         this.spaceship.animations.push(new ShipTravelOscillationAnimation(frameRate));

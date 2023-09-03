@@ -1,12 +1,19 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "module": "NodeNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "outDir": "dist",
         "noResolve": false,
         "noImplicitAny": false,
         "sourceMap": true,
         "preserveConstEnums": true,
-        "lib": ["dom", "es6"],
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["dom", "ESNext"],
         "rootDir": "src"
-    }
+    },
+    "include": [
+        "./src",
+        "vite.config.js",
+    ]
 }
