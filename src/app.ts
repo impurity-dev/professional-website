@@ -2,17 +2,19 @@ import { Engine } from '@babylonjs/core';
 import GameManager from './game-managers/game-manager.js';
 
 class App {
-    private manager: GameManager;
+    private readonly manager: GameManager;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly engine: Engine;
 
     constructor() {
-        const canvas = this.createCanvas();
-        const engine = new Engine(canvas, true);
-        window.addEventListener('resize', () => engine.resize());
-        this.manager = new GameManager(canvas, engine);
+        this.canvas = this.createCanvas();
+        this.engine = new Engine(this.canvas, true);
+        this.manager = new GameManager(this.canvas, this.engine);
+        window.addEventListener('resize', () => this.engine.resize());
         this.manager.start();
     }
 
-    private createCanvas(): HTMLCanvasElement {
+    private createCanvas = (): HTMLCanvasElement => {
         document.documentElement.style['overflow'] = 'hidden';
         document.documentElement.style.overflow = 'hidden';
         document.documentElement.style.width = '100%';
@@ -32,7 +34,7 @@ class App {
         document.body.appendChild(canvas);
 
         return canvas;
-    }
+    };
 }
 
 new App();
