@@ -1,6 +1,4 @@
 import { Engine } from '@babylonjs/core';
-import { Inspector } from '@babylonjs/inspector';
-import '@babylonjs/loaders/glTF';
 import GameManager from './game-managers/game-manager.js';
 
 class App {
