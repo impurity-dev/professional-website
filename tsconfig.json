@@ -8,7 +8,6 @@
         "noImplicitAny": false,
         "sourceMap": true,
         "preserveConstEnums": true,
-        "typeRoots": ["node_modules/@types"],
         "lib": ["dom", "ESNext"],
         "rootDir": "src"
     },
