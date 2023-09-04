@@ -1,4 +1,4 @@
-import { Color4, FollowCamera, HemisphericLight, Scene, TransformNode, Vector3 } from '@babylonjs/core';
+import { FollowCamera, HemisphericLight, TransformNode, Vector3 } from '@babylonjs/core';
 import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation.js';
 import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation.js';
 import SpaceShipEntity from '../entities/spaceship-entity.js';
@@ -15,11 +15,7 @@ export default class TravelState extends State {
     private camera: FollowCamera;
     private isWarping: boolean = false;
 
-    async run(): Promise<void> {
-        const engine = this.gameManager.engine;
-        engine.displayLoadingUI();
-        this.scene = new Scene(engine);
-        this.scene.clearColor = new Color4(0, 0, 0, 1);
+    run = async (): Promise<void> => {
         this.spaceship = new SpaceShipEntity(this.scene);
         this.spaceship.position = Vector3.Zero();
         this.camera = new FollowCamera('FollowCamera', this.spaceship.position.add(new Vector3(0, 25, -100)), this.scene);
@@ -77,8 +73,5 @@ export default class TravelState extends State {
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
-
-        await this.scene.whenReadyAsync();
-        engine.hideLoadingUI();
-    }
+    };
 }

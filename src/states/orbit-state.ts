@@ -1,4 +1,4 @@
-import { ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
 import ShipRockingAnimation from '../animations/ship-rocking-animation.js';
 import PlanetEntity from '../entities/planet-entity.js';
 import SpaceShipEntity from '../entities/spaceship-entity.js';
@@ -11,11 +11,7 @@ export default class OrbitState extends State {
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;
 
-    async run(): Promise<void> {
-        const engine = this.gameManager.engine;
-        engine.displayLoadingUI();
-        this.scene = new Scene(engine);
-        this.scene.clearColor = new Color4(0, 0, 0, 1);
+    run = async (): Promise<void> => {
         this.spaceship = new SpaceShipEntity(this.scene);
         this.spaceship.position = Vector3.Zero();
         this.camera = new ArcRotateCamera(
@@ -47,8 +43,5 @@ export default class OrbitState extends State {
 
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
-
-        await this.scene.whenReadyAsync();
-        engine.hideLoadingUI();
-    }
+    };
 }

@@ -5,14 +5,16 @@ class App {
     constructor(
         private readonly engine: Engine,
         private readonly manager: GameManager,
-    ) {
+    ) {}
+
+    start = async (): Promise<void> => {
         window.addEventListener('resize', () => this.engine.resize());
-        this.manager.goTo({ type: 'start' });
+        await this.manager.goTo({ type: 'start' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
-    }
+    };
 }
 
-const getCanvas = (): HTMLCanvasElement => {
+const getCanvas = () => {
     document.documentElement.style['overflow'] = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     document.documentElement.style.width = '100%';
@@ -30,11 +32,10 @@ const getCanvas = (): HTMLCanvasElement => {
     canvas.style.height = '100%';
     canvas.id = 'gameCanvas';
     document.body.appendChild(canvas);
-
     return canvas;
 };
-
 const canvas = getCanvas();
 const engine = new Engine(canvas, true);
 const manager = new GameManager(canvas, engine);
-new App(engine, manager);
+const app = new App(engine, manager);
+await app.start();

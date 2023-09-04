@@ -1,4 +1,4 @@
-import { Animatable, ArcRotateCamera, Color4, HemisphericLight, Scene, Vector3 } from '@babylonjs/core';
+import { Animatable, ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
 import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation.js';
 import CameraRotationAnimation from '../animations/camera-rotation-animation.js';
 import ShipLaunchAnimation from '../animations/ship-launch-animation.js';
@@ -17,11 +17,7 @@ export default class StartState extends State {
     private isWarping: boolean = false;
     private gasClouds: GasCloudParticles;
 
-    async run(): Promise<void> {
-        const engine = this.gameManager.engine;
-        engine.displayLoadingUI();
-        this.scene = new Scene(engine);
-        this.scene.clearColor = new Color4(0, 0, 0, 1);
+    run = async (): Promise<void> => {
         this.spaceship = new SpaceShipEntity(this.scene);
         this.spaceship.position = Vector3.Zero();
         this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, this.scene);
@@ -45,10 +41,7 @@ export default class StartState extends State {
         new StartGui(this.scene, {
             onLaunch: this.onLaunch,
         });
-
-        await this.scene.whenReadyAsync();
-        engine.hideLoadingUI();
-    }
+    };
 
     private onLaunch = () => {
         if (this.isWarping) return;

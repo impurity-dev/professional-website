@@ -4,20 +4,23 @@ import GameManager from '../game-managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 
 export default abstract class State {
-    protected inspectorEventListener: (ev: KeyboardEvent) => void;
-    private _scene: Scene;
-
-    protected set scene(newScene: Scene) {
-        this._scene = newScene;
-        if (import.meta.env.DEV) this.attachInspector(this._scene);
-    }
-
-    protected get scene(): Scene {
-        return this._scene;
-    }
+    readonly scene: Scene;
+    private toggleInspectorListener: (ev: KeyboardEvent) => void;
 
     constructor(protected readonly gameManager: GameManager) {
         console.debug('Scene Created');
+        this.scene = new Scene(this.gameManager.engine);
+        this.toggleInspectorListener = (ev: KeyboardEvent) => {
+            // Shift+Ctrl+Alt+I
+            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
+                console.debug('Toggle Inspector');
+                Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
+            }
+        };
+        if (import.meta.env.DEV) {
+            console.debug('Attach Inspector');
+            window.addEventListener('keydown', this.toggleInspectorListener);
+        }
     }
 
     render(): void {
@@ -27,21 +30,21 @@ export default abstract class State {
 
     dispose = (): void => {
         console.debug('Scene Disposed');
-        window.removeEventListener('keydown', this.inspectorEventListener);
+        window.removeEventListener('keydown', this.toggleInspectorListener);
         this.scene.detachControl();
         this.scene.dispose();
     };
 
-    private attachInspector = (scene: Scene): void => {
-        console.debug('Attach Inspector');
-        this.inspectorEventListener = (ev: KeyboardEvent) => {
-            // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
-                console.debug('Toggle Inspector');
-                Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(scene, {});
-            }
-        };
-        window.addEventListener('keydown', this.inspectorEventListener);
+    start = async () => {
+        console.debug('Scene Started');
+        // Start loading UI
+        const engine = this.gameManager.engine;
+        engine.displayLoadingUI();
+        // Render scene
+        await this.run();
+        // End loading UI
+        await this.scene.whenReadyAsync();
+        engine.hideLoadingUI();
     };
 
     abstract run(): Promise<void>;

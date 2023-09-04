@@ -14,7 +14,7 @@ export default abstract class StateMachine {
     protected setState = async (state: State): Promise<void> => {
         const oldState = this._state;
         this._state = state;
-        await this._state.run();
+        await this._state.start();
         if (oldState) oldState.dispose();
     };
 
