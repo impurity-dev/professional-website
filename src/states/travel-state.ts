@@ -7,8 +7,6 @@ import PlanetSolidParticles from '../solid-particles/planet-solid-particles.js';
 import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles.js';
 import WarpspeedStarParticles from '../particles/warpspeed-star-particles.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
-import OrbitState from './orbit-state.js';
-import StartState from './start-state.js';
 import State from './state.js';
 import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles.js';
 
@@ -65,9 +63,7 @@ export default class TravelState extends State {
         new TravelGui(
             this.scene,
             this.spaceship,
-            () => {
-                this.goToOrbit();
-            },
+            async () => await this.gameManager.goTo({ type: 'orbit' }),
             () => {
                 this.isWarping = !this.isWarping;
                 if (this.isWarping) {
@@ -76,9 +72,7 @@ export default class TravelState extends State {
                     warpspeedClouds.start();
                 }
             },
-            () => {
-                this.goToStart();
-            },
+            async () => await this.gameManager.goTo({ type: 'start' }),
         );
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
@@ -86,13 +80,5 @@ export default class TravelState extends State {
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
-    }
-
-    async goToStart(): Promise<void> {
-        await this.gameManager.setState(new StartState(this.gameManager));
-    }
-
-    async goToOrbit(): Promise<void> {
-        await this.gameManager.setState(new OrbitState(this.gameManager));
     }
 }

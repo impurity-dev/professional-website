@@ -8,7 +8,6 @@ import StartGui from '../guis/start-gui.js';
 import GasCloudParticles from '../particles/gas-cloud-particles.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
-import MapState from './map-state.js';
 
 export default class StartState extends State {
     private spaceship: SpaceShipEntity;
@@ -16,6 +15,7 @@ export default class StartState extends State {
     private cameraAnimatable: Animatable;
     private shipAnimatable: Animatable;
     private isWarping: boolean = false;
+    private gasClouds: GasCloudParticles;
 
     async run(): Promise<void> {
         const engine = this.gameManager.engine;
@@ -38,35 +38,42 @@ export default class StartState extends State {
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
 
-        const gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
-        gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
-        gasClouds.start();
+        this.gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
+        this.gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
+        this.gasClouds.start();
 
-        new StartGui(this.scene, () => {
-            if (this.isWarping) return;
-
-            this.isWarping = true;
-            // Stop Passive animation
-            this.cameraAnimatable.stop();
-            this.shipAnimatable.stop();
-
-            // Start Launch
-            const cameraAnimation = new CameraPrelaunchAnimation(this.camera.alpha, 10);
-            this.camera.animations.push(cameraAnimation);
-            this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
-                gasClouds.stop();
-
-                const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
-                this.spaceship.animations.push(shipAnimation);
-                this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.goToTravel());
-            });
+        new StartGui(this.scene, {
+            onLaunch: this.onLaunch,
         });
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
     }
 
-    async goToTravel(): Promise<void> {
-        await this.gameManager.setState(new MapState(this.gameManager));
-    }
+    private onLaunch = () => {
+        if (this.isWarping) return;
+
+        this.isWarping = true;
+        // Stop Passive animation
+        this.cameraAnimatable.stop();
+        this.shipAnimatable.stop();
+
+        // Start Launch
+        const cameraAnimation = new CameraPrelaunchAnimation(this.camera.alpha, 10);
+        this.camera.animations.push(cameraAnimation);
+        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
+            this.gasClouds.stop();
+
+            const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
+            this.spaceship.animations.push(shipAnimation);
+            this.scene.beginAnimation(
+                this.spaceship,
+                0,
+                shipAnimation.frameRate,
+                false,
+                1,
+                async () => await this.gameManager.goTo({ type: 'travel' }),
+            );
+        });
+    };
 }

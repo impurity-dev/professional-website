@@ -5,7 +5,6 @@ import SpaceShipEntity from '../entities/spaceship-entity.js';
 import OrbitGui from '../guis/orbit-gui.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
-import TravelState from './travel-state.js';
 
 export default class OrbitState extends State {
     private planet: PlanetEntity;
@@ -43,7 +42,7 @@ export default class OrbitState extends State {
         // this.scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
 
         new OrbitGui(this.scene, () => {
-            this.goToTravel();
+            this.gameManager.goTo({ type: 'travel' });
         });
 
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
@@ -51,9 +50,5 @@ export default class OrbitState extends State {
 
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
-    }
-
-    async goToTravel(): Promise<void> {
-        this.gameManager.setState(new TravelState(this.gameManager));
     }
 }

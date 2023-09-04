@@ -7,15 +7,13 @@ import createMapPlanetLabel from '../guis/components/map-planet-label.js';
 import MapGui from '../guis/map-gui.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
-import TravelState from './travel-state.js';
 
 export default class MapState extends State {
     private camera: FollowCamera;
 
     async run(): Promise<void> {
-        const engine = this.gameManager.engine;
-        engine.displayLoadingUI();
-        this.scene = new Scene(engine);
+        this.gameManager.engine.displayLoadingUI();
+        this.scene = new Scene(this.gameManager.engine);
         this.scene.clearColor = new Color4(0, 0, 0, 1);
         this.camera = new FollowCamera('Camera', Vector3.Zero(), this.scene);
         this.scene.activeCamera = this.camera;
@@ -73,29 +71,23 @@ export default class MapState extends State {
             outerDisc.rotate(DISC_AXIS, discSpeed, Space.LOCAL);
         });
 
-        this.scene.onPointerDown = () => {
+        this.scene.onPointerDown = async () => {
             const ray = this.scene.createPickingRay(this.scene.pointerX, this.scene.pointerY, Matrix.Identity(), this.camera);
             const hit = this.scene.pickWithRay(ray);
             const pickedMesh = hit.pickedMesh;
 
             if (pickedMesh && pickedMesh.metadata != 'skybox' && pickedMesh.metadata?.type == 'map-planet') {
                 pickedMesh.scaling = new Vector3(2, 2, 2);
-                this.goToTravel();
+                await this.gameManager.goTo({ type: 'travel' });
             }
         };
 
-        new MapGui(this.scene, () => {
-            this.goToTravel();
-        });
+        new MapGui(this.scene, async () => await this.gameManager.goTo({ type: 'travel' }));
 
         // new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
 
         await this.scene.whenReadyAsync();
-        engine.hideLoadingUI();
-    }
-
-    async goToTravel(): Promise<void> {
-        this.gameManager.setState(new TravelState(this.gameManager));
+        this.gameManager.engine.hideLoadingUI();
     }
 }

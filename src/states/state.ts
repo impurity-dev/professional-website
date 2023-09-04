@@ -16,7 +16,7 @@ export default abstract class State {
         return this._scene;
     }
 
-    constructor(protected gameManager: GameManager) {
+    constructor(protected readonly gameManager: GameManager) {
         console.debug('Scene Created');
     }
 
@@ -25,30 +25,14 @@ export default abstract class State {
         this.scene.render();
     }
 
-    async goToStart(): Promise<void> {
-        throw new Error('Go to start not implemented');
-    }
-
-    async goToTravel(): Promise<void> {
-        throw new Error('Go to travel not implemented');
-    }
-
-    async goToOrbit(): Promise<void> {
-        throw new Error('Go to Start not implemented');
-    }
-
-    async goToMap(): Promise<void> {
-        throw new Error('Go to Map not implemented');
-    }
-
-    public dispose(): void {
+    dispose = (): void => {
         console.debug('Scene Disposed');
         window.removeEventListener('keydown', this.inspectorEventListener);
         this.scene.detachControl();
         this.scene.dispose();
-    }
+    };
 
-    private attachInspector(scene: Scene): void {
+    private attachInspector = (scene: Scene): void => {
         console.debug('Attach Inspector');
         this.inspectorEventListener = (ev: KeyboardEvent) => {
             // Shift+Ctrl+Alt+I
@@ -58,7 +42,7 @@ export default abstract class State {
             }
         };
         window.addEventListener('keydown', this.inspectorEventListener);
-    }
+    };
 
     abstract run(): Promise<void>;
 }
