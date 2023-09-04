@@ -1,12 +1,16 @@
 import { Scene, Color4, Vector3 } from '@babylonjs/core';
+import { Inspector } from '@babylonjs/inspector';
 
 export function attachInspector(scene: Scene): void {
-    window.addEventListener('keydown', (ev) => {
+    console.debug('Attach Inspector');
+    this.inspectorEventListener = (ev: KeyboardEvent) => {
         // Shift+Ctrl+Alt+I
-        if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
-            scene.debugLayer.isVisible() ? scene.debugLayer.hide() : scene.debugLayer.show();
+        if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
+            console.debug('Toggle Inspector');
+            Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(scene, {});
         }
-    });
+    };
+    window.addEventListener('keydown', this.inspectorEventListener);
 }
 
 export function randomIntBetween(min: number, max: number): number {

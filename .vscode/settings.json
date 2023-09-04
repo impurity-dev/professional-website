@@ -1,10 +1,14 @@
 {
     "files.autoSave": "afterDelay",
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "eslint.validate": ["javascript", "typescript"],
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "svg.preview.background": "transparent",
     "workbench.colorCustomizations": {
         "editor.background": "#000000",
         "sideBar.background": "#000000",
-    },
+    }
 }

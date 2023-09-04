@@ -41,8 +41,8 @@ export default class OrbitState extends State {
         // this.planet.animations.push(planetAnimation);
         // this.scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
 
-        new OrbitGui(this.scene, () => {
-            this.gameManager.goTo({ type: 'travel' });
+        new OrbitGui(this.scene, async () => {
+            await this.gameManager.goTo({ type: 'travel' });
         });
 
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
