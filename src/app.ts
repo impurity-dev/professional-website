@@ -38,4 +38,4 @@ const canvas = getCanvas();
 const engine = new Engine(canvas, true);
 const manager = new GameManager(canvas, engine);
 const app = new App(engine, manager);
-await app.start();
+app.start();
