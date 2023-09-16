@@ -9,7 +9,7 @@ class App {
 
     start = async (): Promise<void> => {
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'start' });
+        await this.manager.goTo({ type: 'practice' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 }

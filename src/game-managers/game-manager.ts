@@ -4,6 +4,7 @@ import StateMachine, { GoToProps } from './state-machine.js';
 import TravelState from '../states/travel-state.js';
 import OrbitState from '../states/orbit-state.js';
 import MapState from '../states/map-state.js';
+import PracticeState from '../states/practice-state.js';
 
 export default class GameManager extends StateMachine {
     constructor(
@@ -23,6 +24,8 @@ export default class GameManager extends StateMachine {
                 return this.setState(new OrbitState(this));
             case 'map':
                 return this.setState(new MapState(this));
+            case 'practice':
+                return this.setState(new PracticeState(this));
             default:
                 throw new Error(`Invalid goTo state: ${props}`);
         }
