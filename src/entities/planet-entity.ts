@@ -11,7 +11,7 @@ export default class PlanetEntity extends TransformNode {
         super('Planet');
         const sphere: Mesh = MeshBuilder.CreateSphere('Planet Sphere', { segments: 100, diameter }, scene);
         sphere.parent = this;
-        sphere.material = new PlanetMaterial(scene);
         sphere.metadata = 'planet';
+        sphere.material = new PlanetMaterial(scene);
     }
 }

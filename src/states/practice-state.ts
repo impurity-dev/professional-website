@@ -26,20 +26,11 @@ export default class PracticeState extends State {
 
         const planetDiameter = 1000;
         this.planet = new PlanetEntity(this.scene, planetDiameter);
-        // this.planet.position = this.spaceship.position.add(new Vector3(-(planetDiameter / 2 + 100), -50, -100));
         this.planet.position = this.spaceship.position.add(new Vector3(-planetDiameter * 2, -planetDiameter / 2, 0));
 
         const shipAnimation = new ShipRockingAnimation(10);
         this.spaceship.animations.push(shipAnimation);
         this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
-
-        // const planetAnimation = new PlanetRotationAnimation(10);
-        // this.planet.animations.push(planetAnimation);
-        // this.scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
-
-        new OrbitGui(this.scene, async () => {
-            await this.gameManager.goTo({ type: 'travel' });
-        });
 
         new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
         new SpaceSkybox(this.scene);
