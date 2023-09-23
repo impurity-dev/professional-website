@@ -10,5 +10,7 @@
     "workbench.colorCustomizations": {
         "editor.background": "#000000",
         "sideBar.background": "#000000",
+        "editorLineNumber.activeForeground": "#00ff00",
+        "editorCursor.foreground": "#00ff00"
     }
 }

@@ -4,7 +4,8 @@ export type GoToStartProps = { type: 'start' };
 export type GoToTravelProps = { type: 'travel' };
 export type GoToOrbitProps = { type: 'orbit' };
 export type GoToMapProps = { type: 'map' };
-export type GoToProps = GoToStartProps | GoToTravelProps | GoToOrbitProps | GoToMapProps;
+export type GoToPracticeProps = { type: 'practice' };
+export type GoToProps = GoToStartProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps;
 
 export default abstract class StateMachine {
     private _state: State;

@@ -7,6 +7,10 @@ export default abstract class State {
     readonly scene: Scene;
     private toggleInspectorListener: (ev: KeyboardEvent) => void;
 
+    /**
+     * Create a unique state that represents the state of the overall game.
+     * @param gameManager The global manager of the game used to manipulate and access global state.
+     */
     constructor(protected readonly gameManager: GameManager) {
         console.debug('Scene Created');
         this.scene = new Scene(this.gameManager.engine);
@@ -23,22 +27,24 @@ export default abstract class State {
         }
     }
 
-    render(): void {
+    /**
+     * Render the scene by the engine. This should be only called within the
+     * engines render lifecycle.
+     */
+    render = () => {
         if (!this.scene) throw new Error('Scene has not been initialized');
         this.scene.render();
-    }
-
-    dispose = (): void => {
-        console.debug('Scene Disposed');
-        window.removeEventListener('keydown', this.toggleInspectorListener);
-        this.scene.detachControl();
-        this.scene.dispose();
     };
 
+    /**
+     * Start the scene wraps around the run function.
+     * This attaches a loading screen while we run our scene
+     * and removed it once it is ready.
+     */
     start = async () => {
         console.debug('Scene Started');
         // Start loading UI
-        const engine = this.gameManager.engine;
+        const { engine } = this.gameManager;
         engine.displayLoadingUI();
         // Render scene
         await this.run();
@@ -47,5 +53,21 @@ export default abstract class State {
         engine.hideLoadingUI();
     };
 
+    /**
+     * Dispose the scene by removing all hooks and destroying
+     * our scene resources.
+     */
+    dispose = (): void => {
+        console.debug('Scene Disposed');
+        window.removeEventListener('keydown', this.toggleInspectorListener);
+        this.scene.detachControl();
+        this.scene.dispose();
+    };
+
+    /**
+     * Unique run method required to be implemented by a state.
+     * This defines what is in our unique state and the entities we
+     * want to add to the scene.
+     */
     abstract run(): Promise<void>;
 }

@@ -1,13 +1,25 @@
-import { defineConfig } from 'vite';
+import { PluginOption, defineConfig } from 'vite';
 
 export default defineConfig(({ command }) => {
-    if (command !== 'build') {
-        return {
-            base: '/',
-        };
-    } else {
-        return {
-            base: '/professional-website/',
-        };
-    }
+    const base = command === 'build' ? '/professional-website/' : '/';
+    return {
+        base,
+        plugins: [ShaderHmr()],
+    };
 });
+
+const ShaderHmr = (): PluginOption => {
+    return {
+        name: 'custom-hmr',
+        enforce: 'post',
+        handleHotUpdate({ file, server }) {
+            if (file.endsWith('.fx')) {
+                console.log('reloading shader file...');
+                server.ws.send({
+                    type: 'full-reload',
+                    path: '*',
+                });
+            }
+        },
+    };
+};

@@ -1,5 +1,6 @@
 import { Engine } from '@babylonjs/core';
 import GameManager from './game-managers/game-manager.js';
+import { LoadingScreen } from './loading-screens/loading-screen.js';
 
 class App {
     constructor(
@@ -14,28 +15,10 @@ class App {
     };
 }
 
-const getCanvas = () => {
-    document.documentElement.style['overflow'] = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    document.documentElement.style.width = '100%';
-    document.documentElement.style.height = '100%';
-    document.documentElement.style.margin = '0';
-    document.documentElement.style.padding = '0';
-    document.body.style.overflow = 'hidden';
-    document.body.style.width = '100%';
-    document.body.style.height = '100%';
-    document.body.style.margin = '0';
-    document.body.style.padding = '0';
-
-    const canvas = document.createElement('canvas');
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.id = 'gameCanvas';
-    document.body.appendChild(canvas);
-    return canvas;
-};
-const canvas = getCanvas();
+const loadingDiv = document.getElementById('loading-screen') as HTMLDivElement;
+const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
+const loadingScreen = new LoadingScreen(loadingDiv);
 const engine = new Engine(canvas, true);
-const manager = new GameManager(canvas, engine);
+const manager = new GameManager(canvas, loadingScreen, engine);
 const app = new App(engine, manager);
 app.start();
