@@ -2,7 +2,6 @@ import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
 import ShipRockingAnimation from '../animations/ship-rocking-animation.js';
 import PlanetEntity from '../entities/planet-entity.js';
 import SpaceShipEntity from '../entities/spaceship-entity.js';
-import OrbitGui from '../guis/orbit-gui.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 
