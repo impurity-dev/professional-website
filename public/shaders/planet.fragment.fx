@@ -2,6 +2,9 @@ precision highp float;
 
 uniform float time;
 
+#include<utils>
+
 void main(void) {
-    gl_FragColor = vec4(sin(time), 0., 0., 1. );
+    vec3 r = vec3(gl_FragCoord.xy, sin(time));
+    gl_FragColor = vec4(r, 1.);
 }

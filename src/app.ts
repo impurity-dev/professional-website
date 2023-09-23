@@ -1,4 +1,4 @@
-import { Engine } from '@babylonjs/core';
+import { Engine, Effect } from '@babylonjs/core';
 import GameManager from './game-managers/game-manager.js';
 import { LoadingScreen } from './loading-screens/loading-screen.js';
 
@@ -9,9 +9,15 @@ class App {
     ) {}
 
     start = async (): Promise<void> => {
+        await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'start' });
+        await this.manager.goTo({ type: 'practice' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
+    };
+
+    private preload = async () => {
+        const utilsShader = await fetch('./shaders/utils.fx');
+        Effect.IncludesShadersStore['utils'] = await utilsShader.text();
     };
 }
 
