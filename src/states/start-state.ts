@@ -10,7 +10,7 @@ import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 import { IntroSound } from '../sounds/intro-sound.js';
 
-export default class StartState extends State {
+export class StartState extends State {
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;
     private cameraAnimatable: Animatable;

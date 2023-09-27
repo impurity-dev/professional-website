@@ -10,7 +10,7 @@ import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles.js';
 
-export default class TravelState extends State {
+export class TravelState extends State {
     private spaceship: SpaceShipEntity;
     private camera: FollowCamera;
     private isWarping: boolean = false;

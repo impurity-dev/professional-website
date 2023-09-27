@@ -6,7 +6,7 @@ import OrbitGui from '../guis/orbit-gui.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 
-export default class OrbitState extends State {
+export class OrbitState extends State {
     private planet: PlanetEntity;
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;

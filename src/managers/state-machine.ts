@@ -7,7 +7,7 @@ export type GoToMapProps = { type: 'map' };
 export type GoToPracticeProps = { type: 'practice' };
 export type GoToProps = GoToStartProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps;
 
-export default abstract class StateMachine {
+export abstract class StateMachine {
     private _state: State;
 
     getState = (): State => this._state;

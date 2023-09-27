@@ -5,7 +5,7 @@ import SpaceShipEntity from '../entities/spaceship-entity.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 
-export default class PracticeState extends State {
+export class PracticeState extends State {
     private planet: PlanetEntity;
     private spaceship: SpaceShipEntity;
     private camera: ArcRotateCamera;

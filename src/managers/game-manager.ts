@@ -1,12 +1,12 @@
 import { Engine } from '@babylonjs/core';
-import StartState from '../states/start-state.js';
-import StateMachine, { GoToProps } from './state-machine.js';
-import TravelState from '../states/travel-state.js';
-import OrbitState from '../states/orbit-state.js';
-import MapState from '../states/map-state.js';
-import PracticeState from '../states/practice-state.js';
+import { StartState } from '../states/start-state.js';
+import { StateMachine, GoToProps } from './state-machine.js';
+import { TravelState } from '../states/travel-state.js';
+import { OrbitState } from '../states/orbit-state.js';
+import { MapState } from '../states/map-state.js';
+import { PracticeState } from '../states/practice-state.js';
 import { LoadingScreen } from '../loading-screens/loading-screen.js';
-import * as SPECTOR from 'spectorjs';
+import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
 
 export class GameManager extends StateMachine {
@@ -18,7 +18,7 @@ export class GameManager extends StateMachine {
         super();
         this.engine.loadingScreen = loadingScreen;
         if (env.isWebGLSpectorEnabled) {
-            const spector = new SPECTOR.Spector();
+            const spector = new Spector();
             spector.displayUI();
         }
     }
