@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Scene } from '@babylonjs/core';
-import GameManager from '../game-managers/game-manager.js';
+import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
+import * as env from '../managers/env-manager.js';
 
 export default abstract class State {
     readonly scene: Scene;
@@ -21,7 +22,7 @@ export default abstract class State {
                 Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
             }
         };
-        if (import.meta.env.DEV) {
+        if (env.babylonInpsectorEnabled) {
             console.debug('Attach Inspector');
             window.addEventListener('keydown', this.toggleInspectorListener);
         }

@@ -8,6 +8,7 @@ import StartGui from '../guis/start-gui.js';
 import GasCloudParticles from '../particles/gas-cloud-particles.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
+import { IntroSound } from '../sounds/intro-sound.js';
 
 export default class StartState extends State {
     private spaceship: SpaceShipEntity;
@@ -23,6 +24,7 @@ export default class StartState extends State {
         this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, this.scene);
         this.camera.setTarget(this.spaceship.position);
         this.scene.activeCamera = this.camera;
+        new IntroSound(this.scene);
 
         const cameraAnimation = new CameraRotationAnimation(10);
         const shipAnimation = new ShipRockingAnimation(10);

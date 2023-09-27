@@ -6,8 +6,10 @@ import OrbitState from '../states/orbit-state.js';
 import MapState from '../states/map-state.js';
 import PracticeState from '../states/practice-state.js';
 import { LoadingScreen } from '../loading-screens/loading-screen.js';
+import * as SPECTOR from 'spectorjs';
+import { env } from './env-manager.js';
 
-export default class GameManager extends StateMachine {
+export class GameManager extends StateMachine {
     constructor(
         public readonly canvas: HTMLCanvasElement,
         public readonly loadingScreen: LoadingScreen,
@@ -15,6 +17,10 @@ export default class GameManager extends StateMachine {
     ) {
         super();
         this.engine.loadingScreen = loadingScreen;
+        if (env.isWebGLSpectorEnabled) {
+            const spector = new SPECTOR.Spector();
+            spector.displayUI();
+        }
     }
 
     goTo = async (props: GoToProps): Promise<void> => {
