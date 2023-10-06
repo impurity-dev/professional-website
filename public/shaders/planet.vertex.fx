@@ -10,10 +10,10 @@ attribute vec2 uv;
 uniform mat4 worldViewProjection;
 
 // Normal
-varying vec2 vUV;
+varying vec2 v_uv;
 
 void main(void) {
     gl_Position = worldViewProjection * vec4(position, 1.0);
 
-    vUV = uv;
+    v_uv = uv;
 }

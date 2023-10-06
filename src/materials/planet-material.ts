@@ -6,7 +6,7 @@ export class PlanetMaterial extends ShaderMaterial {
     constructor(readonly scene: Scene) {
         super('shader', scene, './shaders/planet', {
             attributes: ['position', 'normal', 'uv'],
-            uniforms: ['world', 'worldView', 'worldViewProjection', 'view', 'projection', 'time', 'direction'],
+            uniforms: ['world', 'worldView', 'worldViewProjection', 'view', 'projection', 'time'],
         });
         this.scene.registerBeforeRender(this.update);
     }

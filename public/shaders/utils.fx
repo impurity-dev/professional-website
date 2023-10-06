@@ -17,3 +17,19 @@ float noise(vec2 n) {
   	vec2 b = floor(n), f = smoothstep(vec2(0.0), vec2(1.0), fract(n));
 	return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);
 }
+
+
+float fbm (in vec2 st, in int oct) {
+    // Initial values
+    float value = 0.0;
+    float amplitude = .5;
+    float frequency = 0.;
+    //
+    // Loop of octaves
+    for (int i = 0; i < oct; i++) {
+        value += amplitude * noise(st);
+        st *= 2.;
+        amplitude *= .5;
+    }
+    return value;
+}
