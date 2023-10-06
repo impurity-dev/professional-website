@@ -68,7 +68,7 @@ export class TravelState extends State {
                     warpspeedClouds.start();
                 }
             },
-            async () => await this.gameManager.goTo({ type: 'start' }),
+            async () => await this.gameManager.goTo({ type: 'launch' }),
         );
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
