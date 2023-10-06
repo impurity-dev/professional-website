@@ -10,11 +10,10 @@ export default defineConfig(({ command }) => {
 
 const ShaderHmr = (): PluginOption => {
     return {
-        name: 'custom-hmr',
+        name: 'shader-hmr',
         enforce: 'post',
         handleHotUpdate({ file, server }) {
             if (file.endsWith('.fx')) {
-                console.log('reloading shader file...');
                 server.ws.send({
                     type: 'full-reload',
                     path: '*',

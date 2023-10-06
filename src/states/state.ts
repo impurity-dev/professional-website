@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Scene } from '@babylonjs/core';
-import GameManager from '../game-managers/game-manager.js';
+import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
+import { env } from '../managers/env-manager.js';
 
 export default abstract class State {
     readonly scene: Scene;
-    private toggleInspectorListener: (ev: KeyboardEvent) => void;
 
     /**
      * Create a unique state that represents the state of the overall game.
@@ -14,16 +14,9 @@ export default abstract class State {
     constructor(protected readonly gameManager: GameManager) {
         console.debug('Scene Created');
         this.scene = new Scene(this.gameManager.engine);
-        this.toggleInspectorListener = (ev: KeyboardEvent) => {
-            // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
-                console.debug('Toggle Inspector');
-                Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
-            }
-        };
-        if (import.meta.env.DEV) {
+        if (env.isBabylonInpectorEnabled) {
             console.debug('Attach Inspector');
-            window.addEventListener('keydown', this.toggleInspectorListener);
+            window.addEventListener('keydown', this.attachInspector);
         }
     }
 
@@ -59,7 +52,7 @@ export default abstract class State {
      */
     dispose = (): void => {
         console.debug('Scene Disposed');
-        window.removeEventListener('keydown', this.toggleInspectorListener);
+        window.removeEventListener('keydown', this.attachInspector);
         this.scene.detachControl();
         this.scene.dispose();
     };
@@ -70,4 +63,12 @@ export default abstract class State {
      * want to add to the scene.
      */
     abstract run(): Promise<void>;
+
+    private attachInspector = (ev: KeyboardEvent) => {
+        // Shift+Ctrl+Alt+I
+        if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
+            console.debug('Toggle Inspector');
+            Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
+        }
+    };
 }

@@ -8,7 +8,7 @@ import MapGui from '../guis/map-gui.js';
 import SpaceSkybox from '../skyboxes/space-skybox.js';
 import State from './state.js';
 
-export default class MapState extends State {
+export class MapState extends State {
     private camera: FollowCamera;
 
     run = async (): Promise<void> => {
