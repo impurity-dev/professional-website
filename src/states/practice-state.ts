@@ -1,7 +1,7 @@
 import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
-import PlanetEntity from '../entities/planet-entity.js';
-import SpaceSkybox from '../skyboxes/space-skybox.js';
-import State from './state.js';
+import { PlanetEntity } from '../entities/planet-entity.js';
+import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { State } from './state.js';
 
 export class PracticeState extends State {
     private planet: PlanetEntity;

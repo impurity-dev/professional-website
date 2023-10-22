@@ -1,13 +1,13 @@
 import { Scene } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Button, Control } from '@babylonjs/gui';
-import createButton from './components/button.js';
+import { createButton } from './components/button.js';
 
 export type OnLaunch = () => void;
 export type StartGuiProps = {
     onLaunch: OnLaunch;
 };
 
-export default class StartGui {
+export class StartGui {
     private readonly gui: AdvancedDynamicTexture;
     private readonly startButton: Button;
 

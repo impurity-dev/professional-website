@@ -1,7 +1,7 @@
 import { MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3, Texture, Color3 } from '@babylonjs/core';
 import { LavaMaterial } from '@babylonjs/materials';
 
-export default class PlanetSolidParticles extends SolidParticleSystem {
+export class PlanetSolidParticles extends SolidParticleSystem {
     public speed = 1;
     public recycleDepth: number = 1;
 

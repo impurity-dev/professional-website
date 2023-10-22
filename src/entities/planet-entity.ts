@@ -1,7 +1,7 @@
 import { Mesh, Scene, TransformNode, MeshBuilder } from '@babylonjs/core';
 import { PlanetMaterial } from './../materials/planet-material';
 
-export default class PlanetEntity extends TransformNode {
+export class PlanetEntity extends TransformNode {
     public readonly sphere: Mesh;
 
     constructor(

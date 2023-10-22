@@ -1,13 +1,13 @@
 import { Animatable, ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
-import CameraPrelaunchAnimation from '../animations/camera-prelaunch-animation.js';
-import CameraRotationAnimation from '../animations/camera-rotation-animation.js';
-import ShipLaunchAnimation from '../animations/ship-launch-animation.js';
-import ShipRockingAnimation from '../animations/ship-rocking-animation.js';
-import SpaceShipEntity from '../entities/spaceship-entity.js';
-import StartGui from '../guis/start-gui.js';
-import GasCloudParticles from '../particles/gas-cloud-particles.js';
-import SpaceSkybox from '../skyboxes/space-skybox.js';
-import State from './state.js';
+import { CameraPrelaunchAnimation } from '../animations/camera-prelaunch-animation.js';
+import { CameraRotationAnimation } from '../animations/camera-rotation-animation.js';
+import { ShipLaunchAnimation } from '../animations/ship-launch-animation.js';
+import { ShipRockingAnimation } from '../animations/ship-rocking-animation.js';
+import { SpaceShipEntity } from '../entities/spaceship-entity.js';
+import { StartGui } from '../guis/start-gui.js';
+import { GasCloudParticles } from '../particles/gas-cloud-particles.js';
+import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { State } from './state.js';
 import { IntroSound } from '../sounds/intro-sound.js';
 
 export class LaunchState extends State {

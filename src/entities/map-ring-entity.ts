@@ -1,6 +1,6 @@
 import { Color3, Mesh, MeshBuilder, Scene, StandardMaterial, TransformNode, Vector3, GlowLayer } from '@babylonjs/core';
 
-export default class MapRingEntity extends TransformNode {
+export class MapRingEntity extends TransformNode {
     public readonly sphere: Mesh;
 
     constructor(

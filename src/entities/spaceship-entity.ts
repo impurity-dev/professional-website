@@ -1,7 +1,7 @@
 import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
-import EngineParticles from '../particles/engine-particles.js';
+import { EngineParticles } from '../particles/engine-particles.js';
 
-export default class SpaceShipEntity extends TransformNode {
+export class SpaceShipEntity extends TransformNode {
     private readonly scale: number = 0.1;
 
     constructor(

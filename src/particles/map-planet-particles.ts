@@ -1,6 +1,6 @@
 import { Color3, Color4, Mesh, MeshBuilder, ParticleSystem, Scene, Texture } from '@babylonjs/core';
 
-export default class MapPlanetParticles extends ParticleSystem {
+export class MapPlanetParticles extends ParticleSystem {
     public readonly fountain: Mesh;
 
     constructor(

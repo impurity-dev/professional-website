@@ -1,6 +1,6 @@
 import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
-import SpaceSkybox from '../skyboxes/space-skybox.js';
-import State from './state.js';
+import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { State } from './state.js';
 import { IntroSound } from '../sounds/intro-sound.js';
 import { RobotEntity } from '../entities/robot-entity.js';
 

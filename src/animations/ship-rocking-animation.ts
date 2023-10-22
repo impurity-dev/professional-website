@@ -1,6 +1,6 @@
 import { Animation, BackEase, EasingFunction, Vector3 } from '@babylonjs/core';
 
-export default class ShipRockingAnimation extends Animation {
+export class ShipRockingAnimation extends Animation {
     constructor(public readonly frameRate: number) {
         super('ShipRockingAnimation', 'rotation', frameRate, Animation.ANIMATIONTYPE_VECTOR3, Animation.ANIMATIONLOOPMODE_CYCLE);
         const easeFunction = new BackEase();

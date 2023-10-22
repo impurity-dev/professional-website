@@ -1,7 +1,7 @@
 import { Color3, Engine, GlowLayer, Material, Mesh, ParticleSystem, Scene, StandardMaterial, TransformNode } from '@babylonjs/core';
-import MapPlanetParticles from '../particles/map-planet-particles.js';
+import { MapPlanetParticles } from '../particles/map-planet-particles.js';
 
-export default class MapPlanetEntity extends TransformNode {
+export class MapPlanetEntity extends TransformNode {
     public readonly sphere: Mesh;
     private readonly segments = 100;
 

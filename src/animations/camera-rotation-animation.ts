@@ -1,6 +1,6 @@
 import { Animation } from '@babylonjs/core';
 
-export default class CameraRotationAnimation extends Animation {
+export class CameraRotationAnimation extends Animation {
     constructor(public readonly frameRate: number) {
         super('CameraRotationAnimation', 'alpha', frameRate, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
         const keyFrames = [];

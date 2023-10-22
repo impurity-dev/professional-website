@@ -1,4 +1,4 @@
-import { AbstractMesh, AssetsManager, MeshAssetTask, Scene, TransformNode, Vector3, Node } from '@babylonjs/core';
+import { AbstractMesh, AssetsManager, MeshAssetTask, Scene, TransformNode } from '@babylonjs/core';
 
 export class RobotEntity extends TransformNode {
     constructor(readonly scene: Scene) {

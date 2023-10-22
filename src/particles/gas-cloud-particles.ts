@@ -1,7 +1,7 @@
 import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 import { randomColor, randomIntBetween } from '../helpers/utils.js';
 
-export default class GasCloudParticles extends ParticleSystem {
+export class GasCloudParticles extends ParticleSystem {
     constructor(
         readonly scene: Scene,
         radius: number,

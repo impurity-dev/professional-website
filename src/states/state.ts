@@ -4,7 +4,7 @@ import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 import { env } from '../managers/env-manager.js';
 
-export default abstract class State {
+export abstract class State {
     readonly scene: Scene;
 
     /**

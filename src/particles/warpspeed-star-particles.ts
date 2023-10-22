@@ -1,6 +1,6 @@
 import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 
-export default class WarpspeedStarParticles extends ParticleSystem {
+export class WarpspeedStarParticles extends ParticleSystem {
     private isWarping: boolean = false;
 
     constructor(
