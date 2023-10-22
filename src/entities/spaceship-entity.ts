@@ -21,15 +21,14 @@ export default class SpaceShipEntity extends TransformNode {
 
     private setupMesh(): void {
         const assetsManager = new AssetsManager(this.scene);
-        const spaceshipMeshTask = assetsManager.addMeshTask('SpaceShipTask', '', 'assets/', 'spaceship.obj');
+        const spaceshipMeshTask = assetsManager.addMeshTask('SpaceShipTask', '', 'assets/spaceship/', 'spaceship.obj');
         spaceshipMeshTask.onSuccess = (res) => this.onSpaceShipSuccess(res, this);
         spaceshipMeshTask.onError = this.onSpaceShipError;
         assetsManager.load();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
-    private onSpaceShipError(task: MeshAssetTask, message: string, exception?: any): void {
-        console.error(`Unable to load spaceship mesh: ${message}`);
+    private onSpaceShipError(task: MeshAssetTask, message: string, exception?: unknown): void {
+        console.error(`Unable to load spaceship mesh: ${message} :: ${exception}`);
         throw new Error('Error loading spaceship assets');
     }
 
