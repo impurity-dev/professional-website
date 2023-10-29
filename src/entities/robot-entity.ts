@@ -11,8 +11,8 @@ export class RobotEntity extends TransformNode {
     }
 
     private onError = (task: MeshAssetTask, message: string, exception?: unknown) => {
-        console.error(`Unable to load spaceship mesh: ${message} :: ${exception}`);
-        throw new Error('Error loading spaceship assets');
+        console.error(`Unable to load robot mesh: ${message} :: ${exception}`);
+        throw new Error('Error loading robot assets');
     };
 
     private onSuccess =

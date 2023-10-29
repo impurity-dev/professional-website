@@ -1,4 +1,4 @@
-import State from '../states/state.js';
+import { State } from '../states/state.js';
 
 export type GoToStartProps = { type: 'start' };
 export type GoToLaunchProps = { type: 'launch' };
