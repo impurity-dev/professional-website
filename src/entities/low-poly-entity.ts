@@ -1,7 +1,8 @@
 import { AbstractMesh, AssetsManager, MeshAssetTask, Scene, TransformNode } from '@babylonjs/core';
+import { logger } from '../helpers/logger';
 
 const onError = (error: string) => (task: MeshAssetTask, message: string, exception?: unknown) => {
-    console.error(`${task.name} task failed :: ${error} :: ${message} :: ${exception}`);
+    logger.error(`${task.name} task failed :: ${error} :: ${message} :: ${exception}`);
     throw new Error(error);
 };
 

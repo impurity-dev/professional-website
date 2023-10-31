@@ -40,6 +40,7 @@
         "@babylonjs/loaders": "^6.19.1",
         "@babylonjs/materials": "^6.19.1",
         "@babylonjs/procedural-textures": "^6.19.1",
+        "loglevel": "^1.8.1",
         "spectorjs": "^0.9.29"
     },
     "devDependencies": {

@@ -1,5 +1,6 @@
 import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
 import { EngineParticles } from '../particles/engine-particles.js';
+import { logger } from '../helpers/logger.js';
 
 export class SpaceShipEntity extends TransformNode {
     private readonly scale: number = 0.1;
@@ -28,7 +29,7 @@ export class SpaceShipEntity extends TransformNode {
     }
 
     private onSpaceShipError(task: MeshAssetTask, message: string, exception?: unknown): void {
-        console.error(`Unable to load spaceship mesh: ${message} :: ${exception}`);
+        logger.error(`Unable to load spaceship mesh: ${message} :: ${exception}`);
         throw new Error('Error loading spaceship assets');
     }
 

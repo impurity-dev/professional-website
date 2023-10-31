@@ -1,4 +1,5 @@
 import { AbstractMesh, AssetsManager, MeshAssetTask, Scene, TransformNode } from '@babylonjs/core';
+import { logger } from '../helpers/logger';
 
 export class RobotEntity extends TransformNode {
     constructor(readonly scene: Scene) {
@@ -11,7 +12,7 @@ export class RobotEntity extends TransformNode {
     }
 
     private onError = (task: MeshAssetTask, message: string, exception?: unknown) => {
-        console.error(`Unable to load robot mesh: ${message} :: ${exception}`);
+        logger.error(`Unable to load robot mesh: ${message} :: ${exception}`);
         throw new Error('Error loading robot assets');
     };
 

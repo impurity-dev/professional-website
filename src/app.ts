@@ -1,6 +1,8 @@
 import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
 import { LoadingScreen } from './loading-screens/loading-screen.js';
+import * as log from 'loglevel';
+import { env } from './managers/env-manager.js';
 
 class App {
     constructor(
