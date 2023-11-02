@@ -5,6 +5,7 @@ export default defineConfig(({ command }) => {
     return {
         base,
         plugins: [ShaderHmr()],
+        assetsInclude: ['**/*.gltf'],
     };
 });
 

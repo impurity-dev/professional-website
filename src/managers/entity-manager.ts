@@ -2,7 +2,6 @@ import {
     ContainerAssetTask,
     AssetsManager,
     AbstractAssetTask,
-    EventState,
     IAssetsProgressEvent,
     TransformNode,
     InstantiatedEntries,
@@ -10,24 +9,19 @@ import {
 import { logger } from '../helpers/logger';
 
 export type Asset = { file: string; directory: string };
+export type Entity = Asset;
 
-export class ExternalAssetManager {
+export class EntityManager {
     constructor(
         private readonly assetManager: AssetsManager,
         private readonly cache: Map<string, ContainerAssetTask> = new Map(),
     ) {
-        this.assetManager.onTaskSuccessObservable.add((task: AbstractAssetTask, state: EventState) => {
-            logger.debug(`[EAM] Finished loading ${task.name}`);
-        });
-        this.assetManager.onTaskErrorObservable.add((task: AbstractAssetTask, state: EventState) => {
-            logger.error(`[EAM] Unable to load ${task.name}`);
-        });
-        this.assetManager.onProgressObservable.add((event: IAssetsProgressEvent, state: EventState) => {
-            logger.debug(`[EAM] Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`);
-        });
-        this.assetManager.onTasksDoneObservable.add((task: AbstractAssetTask[], state: EventState) => {
-            logger.debug(`[EAM] Finished loading ${task.length} assets`);
-        });
+        this.assetManager.onTaskSuccessObservable.add((task: AbstractAssetTask) => logger.debug(`Finished loading ${task.name}`));
+        this.assetManager.onTaskErrorObservable.add((task: AbstractAssetTask) => logger.error(`Unable to load ${task.name}`));
+        this.assetManager.onProgressObservable.add((event: IAssetsProgressEvent) =>
+            logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`),
+        );
+        this.assetManager.onTasksDoneObservable.add((task: AbstractAssetTask[]) => logger.debug(`Finished loading ${task.length} assets`));
     }
 
     queue = (asset: Asset): void => {

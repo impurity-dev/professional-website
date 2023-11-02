@@ -25,6 +25,7 @@
         "npm": ">=10.0.0"
     },
     "scripts": {
+        "preprocess": "node ./.helpers/preprocessor.js",
         "start": "npm run dev",
         "dev": "vite",
         "build": "tsc && vite build",
