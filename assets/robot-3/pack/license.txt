@@ -1,0 +1,11 @@
+Model Information:
+* title:	UE4 rig and Texture, Robot (cyborg Pack)
+* source:	https://sketchfab.com/3d-models/ue4-rig-and-texture-robot-cyborg-pack-2e6aeadba1ad4092b0cd5a054aef00e9
+* author:	Marcin.Kwiatkowski (https://sketchfab.com/Marcin.Kwiatkowski)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "UE4 rig and Texture, Robot (cyborg Pack)" (https://sketchfab.com/3d-models/ue4-rig-and-texture-robot-cyborg-pack-2e6aeadba1ad4092b0cd5a054aef00e9) by Marcin.Kwiatkowski (https://sketchfab.com/Marcin.Kwiatkowski) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
