@@ -1,7 +1,7 @@
 import { Mesh } from '@babylonjs/core';
 import { AdvancedDynamicTexture, Line, Rectangle, TextBlock } from '@babylonjs/gui';
 
-export default function createMapPlanetLabel(text: string, target: Mesh, gui: AdvancedDynamicTexture): void {
+export function createMapPlanetLabel(text: string, target: Mesh, gui: AdvancedDynamicTexture): void {
     const rect = new Rectangle();
     rect.height = '40px';
     rect.width = '100px';

@@ -1,11 +1,12 @@
-import State from '../states/state.js';
+import { State } from '../states/state.js';
 
 export type GoToStartProps = { type: 'start' };
+export type GoToLaunchProps = { type: 'launch' };
 export type GoToTravelProps = { type: 'travel' };
 export type GoToOrbitProps = { type: 'orbit' };
 export type GoToMapProps = { type: 'map' };
 export type GoToPracticeProps = { type: 'practice' };
-export type GoToProps = GoToStartProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps;
+export type GoToProps = GoToStartProps | GoToLaunchProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps;
 
 export abstract class StateMachine {
     private _state: State;

@@ -1,6 +1,6 @@
 import { Animation, EasingFunction, Vector3, BackEase } from '@babylonjs/core';
 
-export default class ShipLaunchAnimation extends Animation {
+export class ShipLaunchAnimation extends Animation {
     constructor(
         readonly startingPosition: Vector3,
         public readonly frameRate: number,

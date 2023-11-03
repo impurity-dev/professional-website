@@ -1,5 +1,5 @@
 import { Engine } from '@babylonjs/core';
-import { StartState } from '../states/start-state.js';
+import { LaunchState } from '../states/launch-state.js';
 import { StateMachine, GoToProps } from './state-machine.js';
 import { TravelState } from '../states/travel-state.js';
 import { OrbitState } from '../states/orbit-state.js';
@@ -8,6 +8,7 @@ import { PracticeState } from '../states/practice-state.js';
 import { LoadingScreen } from '../loading-screens/loading-screen.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
+import { StartState } from '../states/start-state.js';
 
 export class GameManager extends StateMachine {
     constructor(
@@ -27,6 +28,8 @@ export class GameManager extends StateMachine {
         switch (props.type) {
             case 'start':
                 return this.setState(new StartState(this));
+            case 'launch':
+                return this.setState(new LaunchState(this));
             case 'travel':
                 return this.setState(new TravelState(this));
             case 'orbit':

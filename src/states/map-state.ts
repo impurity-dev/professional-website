@@ -1,12 +1,12 @@
 import { Color3, FollowCamera, Matrix, Space, Vector3 } from '@babylonjs/core';
 import { AdvancedDynamicTexture } from '@babylonjs/gui';
-import MapPlanetEntity from '../entities/map-planet-entity.js';
-import MapRingEntity from '../entities/map-ring-entity.js';
-import MapSunEntity from '../entities/map-sun-entity.js';
-import createMapPlanetLabel from '../guis/components/map-planet-label.js';
-import MapGui from '../guis/map-gui.js';
-import SpaceSkybox from '../skyboxes/space-skybox.js';
-import State from './state.js';
+import { MapPlanetEntity } from '../entities/map-planet-entity.js';
+import { MapRingEntity } from '../entities/map-ring-entity.js';
+import { MapSunEntity } from '../entities/map-sun-entity.js';
+import { createMapPlanetLabel } from '../guis/components/map-planet-label.js';
+import { MapGui } from '../guis/map-gui.js';
+import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { State } from './state.js';
 
 export class MapState extends State {
     private camera: FollowCamera;

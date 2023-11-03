@@ -14,6 +14,8 @@
         "babylon",
         "babylonjs",
         "@babylonjs",
+        "typescript",
+        "javascript",
         "3d",
         "webgl",
         "vite"
@@ -23,6 +25,7 @@
         "npm": ">=10.0.0"
     },
     "scripts": {
+        "preprocess": "node ./.helpers/preprocessor.js",
         "start": "npm run dev",
         "dev": "vite",
         "build": "tsc && vite build",
@@ -38,6 +41,7 @@
         "@babylonjs/loaders": "^6.19.1",
         "@babylonjs/materials": "^6.19.1",
         "@babylonjs/procedural-textures": "^6.19.1",
+        "loglevel": "^1.8.1",
         "spectorjs": "^0.9.29"
     },
     "devDependencies": {

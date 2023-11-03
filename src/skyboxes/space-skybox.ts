@@ -1,6 +1,6 @@
 import { Scene, MeshBuilder, StandardMaterial, Color3, Texture, CubeTexture } from '@babylonjs/core';
 
-export default class SpaceSkybox {
+export class SpaceSkybox {
     private SPACE_TEXTURE_PATH: string = 'textures/skyboxes/space';
 
     constructor(

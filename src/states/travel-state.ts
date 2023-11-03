@@ -1,14 +1,14 @@
 import { FollowCamera, HemisphericLight, TransformNode, Vector3 } from '@babylonjs/core';
-import ShipTravelOscillationAnimation from '../animations/ship-travel-oscillation-animation.js';
-import ShipTravelRotationAnimation from '../animations/ship-travel-rotation-animation.js';
-import SpaceShipEntity from '../entities/spaceship-entity.js';
-import TravelGui from '../guis/travel-gui.js';
-import PlanetSolidParticles from '../solid-particles/planet-solid-particles.js';
-import WarpspeedCloudParticles from '../particles/warpspeed-cloud-particles.js';
-import WarpspeedStarParticles from '../particles/warpspeed-star-particles.js';
-import SpaceSkybox from '../skyboxes/space-skybox.js';
-import State from './state.js';
-import WarpspeedStarsSolidParticles from '../solid-particles/warpspeed-stars-solid-particles.js';
+import { ShipTravelOscillationAnimation } from '../animations/ship-travel-oscillation-animation.js';
+import { ShipTravelRotationAnimation } from '../animations/ship-travel-rotation-animation.js';
+import { SpaceShipEntity } from '../entities/spaceship-entity.js';
+import { TravelGui } from '../guis/travel-gui.js';
+import { PlanetSolidParticles } from '../solid-particles/planet-solid-particles.js';
+import { WarpspeedCloudParticles } from '../particles/warpspeed-cloud-particles.js';
+import { WarpspeedStarParticles } from '../particles/warpspeed-star-particles.js';
+import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { State } from './state.js';
+import { WarpspeedStarsSolidParticles } from '../solid-particles/warpspeed-stars-solid-particles.js';
 
 export class TravelState extends State {
     private spaceship: SpaceShipEntity;
@@ -68,7 +68,7 @@ export class TravelState extends State {
                     warpspeedClouds.start();
                 }
             },
-            async () => await this.gameManager.goTo({ type: 'start' }),
+            async () => await this.gameManager.goTo({ type: 'launch' }),
         );
 
         new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);

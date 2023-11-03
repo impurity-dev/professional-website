@@ -1,21 +1,24 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { Scene } from '@babylonjs/core';
+import { AssetsManager, Scene } from '@babylonjs/core';
 import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 import { env } from '../managers/env-manager.js';
+import { logger } from '../helpers/logger.js';
 
-export default abstract class State {
+export abstract class State {
     readonly scene: Scene;
+    readonly assetManager: AssetsManager;
 
     /**
      * Create a unique state that represents the state of the overall game.
      * @param gameManager The global manager of the game used to manipulate and access global state.
      */
     constructor(protected readonly gameManager: GameManager) {
-        console.debug('Scene Created');
+        logger.debug('Scene Created');
         this.scene = new Scene(this.gameManager.engine);
+        this.assetManager = new AssetsManager(this.scene);
         if (env.isBabylonInpectorEnabled) {
-            console.debug('Attach Inspector');
+            logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
         }
     }
@@ -35,12 +38,15 @@ export default abstract class State {
      * and removed it once it is ready.
      */
     start = async () => {
-        console.debug('Scene Started');
+        logger.debug('Scene Started');
+
         // Start loading UI
         const { engine } = this.gameManager;
         engine.displayLoadingUI();
+
         // Render scene
         await this.run();
+
         // End loading UI
         await this.scene.whenReadyAsync();
         engine.hideLoadingUI();
@@ -51,7 +57,7 @@ export default abstract class State {
      * our scene resources.
      */
     dispose = (): void => {
-        console.debug('Scene Disposed');
+        logger.debug('Scene Disposed');
         window.removeEventListener('keydown', this.attachInspector);
         this.scene.detachControl();
         this.scene.dispose();
@@ -67,7 +73,7 @@ export default abstract class State {
     private attachInspector = (ev: KeyboardEvent) => {
         // Shift+Ctrl+Alt+I
         if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
-            console.debug('Toggle Inspector');
+            logger.debug('Toggle Inspector');
             Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
         }
     };

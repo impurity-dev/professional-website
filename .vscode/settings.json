@@ -12,5 +12,8 @@
         "sideBar.background": "#000000",
         "editorLineNumber.activeForeground": "#00ff00",
         "editorCursor.foreground": "#00ff00"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
     }
 }

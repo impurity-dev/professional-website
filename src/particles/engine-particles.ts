@@ -1,6 +1,6 @@
 import { ParticleSystem, Scene, Vector3, Texture, Mesh, Color4, MeshBuilder } from '@babylonjs/core';
 
-export default class EngineParticles extends ParticleSystem {
+export class EngineParticles extends ParticleSystem {
     public readonly fountain: Mesh;
 
     constructor(readonly scene: Scene) {

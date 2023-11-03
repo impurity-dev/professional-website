@@ -1,6 +1,6 @@
 import { Color4, ParticleSystem, Scene, Texture, Vector3 } from '@babylonjs/core';
 
-export default class WarpspeedCloudParticles extends ParticleSystem {
+export class WarpspeedCloudParticles extends ParticleSystem {
     private isWarping: boolean = false;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private emitHandler: any;

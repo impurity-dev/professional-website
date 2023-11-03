@@ -1,6 +1,6 @@
 import { Animation, CubicEase, EasingFunction, Vector3 } from '@babylonjs/core';
 
-export default class ShipTravelOscillationAnimation extends Animation {
+export class ShipTravelOscillationAnimation extends Animation {
     constructor(public readonly frameRate: number) {
         super('ShipTravelOscillationAnimation', 'position', frameRate, Animation.ANIMATIONTYPE_VECTOR3, Animation.ANIMATIONLOOPMODE_CYCLE);
         const easeFunction = new CubicEase();
