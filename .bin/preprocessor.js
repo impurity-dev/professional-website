@@ -18,7 +18,7 @@ const buildEnvironmentAssets = ({ fileName, typeName }) => {
             values.push({
                 variable: assetFile.replace('.gltf', '').replace('\\', '__').toUpperCase(),
                 file: file || assetFile,
-                directory: assetDirectory + dir,
+                directory: file ? `${assetDirectory}${dir}/` : assetDirectory,
             });
         });
     if (!existsSync(newDirectory)) {

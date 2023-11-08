@@ -57,5 +57,5 @@ export class EntityManager {
         return parent;
     };
 
-    private getId = (asset: Asset) => asset.directory + asset.file;
+    private getId = (asset: Asset) => `${asset.directory}${asset.file}`;
 }
