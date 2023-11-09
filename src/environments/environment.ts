@@ -7,5 +7,5 @@ export abstract class Environment {
         protected readonly entityManager: EntityManager,
     ) {}
 
-    abstract load(): Promise<void>;
+    abstract load(): void;
 }

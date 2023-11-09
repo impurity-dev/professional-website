@@ -1,22 +1,19 @@
-import {
-    ContainerAssetTask,
-    AssetsManager,
-    AbstractAssetTask,
-    IAssetsProgressEvent,
-    TransformNode,
-    InstantiatedEntries,
-} from '@babylonjs/core';
+import { ContainerAssetTask, AssetsManager, AbstractAssetTask, IAssetsProgressEvent, Observable } from '@babylonjs/core';
 import { logger } from '../helpers/logger';
 
 export type Asset = { file: string; directory: string };
-export type Entity = Asset;
 
 export class EntityManager {
+    private _isLoaded: boolean = false;
+
     constructor(
         private readonly assetManager: AssetsManager,
-        private readonly cache: Map<string, ContainerAssetTask> = new Map(),
+        private readonly cache: Map<string, Observable<ContainerAssetTask>> = new Map(),
     ) {
-        this.assetManager.onTaskSuccessObservable.add((task: AbstractAssetTask) => logger.debug(`Finished loading ${task.name}`));
+        this.assetManager.onTaskSuccessObservable.add((task: AbstractAssetTask) => {
+            logger.debug(`Finished loading ${task.name}`);
+            this._isLoaded = true;
+        });
         this.assetManager.onTaskErrorObservable.add((task: AbstractAssetTask) => logger.error(`Unable to load ${task.name}`));
         this.assetManager.onProgressObservable.add((event: IAssetsProgressEvent) =>
             logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`),
@@ -24,37 +21,29 @@ export class EntityManager {
         this.assetManager.onTasksDoneObservable.add((task: AbstractAssetTask[]) => logger.debug(`Finished loading ${task.length} assets`));
     }
 
-    queue = (asset: Asset): void => {
-        const id = this.getId(asset);
-        if (this.cache.has(id)) {
-            logger.debug(`${id} already queued.`);
-            return;
+    get isLoaded() {
+        return this._isLoaded;
+    }
+
+    queue = (asset: Asset): Observable<ContainerAssetTask> => {
+        if (this.isLoaded) {
+            logger.error(`Asset manager already loaded! Cannot load ${asset}`);
+            throw new Error(`Cannot load ${asset}. Manager finished.`);
         }
-        const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
-        this.cache.set(id, task);
+        const id = this.getId(asset);
+        if (!this.cache.has(id)) {
+            const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
+            const observable = new Observable<ContainerAssetTask>();
+            observable.notifyIfTriggered = true;
+            task.onSuccess = (task: ContainerAssetTask) => observable.notifyObservers(task);
+            this.cache.set(id, observable);
+        }
+        return this.cache.get(id);
     };
 
     load = (): Promise<void> => {
         logger.debug('Starting to load assets...');
         return this.assetManager.loadAsync();
-    };
-
-    get = (asset: Asset): TransformNode => {
-        const id = this.getId(asset);
-        if (!this.cache.has(id)) {
-            logger.error(`${id} not initialized.`);
-            throw new Error(`The external asset manager never initialized asset: ${id}`);
-        }
-        const container = this.cache.get(id);
-        if (!container.isCompleted) {
-            logger.error(`${id} did not complete loading.`);
-            throw new Error(`The container for ${id} has not completed. Make sure to call 'loadAssets' before using assets.`);
-        }
-        const entries: InstantiatedEntries = this.cache.get(id).loadedContainer.instantiateModelsToScene();
-        const parent = new TransformNode(asset.file);
-        parent.metadata = asset;
-        entries.rootNodes.forEach((node) => (node.parent = parent));
-        return parent;
     };
 
     private getId = (asset: Asset) => `${asset.directory}${asset.file}`;
