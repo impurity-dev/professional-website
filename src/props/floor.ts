@@ -10,10 +10,12 @@ export class FloorTileBasic extends Prop {
 
     protected load = (task: ContainerAssetTask) => {
         const entries: InstantiatedEntries = task.loadedContainer.instantiateModelsToScene();
-        entries.rootNodes.forEach((node) => (node.parent = this.transform));
-        this.transform.getChildMeshes().forEach((m) => {
+        const root = entries.rootNodes[0];
+        root.getChildMeshes().forEach((m) => {
+            m.parent = this.transform;
             m.receiveShadows = true;
             m.checkCollisions = true;
         });
+        root.dispose();
     };
 }

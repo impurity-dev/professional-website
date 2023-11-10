@@ -4,6 +4,10 @@ import { FloorTileBasic } from '../props/floor.js';
 
 export class StartEnvironment extends Environment {
     load = () => {
+        this.buildFloor();
+    };
+
+    private buildFloor = () => {
         const width = 10;
         const height = 100;
         for (let x = 0; x < width; x++) {
