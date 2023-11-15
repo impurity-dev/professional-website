@@ -4,7 +4,7 @@ export class FirstPersonController {
     private readonly camera: UniversalCamera;
 
     constructor(private readonly scene: Scene) {
-        this.camera = new UniversalCamera('camera', new Vector3(0, 10, -10), this.scene);
+        this.camera = new UniversalCamera('camera', new Vector3(0, 2, -10), this.scene);
         this.camera.attachControl();
         this.camera.applyGravity = true;
         this.camera.checkCollisions = true;
