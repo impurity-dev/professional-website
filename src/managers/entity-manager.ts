@@ -25,26 +25,31 @@ export class EntityManager {
         return this._isLoaded;
     }
 
-    queue = (asset: Asset): Observable<ContainerAssetTask> => {
-        if (this.isLoaded) {
-            logger.error(`Asset manager already loaded! Cannot load ${asset}`);
-            throw new Error(`Cannot load ${asset}. Manager finished.`);
-        }
+    test = (asset: Asset): void => {
         const id = this.getId(asset);
-        if (!this.cache.has(id)) {
-            const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
-            const observable = new Observable<ContainerAssetTask>();
-            observable.notifyIfTriggered = true;
-            task.onSuccess = (task: ContainerAssetTask) => observable.notifyObservers(task);
-            this.cache.set(id, observable);
-        }
-        return this.cache.get(id);
+        if (this.cache.has(id)) return;
+        const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
+        const observable = new Observable<ContainerAssetTask>();
+        observable.notifyIfTriggered = true;
+        task.onSuccess = (task: ContainerAssetTask) => observable.notifyObservers(task);
+        this.cache.set(id, observable);
     };
 
-    load = (): Promise<void> => {
-        logger.debug('Starting to load assets...');
-        return this.assetManager.loadAsync();
+    queue = (asset: Asset): Observable<ContainerAssetTask> => {
+        const id = this.getId(asset);
+        if (this.cache.has(id)) return this.cache.get(id);
+        if (this.isLoaded) {
+            logger.error(`Asset manager already loaded! Cannot load ${JSON.stringify(asset)}`);
+            throw new Error(`Cannot load ${JSON.stringify(asset)}. Manager finished.`);
+        }
+        const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
+        const observable = new Observable<ContainerAssetTask>();
+        observable.notifyIfTriggered = true;
+        task.onSuccess = (task: ContainerAssetTask) => observable.notifyObservers(task);
+        return this.cache.set(id, observable).get(id);
     };
+
+    load = () => this.assetManager.loadAsync();
 
     private getId = (asset: Asset) => `${asset.directory}${asset.file}`;
 }

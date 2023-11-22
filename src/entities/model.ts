@@ -1,4 +1,4 @@
-import { InstantiatedEntries, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, Animation } from '@babylonjs/core';
+import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask } from '@babylonjs/core';
 import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
@@ -8,12 +8,11 @@ export class Model extends Entity {
     constructor(props: ModelProps) {
         super({ name: props.name, scene: props.scene });
         this.transform.metadata = props.asset;
-        props.entityManager
-            .queue(props.asset)
-            .add((task) => this.load(task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: false })));
+        props.entityManager.queue(props.asset).add((task) => this.load(task));
     }
 
-    protected load = (entries: InstantiatedEntries) => {
+    protected load = (task: ContainerAssetTask) => {
+        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
         entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
@@ -87,7 +86,8 @@ export class DoorDouble extends Model {
         }
     };
 
-    protected load = (entries: InstantiatedEntries) => {
+    protected load = (task: ContainerAssetTask) => {
+        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: false });
         entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
@@ -187,6 +187,53 @@ export const windowWallSideA = (props: InitProps) =>
     new Model({ ...props, name: 'window-wall-side-a', asset: assets.WALLS__WINDOW_WALL_SIDEA });
 export const windowWallSideB = (props: InitProps) =>
     new Model({ ...props, name: 'window-wall-side-b', asset: assets.WALLS__WINDOW_WALL_SIDEB });
+export class WindowWall extends Entity {
+    readonly sideA: Model;
+    readonly lightA: SpotLight;
+    readonly shadowA: ShadowGenerator;
+    readonly sideB: Model;
+    readonly lightB: SpotLight;
+    readonly shadowB: ShadowGenerator;
+
+    constructor(props: InitProps) {
+        const { scene, entityManager } = props;
+        super({ name: 'window-wall', scene });
+        this.sideA = windowWallSideA({ scene, entityManager });
+        this.sideB = windowWallSideB({ scene, entityManager });
+        this.sideA.transform.parent = this.transform;
+        this.sideB.transform.parent = this.transform;
+        this.sideA.transform.rotate(new Vector3(0, 1, 0), Math.PI);
+        this.sideB.transform.translate(new Vector3(0, 0, 1), 1);
+        // this.lightA = new SpotLight(
+        //     `${this.name}-light-a`,
+        //     this.sideA.transform.position.add(new Vector3(0, 3.6, 0)),
+        //     new Vector3(0, -30, -10),
+        //     Math.PI,
+        //     1,
+        //     scene,
+        // );
+        // this.lightA.intensity = 10;
+        // this.lightA.parent = this.sideA.transform;
+        // this.shadowA = new ShadowGenerator(1024, this.lightA);
+        // this.lightB = new SpotLight(
+        //     `${this.name}-light-b`,
+        //     this.sideB.transform.position.add(new Vector3(0, 3.6, 0)),
+        //     new Vector3(0, -30, 10),
+        //     Math.PI,
+        //     1,
+        //     scene,
+        // );
+        // this.lightB.intensity = 10;
+        // this.lightB.parent = this.sideB.transform;
+        // this.shadowB = new ShadowGenerator(1024, this.lightB);
+
+        // this.lightA.range = 0.1;
+        // this.lightB.range = 0.1;
+        // this.lightA.includedOnlyMeshes.push(...this.sideA.transform.getChildMeshes());
+        // this.lightB.includedOnlyMeshes.push(...this.sideB.transform.getChildMeshes());
+    }
+}
+export const windowWall = (props: InitProps) => new WindowWall({ ...props });
 // Details
 export const detailsArrow1 = (props: InitProps) => new Model({ ...props, name: 'details-arrow-1', asset: assets.DETAILS__DETAILS_ARROW });
 export const detailsArrow2 = (props: InitProps) => new Model({ ...props, name: 'details-arrow-2', asset: assets.DETAILS__DETAILS_ARROW_2 });
@@ -249,12 +296,13 @@ export class DoorDoubleWall extends Entity {
         this.sideA.transform.rotation = new Vector3(0, Math.PI, 0);
         this.lightA = new SpotLight(
             `${this.name}-light-a`,
-            this.sideA.transform.position.add(new Vector3(0, 3.5, 0)),
+            this.sideA.transform.position.add(new Vector3(0, 3.6, 0)),
             new Vector3(0, -30, -10),
             Math.PI,
-            20,
+            300,
             props.scene,
         );
+        this.lightA.range = 2;
         this.lightA.parent = this.transform;
         this.shadowA = new ShadowGenerator(1024, this.lightA);
         this.lightB = new SpotLight(
@@ -262,9 +310,10 @@ export class DoorDoubleWall extends Entity {
             this.sideB.transform.position.add(new Vector3(0, 3.5, 0)),
             new Vector3(0, -30, 10),
             Math.PI,
-            20,
+            300,
             props.scene,
         );
+        this.lightB.range = 2;
         this.lightB.parent = this.transform;
         this.shadowB = new ShadowGenerator(1024, this.lightB);
     }
