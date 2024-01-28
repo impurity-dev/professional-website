@@ -25,8 +25,8 @@ class App {
 
 const loadingDiv = document.getElementById('loading-screen') as HTMLDivElement;
 const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
-const loadingScreen = new LoadingScreen(loadingDiv);
 const engine = new Engine(canvas, true);
-const manager = new GameManager(canvas, loadingScreen, engine);
+engine.loadingScreen = new LoadingScreen(loadingDiv);
+const manager = new GameManager(canvas, engine);
 const app = new App(engine, manager);
 app.start();

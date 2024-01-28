@@ -13,11 +13,9 @@ import { StartState } from '../states/start-state.js';
 export class GameManager extends StateMachine {
     constructor(
         public readonly canvas: HTMLCanvasElement,
-        public readonly loadingScreen: LoadingScreen,
         public readonly engine: Engine,
     ) {
         super();
-        this.engine.loadingScreen = loadingScreen;
         if (env.isWebGLSpectorEnabled) {
             const spector = new Spector();
             spector.displayUI();

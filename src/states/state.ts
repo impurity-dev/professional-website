@@ -4,10 +4,12 @@ import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 import { env } from '../managers/env-manager.js';
 import { logger } from '../helpers/logger.js';
+import { EntityManager } from '../managers/entity-manager.js';
 
 export abstract class State {
     readonly scene: Scene;
     readonly assetManager: AssetsManager;
+    readonly entityManager: EntityManager;
 
     /**
      * Create a unique state that represents the state of the overall game.
@@ -17,6 +19,7 @@ export abstract class State {
         logger.debug('Scene Created');
         this.scene = new Scene(this.gameManager.engine);
         this.assetManager = new AssetsManager(this.scene);
+        this.entityManager = new EntityManager(this.assetManager);
         if (env.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
