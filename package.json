@@ -35,27 +35,27 @@
         "lint:fix": "eslint . --fix"
     },
     "dependencies": {
-        "@babylonjs/core": "^6.19.1",
-        "@babylonjs/gui": "^6.19.1",
-        "@babylonjs/inspector": "^6.19.1",
-        "@babylonjs/loaders": "^6.19.1",
-        "@babylonjs/materials": "^6.19.1",
-        "@babylonjs/procedural-textures": "^6.19.1",
-        "loglevel": "^1.8.1",
-        "spectorjs": "^0.9.29"
+        "@babylonjs/core": "^7.2.1",
+        "@babylonjs/gui": "^7.2.1",
+        "@babylonjs/inspector": "^7.2.1",
+        "@babylonjs/loaders": "^7.2.1",
+        "@babylonjs/materials": "^7.2.1",
+        "@babylonjs/procedural-textures": "^7.2.1",
+        "loglevel": "^1.9.1",
+        "spectorjs": "^0.9.30"
     },
     "devDependencies": {
-        "@types/node": "^20.5.9",
-        "@typescript-eslint/eslint-plugin": "^6.19.1",
-        "@typescript-eslint/parser": "^6.19.1",
-        "eslint": "^8.56.0",
+        "@types/node": "^20.12.7",
+        "@typescript-eslint/eslint-plugin": "^7.6.0",
+        "@typescript-eslint/parser": "^7.6.0",
+        "eslint": "^9.0.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-prettier": "^5.1.3",
-        "husky": "^9.0.6",
-        "lint-staged": "^15.2.0",
-        "prettier": "^3.2.4",
-        "typescript": "^5.3.3",
-        "vite": "^5.0.12"
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "prettier": "^3.2.5",
+        "typescript": "^5.4.5",
+        "vite": "^5.2.8"
     }
 }
