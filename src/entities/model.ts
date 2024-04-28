@@ -189,48 +189,22 @@ export const windowWallSideB = (props: InitProps) =>
     new Model({ ...props, name: 'window-wall-side-b', asset: assets.WALLS__WINDOW_WALL_SIDEB });
 export class WindowWall extends Entity {
     readonly sideA: Model;
-    readonly lightA: SpotLight;
-    readonly shadowA: ShadowGenerator;
+    readonly pole: Model;
     readonly sideB: Model;
-    readonly lightB: SpotLight;
-    readonly shadowB: ShadowGenerator;
 
     constructor(props: InitProps) {
         const { scene, entityManager } = props;
         super({ name: 'window-wall', scene });
         this.sideA = windowWallSideA({ scene, entityManager });
         this.sideB = windowWallSideB({ scene, entityManager });
+        this.pole = columnSlim({ scene, entityManager });
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
+        this.pole.transform.parent = this.transform;
         this.sideA.transform.rotate(new Vector3(0, 1, 0), Math.PI);
         this.sideB.transform.translate(new Vector3(0, 0, 1), 1);
-        // this.lightA = new SpotLight(
-        //     `${this.name}-light-a`,
-        //     this.sideA.transform.position.add(new Vector3(0, 3.6, 0)),
-        //     new Vector3(0, -30, -10),
-        //     Math.PI,
-        //     1,
-        //     scene,
-        // );
-        // this.lightA.intensity = 10;
-        // this.lightA.parent = this.sideA.transform;
-        // this.shadowA = new ShadowGenerator(1024, this.lightA);
-        // this.lightB = new SpotLight(
-        //     `${this.name}-light-b`,
-        //     this.sideB.transform.position.add(new Vector3(0, 3.6, 0)),
-        //     new Vector3(0, -30, 10),
-        //     Math.PI,
-        //     1,
-        //     scene,
-        // );
-        // this.lightB.intensity = 10;
-        // this.lightB.parent = this.sideB.transform;
-        // this.shadowB = new ShadowGenerator(1024, this.lightB);
-
-        // this.lightA.range = 0.1;
-        // this.lightB.range = 0.1;
-        // this.lightA.includedOnlyMeshes.push(...this.sideA.transform.getChildMeshes());
-        // this.lightB.includedOnlyMeshes.push(...this.sideB.transform.getChildMeshes());
+        this.pole.transform.translate(new Vector3(1, 0, 0), 2);
+        this.pole.transform.rotate(new Vector3(0, 1, 0), Math.PI);
     }
 }
 export const windowWall = (props: InitProps) => new WindowWall({ ...props });
