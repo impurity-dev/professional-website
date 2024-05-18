@@ -1,10 +1,9 @@
-import { Vector3, MeshBuilder, PointLight, Color3, TransformNode, HemisphericLight } from '@babylonjs/core';
+import { Vector3, MeshBuilder, PointLight, Color3, TransformNode, HemisphericLight, Engine } from '@babylonjs/core';
 import { SpaceSkybox } from '../skyboxes/space-skybox.js';
 import { IntroSound } from '../sounds/intro-sound.js';
 import { State } from './state.js';
 import { StartWorld } from '../environments/start-world.js';
 import { FirstPersonController } from '../controllers/first-person-controller.js';
-import * as models from '../entities/model.js';
 
 export class StartState extends State {
     run = async (): Promise<void> => {
@@ -14,8 +13,9 @@ export class StartState extends State {
         scene.gravity = new Vector3(0, gravity / framesPerSecond, 0);
         scene.collisionsEnabled = true;
         scene.onPointerDown = (event) => {
-            if (event.button === 0) scene.getEngine().enterPointerlock();
-            if (event.button === 1) scene.getEngine().exitPointerlock();
+            const engine = scene.getEngine() as Engine;
+            if (event.button === 0) engine.enterPointerlock();
+            if (event.button === 1) engine.exitPointerlock();
         };
 
         new StartWorld(scene, entityManager);
