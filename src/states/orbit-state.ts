@@ -14,14 +14,7 @@ export class OrbitState extends State {
     run = async (): Promise<void> => {
         this.spaceship = new SpaceShipEntity(this.scene);
         this.spaceship.position = Vector3.Zero();
-        this.camera = new ArcRotateCamera(
-            'ArcFollowCamera',
-            0,
-            Math.PI / 2.5,
-            100,
-            this.spaceship.position.add(new Vector3(0, 15, 50)),
-            this.scene,
-        );
+        this.camera = new ArcRotateCamera('ArcFollowCamera', 0, Math.PI / 2.5, 100, this.spaceship.position.add(new Vector3(0, 15, 50)), this.scene);
         this.scene.activeCamera = this.camera;
 
         const planetDiameter = 1000;

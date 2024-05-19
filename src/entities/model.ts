@@ -174,7 +174,7 @@ export class Wall extends Entity {
         this.pole = pole({ scene, entityManager });
         this.wall.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
-        this.pole.transform.translate(new Vector3(1, 0, 0), 2);
+        this.pole.transform.translate(new Vector3(1, 0, 0), -2);
     }
 }
 export const wall = (wProps: WallProps) => (iProps: InitProps) => new Wall({ ...wProps, ...iProps });
@@ -259,3 +259,5 @@ export class DoorDoubleWall extends Entity {
     }
 }
 export const doorDoubleWall = (props: InitProps): DoorDoubleWall => new DoorDoubleWall({ ...props });
+// objects
+export const earth = (props: InitProps) => new Model({ ...props, name: 'earth', asset: assets.EARTH });

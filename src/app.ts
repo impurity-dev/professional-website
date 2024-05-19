@@ -13,7 +13,7 @@ class App {
     start = async (): Promise<void> => {
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'start' });
+        await this.manager.goTo({ type: 'menu' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 
