@@ -31,11 +31,7 @@ export class MenuState extends State {
         const mainLoopSound = new MainLoopSound(this.scene);
         await entityManager.load();
         new MenuGui(scene, {
-            onStart: () => {
-                this.gameManager.goTo({ type: 'start' });
-                mainLoopSound.stop();
-                postEffect.dispose();
-            },
+            onStart: () => this.gameManager.goTo({ type: 'start' }),
         });
     };
 

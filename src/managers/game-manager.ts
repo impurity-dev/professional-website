@@ -5,7 +5,6 @@ import { TravelState } from '../states/travel-state.js';
 import { OrbitState } from '../states/orbit-state.js';
 import { MapState } from '../states/map-state.js';
 import { PracticeState } from '../states/practice-state.js';
-import { LoadingScreen } from '../loading-screens/loading-screen.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
 import { StartState } from '../states/start-state.js';
