@@ -9,6 +9,7 @@ import { LoadingScreen } from '../loading-screens/loading-screen.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
 import { StartState } from '../states/start-state.js';
+import { MenuState } from '../states/menu-state.js';
 
 export class GameManager extends StateMachine {
     constructor(
@@ -24,6 +25,8 @@ export class GameManager extends StateMachine {
 
     goTo = async (props: GoToProps): Promise<void> => {
         switch (props.type) {
+            case 'menu':
+                return this.setState(new MenuState(this));
             case 'start':
                 return this.setState(new StartState(this));
             case 'launch':

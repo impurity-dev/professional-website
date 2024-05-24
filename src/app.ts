@@ -1,8 +1,6 @@
 import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
 import { LoadingScreen } from './loading-screens/loading-screen.js';
-import * as log from 'loglevel';
-import { env } from './managers/env-manager.js';
 
 class App {
     constructor(
@@ -13,13 +11,15 @@ class App {
     start = async (): Promise<void> => {
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'start' });
+        await this.manager.goTo({ type: 'menu' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 
     private preload = async () => {
         const utilsShader = await fetch('./shaders/utils.fx');
+        const mandelbulbShader = await fetch('./shaders/mandelbulb.fragment.fx');
         Effect.IncludesShadersStore['utils'] = await utilsShader.text();
+        Effect.ShadersStore['mandelbulbFragmentShader'] = await mandelbulbShader.text();
     };
 }
 

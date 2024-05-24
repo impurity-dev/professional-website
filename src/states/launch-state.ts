@@ -61,14 +61,7 @@ export class LaunchState extends State {
 
             const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
             this.spaceship.animations.push(shipAnimation);
-            this.scene.beginAnimation(
-                this.spaceship,
-                0,
-                shipAnimation.frameRate,
-                false,
-                1,
-                async () => await this.gameManager.goTo({ type: 'travel' }),
-            );
+            this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.gameManager.goTo({ type: 'travel' }));
         });
     };
 }

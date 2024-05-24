@@ -2,182 +2,107 @@ import { Vector3, Scene, TransformNode } from '@babylonjs/core';
 import { World } from './world.js';
 import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
-import * as assets from '../assets';
 
 export class StartWorld extends World {
     constructor(scene: Scene, entityManager: EntityManager) {
         super(scene, entityManager);
-        this.buildFloorAndRoof();
-        this.buildWalls();
-        this.buildWindows();
-        this.buildTubes();
+        this.floors();
+        this.walls();
+        this.windows();
+        this.tubes();
     }
 
-    private buildWalls = () => {
-        const { scene, entityManager } = this;
-        const parent = new TransformNode('wall');
-        [
-            { position: new Vector3(-19, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(-15, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(-11, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(-7, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(-3, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(1, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(5, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(9, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(13, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(17, 0, 19), rotation: new Vector3(0, Math.PI, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.wall1({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            { position: new Vector3(19, 0, 17), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, 13), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, 9), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, 5), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, 1), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, -3), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, -7), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, -11), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, -15), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, -19), rotation: new Vector3(0, -Math.PI / 2, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.wall1({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            { position: new Vector3(17, 0, -21), rotation: Vector3.Zero() },
-            // { position: new Vector3(13, 0, -21), rotation: Vector3.Zero() },
-            { position: new Vector3(9, 0, -21), rotation: Vector3.Zero() },
-            // { position: new Vector3(5, 0, -21), rotation: Vector3.Zero() },
-            { position: new Vector3(1, 0, -21), rotation: Vector3.Zero() },
-            { position: new Vector3(-3, 0, -21), rotation: Vector3.Zero() },
-            // { position: new Vector3(-7, 0, -21), rotation: Vector3.Zero() },
-            { position: new Vector3(-11, 0, -21), rotation: Vector3.Zero() },
-            // { position: new Vector3(-15, 0, -21), rotation: Vector3.Zero() },
-            { position: new Vector3(-19, 0, -21), rotation: Vector3.Zero() },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.wall1({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            { position: new Vector3(-21, 0, -19), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, -15), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, -11), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, -7), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, -3), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, 1), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, 5), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, 9), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, 13), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, 17), rotation: new Vector3(0, Math.PI / 2, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.wall1({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
+    private walls = () => {
+        const parent = new TransformNode('wall', this.scene);
+        let rotation = new Vector3(0, Math.PI, 0);
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-10, 0, 9), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-6, 0, 9), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall2, pole: models.columnSlim }), position: new Vector3(-2, 0, 9), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(0, 0, 9), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall3, pole: models.columnSlim }), position: new Vector3(4, 0, 9), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall3, pole: models.columnSlim }), position: new Vector3(8, 0, 9), rotation, parent });
+
+        rotation = new Vector3(0, -Math.PI / 2, 0);
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(9, 0, 8), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(9, 0, 4), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall2, pole: models.columnSlim }), position: new Vector3(9, 0, 0), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(9, 0, -2), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall3, pole: models.columnSlim }), position: new Vector3(9, 0, -6), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(9, 0, -10), rotation, parent });
+
+        rotation = Vector3.Zero();
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(8, 0, -11), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(4, 0, -11), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall2, pole: models.columnSlim }), position: new Vector3(0, 0, -11), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-2, 0, -11), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall3, pole: models.columnSlim }), position: new Vector3(-6, 0, -11), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-10, 0, -11), rotation, parent });
+
+        rotation = new Vector3(0, Math.PI / 2, 0);
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-11, 0, -10), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-11, 0, -6), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall2, pole: models.columnSlim }), position: new Vector3(-11, 0, -2), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-11, 0, 0), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall3, pole: models.columnSlim }), position: new Vector3(-11, 0, 4), rotation, parent });
+        this.put({ model: models.wall({ wall: models.wall1, pole: models.columnSlim }), position: new Vector3(-11, 0, 8), rotation, parent });
     };
 
-    private buildTubes = () => {
+    private tubes = () => {
         const { scene, entityManager } = this;
     };
 
-    private buildWindows = () => {
-        const { scene, entityManager } = this;
-        const parent = new TransformNode('window');
-        [
-            // { position: new Vector3(-19, 0, 19), rotation: Vector3.Zero() },
-            { position: new Vector3(-15, 0, 19), rotation: Vector3.Zero() },
-            // { position: new Vector3(-11, 0, 19), rotation: Vector3.Zero() },
-            { position: new Vector3(-7, 0, 19), rotation: Vector3.Zero() },
-            // { position: new Vector3(-3, 0, 19), rotation: Vector3.Zero() },
-            // { position: new Vector3(1, 0, 19), rotation: Vector3.Zero() },
-            { position: new Vector3(5, 0, 19), rotation: Vector3.Zero() },
-            // { position: new Vector3(9, 0, 19), rotation: Vector3.Zero() },
-            { position: new Vector3(13, 0, 19), rotation: Vector3.Zero() },
-            // { position: new Vector3(17, 0, 19), rotation: Vector3.Zero() },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.windowWall({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            // { position: new Vector3(19, 0, 17), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, 13), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, 9), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, 5), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, 1), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, -3), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, -7), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, -11), rotation: new Vector3(0, Math.PI / 2, 0) },
-            { position: new Vector3(19, 0, -15), rotation: new Vector3(0, Math.PI / 2, 0) },
-            // { position: new Vector3(19, 0, -19), rotation: new Vector3(0, Math.PI / 2, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.windowWall({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            // { position: new Vector3(17, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(13, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(9, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(5, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(1, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(-3, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(-7, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(-11, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            { position: new Vector3(-15, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-            // { position: new Vector3(-19, 0, -21), rotation: new Vector3(0, Math.PI, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.windowWall({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
-        [
-            // { position: new Vector3(-21, 0, -19), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, -15), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, -11), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, -7), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, -3), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, 1), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, 5), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, 9), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            { position: new Vector3(-21, 0, 13), rotation: new Vector3(0, -Math.PI / 2, 0) },
-            // { position: new Vector3(-21, 0, 17), rotation: new Vector3(0, -Math.PI / 2, 0) },
-        ].forEach(({ position, rotation }) => {
-            const wall = models.windowWall({ scene, entityManager });
-            wall.transform.position = position;
-            wall.transform.rotation = rotation;
-            wall.transform.parent = parent;
-        });
+    private windows = () => {
+        const parent = new TransformNode('window', this.scene);
+        const model = models.windowWall({ pole: models.columnSlim });
+        let rotation = Vector3.Zero();
+        this.put({ model, position: new Vector3(-8, 0, 9), rotation, parent });
+        this.put({ model, position: new Vector3(-4, 0, 9), rotation, parent });
+        this.put({ model, position: new Vector3(2, 0, 9), rotation, parent });
+        this.put({ model, position: new Vector3(6, 0, 9), rotation, parent });
+
+        rotation = new Vector3(0, Math.PI / 2, 0);
+        this.put({ model, position: new Vector3(9, 0, 6), rotation, parent });
+        this.put({ model, position: new Vector3(9, 0, 2), rotation, parent });
+        this.put({ model, position: new Vector3(9, 0, -4), rotation, parent });
+        this.put({ model, position: new Vector3(9, 0, -8), rotation, parent });
+
+        rotation = new Vector3(0, Math.PI, 0);
+        this.put({ model, position: new Vector3(6, 0, -11), rotation, parent });
+        this.put({ model, position: new Vector3(2, 0, -11), rotation, parent });
+        this.put({ model, position: new Vector3(-4, 0, -11), rotation, parent });
+        this.put({ model, position: new Vector3(-8, 0, -11), rotation, parent });
+
+        rotation = new Vector3(0, -Math.PI / 2, 0);
+        this.put({ model, position: new Vector3(-11, 0, -8), rotation, parent });
+        this.put({ model, position: new Vector3(-11, 0, -4), rotation, parent });
+        this.put({ model, position: new Vector3(-11, 0, 2), rotation, parent });
+        this.put({ model, position: new Vector3(-11, 0, 6), rotation, parent });
     };
 
-    private buildFloorAndRoof = () => {
-        const { scene, entityManager } = this;
-        const roofParent = new TransformNode('roof', scene);
-        const floorParent = new TransformNode('floor', scene);
+    private floors = () => {
+        const parent = new TransformNode('floor', this.scene);
+        const rotation = Vector3.Zero();
         const width = 20;
         const height = 20;
         for (let x = 0; x < width; x++) {
             for (let z = 0; z < height; z++) {
-                const floor = models.floorBasic1({ scene, entityManager });
-                floor.transform.position = new Vector3(x * 2 - width, 0, z * 2 - height);
-                floor.transform.parent = floorParent;
-                const roof = models.roofEmpty({ scene, entityManager });
-                roof.transform.position = new Vector3(x * 2 - width, 4, z * 2 - height);
-                roof.transform.parent = roofParent;
+                this.put({ model: models.floorBasic1, position: new Vector3(x - width / 2 - 0.5, 0, z - height / 2 - 0.5), rotation, parent });
             }
         }
+    };
+
+    private put = (config: { model: models.EntityFactory; position: Vector3; rotation: Vector3; parent?: TransformNode }) => {
+        const { scene, entityManager } = this;
+        const { model, position, rotation, parent } = config;
+        const tile = model({ scene, entityManager });
+        const offsetX = 1;
+        const scaleX = 2;
+        const offsetY = 0;
+        const scaleY = 1;
+        const offsetZ = 1;
+        const scaleZ = 2;
+        tile.transform.position = new Vector3(position.x * scaleX + offsetX, position.y * scaleY + offsetY, position.z * scaleZ + offsetZ);
+        tile.transform.rotation = rotation;
+        tile.transform.parent = parent;
     };
 }
