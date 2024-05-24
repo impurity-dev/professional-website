@@ -10,6 +10,8 @@ export class StartState extends State {
         const { scene, entityManager } = this;
         const framesPerSecond = 60;
         const gravity = -9.81;
+
+        new FirstPersonController(scene);
         scene.gravity = new Vector3(0, gravity / framesPerSecond, 0);
         scene.collisionsEnabled = true;
         scene.onPointerDown = (event) => {
@@ -20,8 +22,6 @@ export class StartState extends State {
 
         new StartWorld(scene, entityManager);
         await this.entityManager.load();
-
-        new FirstPersonController(scene);
         new IntroSound(scene);
         new SpaceSkybox(scene);
 

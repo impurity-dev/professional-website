@@ -21,3 +21,5 @@ export function randomPointOnCylinder(height: number, radius: number): Vector3 {
     const z = randomNumberBetween(0, height);
     return new Vector3(x, y, z);
 }
+
+export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));

@@ -28,13 +28,15 @@ export class MenuState extends State {
             effect.setFloat('iTime', time);
         };
 
-        // new IntroSound(this.scene);
-        // earth.transform.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
-        new MainLoopSound(this.scene);
+        const mainLoopSound = new MainLoopSound(this.scene);
         await entityManager.load();
-        new MenuGui(scene, { onStart: () => {} });
-        // new BABYLON.HemisphericLight('LightSource', new BABYLON.Vector3(1, 1, 0), scene);
-        // new SpaceSkybox(scene);
+        new MenuGui(scene, {
+            onStart: () => {
+                this.gameManager.goTo({ type: 'start' });
+                mainLoopSound.stop();
+                postEffect.dispose();
+            },
+        });
     };
 
     fog = () => {
