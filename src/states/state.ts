@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { AssetsManager, Scene } from '@babylonjs/core';
 import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 import { env } from '../managers/env-manager.js';
 import { logger } from '../helpers/logger.js';
 import { EntityManager } from '../managers/entity-manager.js';
-import { delay } from '../helpers/utils.js';
 
 export abstract class State {
     readonly scene: Scene;
@@ -74,6 +72,7 @@ export abstract class State {
      */
     abstract run(): Promise<void>;
 
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     private attachInspector = (ev: KeyboardEvent) => {
         // Shift+Ctrl+Alt+I
         if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {

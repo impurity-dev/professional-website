@@ -42,6 +42,7 @@
         "@babylonjs/materials": "^7.8.0",
         "@babylonjs/procedural-textures": "^7.8.0",
         "loglevel": "^1.9.1",
+        "lottie-web": "^5.12.2",
         "spectorjs": "^0.9.30"
     },
     "devDependencies": {
