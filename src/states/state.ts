@@ -5,6 +5,7 @@ import { Inspector } from '@babylonjs/inspector';
 import { env } from '../managers/env-manager.js';
 import { logger } from '../helpers/logger.js';
 import { EntityManager } from '../managers/entity-manager.js';
+import { delay } from '../helpers/utils.js';
 
 export abstract class State {
     readonly scene: Scene;

@@ -28,7 +28,7 @@ export class MenuState extends State {
             effect.setFloat('iTime', time);
         };
 
-        const mainLoopSound = new MainLoopSound(this.scene);
+        new MainLoopSound(this.scene);
         await entityManager.load();
         new MenuGui(scene, {
             onStart: () => this.gameManager.goTo({ type: 'start' }),
