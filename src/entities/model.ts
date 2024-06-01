@@ -162,41 +162,48 @@ export const wall5 = (props: InitProps) => new Model({ ...props, name: 'wall-5',
 export const wallEmpty = (props: InitProps) => new Model({ ...props, name: 'wall-empty', asset: assets.WALLS__WALL_EMPTY });
 export const windowWallSideA = (props: InitProps) => new Model({ ...props, name: 'window-wall-side-a', asset: assets.WALLS__WINDOW_WALL_SIDEA });
 export const windowWallSideB = (props: InitProps) => new Model({ ...props, name: 'window-wall-side-b', asset: assets.WALLS__WINDOW_WALL_SIDEB });
-export type WallProps = { pole: ModelFactory; wall: ModelFactory };
+export type WallProps = { pole: ModelFactory; wall: ModelFactory; pipes: ModelFactory };
 export class Wall extends Entity {
     readonly wall: Model;
     readonly pole: Model;
+    readonly pipes: Model;
 
     constructor(props: InitProps & WallProps) {
-        const { scene, entityManager, wall, pole } = props;
+        const { scene, entityManager, wall, pole, pipes } = props;
         super({ name: 'wall', scene });
         this.wall = wall({ scene, entityManager });
         this.pole = pole({ scene, entityManager });
+        this.pipes = pipes({ scene, entityManager });
         this.wall.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
+        this.pipes.transform.parent = this.transform;
         this.pole.transform.translate(new Vector3(1, 0, 0), -2);
     }
 }
 export const wall = (wProps: WallProps) => (iProps: InitProps) => new Wall({ ...wProps, ...iProps });
-export type WindowWallProps = { pole: ModelFactory };
+export type WindowWallProps = { pole: ModelFactory; pipes: ModelFactory };
 export class WindowWall extends Entity {
     readonly sideA: Model;
     readonly pole: Model;
     readonly sideB: Model;
+    readonly pipes: Model;
 
     constructor(props: InitProps & WindowWallProps) {
-        const { scene, entityManager, pole } = props;
+        const { scene, entityManager, pole, pipes } = props;
         super({ name: 'window-wall', scene });
         this.sideA = windowWallSideA({ scene, entityManager });
         this.sideB = windowWallSideB({ scene, entityManager });
         this.pole = pole({ scene, entityManager });
+        this.pipes = pipes({ scene, entityManager });
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
+        this.pipes.transform.parent = this.transform;
         this.sideA.transform.rotate(new Vector3(0, 1, 0), Math.PI);
         this.sideB.transform.translate(new Vector3(0, 0, 1), 1);
         this.pole.transform.translate(new Vector3(1, 0, 0), 2);
         this.pole.transform.rotate(new Vector3(0, 1, 0), Math.PI);
+        this.pipes.transform.rotate(new Vector3(0, 1, 0), Math.PI);
     }
 }
 export const windowWall = (wProps: WindowWallProps) => (iProps: InitProps) => new WindowWall({ ...wProps, ...iProps });
