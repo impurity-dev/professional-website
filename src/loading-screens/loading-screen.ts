@@ -10,7 +10,7 @@ export class LoadingScreen implements ILoadingScreen {
     displayLoadingUI = () => {
         logger.debug('Loading...');
         this.html.style.opacity = '1';
-        this.html.style.display = 'block';
+        this.html.style.display = 'initial';
     };
 
     hideLoadingUI = () => {

@@ -1,14 +1,20 @@
-import { Scene, UniversalCamera, Vector3 } from '@babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
 
 export class FirstPersonController {
-    private readonly camera: UniversalCamera;
+    readonly camera: BABYLON.UniversalCamera;
 
-    constructor(private readonly scene: Scene) {
-        this.camera = new UniversalCamera('camera', new Vector3(0, 2, -10), this.scene);
+    constructor(
+        private readonly scene: BABYLON.Scene,
+        location: BABYLON.Vector3,
+        target: BABYLON.Vector3,
+    ) {
+        this.camera = new BABYLON.UniversalCamera('fps-camera', location, this.scene);
+        this.scene.activeCamera = this.camera;
+        this.camera.target = target;
         this.camera.attachControl();
         this.camera.applyGravity = true;
         this.camera.checkCollisions = true;
-        this.camera.ellipsoid = new Vector3(1, 1, 1);
+        this.camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
         this.camera.minZ = 0.45;
         this.camera.speed = 0.75;
         this.camera.angularSensibility = 4000;
@@ -16,5 +22,6 @@ export class FirstPersonController {
         this.camera.keysLeft.push(65);
         this.camera.keysDown.push(83);
         this.camera.keysRight.push(68);
+        this.scene.activeCamera = this.camera;
     }
 }

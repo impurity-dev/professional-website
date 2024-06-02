@@ -1,5 +1,6 @@
 import { ContainerAssetTask, AssetsManager, AbstractAssetTask, IAssetsProgressEvent, Observable } from '@babylonjs/core';
 import { logger } from '../helpers/logger';
+import * as utils from '../helpers/utils';
 
 export type Asset = { file: string; directory: string };
 
