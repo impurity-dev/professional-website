@@ -106,7 +106,6 @@ export class MenuGui {
             this.menuClick.play();
             submenu.alpha = 1;
         });
-        button.onPointerUpObservable.add(() => {});
         this.gui.addControl(button);
         return button;
     };
