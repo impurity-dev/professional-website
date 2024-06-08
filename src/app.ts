@@ -44,4 +44,5 @@ const engine = new Engine(canvas, true);
 engine.loadingScreen = new LoadingScreen(loadingDiv);
 const manager = new GameManager(canvas, engine);
 const app = new App(engine, manager);
+await document.fonts.ready;
 app.start();
