@@ -10,6 +10,7 @@ class App {
     ) {}
 
     start = async (): Promise<void> => {
+        await document.fonts.ready;
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
         await this.manager.goTo({ type: 'menu' });
@@ -44,5 +45,4 @@ const engine = new Engine(canvas, true);
 engine.loadingScreen = new LoadingScreen(loadingDiv);
 const manager = new GameManager(canvas, engine);
 const app = new App(engine, manager);
-await document.fonts.ready;
 app.start();
