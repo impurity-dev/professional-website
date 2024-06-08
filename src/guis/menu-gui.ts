@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
+import { MenuClickSound, MenuHoverSound } from '../sounds/menu-sound';
 
 export type OnStart = () => void;
 export type MenuGuiProps = {
@@ -9,11 +10,14 @@ export type MenuGuiProps = {
 export class MenuGui {
     private readonly gui: GUI.AdvancedDynamicTexture;
     private readonly start: GUI.Button;
+    private readonly optionMenu: GUI.Grid;
     private readonly options: GUI.Button;
     private readonly camera: BABYLON.Camera;
     private readonly grid: GUI.Grid;
     private readonly mask = 0x10000000;
     private readonly title: GUI.TextBlock;
+    private readonly menuClick: MenuClickSound;
+    private readonly menuHover: MenuHoverSound;
 
     constructor(
         private readonly scene: BABYLON.Scene,
@@ -22,8 +26,11 @@ export class MenuGui {
         this.gui = this.createGui();
         this.title = this.createTitle();
         this.start = this.createStart(props.onStart);
-        this.options = this.createOptions();
+        this.optionMenu = this.createOptionMenu();
+        this.options = this.createOptions(this.optionMenu);
         this.camera = this.createCamera();
+        this.menuClick = new MenuClickSound(this.scene);
+        this.menuHover = new MenuHoverSound(this.scene);
     }
 
     private createCamera = () => {
@@ -74,14 +81,17 @@ export class MenuGui {
         button.top = '260px';
         button.background = '';
         button.hoverCursor = 'pointer';
-        button.onPointerDownObservable.add(() => {});
+        button.onPointerEnterObservable.add(() => this.menuHover.play());
+        button.onPointerDownObservable.add(() => {
+            this.menuClick.play();
+            onStart();
+        });
         button.onPointerUpObservable.add(() => {});
-        button.onPointerDownObservable.add(onStart);
         this.gui.addControl(button);
         return button;
     };
 
-    private createOptions = (): GUI.Button => {
+    private createOptions = (submenu: GUI.Grid): GUI.Button => {
         const button = GUI.Button.CreateImageWithCenterTextButton('options', 'Options', './gui/Blue/ButtonB_Big/Button6.png');
         button.height = '40px';
         button.width = '200px';
@@ -91,9 +101,18 @@ export class MenuGui {
         button.top = '320px';
         button.background = '';
         button.hoverCursor = 'pointer';
-        button.onPointerDownObservable.add(() => {});
+        button.onPointerEnterObservable.add(() => this.menuHover.play());
+        button.onPointerDownObservable.add(() => {
+            this.menuClick.play();
+            submenu.alpha = 1;
+        });
         button.onPointerUpObservable.add(() => {});
         this.gui.addControl(button);
         return button;
+    };
+
+    private createOptionMenu = (): GUI.Grid => {
+        const grid = new GUI.Grid('grid');
+        return grid;
     };
 }
