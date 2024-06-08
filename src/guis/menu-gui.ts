@@ -1,6 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import { createButton } from './components/button.js';
 
 export type OnStart = () => void;
 export type MenuGuiProps = {

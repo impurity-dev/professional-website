@@ -1,5 +1,4 @@
 import * as BABYLON from '@babylonjs/core';
-import { SpaceSkybox } from '../skyboxes/space-skybox.js';
 import { State } from './state.js';
 import * as models from '../entities/model.js';
 import { MenuGui } from '../guis/menu-gui.js';
