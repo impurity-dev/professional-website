@@ -116,8 +116,8 @@ export class MenuGui {
         openOptionsMenu: () => void;
         closeOptionsMenu: () => void;
     } => {
-        const width = 0.5;
-        const height = 0.7;
+        const width = 0.3;
+        const height = 0.5;
         const animationSpeed = 5;
         const startLocation = 1000;
 
@@ -128,11 +128,68 @@ export class MenuGui {
         background.top = startLocation;
 
         const grid = new GUI.Grid('grid');
-        // grid.background = 'red';
         grid.width = width;
         grid.height = height;
         grid.zIndex = 1;
         grid.top = startLocation;
+        grid.addRowDefinition(0.2);
+        grid.addRowDefinition(0.2);
+        grid.addRowDefinition(0.2);
+        grid.addRowDefinition(0.2);
+        grid.addRowDefinition(0.2);
+        grid.addColumnDefinition(0.2);
+        grid.addColumnDefinition(0.2);
+
+        const title = new GUI.TextBlock('options-menu-title-01', 'Game');
+        title.fontFamily = 'Zen Dots';
+        title.color = 'white';
+        title.fontSize = 30;
+        grid.addControl(title, 0, 0);
+
+        const title2 = new GUI.TextBlock('options-menu-title-02', 'Options');
+        title2.fontFamily = 'Zen Dots';
+        title2.color = 'white';
+        title2.fontSize = 30;
+        grid.addControl(title2, 0, 1);
+
+        BABYLON.Engine.audioEngine.useCustomUnlockedButton = true;
+        const toggleSound = new GUI.Checkbox('toggle-sound');
+        toggleSound.widthInPixels = 50;
+        toggleSound.heightInPixels = 50;
+        toggleSound.hoverCursor = 'pointer';
+        toggleSound.isChecked = BABYLON.Engine.audioEngine.unlocked;
+        toggleSound.onPointerEnterObservable.add(() => this.menuHover.play());
+        toggleSound.onPointerClickObservable.add(() => {
+            if (!BABYLON.Engine.audioEngine.unlocked) {
+                BABYLON.Engine.audioEngine.unlock();
+            } else {
+                BABYLON.Engine.audioEngine.lock();
+            }
+            this.menuClick.play();
+        });
+        grid.addControl(toggleSound, 1, 0);
+
+        const toggleSoundText = new GUI.TextBlock('toggle-sound-label', 'Sound');
+        toggleSoundText.color = 'white';
+        toggleSoundText.fontFamily = 'Zen Dots';
+        grid.addControl(toggleSoundText, 1, 1);
+
+        const toggleFullscreen = new GUI.Checkbox('toggle-fullscreen');
+        toggleFullscreen.widthInPixels = 50;
+        toggleFullscreen.heightInPixels = 50;
+        toggleFullscreen.hoverCursor = 'pointer';
+        toggleFullscreen.isChecked = this.scene.getEngine().isFullscreen;
+        toggleFullscreen.onPointerEnterObservable.add(() => this.menuHover.play());
+        toggleFullscreen.onPointerDownObservable.add(() => {
+            this.menuClick.play();
+            this.scene.getEngine().switchFullscreen(false);
+        });
+        grid.addControl(toggleFullscreen, 2, 0);
+
+        const toggleFullscreenText = new GUI.TextBlock('toggle-fullscreen-label', 'Fullscreen');
+        toggleFullscreenText.color = 'white';
+        toggleFullscreenText.fontFamily = 'Zen Dots';
+        grid.addControl(toggleFullscreenText, 2, 1);
 
         const flyIn = new BABYLON.Animation('fly-in', 'top', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
         flyIn.setKeys([
@@ -159,6 +216,20 @@ export class MenuGui {
             this.scene.beginAnimation(grid, 0, 60, false, animationSpeed);
             this.scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
+
+        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', './gui/Blue/ButtonB_Big/Button6.png');
+        closeButton.height = '40px';
+        closeButton.width = '200px';
+        closeButton.color = 'white';
+        closeButton.thickness = 0;
+        closeButton.background = '';
+        closeButton.hoverCursor = 'pointer';
+        closeButton.onPointerEnterObservable.add(() => this.menuHover.play());
+        closeButton.onPointerDownObservable.add(() => {
+            this.menuClick.play();
+            closeOptionsMenu();
+        });
+        grid.addControl(closeButton, 4, 1);
 
         this.gui.addControl(background);
         this.gui.addControl(grid);
