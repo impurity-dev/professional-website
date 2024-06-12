@@ -14,7 +14,7 @@ export class EntityManager {
             logger.debug(`Finished loading ${task.name}`);
             this._isLoaded = true;
         });
-        this.assetManager.onTaskErrorObservable.add((task: AbstractAssetTask) => logger.error(`Unable to load ${task.name}`));
+        this.assetManager.onTaskErrorObservable.add((task: AbstractAssetTask) => logger.error(`Unable to load ${task.name} :: ${task.errorObject.message}`));
         this.assetManager.onProgressObservable.add((event: IAssetsProgressEvent) => logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`));
         this.assetManager.onTasksDoneObservable.add((task: AbstractAssetTask[]) => logger.debug(`Finished loading ${task.length} assets`));
     }
