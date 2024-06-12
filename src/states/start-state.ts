@@ -21,7 +21,7 @@ export class StartState extends State {
         });
 
         await this.entityManager.load();
-        fighter.transform.position = new BABYLON.Vector3(10, 2, 10);
+        fighter.transform.position = new BABYLON.Vector3(0, 0, 0);
         new IntroSound(scene);
         new SpaceSkybox(scene);
 

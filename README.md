@@ -33,3 +33,7 @@
 ## Ship
 
 -   https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1#download
+
+## Corridor
+
+-   https://sketchfab.com/3d-models/016mabc-sky-corridor-b6c3835d53e941e6bde7e933c1e43afd#download
