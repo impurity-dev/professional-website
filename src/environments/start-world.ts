@@ -9,7 +9,15 @@ export class StartWorld extends World {
         this.floors();
         this.walls();
         this.windows();
+        this.stairs();
     }
+
+    private stairs = () => {
+        const parent = new TransformNode('stairs', this.scene);
+        const rotation = new Vector3(0, Math.PI / 2, 0);
+        this.put({ model: models.staircase, position: new Vector3(5, 1, 0), rotation, parent });
+        this.put({ model: models.staircase, position: new Vector3(6, 2, 0), rotation, parent });
+    };
 
     private walls = () => {
         const parent = new TransformNode('walls', this.scene);
