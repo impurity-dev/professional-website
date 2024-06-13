@@ -1,19 +1,29 @@
-import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask } from '@babylonjs/core';
+import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask, InstantiatedEntries } from '@babylonjs/core';
 import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
 
 type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset };
 export class Model extends Entity {
+    private _entries: InstantiatedEntries | undefined;
+
     constructor(props: ModelProps) {
         super({ name: props.name, scene: props.scene });
         this.transform.metadata = props.asset;
         props.entityManager.queue(props.asset).add((task) => this.load(task));
     }
 
+    get entries() {
+        if (!this._entries) throw new Error('Model is unloaded');
+        return this._entries;
+    }
+    private set entries(other: InstantiatedEntries) {
+        this._entries = other;
+    }
+
     protected load = (task: ContainerAssetTask) => {
-        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
-        entries.rootNodes.forEach((node) => (node.parent = this.transform));
+        this.entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
+        this.entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
             m.checkCollisions = true;

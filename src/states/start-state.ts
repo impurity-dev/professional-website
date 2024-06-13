@@ -5,6 +5,7 @@ import { State } from './state.js';
 import { StartWorld } from '../environments/start-world.js';
 import { FirstPersonController } from '../controllers/first-person-controller.js';
 import { Model } from '../entities/model.js';
+import { fresnelMaterial } from '../materials';
 
 export class StartState extends State {
     run = async (): Promise<void> => {
@@ -19,9 +20,12 @@ export class StartState extends State {
             entityManager,
             asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
         });
-
-        await this.entityManager.load();
         fighter.transform.position = new BABYLON.Vector3(0, 0, 0);
+        await this.entityManager.load();
+        const fresnel = fresnelMaterial(scene);
+        fighter.transform.getChildMeshes().forEach((m) => {
+            m.material = fresnel;
+        });
         new IntroSound(scene);
         new SpaceSkybox(scene);
 
