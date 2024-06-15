@@ -282,4 +282,4 @@ export class DoorDoubleWall extends Entity {
 export const doorDoubleWall = (props: InitProps): DoorDoubleWall => new DoorDoubleWall({ ...props });
 // objects
 export const earth = (props: InitProps) => new Model({ ...props, name: 'earth', asset: assets.EARTH });
-export const robot = (props: InitProps) => new Model({ ...props, name: 'earth', asset: assets.EARTH });
+export const robot = (props: InitProps) => new Model({ ...props, name: 'robot', asset: assets.EARTH });

@@ -5,6 +5,8 @@ import * as models from '../entities/model.js';
 import * as material from '../materials';
 
 export class StartWorld extends World {
+    entryDoor: models.DoorDoubleWall;
+
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
         super(scene, entityManager);
         this.floors();
@@ -14,7 +16,41 @@ export class StartWorld extends World {
         this.windows();
         // this.stairs();
         this.fighter();
+        this.computers();
+        this.entry();
     }
+
+    private entry = async () => {
+        const { scene, entityManager } = this;
+        const parent = new BABYLON.TransformNode('entry');
+        let rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+        let position = new BABYLON.Vector3(-16.5, 0, 1);
+        this.entryDoor = models.doorDoubleWall({ scene, entityManager });
+        this.entryDoor.transform.parent = parent;
+        this.entryDoor.transform.rotation = rotation;
+        this.entryDoor.transform.position = position;
+
+        const leftWall = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-18.5, 0, 3);
+        leftWall.transform.parent = parent;
+        leftWall.transform.rotation = rotation;
+        leftWall.transform.position = position;
+
+        const rightWall = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, 0, 0);
+        position = new BABYLON.Vector3(-18.5, 0, -1);
+        rightWall.transform.parent = parent;
+        rightWall.transform.rotation = rotation;
+        rightWall.transform.position = position;
+    };
+
+    private computers = async () => {
+        const { scene, entityManager } = this;
+        const parent = new BABYLON.TransformNode('computers');
+        const rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+        this.put({ model: models.propsComputer, position: new BABYLON.Vector3(-2, 0, -0.5), rotation, parent });
+    };
 
     private fighter = async () => {
         const { scene, entityManager } = this;
@@ -173,5 +209,6 @@ export class StartWorld extends World {
         tile.transform.position = new BABYLON.Vector3(position.x * scaleX + offsetX, position.y * scaleY + offsetY, position.z * scaleZ + offsetZ);
         tile.transform.rotation = rotation;
         tile.transform.parent = parent;
+        return tile;
     };
 }
