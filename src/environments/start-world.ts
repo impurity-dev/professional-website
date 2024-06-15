@@ -2,6 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 import { World } from './world.js';
 import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
+import * as material from '../materials';
 
 export class StartWorld extends World {
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
@@ -12,7 +13,48 @@ export class StartWorld extends World {
         this.walls();
         this.windows();
         // this.stairs();
+        this.fighter();
     }
+
+    private fighter = async () => {
+        const { scene, entityManager } = this;
+        const pedestal = models.propsBase({ scene, entityManager });
+        pedestal.transform.position = new BABYLON.Vector3(0, 0, 0);
+
+        const fresnel = material.fresnel(scene);
+        const blink = new BABYLON.Animation('blink', 'visibility', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        blink.setKeys([
+            { frame: 0, value: 0 },
+            { frame: 30, value: 1 },
+            { frame: 60, value: 0 },
+        ]);
+        blink.setEasingFunction(new BABYLON.SineEase());
+        const spin = new BABYLON.Animation('spin', 'rotation.y', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        spin.setKeys([
+            { frame: 0, value: 0 },
+            { frame: 30, value: Math.PI },
+            { frame: 60, value: 2 * Math.PI },
+        ]);
+
+        const fighter = new models.Model({
+            name: 'fighter',
+            scene,
+            entityManager,
+            asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
+        });
+        fighter.addOnLoad(() => {
+            fighter.transform.getChildMeshes().forEach((m) => {
+                m.material = fresnel;
+                m.checkCollisions = false;
+                m.animations = [blink];
+                this.scene.beginAnimation(m, 0, 60, true, 0.25);
+            });
+            fighter.transform.position = new BABYLON.Vector3(0, 1, 0);
+            fighter.transform.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
+            fighter.transform.animations = [spin];
+            this.scene.beginAnimation(fighter.transform, 0, 60, true, 0.05);
+        });
+    };
 
     private floor2 = () => {
         const parent = new BABYLON.TransformNode('floor-2', this.scene);

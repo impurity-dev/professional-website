@@ -34,7 +34,13 @@ export class FirstPersonController {
             if (event.button === 1) engine.exitPointerlock();
         };
 
-        const flashlight = new BABYLON.DirectionalLight('flashlight', new BABYLON.Vector3(1, 0, 0));
-        flashlight.parent = this.camera;
+        // const light = new BABYLON.SpotLight('spotLight', this.camera.position, this.camera.target, Math.PI / 2, 10, scene);
+        // light.diffuse = new BABYLON.Color3(1, 1, 1);
+        // light.specular = new BABYLON.Color3(1, 1, 1);
+        // light.intensity = 100;
+        // scene.onBeforeRenderObservable.add(() => {
+        //     light.position = this.camera.position;
+        //     light.setDirectionToTarget(this.camera.getFrontPosition(1));
+        // });
     }
 }

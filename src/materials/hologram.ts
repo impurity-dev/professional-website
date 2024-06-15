@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 
-export const fresnelMaterial = (scene: BABYLON.Scene) => {
+export const fresnel = (scene: BABYLON.Scene) => {
     const fresnel = new BABYLON.StandardMaterial('fres', scene);
     fresnel.diffuseColor = new BABYLON.Color3(0, 0.8, 0.8);
     fresnel.emissiveColor = new BABYLON.Color3(0, 1, 1);
@@ -10,5 +10,6 @@ export const fresnelMaterial = (scene: BABYLON.Scene) => {
     fresnel.reflectionFresnelParameters.bias = 0.1;
     fresnel.opacityFresnelParameters = new BABYLON.FresnelParameters();
     fresnel.emissiveFresnelParameters = new BABYLON.FresnelParameters();
+    fresnel.disableLighting = true;
     return fresnel;
 };

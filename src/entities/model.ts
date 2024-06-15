@@ -1,4 +1,4 @@
-import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask, InstantiatedEntries } from '@babylonjs/core';
+import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask, InstantiatedEntries, Observable } from '@babylonjs/core';
 import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
@@ -6,8 +6,9 @@ import { Entity } from './entity';
 type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset };
 export class Model extends Entity {
     private _entries: InstantiatedEntries | undefined;
+    private readonly onLoad: Observable<void> = new Observable();
 
-    constructor(props: ModelProps) {
+    constructor(private readonly props: ModelProps) {
         super({ name: props.name, scene: props.scene });
         this.transform.metadata = props.asset;
         props.entityManager.queue(props.asset).add((task) => this.load(task));
@@ -21,6 +22,8 @@ export class Model extends Entity {
         this._entries = other;
     }
 
+    addOnLoad = (callback: () => void) => this.onLoad.add(callback);
+
     protected load = (task: ContainerAssetTask) => {
         this.entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
         this.entries.rootNodes.forEach((node) => (node.parent = this.transform));
@@ -28,6 +31,7 @@ export class Model extends Entity {
             if (!m.isAnInstance) m.receiveShadows = true;
             m.checkCollisions = true;
         });
+        this.onLoad.notifyObservers();
     };
 }
 export type ModelFactory = (props: InitProps) => Model;
