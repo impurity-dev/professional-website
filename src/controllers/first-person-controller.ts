@@ -35,9 +35,9 @@ export class FirstPersonController {
         };
 
         this.addCrosshair();
-        // scene.registerBeforeRender(() => {
-        //     this.castRay();
-        // });
+        scene.registerBeforeRender(() => {
+            this.castRay();
+        });
     }
 
     flashlight = () => {
@@ -73,8 +73,8 @@ export class FirstPersonController {
         const ray = new BABYLON.Ray(origin, direction, length);
 
         const hit = scene.pickWithRay(ray);
-        if (hit.pickedMesh && hit.pickedMesh?.parent?.metadata?.action === 'travel') {
-            console.log(hit);
+        if (hit.pickedMesh && hit.pickedMesh?.metadata?.action === 'launch') {
+            // console.log(hit);
         }
     };
 

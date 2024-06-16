@@ -3,15 +3,17 @@ import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
 
-type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset };
+type Metadata = Record<string, string>;
+type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset; metadata?: Metadata };
 export class Model extends Entity {
     private _entries: InstantiatedEntries | undefined;
     private readonly onLoad: Observable<void> = new Observable();
 
     constructor(private readonly props: ModelProps) {
-        super({ name: props.name, scene: props.scene });
-        this.transform.metadata = props.asset;
-        props.entityManager.queue(props.asset).add((task) => this.load(task));
+        const { name, scene, entityManager, asset, metadata } = props;
+        super({ name, scene });
+        this.transform.metadata = metadata ? { ...asset, ...metadata } : asset;
+        entityManager.queue(asset).add((task) => this.load(task));
     }
 
     get entries() {
@@ -30,13 +32,14 @@ export class Model extends Entity {
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
             m.checkCollisions = true;
+            m.metadata = this.transform.metadata;
         });
         this.onLoad.notifyObservers();
     };
 }
 export type ModelFactory = (props: InitProps) => Model;
 export type EntityFactory = (props: InitProps) => Entity;
-export type InitProps = { scene: Scene; entityManager: EntityManager; metadata?: Record<string, string> };
+export type InitProps = { scene: Scene; entityManager: EntityManager; metadata?: Metadata };
 // Columns
 export const column1 = (props: InitProps) => new Model({ ...props, name: 'column-1', asset: assets.COLUMN_1 });
 export const column2 = (props: InitProps) => new Model({ ...props, name: 'column-2', asset: assets.COLUMN_2 });

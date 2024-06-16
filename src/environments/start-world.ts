@@ -129,7 +129,13 @@ export class StartWorld extends World {
         const { scene, entityManager } = this;
         const parent = new BABYLON.TransformNode('computers');
         const rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
-        this.put({ model: models.propsComputer, position: new BABYLON.Vector3(-2, 0, -0.5), rotation, parent });
+        const position = new BABYLON.Vector3(-4, 0, 1);
+
+        const computer = models.propsComputer({ scene, entityManager, metadata: { action: 'launch' } });
+        console.log('HERE', computer.transform.metadata);
+        computer.transform.parent = parent;
+        computer.transform.rotation = rotation;
+        computer.transform.position = position;
     };
 
     private fighter = async () => {
