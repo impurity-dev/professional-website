@@ -36,7 +36,7 @@ export class Model extends Entity {
 }
 export type ModelFactory = (props: InitProps) => Model;
 export type EntityFactory = (props: InitProps) => Entity;
-export type InitProps = { scene: Scene; entityManager: EntityManager };
+export type InitProps = { scene: Scene; entityManager: EntityManager; metadata?: Record<string, string> };
 // Columns
 export const column1 = (props: InitProps) => new Model({ ...props, name: 'column-1', asset: assets.COLUMN_1 });
 export const column2 = (props: InitProps) => new Model({ ...props, name: 'column-2', asset: assets.COLUMN_2 });
@@ -183,11 +183,11 @@ export class Wall extends Entity {
     readonly pipes: Model;
 
     constructor(props: InitProps & WallProps) {
-        const { scene, entityManager, wall, pole, pipes } = props;
+        const { scene, entityManager, metadata, wall, pole, pipes } = props;
         super({ name: 'wall', scene });
-        this.wall = wall({ scene, entityManager });
-        this.pole = pole({ scene, entityManager });
-        this.pipes = pipes({ scene, entityManager });
+        this.wall = wall({ scene, entityManager, metadata });
+        this.pole = pole({ scene, entityManager, metadata });
+        this.pipes = pipes({ scene, entityManager, metadata });
         this.wall.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
         this.pipes.transform.parent = this.transform;
@@ -203,12 +203,12 @@ export class WindowWall extends Entity {
     readonly pipes: Model;
 
     constructor(props: InitProps & WindowWallProps) {
-        const { scene, entityManager, pole, pipes } = props;
+        const { scene, entityManager, metadata, pole, pipes } = props;
         super({ name: 'window-wall', scene });
-        this.sideA = windowWallSideA({ scene, entityManager });
-        this.sideB = windowWallSideB({ scene, entityManager });
-        this.pole = pole({ scene, entityManager });
-        this.pipes = pipes({ scene, entityManager });
+        this.sideA = windowWallSideA({ scene, entityManager, metadata });
+        this.sideB = windowWallSideB({ scene, entityManager, metadata });
+        this.pole = pole({ scene, entityManager, metadata });
+        this.pipes = pipes({ scene, entityManager, metadata });
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
@@ -260,10 +260,11 @@ export class DoorDoubleWall extends Entity {
     readonly doors: DoorDouble;
 
     constructor(props: InitProps) {
-        super({ name: 'door-double-wall', scene: props.scene });
-        this.doors = doorDouble({ scene: props.scene, entityManager: props.entityManager });
-        this.sideA = doorDoubleWallSideA({ scene: props.scene, entityManager: props.entityManager });
-        this.sideB = doorDoubleWallSideB({ scene: props.scene, entityManager: props.entityManager });
+        const { scene, entityManager, metadata } = props;
+        super({ name: 'door-double-wall', scene });
+        this.doors = doorDouble({ scene, entityManager, metadata });
+        this.sideA = doorDoubleWallSideA({ scene, entityManager, metadata });
+        this.sideB = doorDoubleWallSideB({ scene, entityManager, metadata });
         this.doors.transform.parent = this.transform;
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
