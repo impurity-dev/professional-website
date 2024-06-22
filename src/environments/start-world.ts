@@ -5,6 +5,8 @@ import * as models from '../entities/model.js';
 import * as material from '../materials';
 
 export class StartWorld extends World {
+    public readonly onLaunchOptions: BABYLON.Observable<boolean> = new BABYLON.Observable();
+
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
         super(scene, entityManager);
         this.floors();
@@ -137,15 +139,23 @@ export class StartWorld extends World {
         computer.addOnLoad(() => {
             const root = computer.transform.getChildMeshes()[0];
             root.actionManager = new BABYLON.ActionManager(scene);
+            const cameraMesh = this.scene.getMeshByName('camera-box');
             root.actionManager.registerAction(
                 new BABYLON.ExecuteCodeAction(
                     {
                         trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-                        parameter: this.scene.getMeshByName('camera-box'),
+                        parameter: cameraMesh,
                     },
-                    () => {
-                        console.log('HELLO!');
+                    () => this.onLaunchOptions.notifyObservers(true),
+                ),
+            );
+            root.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(
+                    {
+                        trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                        parameter: cameraMesh,
                     },
+                    () => this.onLaunchOptions.notifyObservers(false),
                 ),
             );
         });

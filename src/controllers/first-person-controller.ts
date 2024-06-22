@@ -1,14 +1,17 @@
 import * as BABYLON from '@babylonjs/core';
 
 export class FirstPersonController {
-    readonly camera: BABYLON.UniversalCamera;
+    public readonly onActionPressed: BABYLON.Observable<void> = new BABYLON.Observable();
+    public readonly camera: BABYLON.UniversalCamera;
+    private readonly deviceManager: BABYLON.DeviceSourceManager;
 
     constructor(
         private readonly scene: BABYLON.Scene,
         location: BABYLON.Vector3,
         target: BABYLON.Vector3,
     ) {
-        this.camera = new BABYLON.UniversalCamera('fps-camera', location, this.scene);
+        this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
+        this.camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
         this.scene.activeCamera = this.camera;
         this.camera.target = target;
         this.camera.attachControl();
@@ -37,10 +40,24 @@ export class FirstPersonController {
         this.addCrosshair();
         const box = BABYLON.MeshBuilder.CreateBox('camera-box', { size: 10 }, scene);
         box.parent = this.camera;
-        // scene.registerBeforeRender(() => {
-        //     this.castRay();
-        // });
+
+        scene.registerBeforeRender(() => {
+            // this.castRay();
+            this.handleControls();
+        });
     }
+
+    handleControls = () => {
+        const { deviceManager } = this;
+        const keyboard = deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
+        if (!keyboard) {
+            return;
+        }
+        const E = 69;
+        if (keyboard.getInput(E) === 1) {
+            this.onActionPressed.notifyObservers();
+        }
+    };
 
     flashlight = () => {
         const { scene } = this;
