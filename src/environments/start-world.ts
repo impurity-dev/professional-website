@@ -5,8 +5,6 @@ import * as models from '../entities/model.js';
 import * as material from '../materials';
 
 export class StartWorld extends World {
-    entryDoor: models.DoorDoubleWall;
-
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
         super(scene, entityManager);
         this.floors();
@@ -15,7 +13,7 @@ export class StartWorld extends World {
         this.walls();
         this.windows();
         // this.stairs();
-        this.fighter();
+        this.hologram();
         this.computers();
         this.entry();
     }
@@ -25,10 +23,11 @@ export class StartWorld extends World {
         const parent = new BABYLON.TransformNode('entry');
         let rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
         let position = new BABYLON.Vector3(-17, 0, 1);
-        this.entryDoor = models.doorDoubleWall({ scene, entityManager });
-        this.entryDoor.transform.parent = parent;
-        this.entryDoor.transform.rotation = rotation;
-        this.entryDoor.transform.position = position;
+        const entryDoor = models.doorDoubleWall({ scene, entityManager });
+        entryDoor.transform.parent = parent;
+        entryDoor.transform.rotation = rotation;
+        entryDoor.transform.position = position;
+        entryDoor.doors.addOnLoad(async () => entryDoor.doors.openAsync(true));
 
         const leftEntry = models.wall5({ scene, entityManager });
         rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
@@ -132,16 +131,32 @@ export class StartWorld extends World {
         const position = new BABYLON.Vector3(-4, 0, 1);
 
         const computer = models.propsComputer({ scene, entityManager, metadata: { action: 'launch' } });
-        console.log('HERE', computer.transform.metadata);
         computer.transform.parent = parent;
         computer.transform.rotation = rotation;
         computer.transform.position = position;
+        computer.addOnLoad(() => {
+            const root = computer.transform.getChildMeshes()[0];
+            root.actionManager = new BABYLON.ActionManager(scene);
+            root.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(
+                    {
+                        trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                        parameter: this.scene.getMeshByName('camera-box'),
+                    },
+                    () => {
+                        console.log('HELLO!');
+                    },
+                ),
+            );
+        });
     };
 
-    private fighter = async () => {
+    private hologram = async () => {
         const { scene, entityManager } = this;
+        const parent = new BABYLON.TransformNode('hologram');
         const pedestal = models.propsBase({ scene, entityManager });
-        pedestal.transform.position = new BABYLON.Vector3(0, 0, 0);
+        pedestal.transform.parent = parent;
+        pedestal.transform.position = new BABYLON.Vector3(0, 0, 1);
 
         const fresnel = material.fresnel(scene);
         const blink = new BABYLON.Animation('blink', 'visibility', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
@@ -164,6 +179,7 @@ export class StartWorld extends World {
             entityManager,
             asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
         });
+        fighter.transform.parent = parent;
         fighter.addOnLoad(() => {
             fighter.transform.getChildMeshes().forEach((m) => {
                 m.material = fresnel;
@@ -171,7 +187,7 @@ export class StartWorld extends World {
                 m.animations = [blink];
                 this.scene.beginAnimation(m, 0, 60, true, 0.25);
             });
-            fighter.transform.position = new BABYLON.Vector3(0, 1, 0);
+            fighter.transform.position = new BABYLON.Vector3(0, 1, 1);
             fighter.transform.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
             fighter.transform.animations = [spin];
             this.scene.beginAnimation(fighter.transform, 0, 60, true, 0.05);

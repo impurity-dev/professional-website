@@ -35,9 +35,11 @@ export class FirstPersonController {
         };
 
         this.addCrosshair();
-        scene.registerBeforeRender(() => {
-            this.castRay();
-        });
+        const box = BABYLON.MeshBuilder.CreateBox('camera-box', { size: 10 }, scene);
+        box.parent = this.camera;
+        // scene.registerBeforeRender(() => {
+        //     this.castRay();
+        // });
     }
 
     flashlight = () => {

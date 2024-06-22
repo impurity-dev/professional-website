@@ -6,8 +6,8 @@ import { Entity } from './entity';
 type Metadata = Record<string, string>;
 type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset; metadata?: Metadata };
 export class Model extends Entity {
+    protected readonly onLoad: Observable<void> = new Observable();
     private _entries: InstantiatedEntries | undefined;
-    private readonly onLoad: Observable<void> = new Observable();
 
     constructor(private readonly props: ModelProps) {
         const { name, scene, entityManager, asset, metadata } = props;
@@ -62,18 +62,18 @@ export class DoorDouble extends Model {
             },
             {
                 frame: 5,
-                value: 0.01,
-            },
-            {
-                frame: 10,
                 value: 0.02,
             },
             {
-                frame: 20,
-                value: 0.1,
+                frame: 8,
+                value: 0.02,
             },
             {
-                frame: 100,
+                frame: 10,
+                value: 0.05,
+            },
+            {
+                frame: 60,
                 value: 1.5,
             },
         ];
@@ -91,10 +91,11 @@ export class DoorDouble extends Model {
     }
 
     openAsync = async (isOpen: boolean) => {
+        const speed = 0.35;
         if (isOpen) {
-            return Promise.all([this.scene.beginAnimation(this.left, 0, 100, false).waitAsync(), this.scene.beginAnimation(this.right, 0, 100, false).waitAsync()]);
+            return Promise.all([this.scene.beginAnimation(this.left, 0, 60, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 0, 60, false, speed).waitAsync()]);
         } else {
-            return Promise.all([this.scene.beginAnimation(this.left, 100, 0, false).waitAsync(), this.scene.beginAnimation(this.right, 100, 0, false).waitAsync()]);
+            return Promise.all([this.scene.beginAnimation(this.left, 60, 0, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 60, 0, false, speed).waitAsync()]);
         }
     };
 
@@ -111,6 +112,7 @@ export class DoorDouble extends Model {
         });
         this.left.animations.push(this.openLeft);
         this.right.animations.push(this.openRight);
+        this.onLoad.notifyObservers();
     };
 }
 export const doorDouble = (props: InitProps) => new DoorDouble({ ...props });
@@ -255,11 +257,7 @@ export const detailsX = (props: InitProps) => new Model({ ...props, name: 'detai
 // Compounds
 export class DoorDoubleWall extends Entity {
     readonly sideA: Model;
-    readonly lightA: SpotLight;
-    readonly shadowA: ShadowGenerator;
     readonly sideB: Model;
-    readonly lightB: SpotLight;
-    readonly shadowB: ShadowGenerator;
     readonly doors: DoorDouble;
 
     constructor(props: InitProps) {
@@ -273,14 +271,6 @@ export class DoorDoubleWall extends Entity {
         this.sideB.transform.parent = this.transform;
         this.sideA.transform.position = new Vector3(0, 0, -1);
         this.sideA.transform.rotation = new Vector3(0, Math.PI, 0);
-        this.lightA = new SpotLight(`${this.name}-light-a`, this.sideA.transform.position.add(new Vector3(0, 3.6, 0)), new Vector3(0, -30, -10), Math.PI, 300, props.scene);
-        this.lightA.range = 2;
-        this.lightA.parent = this.transform;
-        this.shadowA = new ShadowGenerator(1024, this.lightA);
-        this.lightB = new SpotLight(`${this.name}-light-b`, this.sideB.transform.position.add(new Vector3(0, 3.5, 0)), new Vector3(0, -30, 10), Math.PI, 300, props.scene);
-        this.lightB.range = 2;
-        this.lightB.parent = this.transform;
-        this.shadowB = new ShadowGenerator(1024, this.lightB);
     }
 }
 export const doorDoubleWall = (props: InitProps): DoorDoubleWall => new DoorDoubleWall({ ...props });

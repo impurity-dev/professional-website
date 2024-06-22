@@ -9,9 +9,8 @@ export class StartState extends State {
     run = async (): Promise<void> => {
         const { scene, entityManager } = this;
         new FirstPersonController(scene, new BABYLON.Vector3(-20, 2, 1), new BABYLON.Vector3(2, 2, 0));
-        const world = new StartWorld(scene, entityManager);
+        new StartWorld(scene, entityManager);
         await this.entityManager.load();
-        world.entryDoor.doors.openAsync(true);
         new IntroSound(scene);
         new SpaceSkybox(scene);
 
