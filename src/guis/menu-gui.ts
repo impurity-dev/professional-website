@@ -25,6 +25,7 @@ export class MenuGui {
     ) {
         this.gui = this.createGui();
         this.title = this.createTitle();
+        this.createWIP();
         this.start = this.createStart(props.onStart);
         const { openOptionsMenu } = this.createOptionMenu();
         this.options = this.createOptions(openOptionsMenu);
@@ -45,6 +46,23 @@ export class MenuGui {
         ui.idealHeight = 1080;
         ui.layer.layerMask = this.mask;
         return ui;
+    };
+
+    private createWIP = () => {
+        const textBlock = new GUI.TextBlock('wip', 'Work in Progress');
+        textBlock.top = '-200';
+        textBlock.color = new BABYLON.Color4(1, 1, 0, 1).toHexString();
+        textBlock.outlineColor = new BABYLON.Color4(1, 1, 0, 1).toHexString();
+        textBlock.outlineWidth = 1;
+        textBlock.fontSize = '75px';
+        textBlock.shadowColor = new BABYLON.Color4(0, 0.5, 0.5, 1).toHexString();
+        textBlock.shadowBlur = 100;
+        textBlock.underline = true;
+        textBlock.fontFamily = 'Zen Dots';
+        textBlock.fontWeight = '400';
+        textBlock.fontStyle = 'normal';
+        this.gui.addControl(textBlock);
+        return textBlock;
     };
 
     private createTitle = () => {
