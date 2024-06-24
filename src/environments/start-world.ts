@@ -5,7 +5,7 @@ import * as models from '../entities/model.js';
 import * as material from '../materials';
 
 export class StartWorld extends World {
-    entryDoor: models.DoorDoubleWall;
+    public readonly onLaunchOptions: BABYLON.Observable<boolean> = new BABYLON.Observable();
 
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
         super(scene, entityManager);
@@ -15,7 +15,7 @@ export class StartWorld extends World {
         this.walls();
         this.windows();
         // this.stairs();
-        this.fighter();
+        this.hologram();
         this.computers();
         this.entry();
     }
@@ -24,38 +24,149 @@ export class StartWorld extends World {
         const { scene, entityManager } = this;
         const parent = new BABYLON.TransformNode('entry');
         let rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
-        let position = new BABYLON.Vector3(-16.5, 0, 1);
-        this.entryDoor = models.doorDoubleWall({ scene, entityManager });
-        this.entryDoor.transform.parent = parent;
-        this.entryDoor.transform.rotation = rotation;
-        this.entryDoor.transform.position = position;
+        let position = new BABYLON.Vector3(-17, 0, 1);
+        const entryDoor = models.doorDoubleWall({ scene, entityManager });
+        entryDoor.transform.parent = parent;
+        entryDoor.transform.rotation = rotation;
+        entryDoor.transform.position = position;
+        entryDoor.doors.addOnLoad(async () => entryDoor.doors.openAsync(true));
 
-        const leftWall = models.wall5({ scene, entityManager });
+        const leftEntry = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        position = new BABYLON.Vector3(-16, 0, 5);
+        leftEntry.transform.parent = parent;
+        leftEntry.transform.rotation = rotation;
+        leftEntry.transform.position = position;
+
+        const rightEntry = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        position = new BABYLON.Vector3(-16, 0, -3);
+        rightEntry.transform.parent = parent;
+        rightEntry.transform.rotation = rotation;
+        rightEntry.transform.position = position;
+
+        const leftWallInner = models.wall5({ scene, entityManager });
         rotation = new BABYLON.Vector3(0, Math.PI, 0);
-        position = new BABYLON.Vector3(-18.5, 0, 3);
-        leftWall.transform.parent = parent;
-        leftWall.transform.rotation = rotation;
-        leftWall.transform.position = position;
+        position = new BABYLON.Vector3(-19, 0, 3);
+        leftWallInner.transform.parent = parent;
+        leftWallInner.transform.rotation = rotation;
+        leftWallInner.transform.position = position;
 
-        const rightWall = models.wall5({ scene, entityManager });
+        const leftCornerInner = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-17, 0, 3);
+        leftCornerInner.transform.parent = parent;
+        leftCornerInner.transform.rotation = rotation;
+        leftCornerInner.transform.position = position;
+
+        const leftWallOuter = models.wall5({ scene, entityManager });
         rotation = new BABYLON.Vector3(0, 0, 0);
-        position = new BABYLON.Vector3(-18.5, 0, -1);
-        rightWall.transform.parent = parent;
-        rightWall.transform.rotation = rotation;
-        rightWall.transform.position = position;
+        position = new BABYLON.Vector3(-19, 0, 8);
+        leftWallOuter.transform.parent = parent;
+        leftWallOuter.transform.rotation = rotation;
+        leftWallOuter.transform.position = position;
+
+        const leftCornerOuter1 = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-17, 0, 8);
+        leftCornerOuter1.transform.parent = parent;
+        leftCornerOuter1.transform.rotation = rotation;
+        leftCornerOuter1.transform.position = position;
+        const leftCornerOuter2 = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-16, 0, 7);
+        leftCornerOuter2.transform.parent = parent;
+        leftCornerOuter2.transform.rotation = rotation;
+        leftCornerOuter2.transform.position = position;
+        const leftCornerOuter3 = models.column3({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-16.5, 0, 7.5);
+        leftCornerOuter3.transform.parent = parent;
+        leftCornerOuter3.transform.rotation = rotation;
+        leftCornerOuter3.transform.position = position;
+
+        const rightWallInner = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, 0, 0);
+        position = new BABYLON.Vector3(-19, 0, -1);
+        rightWallInner.transform.parent = parent;
+        rightWallInner.transform.rotation = rotation;
+        rightWallInner.transform.position = position;
+
+        const rightCornerInner = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-17, 0, -1);
+        rightCornerInner.transform.parent = parent;
+        rightCornerInner.transform.rotation = rotation;
+        rightCornerInner.transform.position = position;
+
+        const rightWallOuter = models.wall5({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-19, 0, -6);
+        rightWallOuter.transform.parent = parent;
+        rightWallOuter.transform.rotation = rotation;
+        rightWallOuter.transform.position = position;
+
+        const rightCornerOuter1 = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-17, 0, -6);
+        rightCornerOuter1.transform.parent = parent;
+        rightCornerOuter1.transform.rotation = rotation;
+        rightCornerOuter1.transform.position = position;
+        const rightCornerOuter2 = models.column2({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-16, 0, -5);
+        rightCornerOuter2.transform.parent = parent;
+        rightCornerOuter2.transform.rotation = rotation;
+        rightCornerOuter2.transform.position = position;
+        const rightCornerOuter3 = models.column3({ scene, entityManager });
+        rotation = new BABYLON.Vector3(0, Math.PI, 0);
+        position = new BABYLON.Vector3(-16.5, 0, -5.5);
+        rightCornerOuter3.transform.parent = parent;
+        rightCornerOuter3.transform.rotation = rotation;
+        rightCornerOuter3.transform.position = position;
     };
 
     private computers = async () => {
         const { scene, entityManager } = this;
         const parent = new BABYLON.TransformNode('computers');
         const rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
-        this.put({ model: models.propsComputer, position: new BABYLON.Vector3(-2, 0, -0.5), rotation, parent });
+        const position = new BABYLON.Vector3(-4, 0, 1);
+
+        const computer = models.propsComputer({ scene, entityManager, metadata: { action: 'launch' } });
+        computer.transform.parent = parent;
+        computer.transform.rotation = rotation;
+        computer.transform.position = position;
+        computer.addOnLoad(() => {
+            const root = computer.transform.getChildMeshes()[0];
+            root.actionManager = new BABYLON.ActionManager(scene);
+            const cameraMesh = this.scene.getMeshByName('camera-box');
+            root.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(
+                    {
+                        trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                        parameter: cameraMesh,
+                    },
+                    () => this.onLaunchOptions.notifyObservers(true),
+                ),
+            );
+            root.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(
+                    {
+                        trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                        parameter: cameraMesh,
+                    },
+                    () => this.onLaunchOptions.notifyObservers(false),
+                ),
+            );
+        });
     };
 
-    private fighter = async () => {
+    private hologram = async () => {
         const { scene, entityManager } = this;
+        const parent = new BABYLON.TransformNode('hologram');
         const pedestal = models.propsBase({ scene, entityManager });
-        pedestal.transform.position = new BABYLON.Vector3(0, 0, 0);
+        pedestal.transform.parent = parent;
+        pedestal.transform.position = new BABYLON.Vector3(0, 0, 1);
 
         const fresnel = material.fresnel(scene);
         const blink = new BABYLON.Animation('blink', 'visibility', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
@@ -78,6 +189,7 @@ export class StartWorld extends World {
             entityManager,
             asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
         });
+        fighter.transform.parent = parent;
         fighter.addOnLoad(() => {
             fighter.transform.getChildMeshes().forEach((m) => {
                 m.material = fresnel;
@@ -85,7 +197,7 @@ export class StartWorld extends World {
                 m.animations = [blink];
                 this.scene.beginAnimation(m, 0, 60, true, 0.25);
             });
-            fighter.transform.position = new BABYLON.Vector3(0, 1, 0);
+            fighter.transform.position = new BABYLON.Vector3(0, 1, 1);
             fighter.transform.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
             fighter.transform.animations = [spin];
             this.scene.beginAnimation(fighter.transform, 0, 60, true, 0.05);

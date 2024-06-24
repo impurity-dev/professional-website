@@ -3,15 +3,17 @@ import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
 
-type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset };
+type Metadata = Record<string, string>;
+type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset; metadata?: Metadata };
 export class Model extends Entity {
+    protected readonly onLoad: Observable<void> = new Observable();
     private _entries: InstantiatedEntries | undefined;
-    private readonly onLoad: Observable<void> = new Observable();
 
     constructor(private readonly props: ModelProps) {
-        super({ name: props.name, scene: props.scene });
-        this.transform.metadata = props.asset;
-        props.entityManager.queue(props.asset).add((task) => this.load(task));
+        const { name, scene, entityManager, asset, metadata } = props;
+        super({ name, scene });
+        this.transform.metadata = metadata ? { ...asset, ...metadata } : asset;
+        entityManager.queue(asset).add((task) => this.load(task));
     }
 
     get entries() {
@@ -30,13 +32,14 @@ export class Model extends Entity {
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
             m.checkCollisions = true;
+            m.metadata = this.transform.metadata;
         });
         this.onLoad.notifyObservers();
     };
 }
 export type ModelFactory = (props: InitProps) => Model;
 export type EntityFactory = (props: InitProps) => Entity;
-export type InitProps = { scene: Scene; entityManager: EntityManager };
+export type InitProps = { scene: Scene; entityManager: EntityManager; metadata?: Metadata };
 // Columns
 export const column1 = (props: InitProps) => new Model({ ...props, name: 'column-1', asset: assets.COLUMN_1 });
 export const column2 = (props: InitProps) => new Model({ ...props, name: 'column-2', asset: assets.COLUMN_2 });
@@ -59,18 +62,18 @@ export class DoorDouble extends Model {
             },
             {
                 frame: 5,
-                value: 0.01,
-            },
-            {
-                frame: 10,
                 value: 0.02,
             },
             {
-                frame: 20,
-                value: 0.1,
+                frame: 8,
+                value: 0.02,
             },
             {
-                frame: 100,
+                frame: 10,
+                value: 0.05,
+            },
+            {
+                frame: 60,
                 value: 1.5,
             },
         ];
@@ -88,10 +91,11 @@ export class DoorDouble extends Model {
     }
 
     openAsync = async (isOpen: boolean) => {
+        const speed = 0.35;
         if (isOpen) {
-            return Promise.all([this.scene.beginAnimation(this.left, 0, 100, false).waitAsync(), this.scene.beginAnimation(this.right, 0, 100, false).waitAsync()]);
+            return Promise.all([this.scene.beginAnimation(this.left, 0, 60, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 0, 60, false, speed).waitAsync()]);
         } else {
-            return Promise.all([this.scene.beginAnimation(this.left, 100, 0, false).waitAsync(), this.scene.beginAnimation(this.right, 100, 0, false).waitAsync()]);
+            return Promise.all([this.scene.beginAnimation(this.left, 60, 0, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 60, 0, false, speed).waitAsync()]);
         }
     };
 
@@ -108,6 +112,7 @@ export class DoorDouble extends Model {
         });
         this.left.animations.push(this.openLeft);
         this.right.animations.push(this.openRight);
+        this.onLoad.notifyObservers();
     };
 }
 export const doorDouble = (props: InitProps) => new DoorDouble({ ...props });
@@ -183,11 +188,11 @@ export class Wall extends Entity {
     readonly pipes: Model;
 
     constructor(props: InitProps & WallProps) {
-        const { scene, entityManager, wall, pole, pipes } = props;
+        const { scene, entityManager, metadata, wall, pole, pipes } = props;
         super({ name: 'wall', scene });
-        this.wall = wall({ scene, entityManager });
-        this.pole = pole({ scene, entityManager });
-        this.pipes = pipes({ scene, entityManager });
+        this.wall = wall({ scene, entityManager, metadata });
+        this.pole = pole({ scene, entityManager, metadata });
+        this.pipes = pipes({ scene, entityManager, metadata });
         this.wall.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
         this.pipes.transform.parent = this.transform;
@@ -203,12 +208,12 @@ export class WindowWall extends Entity {
     readonly pipes: Model;
 
     constructor(props: InitProps & WindowWallProps) {
-        const { scene, entityManager, pole, pipes } = props;
+        const { scene, entityManager, metadata, pole, pipes } = props;
         super({ name: 'window-wall', scene });
-        this.sideA = windowWallSideA({ scene, entityManager });
-        this.sideB = windowWallSideB({ scene, entityManager });
-        this.pole = pole({ scene, entityManager });
-        this.pipes = pipes({ scene, entityManager });
+        this.sideA = windowWallSideA({ scene, entityManager, metadata });
+        this.sideB = windowWallSideB({ scene, entityManager, metadata });
+        this.pole = pole({ scene, entityManager, metadata });
+        this.pipes = pipes({ scene, entityManager, metadata });
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
@@ -252,31 +257,20 @@ export const detailsX = (props: InitProps) => new Model({ ...props, name: 'detai
 // Compounds
 export class DoorDoubleWall extends Entity {
     readonly sideA: Model;
-    readonly lightA: SpotLight;
-    readonly shadowA: ShadowGenerator;
     readonly sideB: Model;
-    readonly lightB: SpotLight;
-    readonly shadowB: ShadowGenerator;
     readonly doors: DoorDouble;
 
     constructor(props: InitProps) {
-        super({ name: 'door-double-wall', scene: props.scene });
-        this.doors = doorDouble({ scene: props.scene, entityManager: props.entityManager });
-        this.sideA = doorDoubleWallSideA({ scene: props.scene, entityManager: props.entityManager });
-        this.sideB = doorDoubleWallSideB({ scene: props.scene, entityManager: props.entityManager });
+        const { scene, entityManager, metadata } = props;
+        super({ name: 'door-double-wall', scene });
+        this.doors = doorDouble({ scene, entityManager, metadata });
+        this.sideA = doorDoubleWallSideA({ scene, entityManager, metadata });
+        this.sideB = doorDoubleWallSideB({ scene, entityManager, metadata });
         this.doors.transform.parent = this.transform;
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
         this.sideA.transform.position = new Vector3(0, 0, -1);
         this.sideA.transform.rotation = new Vector3(0, Math.PI, 0);
-        this.lightA = new SpotLight(`${this.name}-light-a`, this.sideA.transform.position.add(new Vector3(0, 3.6, 0)), new Vector3(0, -30, -10), Math.PI, 300, props.scene);
-        this.lightA.range = 2;
-        this.lightA.parent = this.transform;
-        this.shadowA = new ShadowGenerator(1024, this.lightA);
-        this.lightB = new SpotLight(`${this.name}-light-b`, this.sideB.transform.position.add(new Vector3(0, 3.5, 0)), new Vector3(0, -30, 10), Math.PI, 300, props.scene);
-        this.lightB.range = 2;
-        this.lightB.parent = this.transform;
-        this.shadowB = new ShadowGenerator(1024, this.lightB);
     }
 }
 export const doorDoubleWall = (props: InitProps): DoorDoubleWall => new DoorDoubleWall({ ...props });
