@@ -1,13 +1,13 @@
-import { Animation, Scene, ShadowGenerator, SpotLight, TransformNode, Vector3, ContainerAssetTask, InstantiatedEntries, Observable } from '@babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
 import { Asset, EntityManager } from '../managers/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
 
 type Metadata = Record<string, string>;
-type ModelProps = { name: string; scene: Scene; entityManager: EntityManager; asset: Asset; metadata?: Metadata };
+type ModelProps = { name: string; scene: BABYLON.Scene; entityManager: EntityManager; asset: Asset; metadata?: Metadata };
 export class Model extends Entity {
-    protected readonly onLoad: Observable<void> = new Observable();
-    private _entries: InstantiatedEntries | undefined;
+    protected readonly onLoad: BABYLON.Observable<void> = new BABYLON.Observable();
+    private _entries: BABYLON.InstantiatedEntries | undefined;
 
     constructor(private readonly props: ModelProps) {
         const { name, scene, entityManager, asset, metadata } = props;
@@ -20,13 +20,13 @@ export class Model extends Entity {
         if (!this._entries) throw new Error('Model is unloaded');
         return this._entries;
     }
-    private set entries(other: InstantiatedEntries) {
+    private set entries(other: BABYLON.InstantiatedEntries) {
         this._entries = other;
     }
 
     addOnLoad = (callback: () => void) => this.onLoad.add(callback);
 
-    protected load = (task: ContainerAssetTask) => {
+    protected load = (task: BABYLON.ContainerAssetTask) => {
         this.entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
         this.entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
@@ -39,7 +39,7 @@ export class Model extends Entity {
 }
 export type ModelFactory = (props: InitProps) => Model;
 export type EntityFactory = (props: InitProps) => Entity;
-export type InitProps = { scene: Scene; entityManager: EntityManager; metadata?: Metadata };
+export type InitProps = { scene: BABYLON.Scene; entityManager: EntityManager; metadata?: Metadata };
 // Columns
 export const column1 = (props: InitProps) => new Model({ ...props, name: 'column-1', asset: assets.COLUMN_1 });
 export const column2 = (props: InitProps) => new Model({ ...props, name: 'column-2', asset: assets.COLUMN_2 });
@@ -47,14 +47,14 @@ export const column3 = (props: InitProps) => new Model({ ...props, name: 'column
 export const columnSlim = (props: InitProps) => new Model({ ...props, name: 'column-slim', asset: assets.COLUMN_SLIM });
 // Doors
 export class DoorDouble extends Model {
-    private left: TransformNode;
-    private right: TransformNode;
-    private openLeft: Animation;
-    private openRight: Animation;
+    private left: BABYLON.TransformNode;
+    private right: BABYLON.TransformNode;
+    private openLeft: BABYLON.Animation;
+    private openRight: BABYLON.Animation;
 
     constructor(props: InitProps) {
         super({ ...props, name: 'door-double', asset: assets.DOOR_DOUBLE });
-        this.openLeft = new Animation('openLeftDoorDoubleAnimation', 'position.x', 60, Animation.ANIMATIONTYPE_FLOAT);
+        this.openLeft = new BABYLON.Animation('openLeftDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
         const keys = [
             {
                 frame: 0,
@@ -78,7 +78,7 @@ export class DoorDouble extends Model {
             },
         ];
         this.openLeft.setKeys(keys.map(({ frame, value }) => ({ frame, value: -value })));
-        this.openRight = new Animation('openRightDoorDoubleAnimation', 'position.x', 60, Animation.ANIMATIONTYPE_FLOAT);
+        this.openRight = new BABYLON.Animation('openRightDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
         this.openRight.setKeys(keys);
     }
 
@@ -99,16 +99,16 @@ export class DoorDouble extends Model {
         }
     };
 
-    protected load = (task: ContainerAssetTask) => {
-        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: false });
+    protected load = (task: BABYLON.ContainerAssetTask) => {
+        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
         entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
             if (!m.isAnInstance) m.receiveShadows = true;
             m.checkCollisions = true;
         });
         this.transform.getChildTransformNodes().forEach((t) => {
-            if (t.name === 'Door_Double.L') this.left = t as TransformNode;
-            if (t.name === 'Door_Double.R') this.right = t as TransformNode;
+            if (t.name === 'Door_Double.L') this.left = t as BABYLON.TransformNode;
+            if (t.name === 'Door_Double.R') this.right = t as BABYLON.TransformNode;
         });
         this.left.animations.push(this.openLeft);
         this.right.animations.push(this.openRight);
@@ -196,7 +196,7 @@ export class Wall extends Entity {
         this.wall.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
         this.pipes.transform.parent = this.transform;
-        this.pole.transform.translate(new Vector3(1, 0, 0), -2);
+        this.pole.transform.translate(new BABYLON.Vector3(1, 0, 0), -2);
     }
 }
 export const wall = (wProps: WallProps) => (iProps: InitProps) => new Wall({ ...wProps, ...iProps });
@@ -218,11 +218,11 @@ export class WindowWall extends Entity {
         this.sideB.transform.parent = this.transform;
         this.pole.transform.parent = this.transform;
         this.pipes.transform.parent = this.transform;
-        this.sideA.transform.rotate(new Vector3(0, 1, 0), Math.PI);
-        this.sideB.transform.translate(new Vector3(0, 0, 1), 1);
-        this.pole.transform.translate(new Vector3(1, 0, 0), 2);
-        this.pole.transform.rotate(new Vector3(0, 1, 0), Math.PI);
-        this.pipes.transform.rotate(new Vector3(0, 1, 0), Math.PI);
+        this.sideA.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+        this.sideB.transform.translate(new BABYLON.Vector3(0, 0, 1), 1);
+        this.pole.transform.translate(new BABYLON.Vector3(1, 0, 0), 2);
+        this.pole.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+        this.pipes.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
     }
 }
 export const windowWall = (wProps: WindowWallProps) => (iProps: InitProps) => new WindowWall({ ...wProps, ...iProps });
@@ -269,8 +269,8 @@ export class DoorDoubleWall extends Entity {
         this.doors.transform.parent = this.transform;
         this.sideA.transform.parent = this.transform;
         this.sideB.transform.parent = this.transform;
-        this.sideA.transform.position = new Vector3(0, 0, -1);
-        this.sideA.transform.rotation = new Vector3(0, Math.PI, 0);
+        this.sideA.transform.position = new BABYLON.Vector3(0, 0, -1);
+        this.sideA.transform.rotation = new BABYLON.Vector3(0, Math.PI, 0);
     }
 }
 export const doorDoubleWall = (props: InitProps): DoorDoubleWall => new DoorDoubleWall({ ...props });

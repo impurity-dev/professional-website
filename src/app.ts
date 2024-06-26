@@ -21,9 +21,9 @@ class App {
         const [utils, mandelbulbFrag, mandelbulbVert, dissolveFrag, dissolveVert] = await Promise.all([
             fetch('./shaders/utils.fx').then((x) => x.text()),
             fetch('./shaders/mandelbulb.fragment.fx').then((x) => x.text()),
-            fetch('./shaders/mandelbulb.vertext.fx').then((x) => x.text()),
+            fetch('./shaders/mandelbulb.vertex.fx').then((x) => x.text()),
             fetch('./shaders/dissolve.fragment.fx').then((x) => x.text()),
-            fetch('./shaders/dissolve.vertext.fx').then((x) => x.text()),
+            fetch('./shaders/dissolve.vertex.fx').then((x) => x.text()),
         ]);
         Effect.IncludesShadersStore['utils'] = utils;
         Effect.RegisterShader('mandelbulb', mandelbulbFrag, mandelbulbVert);
