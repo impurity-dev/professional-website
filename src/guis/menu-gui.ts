@@ -90,7 +90,7 @@ export class MenuGui {
     };
 
     private createStart = (onStart: OnStart): GUI.Button => {
-        const button = GUI.Button.CreateImageWithCenterTextButton('start', 'Start', './gui/Blue/ButtonB_Big/Button6.png');
+        const button = GUI.Button.CreateImageWithCenterTextButton('start', 'Start', 'gui/Blue/ButtonB_Big/Button6.png');
         button.height = '40px';
         button.width = '200px';
         button.color = 'white';
@@ -110,7 +110,7 @@ export class MenuGui {
     };
 
     private createOptions = (openOptionsMenu: () => void): GUI.Button => {
-        const button = GUI.Button.CreateImageWithCenterTextButton('options', 'Options', './gui/Blue/ButtonB_Big/Button6.png');
+        const button = GUI.Button.CreateImageWithCenterTextButton('options', 'Options', 'gui/Blue/ButtonB_Big/Button6.png');
         button.height = '40px';
         button.width = '200px';
         button.color = 'white';
@@ -235,7 +235,7 @@ export class MenuGui {
             this.scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
 
-        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', './gui/Blue/ButtonB_Big/Button6.png');
+        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', 'gui/Blue/ButtonB_Big/Button6.png');
         closeButton.height = '40px';
         closeButton.width = '200px';
         closeButton.color = 'white';
