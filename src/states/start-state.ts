@@ -20,7 +20,7 @@ export class StartState extends State {
         });
         controller.onActionPressed.add(() => {
             if (!this.isLaunchable) return;
-            this.gameManager.goTo({ type: 'launch' });
+            this.gameManager.goTo({ type: 'fighter' });
         });
         await this.entityManager.load();
         new IntroSound(scene);
