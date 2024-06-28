@@ -11,7 +11,7 @@ export class FighterController {
         parent: Model,
     ) {
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
-        this.camera = new BABYLON.FreeCamera('fighter-camera', parent.transform.position.add(new BABYLON.Vector3(0, 20, -40)), scene);
+        this.camera = new BABYLON.FreeCamera('fighter-camera', parent.transform.position, scene);
         this.scene.activeCamera = this.camera;
         this.camera.parent = parent.transform;
         this.camera.target = parent.transform.position.add(new BABYLON.Vector3(0, 0, 100));
@@ -29,8 +29,15 @@ export class FighterController {
 
         // Define some references for the chase cam; these are in-scene objects
         // that will be set later, when the spaceship mesh is loaded
-        const chaseCameraPosition = null; // The position we want to place the camera
-        const chaseCameraLookAt = null; // The position we want the camera to look at
+        const chaseCameraPosition = new BABYLON.TransformNode('chaseCameraPosition', scene);
+        chaseCameraPosition.parent = parent.transform;
+        // Position this one behind and up a bit; the XYZ are in local coords
+        chaseCameraPosition.position = new BABYLON.Vector3(0, 4, -15);
+
+        const chaseCameraLookAt = new BABYLON.TransformNode('chaseCameraLookAt', scene);
+        chaseCameraLookAt.parent = parent.transform;
+        // Position this one in front and up a bit; the XYZ are in local coords
+        chaseCameraLookAt.position = new BABYLON.Vector3(0, 20, -40);
 
         // Use the onBeforeRenderObservable event to move the
         // camera into position and face the correct way
