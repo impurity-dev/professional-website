@@ -10,7 +10,7 @@ export class FighterState extends State {
         const { scene, entityManager } = this;
         const world = new FighterWorld({ scene, entityManager });
         const camera = new FighterCamera({ scene, target: world.fighter });
-        const controller = new FighterController({ scene });
+        const controller = new FighterController({ scene, target: world.fighter });
         await this.entityManager.load();
         new SpaceSkybox(scene);
     };
