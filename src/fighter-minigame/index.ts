@@ -1,0 +1,1 @@
+export { FighterState } from './state';

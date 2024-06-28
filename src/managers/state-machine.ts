@@ -7,7 +7,8 @@ export type GoToTravelProps = { type: 'travel' };
 export type GoToOrbitProps = { type: 'orbit' };
 export type GoToMapProps = { type: 'map' };
 export type GoToPracticeProps = { type: 'practice' };
-export type GoToProps = GoToMenuProps | GoToStartProps | GoToLaunchProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps;
+export type GoToFighterProps = { type: 'fighter' };
+export type GoToProps = GoToMenuProps | GoToStartProps | GoToLaunchProps | GoToTravelProps | GoToOrbitProps | GoToMapProps | GoToPracticeProps | GoToFighterProps;
 
 export abstract class StateMachine {
     private _state: State;

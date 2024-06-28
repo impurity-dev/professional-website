@@ -9,6 +9,7 @@ import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
 import { StartState } from '../states/start-state.js';
 import { MenuState } from '../states/menu-state.js';
+import * as FighterMinigame from '../fighter-minigame';
 
 export class GameManager extends StateMachine {
     constructor(
@@ -36,6 +37,8 @@ export class GameManager extends StateMachine {
                 return this.setState(new OrbitState(this));
             case 'map':
                 return this.setState(new MapState(this));
+            case 'fighter':
+                return this.setState(new FighterMinigame.FighterState(this));
             case 'practice':
                 return this.setState(new PracticeState(this));
             default:
