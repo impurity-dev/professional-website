@@ -139,7 +139,7 @@ export class MenuGui {
         const animationSpeed = 5;
         const startLocation = 1000;
 
-        const background = new GUI.Image('menu', '/gui/Blue/Panels/Panel6.png');
+        const background = new GUI.Image('menu', 'gui/Blue/Panels/Panel6.png');
         background.width = width;
         background.height = height;
         background.zIndex = 1;
