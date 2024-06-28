@@ -13,7 +13,6 @@ export class FighterController {
             if (event.button === 1) engine.exitPointerlock();
         };
 
-        // TODO: Controls
         const W = 87;
         const A = 65;
         const S = 83;
