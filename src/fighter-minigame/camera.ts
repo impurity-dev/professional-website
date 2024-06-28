@@ -10,9 +10,8 @@ export class FighterCamera {
         const { scene, target } = props;
         this.camera = new BABYLON.FreeCamera('camera', target.transform.position, scene);
         const { camera } = this;
-        // camera.parent = target.transform;
-        camera.attachControl();
         scene.activeCamera = camera;
+        camera.attachControl();
 
         this.cameraLocation = new BABYLON.TransformNode('camera-position', scene);
         const { cameraLocation } = this;
