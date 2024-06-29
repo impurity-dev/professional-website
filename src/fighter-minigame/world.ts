@@ -30,6 +30,7 @@ export class FighterWorld extends World {
             entityManager,
             asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
         });
+        fighter.transform.position = BABYLON.Vector3.Zero();
         return fighter;
     };
 

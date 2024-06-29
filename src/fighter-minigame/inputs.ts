@@ -1,10 +1,11 @@
 import * as BABYLON from '@babylonjs/core';
 import { Model } from '../entities/model';
+import { FighterEvents } from './events';
 
 export class FighterController {
     private readonly deviceManager: BABYLON.DeviceSourceManager;
 
-    constructor(props: { scene: BABYLON.Scene; target: Model }) {
+    constructor(props: { scene: BABYLON.Scene; target: Model; events: FighterEvents }) {
         const { scene, target } = props;
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
         scene.onPointerDown = (event) => {
@@ -27,7 +28,7 @@ export class FighterController {
                 if (!keyboard) {
                     return;
                 }
-                const deltaSeconds = scene.deltaTime / 1000;
+                const deltaSeconds = scene.getEngine().getDeltaTime() / 1000;
                 const speed = 100 * deltaSeconds;
                 const rotation = 1 * deltaSeconds;
                 if (keyboard.getInput(W) === 1) {
