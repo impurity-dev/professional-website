@@ -19,6 +19,7 @@ export class FighterController {
         const D = 68;
         const E = 69;
         const Q = 81;
+        const SPACE = 32;
         target.addOnLoad(() => {
             scene.registerBeforeRender(() => {
                 const { deviceManager } = this;
@@ -46,6 +47,9 @@ export class FighterController {
                 }
                 if (keyboard.getInput(Q) === 1) {
                     target.transform.rotation.addInPlace(new BABYLON.Vector3(0, 0, rotation));
+                }
+                if (keyboard.getInput(SPACE) === 1) {
+                    console.log('todo fire');
                 }
             });
         });
