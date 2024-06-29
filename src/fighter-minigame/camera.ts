@@ -10,7 +10,6 @@ export class FighterCamera {
         const { scene, target } = props;
         this.camera = new BABYLON.FreeCamera('camera', target.transform.position, scene);
         const { camera } = this;
-        scene.activeCamera = camera;
         camera.attachControl();
 
         this.cameraLocation = new BABYLON.TransformNode('camera-position', scene);
@@ -23,10 +22,18 @@ export class FighterCamera {
         cameraLook.parent = target.transform;
         cameraLook.position = new BABYLON.Vector3(0, 10, 1);
         camera.target = cameraLook.position;
-        scene.onBeforeRenderObservable.add(() => {
-            camera.position = BABYLON.Vector3.Lerp(camera.position, cameraLocation.getAbsolutePosition(), (scene.deltaTime / 1000) * 3);
-            camera.upVector = cameraLocation.up;
-            camera.target = cameraLook.getAbsolutePosition();
+        target.addOnLoad(() => {
+            scene.onBeforeRenderObservable.add(() => {
+                if (cameraLocation) {
+                    console.log(cameraLocation.getAbsolutePosition());
+                    camera.position = BABYLON.Vector3.Lerp(camera.position, cameraLocation.getAbsolutePosition(), (scene.deltaTime / 1000) * 3);
+                    camera.upVector = cameraLocation.up;
+                }
+                if (cameraLook) {
+                    camera.target = cameraLook.getAbsolutePosition();
+                }
+            });
         });
+        scene.activeCamera = camera;
     }
 }
