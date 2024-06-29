@@ -13,7 +13,7 @@ class App {
         await document.fonts.ready;
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'menu' });
+        await this.manager.goTo({ type: 'start' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 

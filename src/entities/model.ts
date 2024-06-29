@@ -8,6 +8,7 @@ type ModelProps = { name: string; scene: BABYLON.Scene; entityManager: EntityMan
 export class Model extends Entity {
     protected readonly onLoad: BABYLON.Observable<void> = new BABYLON.Observable();
     private _entries: BABYLON.InstantiatedEntries | undefined;
+    private _isLoaded = false;
 
     constructor(private readonly props: ModelProps) {
         const { name, scene, entityManager, asset, metadata } = props;
@@ -16,10 +17,19 @@ export class Model extends Entity {
         entityManager.queue(asset).add((task) => this.load(task));
     }
 
+    get isLoaded() {
+        return this._isLoaded;
+    }
+
     get entries() {
         if (!this._entries) throw new Error('Model is unloaded');
         return this._entries;
     }
+
+    private set isLoaded(other: boolean) {
+        this._isLoaded = other;
+    }
+
     private set entries(other: BABYLON.InstantiatedEntries) {
         this._entries = other;
     }
@@ -35,6 +45,7 @@ export class Model extends Entity {
             m.metadata = this.transform.metadata;
         });
         this.onLoad.notifyObservers();
+        this.isLoaded = true;
     };
 }
 export type ModelFactory = (props: InitProps) => Model;

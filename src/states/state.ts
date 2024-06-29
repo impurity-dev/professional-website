@@ -50,7 +50,7 @@ export abstract class State {
         await this.run();
 
         // End loading UI
-        await this.scene.whenReadyAsync();
+        await this.scene.whenReadyAsync(true);
         engine.hideLoadingUI();
     };
 

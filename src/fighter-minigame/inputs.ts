@@ -19,33 +19,39 @@ export class FighterController {
         const D = 68;
         const E = 69;
         const Q = 81;
-        scene.registerBeforeRender(() => {
-            const { deviceManager } = this;
-            const keyboard = deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
-            if (!keyboard) {
-                return;
-            }
-            const deltaSeconds = scene.deltaTime / 1000;
-            const speed = 100 * deltaSeconds;
-            const rotation = 1 * deltaSeconds;
-            if (keyboard.getInput(W) === 1) {
-                target.transform.position.addInPlace(new BABYLON.Vector3(0, 0, speed));
-            }
-            if (keyboard.getInput(S) === 1) {
-                target.transform.position.addInPlace(new BABYLON.Vector3(0, 0, -speed));
-            }
-            if (keyboard.getInput(D) === 1) {
-                target.transform.rotation.addInPlace(new BABYLON.Vector3(0, rotation, 0));
-            }
-            if (keyboard.getInput(A) === 1) {
-                target.transform.rotation.addInPlace(new BABYLON.Vector3(0, -rotation, 0));
-            }
-            if (keyboard.getInput(E) === 1) {
-                target.transform.rotation.addInPlace(new BABYLON.Vector3(0, 0, -rotation));
-            }
-            if (keyboard.getInput(Q) === 1) {
-                target.transform.rotation.addInPlace(new BABYLON.Vector3(0, 0, rotation));
-            }
+        const SPACE = 32;
+        target.addOnLoad(() => {
+            scene.registerBeforeRender(() => {
+                const { deviceManager } = this;
+                const keyboard = deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
+                if (!keyboard) {
+                    return;
+                }
+                const deltaSeconds = scene.deltaTime / 1000;
+                const speed = 100 * deltaSeconds;
+                const rotation = 1 * deltaSeconds;
+                if (keyboard.getInput(W) === 1) {
+                    target.transform.position.addInPlace(new BABYLON.Vector3(0, 0, speed));
+                }
+                if (keyboard.getInput(S) === 1) {
+                    target.transform.position.addInPlace(new BABYLON.Vector3(0, 0, -speed));
+                }
+                if (keyboard.getInput(D) === 1) {
+                    target.transform.rotation.addInPlace(new BABYLON.Vector3(0, rotation, 0));
+                }
+                if (keyboard.getInput(A) === 1) {
+                    target.transform.rotation.addInPlace(new BABYLON.Vector3(0, -rotation, 0));
+                }
+                if (keyboard.getInput(E) === 1) {
+                    target.transform.rotation.addInPlace(new BABYLON.Vector3(0, 0, -rotation));
+                }
+                if (keyboard.getInput(Q) === 1) {
+                    target.transform.rotation.addInPlace(new BABYLON.Vector3(0, 0, rotation));
+                }
+                if (keyboard.getInput(SPACE) === 1) {
+                    console.log('todo fire');
+                }
+            });
         });
     }
 }

@@ -9,7 +9,8 @@ import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
 import { StartState } from '../states/start-state.js';
 import { MenuState } from '../states/menu-state.js';
-import * as FighterMinigame from '../fighter-minigame';
+import { FighterState } from '../fighter-minigame';
+import { logger } from '../helpers/logger.js';
 
 export class GameManager extends StateMachine {
     constructor(
@@ -24,6 +25,7 @@ export class GameManager extends StateMachine {
     }
 
     goTo = async (props: GoToProps): Promise<void> => {
+        logger.debug('Going to ' + props.type);
         switch (props.type) {
             case 'menu':
                 return this.setState(new MenuState(this));
@@ -38,7 +40,7 @@ export class GameManager extends StateMachine {
             case 'map':
                 return this.setState(new MapState(this));
             case 'fighter':
-                return this.setState(new FighterMinigame.FighterState(this));
+                return this.setState(new FighterState(this));
             case 'practice':
                 return this.setState(new PracticeState(this));
             default:
