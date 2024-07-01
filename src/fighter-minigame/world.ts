@@ -2,16 +2,18 @@ import * as BABYLON from '@babylonjs/core';
 import * as models from '../entities/model';
 import { EntityManager } from '../managers/entity-manager';
 import { World } from '../environments/world';
+import { fighter } from './fighter';
+import { FighterEvents } from './events';
 
 export class FighterWorld extends World {
-    public readonly fighter: models.Model;
+    public readonly fighterModel: models.Model;
 
-    constructor(props: { scene: BABYLON.Scene; entityManager: EntityManager }) {
-        const { scene, entityManager } = props;
+    constructor(props: { scene: BABYLON.Scene; entityManager: EntityManager; events: FighterEvents }) {
+        const { scene, entityManager, events } = props;
         super(scene, entityManager);
         scene.collisionsEnabled = true;
         this.lights();
-        this.fighter = this.ship();
+        this.fighterModel = this.ship({ scene, entityManager, events });
         this.particles();
     }
 
@@ -22,16 +24,9 @@ export class FighterWorld extends World {
         light.specular = new BABYLON.Color3(1, 1, 1);
     };
 
-    private ship = () => {
-        const { scene, entityManager } = this;
-        const fighter = new models.Model({
-            name: 'fighter',
-            scene,
-            entityManager,
-            asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
-        });
-        fighter.transform.position = BABYLON.Vector3.Zero();
-        return fighter;
+    private ship = (props: { scene: BABYLON.Scene; entityManager: EntityManager; events: FighterEvents }) => {
+        const { scene, entityManager, events } = props;
+        return fighter({ scene, entityManager, events });
     };
 
     private particles = () => {
