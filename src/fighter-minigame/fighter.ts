@@ -1,5 +1,5 @@
 import { EntityManager } from '../managers/entity-manager';
-import { FighterEvents } from './events';
+import { ControlEvent, FighterEvents } from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as models from '../entities/model';
 
@@ -29,26 +29,15 @@ export const fighter = (props: FighterProps) => {
     return fighter;
 };
 
-const onControls = (
-    scene: BABYLON.Scene,
-    target: BABYLON.TransformNode,
-    input: {
-        yaw: number;
-        pitch: number;
-        movement: number;
-        boost: number;
-    },
-) => {
-    const { yaw, pitch, movement, boost } = input;
+const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: ControlEvent) => {
+    const { yaw, pitch, w, a, s, d, leftShift } = input;
     const deltaSecs = scene.getEngine().getDeltaTime() / 1000;
     // Convert Yaw and Pitch to a rotation in quaternion form
     const turn = BABYLON.Quaternion.RotationYawPitchRoll(yaw * deltaSecs * TurnSpeed, pitch * deltaSecs * TurnSpeed, 0);
     // Apply the rotation to our current rotation
     target.rotationQuaternion.multiplyInPlace(turn);
-
     // If we have input, compute acceleration, otherwise it's zero
-    const acceleration = movement ? target.forward.scale(boost * movement * MaxThrust * deltaSecs) : BABYLON.Vector3.Zero();
-    console.log(acceleration);
+    const acceleration = w ? target.forward.scale(10 * MaxThrust * deltaSecs) : BABYLON.Vector3.Zero();
     // Apply acceleration to velocity
     velocity.addInPlace(acceleration);
     // Apply drag to dampen velocity

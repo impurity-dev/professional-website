@@ -35,20 +35,20 @@
         "lint:fix": "eslint . --fix"
     },
     "dependencies": {
-        "@babylonjs/core": "^7.11.2",
-        "@babylonjs/gui": "^7.11.2",
-        "@babylonjs/inspector": "^7.11.2",
-        "@babylonjs/loaders": "^7.11.2",
-        "@babylonjs/materials": "^7.11.2",
-        "@babylonjs/procedural-textures": "^7.11.2",
+        "@babylonjs/core": "^7.13.2",
+        "@babylonjs/gui": "^7.13.2",
+        "@babylonjs/inspector": "^7.13.2",
+        "@babylonjs/loaders": "^7.13.2",
+        "@babylonjs/materials": "^7.13.2",
+        "@babylonjs/procedural-textures": "^7.13.2",
         "loglevel": "^1.9.1",
         "lottie-web": "^5.12.2",
         "spectorjs": "^0.9.30"
     },
     "devDependencies": {
-        "@types/node": "^20.14.5",
-        "@typescript-eslint/eslint-plugin": "^7.13.1",
-        "@typescript-eslint/parser": "^7.13.1",
+        "@types/node": "^20.14.9",
+        "@typescript-eslint/eslint-plugin": "^7.15.0",
+        "@typescript-eslint/parser": "^7.15.0",
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-import": "^2.29.1",
@@ -56,7 +56,7 @@
         "husky": "^9.0.11",
         "lint-staged": "^15.2.7",
         "prettier": "^3.3.2",
-        "typescript": "^5.4.5",
-        "vite": "^5.3.1"
+        "typescript": "^5.5.3",
+        "vite": "^5.3.3"
     }
 }

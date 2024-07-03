@@ -1,72 +1,41 @@
 import * as BABYLON from '@babylonjs/core';
-import { FighterEvents } from './events';
+import * as events from './events';
 
 type MouseState = { current: BABYLON.IMouseEvent; last?: BABYLON.IMouseEvent } | undefined;
 export class FighterController {
     private readonly deviceManager: BABYLON.DeviceSourceManager;
-    private readonly events: FighterEvents;
+    private readonly fighterEvents: events.FighterEvents;
 
-    constructor(props: { scene: BABYLON.Scene; events: FighterEvents }) {
+    constructor(props: { scene: BABYLON.Scene; events: events.FighterEvents }) {
         const { scene, events } = props;
-        this.events = events;
+        this.fighterEvents = events;
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
-        scene.onPointerDown = (event) => {
-            const engine = scene.getEngine() as BABYLON.Engine;
-            if (event.button === 0) engine.enterPointerlock();
-            if (event.button === 1) engine.exitPointerlock();
-        };
+        // scene.onPointerDown = (event) => {
+        //     const engine = scene.getEngine() as BABYLON.Engine;
+        //     if (event.button === 0) engine.enterPointerlock();
+        //     if (event.button === 1) engine.exitPointerlock();
+        // };
+
         let mouseState = undefined;
         scene.onPointerObservable.add((pointerInfo) => {
-            switch (pointerInfo.type) {
-                case BABYLON.PointerEventTypes.POINTERDOWN:
-                    // POINTERDOWN: capture the current mouse position as the `down` property
-                    // Also capture it as the `last` property (effectively a drag of 0 pixels)
-                    mouseState = { current: pointerInfo.event, last: pointerInfo.event };
-                    break;
-                case BABYLON.PointerEventTypes.POINTERUP:
-                    // POINTERUP: drag has finished, so clear the mouse state
-                    mouseState = undefined;
-                    break;
-                case BABYLON.PointerEventTypes.POINTERMOVE:
-                    // POINTERMOVE: while dragging, keep the `down` drag position
-                    // but continuously update the `last` drag position
-                    if (mouseState) {
-                        mouseState.last = pointerInfo.event;
-                    }
-                    break;
-            }
+            mouseState = { current: pointerInfo.event, last: mouseState?.last || pointerInfo.event };
         });
         this.deviceManager.onDeviceConnectedObservable.add((device) => {
             if (device.deviceType !== BABYLON.DeviceType.Keyboard) return;
             scene.onBeforeRenderObservable.add(() => {
                 const aimInputs = this.aim(scene, mouseState);
-                const moveInputs = this.move(device);
                 events.controls.notifyObservers({
                     pitch: aimInputs?.pitch || 0,
                     yaw: aimInputs?.yaw || 0,
-                    movement: moveInputs.movement,
-                    boost: moveInputs.boost,
+                    w: device.getInput(87) === 1,
+                    a: device.getInput(65) === 1,
+                    s: device.getInput(83) === 1,
+                    d: device.getInput(68) === 1,
+                    leftShift: device.getInput(16) === 1,
                 });
             });
         });
     }
-
-    move = (keyboard: BABYLON.DeviceSource<BABYLON.DeviceType.Keyboard>) => {
-        const SPEED = 2;
-        const W = 87;
-        const S = 83;
-        const LeftShift = 16;
-        let movement = 0;
-        let boost = 1;
-        if (keyboard.getInput(W) === 1) {
-            if (keyboard.getInput(LeftShift) === 1) boost += 0.5;
-            movement += SPEED;
-        }
-        if (keyboard.getInput(S) === 1) {
-            movement -= SPEED;
-        }
-        return { movement, boost };
-    };
 
     aim = (scene: BABYLON.Scene, state: MouseState) => {
         if (!state) return null;
