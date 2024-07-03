@@ -20,19 +20,17 @@ export class FighterController {
         scene.onPointerObservable.add((pointerInfo) => {
             mouseState = { current: pointerInfo.event, last: mouseState?.last || pointerInfo.event };
         });
-        this.deviceManager.onDeviceConnectedObservable.add((device) => {
-            if (device.deviceType !== BABYLON.DeviceType.Keyboard) return;
-            scene.onBeforeRenderObservable.add(() => {
-                const aimInputs = this.aim(scene, mouseState);
-                events.controls.notifyObservers({
-                    pitch: aimInputs?.pitch || 0,
-                    yaw: aimInputs?.yaw || 0,
-                    w: device.getInput(87) === 1,
-                    a: device.getInput(65) === 1,
-                    s: device.getInput(83) === 1,
-                    d: device.getInput(68) === 1,
-                    leftShift: device.getInput(16) === 1,
-                });
+        const keyboard = this.deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
+        scene.onBeforeRenderObservable.add(() => {
+            const aimInputs = this.aim(scene, mouseState);
+            events.controls.notifyObservers({
+                pitch: aimInputs?.pitch || 0,
+                yaw: aimInputs?.yaw || 0,
+                w: keyboard?.getInput(87) === 1,
+                a: keyboard?.getInput(65) === 1,
+                s: keyboard?.getInput(83) === 1,
+                d: keyboard?.getInput(68) === 1,
+                leftShift: keyboard?.getInput(16) === 1,
             });
         });
     }

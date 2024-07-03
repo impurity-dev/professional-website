@@ -37,8 +37,9 @@ const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: 
     // Apply the rotation to our current rotation
     target.rotationQuaternion.multiplyInPlace(turn);
     // If we have input, compute acceleration, otherwise it's zero
-    const acceleration = w ? target.forward.scale(10 * MaxThrust * deltaSecs) : BABYLON.Vector3.Zero();
+    const acceleration = w ? target.forward.scale(10 * MaxThrust * deltaSecs) : target.forward.scale(MaxThrust * deltaSecs);
     // Apply acceleration to velocity
+    console.log(acceleration);
     velocity.addInPlace(acceleration);
     // Apply drag to dampen velocity
     velocity.scaleInPlace(1 - DragCoefficient * deltaSecs);
