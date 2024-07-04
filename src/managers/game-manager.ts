@@ -11,11 +11,13 @@ import { StartState } from '../states/start-state.js';
 import { MenuState } from '../states/menu-state.js';
 import { FighterState } from '../fighter-minigame';
 import { logger } from '../helpers/logger.js';
+import { SettingsManager } from './settings-manager.js';
 
 export class GameManager extends StateMachine {
     constructor(
         public readonly canvas: HTMLCanvasElement,
         public readonly engine: Engine,
+        public readonly settings: SettingsManager,
     ) {
         super();
         if (env.isWebGLSpectorEnabled) {
