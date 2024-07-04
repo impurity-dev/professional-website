@@ -2,6 +2,7 @@ import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
 import { LoadingScreen } from './loading-screens/loading-screen.js';
 import Lottie from 'lottie-web';
+import { SettingsManager } from './managers/settings-manager.js';
 
 class App {
     constructor(
@@ -13,7 +14,7 @@ class App {
         await document.fonts.ready;
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'menu' });
+        await this.manager.goTo({ type: 'fighter' });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 
@@ -43,6 +44,7 @@ animation.play();
 const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
 const engine = new Engine(canvas, true);
 engine.loadingScreen = new LoadingScreen(loadingDiv);
-const manager = new GameManager(canvas, engine);
+const settings = new SettingsManager();
+const manager = new GameManager(canvas, engine, settings);
 const app = new App(engine, manager);
 app.start();

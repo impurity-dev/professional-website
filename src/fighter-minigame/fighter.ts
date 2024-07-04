@@ -1,5 +1,5 @@
 import { EntityManager } from '../managers/entity-manager';
-import { FighterEvents } from './events';
+import { ControlEvent, FighterEvents } from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as models from '../entities/model';
 
@@ -26,29 +26,41 @@ export const fighter = (props: FighterProps) => {
     });
     fighter.transform.rotationQuaternion = BABYLON.Quaternion.Identity();
     events.controls.add((input) => onControls(scene, fighter.transform, input));
+    fighter.addOnLoad(() => {
+        const fighterMat: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
+        const wingsMat: BABYLON.PBRMaterial = scene.getMaterialByName('WINGS') as BABYLON.PBRMaterial;
+        events.controls.add((input) => rocketEffect(scene, [fighterMat, wingsMat], input));
+    });
     return fighter;
 };
+const lerp = (start: number, end: number, delta: number) => start * delta + end * (1 - delta);
 
-const onControls = (
-    scene: BABYLON.Scene,
-    target: BABYLON.TransformNode,
-    input: {
-        yaw: number;
-        pitch: number;
-        movement: number;
-        boost: number;
-    },
-) => {
-    const { yaw, pitch, movement, boost } = input;
+const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], input: ControlEvent) => {
+    const { yaw, pitch, w, a, s, d, leftShift } = input;
+    materials.forEach((material) => {
+        const start = material.emissiveIntensity;
+        const delta = scene.getEngine().getDeltaTime() / 10;
+        if (leftShift) {
+            material.emissiveIntensity = lerp(start, 3, delta);
+        } else if (w) {
+            material.emissiveIntensity = lerp(start, 2, delta);
+        } else if (s) {
+            material.emissiveIntensity = lerp(start, 0, delta);
+        } else {
+            material.emissiveIntensity = lerp(start, 1, delta);
+        }
+    });
+};
+
+const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: ControlEvent) => {
+    const { yaw, pitch, w, a, s, d, leftShift } = input;
     const deltaSecs = scene.getEngine().getDeltaTime() / 1000;
     // Convert Yaw and Pitch to a rotation in quaternion form
     const turn = BABYLON.Quaternion.RotationYawPitchRoll(yaw * deltaSecs * TurnSpeed, pitch * deltaSecs * TurnSpeed, 0);
     // Apply the rotation to our current rotation
     target.rotationQuaternion.multiplyInPlace(turn);
-
     // If we have input, compute acceleration, otherwise it's zero
-    const acceleration = movement ? target.forward.scale(boost * movement * MaxThrust * deltaSecs) : BABYLON.Vector3.Zero();
-    console.log(acceleration);
+    const acceleration = w ? target.forward.scale(1 * MaxThrust * deltaSecs) : target.forward.scale(MaxThrust * deltaSecs);
     // Apply acceleration to velocity
     velocity.addInPlace(acceleration);
     // Apply drag to dampen velocity
