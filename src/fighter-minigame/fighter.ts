@@ -27,27 +27,27 @@ export const fighter = (props: FighterProps) => {
     fighter.transform.rotationQuaternion = BABYLON.Quaternion.Identity();
     events.controls.add((input) => onControls(scene, fighter.transform, input));
     fighter.addOnLoad(() => {
-        const material: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
-        const target = fighter.transform.getChildMeshes()[0];
-        console.log(material);
-        material.emissiveIntensity = 0;
-        events.controls.add((input) => rocketEffect(scene, target, material, input));
+        const fighterMat: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
+        const wingsMat: BABYLON.PBRMaterial = scene.getMaterialByName('WINGS') as BABYLON.PBRMaterial;
+        events.controls.add((input) => rocketEffect(scene, [fighterMat, wingsMat], input));
     });
     return fighter;
 };
 const lerp = (start: number, end: number, delta: number) => start * delta + end * (1 - delta);
 
-const rocketEffect = (scene: BABYLON.Scene, target: BABYLON.AbstractMesh, material: BABYLON.PBRMaterial, input: ControlEvent) => {
+const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], input: ControlEvent) => {
     const { yaw, pitch, w, a, s, d, leftShift } = input;
-    const start = material.emissiveIntensity;
-    const delta = scene.getEngine().getDeltaTime() / 10;
-    if (w) {
-        material.emissiveIntensity = lerp(start, 2, delta);
-    } else if (s) {
-        material.emissiveIntensity = lerp(start, 0, delta);
-    } else {
-        material.emissiveIntensity = lerp(start, 1, delta);
-    }
+    materials.forEach((material) => {
+        const start = material.emissiveIntensity;
+        const delta = scene.getEngine().getDeltaTime() / 10;
+        if (w) {
+            material.emissiveIntensity = lerp(start, 2, delta);
+        } else if (s) {
+            material.emissiveIntensity = lerp(start, 0, delta);
+        } else {
+            material.emissiveIntensity = lerp(start, 1, delta);
+        }
+    });
 };
 
 const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: ControlEvent) => {
