@@ -20,7 +20,11 @@ export class FighterController {
         scene.onPointerObservable.add((pointerInfo) => {
             mouseState = { current: pointerInfo.event, last: mouseState?.last || pointerInfo.event };
         });
-        const keyboard = this.deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
+        let keyboard: BABYLON.DeviceSource<BABYLON.DeviceType.Keyboard> | undefined;
+        this.deviceManager.onDeviceConnectedObservable.add((device) => {
+            if (device.deviceType !== BABYLON.DeviceType.Keyboard) return;
+            keyboard = device;
+        });
         scene.onBeforeRenderObservable.add(() => {
             const aimInputs = this.aim(scene, mouseState);
             events.controls.notifyObservers({
