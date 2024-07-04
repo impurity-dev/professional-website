@@ -40,7 +40,9 @@ const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], in
     materials.forEach((material) => {
         const start = material.emissiveIntensity;
         const delta = scene.getEngine().getDeltaTime() / 10;
-        if (w) {
+        if (leftShift) {
+            material.emissiveIntensity = lerp(start, 3, delta);
+        } else if (w) {
             material.emissiveIntensity = lerp(start, 2, delta);
         } else if (s) {
             material.emissiveIntensity = lerp(start, 0, delta);

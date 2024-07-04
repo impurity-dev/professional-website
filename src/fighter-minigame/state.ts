@@ -1,4 +1,3 @@
-import * as BABYLON from '@babylonjs/core';
 import { SpaceSkybox } from '../skyboxes/space-skybox.js';
 import { State } from '../states/state.js';
 import { FighterController } from './inputs.js';
@@ -11,9 +10,10 @@ export class FighterState extends State {
         const { scene, entityManager } = this;
         const events = new FighterEvents();
         const world = new FighterWorld({ scene, entityManager, events });
-        const camera = new FighterCamera({ scene, target: world.fighterModel });
-        const controller = new FighterController({ scene, events });
-        await this.entityManager.load();
+        const entityLoading = this.entityManager.load();
+        new FighterCamera({ scene, target: world.fighterModel.transform });
+        new FighterController({ scene, events });
         new SpaceSkybox(scene);
+        await entityLoading;
     };
 }

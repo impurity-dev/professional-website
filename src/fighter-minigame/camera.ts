@@ -1,26 +1,25 @@
 import * as BABYLON from '@babylonjs/core';
-import { Model } from '../entities/model';
 
 export class FighterCamera {
     public readonly camera: BABYLON.FreeCamera;
     public readonly cameraLocation: BABYLON.TransformNode;
     public readonly cameraLook: BABYLON.TransformNode;
 
-    constructor(props: { scene: BABYLON.Scene; target: Model }) {
+    constructor(props: { scene: BABYLON.Scene; target: BABYLON.TransformNode }) {
         const { scene, target } = props;
-        this.camera = new BABYLON.FreeCamera('camera', target.transform.position, scene);
+        this.camera = new BABYLON.FreeCamera('camera', target.position, scene);
         const { camera } = this;
         scene.activeCamera = camera;
         camera.attachControl();
 
         this.cameraLocation = new BABYLON.TransformNode('camera-position', scene);
         const { cameraLocation } = this;
-        cameraLocation.parent = target.transform;
+        cameraLocation.parent = target;
         cameraLocation.position = new BABYLON.Vector3(0, 10, -30);
         camera.position = cameraLocation.position;
         this.cameraLook = new BABYLON.TransformNode('camera-look', scene);
         const { cameraLook } = this;
-        cameraLook.parent = target.transform;
+        cameraLook.parent = target;
         cameraLook.position = new BABYLON.Vector3(0, 10, 1);
         camera.target = cameraLook.position;
         scene.onBeforeRenderObservable.add(() => {
