@@ -12,4 +12,5 @@ export type ControlEvent = {
 export class FighterEvents {
     readonly controls: BABYLON.Observable<ControlEvent> = new BABYLON.Observable();
     readonly fire: BABYLON.Observable<void> = new BABYLON.Observable();
+    readonly pause: BABYLON.Observable<void> = new BABYLON.Observable();
 }

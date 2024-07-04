@@ -25,7 +25,11 @@ export class FighterController {
             if (device.deviceType !== BABYLON.DeviceType.Keyboard) return;
             keyboard = device;
         });
+
         scene.onBeforeRenderObservable.add(() => {
+            if (keyboard?.getInput(27) === 1) {
+                events.pause.notifyObservers();
+            }
             const aimInputs = this.aim(scene, mouseState);
             events.controls.notifyObservers({
                 pitch: aimInputs?.pitch || 0,
