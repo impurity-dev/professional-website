@@ -4,6 +4,8 @@ import { MenuClickSound, MenuHoverSound } from '../sounds/menu-sound';
 
 export type OnStart = () => void;
 export type MenuGuiProps = {
+    scene: BABYLON.Scene;
+    mask: number;
     onStart: OnStart;
 };
 
@@ -14,37 +16,26 @@ export class MenuGui {
     private readonly options: GUI.Button;
     private readonly camera: BABYLON.Camera;
     private readonly grid: GUI.Grid;
-    private readonly mask = 0x10000000;
     private readonly title: GUI.TextBlock;
     private readonly menuClick: MenuClickSound;
     private readonly menuHover: MenuHoverSound;
 
-    constructor(
-        private readonly scene: BABYLON.Scene,
-        private readonly props: MenuGuiProps,
-    ) {
-        this.gui = this.createGui();
-        this.title = this.createTitle();
+    constructor(props: MenuGuiProps) {
+        const { scene, mask } = props;
+        this.gui = this.createGui(mask);
+        this.title = this.createTitle(scene);
         this.createWIP();
         this.start = this.createStart(props.onStart);
-        const { openOptionsMenu } = this.createOptionMenu();
+        const { openOptionsMenu } = this.createOptionMenu(scene);
         this.options = this.createOptions(openOptionsMenu);
-        this.camera = this.createCamera();
-        this.menuClick = new MenuClickSound(this.scene);
-        this.menuHover = new MenuHoverSound(this.scene);
+        this.menuClick = new MenuClickSound(scene);
+        this.menuHover = new MenuHoverSound(scene);
     }
 
-    private createCamera = () => {
-        const bgCamera = new BABYLON.ArcRotateCamera('BGCamera', Math.PI / 2 + Math.PI / 7, Math.PI / 2, 100, new BABYLON.Vector3(0, 20, 0), this.scene);
-        bgCamera.layerMask = this.mask;
-        this.scene.activeCameras.push(bgCamera);
-        return bgCamera;
-    };
-
-    private createGui = () => {
+    private createGui = (mask: number) => {
         const ui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI');
         ui.idealHeight = 1080;
-        ui.layer.layerMask = this.mask;
+        ui.layer.layerMask = mask;
         return ui;
     };
 
@@ -65,7 +56,7 @@ export class MenuGui {
         return textBlock;
     };
 
-    private createTitle = () => {
+    private createTitle = (scene: BABYLON.Scene) => {
         const textBlock = new GUI.TextBlock('title', 'Tyler Kokoszka');
         textBlock.top = '-350';
         textBlock.color = new BABYLON.Color4(0, 1, 1, 1).toHexString();
@@ -85,7 +76,7 @@ export class MenuGui {
         textBlock.fontWeight = '400';
         textBlock.fontStyle = 'normal';
         this.gui.addControl(textBlock);
-        this.scene.beginAnimation(textBlock, 0, 60, true, 0.5);
+        scene.beginAnimation(textBlock, 0, 60, true, 0.5);
         return textBlock;
     };
 
@@ -128,7 +119,9 @@ export class MenuGui {
         return button;
     };
 
-    private createOptionMenu = (): {
+    private createOptionMenu = (
+        scene: BABYLON.Scene,
+    ): {
         grid: GUI.Grid;
         background: GUI.Image;
         openOptionsMenu: () => void;
@@ -196,11 +189,11 @@ export class MenuGui {
         toggleFullscreen.widthInPixels = 50;
         toggleFullscreen.heightInPixels = 50;
         toggleFullscreen.hoverCursor = 'pointer';
-        toggleFullscreen.isChecked = this.scene.getEngine().isFullscreen;
+        toggleFullscreen.isChecked = scene.getEngine().isFullscreen;
         toggleFullscreen.onPointerEnterObservable.add(() => this.menuHover.play());
         toggleFullscreen.onPointerDownObservable.add(() => {
             this.menuClick.play();
-            this.scene.getEngine().switchFullscreen(false);
+            scene.getEngine().switchFullscreen(false);
         });
         grid.addControl(toggleFullscreen, 2, 0);
 
@@ -224,15 +217,15 @@ export class MenuGui {
         const openOptionsMenu = () => {
             background.animations = [flyIn];
             grid.animations = [flyIn];
-            this.scene.beginAnimation(grid, 0, 60, false, animationSpeed);
-            this.scene.beginAnimation(background, 0, 60, false, animationSpeed);
+            scene.beginAnimation(grid, 0, 60, false, animationSpeed);
+            scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
 
         const closeOptionsMenu = () => {
             background.animations = [flyOut];
             grid.animations = [flyOut];
-            this.scene.beginAnimation(grid, 0, 60, false, animationSpeed);
-            this.scene.beginAnimation(background, 0, 60, false, animationSpeed);
+            scene.beginAnimation(grid, 0, 60, false, animationSpeed);
+            scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
 
         const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', 'gui/Blue/ButtonB_Big/Button6.png');
