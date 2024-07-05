@@ -1,10 +1,10 @@
 import * as BABYLON from '@babylonjs/core';
 import { SpaceSkybox } from '../skyboxes/space-skybox.js';
 import { IntroSound } from '../sounds/intro-sound.js';
-import { State } from './state.js';
+import { State } from '../states/state.js';
 import { StartWorld } from '../environments/start-world.js';
-import { FirstPersonController } from '../controllers/first-person-controller.js';
-import { Start2Gui } from '../guis/start-2-gui.js';
+import { FirstPersonController } from './controller.js';
+import { Start2Gui } from './gui.js';
 
 export class StartState extends State {
     private isLaunchable = false;

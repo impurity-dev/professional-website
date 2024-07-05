@@ -7,7 +7,7 @@ import { MapState } from '../states/map-state.js';
 import { PracticeState } from '../states/practice-state.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
-import { StartState } from '../states/start-state.js';
+import { StartState } from '../mission-control/state.js';
 import { MenuState } from '../start-screen/state.js';
 import { FighterState } from '../fighter-minigame';
 import { logger } from '../shared/logger.js';
