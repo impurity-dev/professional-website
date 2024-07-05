@@ -1,6 +1,6 @@
 import { State } from '../states/state.js';
-import { MenuGui } from './gui.js';
-import * as cameras from './camera.js';
+import { MenuGui } from './guis.js';
+import * as cameras from './cameras.js';
 import * as sounds from './sounds.js';
 import * as effects from './effects.js';
 
@@ -11,10 +11,11 @@ export class MenuState extends State {
         const guiCamera = new cameras.GuiCamera({ scene });
 
         effects.mandelbulb({ scene, camera: mainCamera.camera });
-        sounds.mainLoop({ scene });
+        const sound = new sounds.Sounds({ scene });
         await entityManager.load();
         new MenuGui({
             scene,
+            sound,
             mask: guiCamera.mask,
             onStart: () => this.gameManager.goTo({ type: 'start' }),
         });
