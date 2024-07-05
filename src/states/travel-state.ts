@@ -6,7 +6,7 @@ import { TravelGui } from '../guis/travel-gui.js';
 import { PlanetSolidParticles } from '../solid-particles/planet-solid-particles.js';
 import { WarpspeedCloudParticles } from '../particles/warpspeed-cloud-particles.js';
 import { WarpspeedStarParticles } from '../particles/warpspeed-star-particles.js';
-import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { SpaceSkybox } from '../shared/space-skybox.js';
 import { State } from './state.js';
 import { WarpspeedStarsSolidParticles } from '../solid-particles/warpspeed-stars-solid-particles.js';
 

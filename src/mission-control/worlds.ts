@@ -1,8 +1,8 @@
 import * as BABYLON from '@babylonjs/core';
-import { World } from './world.js';
 import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
-import * as material from '../materials';
+import * as material from '../materials/index.js';
+import { World } from '../shared/world.js';
 
 export class StartWorld extends World {
     public readonly onLaunchOptions: BABYLON.Observable<boolean> = new BABYLON.Observable();

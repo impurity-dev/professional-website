@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 
-export class FirstPersonController {
+export class FPSController {
     public readonly onActionPressed: BABYLON.Observable<void> = new BABYLON.Observable();
     public readonly camera: BABYLON.UniversalCamera;
     private readonly deviceManager: BABYLON.DeviceSourceManager;

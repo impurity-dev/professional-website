@@ -1,4 +1,4 @@
-import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { SpaceSkybox } from '../shared/space-skybox.js';
 import { State } from '../states/state.js';
 import { FighterController } from './inputs.js';
 import { FighterWorld } from './world.js';
