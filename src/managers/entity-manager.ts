@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { logger } from '../helpers/logger';
+import { logger } from '../shared/logger';
 
 export type Asset = { file: string; directory: string };
 

@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import { MenuClickSound, MenuHoverSound } from '../sounds/menu-sound';
+import * as sounds from './sounds';
 
 export type OnStart = () => void;
 export type MenuGuiProps = {
@@ -17,8 +17,8 @@ export class MenuGui {
     private readonly camera: BABYLON.Camera;
     private readonly grid: GUI.Grid;
     private readonly title: GUI.TextBlock;
-    private readonly menuClick: MenuClickSound;
-    private readonly menuHover: MenuHoverSound;
+    private readonly menuClick: BABYLON.Sound;
+    private readonly menuHover: BABYLON.Sound;
 
     constructor(props: MenuGuiProps) {
         const { scene, mask } = props;
@@ -28,8 +28,8 @@ export class MenuGui {
         this.start = this.createStart(props.onStart);
         const { openOptionsMenu } = this.createOptionMenu(scene);
         this.options = this.createOptions(openOptionsMenu);
-        this.menuClick = new MenuClickSound(scene);
-        this.menuHover = new MenuHoverSound(scene);
+        this.menuClick = sounds.menuClick({ scene });
+        this.menuHover = sounds.menuHover({ scene });
     }
 
     private createGui = (mask: number) => {

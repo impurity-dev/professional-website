@@ -1,5 +1,5 @@
 import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3 } from '@babylonjs/core';
-import { randomPointOnCylinder } from '../helpers/utils.js';
+import { randomPointOnCylinder } from '../shared/utils.js';
 
 export class WarpspeedStarsSolidParticles extends SolidParticleSystem {
     public speed = 1;

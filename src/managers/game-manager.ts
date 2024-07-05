@@ -10,7 +10,7 @@ import { env } from './env-manager.js';
 import { StartState } from '../states/start-state.js';
 import { MenuState } from '../start-screen/state.js';
 import { FighterState } from '../fighter-minigame';
-import { logger } from '../helpers/logger.js';
+import { logger } from '../shared/logger.js';
 import { SettingsManager } from './settings-manager.js';
 
 export class GameManager extends StateMachine {
