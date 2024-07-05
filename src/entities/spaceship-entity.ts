@@ -1,6 +1,6 @@
 import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
 import { EngineParticles } from '../particles/engine-particles.js';
-import { logger } from '../helpers/logger.js';
+import { logger } from '../shared/logger.js';
 
 export class SpaceShipEntity extends TransformNode {
     private readonly scale: number = 0.1;

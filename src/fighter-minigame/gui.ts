@@ -1,18 +1,18 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
 import * as fighterEvents from './events';
-import { MenuClickSound, MenuHoverSound } from '../sounds/menu-sound';
+import * as sounds from './sounds';
 
 export class FighterGui {
     private readonly gui: GUI.AdvancedDynamicTexture;
-    private readonly menuClick: MenuClickSound;
-    private readonly menuHover: MenuHoverSound;
+    private readonly menuClick: BABYLON.Sound;
+    private readonly menuHover: BABYLON.Sound;
 
     constructor(props: { scene: BABYLON.Scene; events: fighterEvents.FighterEvents }) {
         const { scene, events } = props;
         this.gui = this.createGui();
-        this.menuClick = new MenuClickSound(scene);
-        this.menuHover = new MenuHoverSound(scene);
+        this.menuClick = sounds.menuClick({ scene });
+        this.menuHover = sounds.menuHover({ scene });
         const { openOptionsMenu } = this.createOptionMenu(scene);
         events.pause.add(openOptionsMenu);
     }

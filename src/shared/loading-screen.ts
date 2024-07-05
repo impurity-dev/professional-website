@@ -1,5 +1,5 @@
 import { ILoadingScreen } from '@babylonjs/core/Loading/loadingScreen';
-import { logger } from '../helpers/logger';
+import { logger } from '../shared/logger';
 
 export class LoadingScreen implements ILoadingScreen {
     public loadingUIBackgroundColor: string = '#000000';

@@ -3,7 +3,7 @@ import { ShipRockingAnimation } from '../animations/ship-rocking-animation.js';
 import { PlanetEntity } from '../entities/planet-entity.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { OrbitGui } from '../guis/orbit-gui.js';
-import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { SpaceSkybox } from '../shared/space-skybox.js';
 import { State } from './state.js';
 
 export class OrbitState extends State {

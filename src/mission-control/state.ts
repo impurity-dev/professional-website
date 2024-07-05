@@ -1,18 +1,20 @@
 import * as BABYLON from '@babylonjs/core';
-import { SpaceSkybox } from '../skyboxes/space-skybox.js';
+import { SpaceSkybox } from '../shared/space-skybox.js';
 import { IntroSound } from '../sounds/intro-sound.js';
-import { State } from './state.js';
-import { StartWorld } from '../environments/start-world.js';
-import { FirstPersonController } from '../controllers/first-person-controller.js';
-import { Start2Gui } from '../guis/start-2-gui.js';
+import { State } from '../states/state.js';
+import * as worlds from './worlds.js';
+import * as controllers from './inputs.js';
+import { Start2Gui } from './gui.js';
+import * as events from './events.js';
 
 export class StartState extends State {
     private isLaunchable = false;
 
     run = async (): Promise<void> => {
         const { scene, entityManager } = this;
-        const controller = new FirstPersonController(scene, new BABYLON.Vector3(-20, 2, 1), new BABYLON.Vector3(2, 2, 0));
-        const world = new StartWorld(scene, entityManager);
+        const event = new events.MissionControlEvents();
+        const controller = new controllers.FPSController(scene, new BABYLON.Vector3(-20, 2, 1), new BABYLON.Vector3(2, 2, 0));
+        const world = new worlds.StartWorld(scene, entityManager);
         const gui = new Start2Gui(scene, {});
         world.onLaunchOptions.add((toggle) => {
             gui.triggerAction.notifyObservers({ type: 'launch', toggle });

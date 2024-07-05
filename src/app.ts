@@ -1,8 +1,8 @@
 import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
-import { LoadingScreen } from './loading-screens/loading-screen.js';
 import Lottie from 'lottie-web';
 import { SettingsManager } from './managers/settings-manager.js';
+import { LoadingScreen } from './shared/loading-screen.js';
 
 class App {
     constructor(
