@@ -77,6 +77,7 @@ export class MenuGui {
         button.hoverCursor = 'pointer';
         button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         button.onPointerDownObservable.add(() => {
+            alert('todo');
             event.onClick.notifyObservers();
         });
         this.gui.addControl(button);
@@ -95,6 +96,7 @@ export class MenuGui {
         button.hoverCursor = 'pointer';
         button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         button.onPointerDownObservable.add(() => {
+            alert('todo');
             event.onClick.notifyObservers();
         });
         this.gui.addControl(button);
