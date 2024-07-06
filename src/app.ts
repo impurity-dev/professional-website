@@ -1,6 +1,5 @@
 import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
-import Lottie from 'lottie-web';
 import { SettingsManager } from './managers/settings-manager.js';
 import { LoadingScreen } from './shared/loading-screen.js';
 
@@ -33,14 +32,6 @@ class App {
 }
 
 const loadingDiv = document.getElementById('loading-screen') as HTMLDivElement;
-const animation = Lottie.loadAnimation({
-    container: loadingDiv,
-    renderer: 'svg',
-    loop: true,
-    autoplay: true,
-    path: './loading.json',
-});
-animation.play();
 const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
 const engine = new Engine(canvas, true);
 engine.loadingScreen = new LoadingScreen(loadingDiv);
