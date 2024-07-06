@@ -1,20 +1,21 @@
 import * as BABYLON from '@babylonjs/core';
 import * as assets from '../assets';
+import * as events from './events';
 
-export const mainLoop = (props: { scene: BABYLON.Scene }) =>
-    new BABYLON.Sound('Loop', assets.startLoop, props.scene, null, {
+export const sounds = (props: { scene: BABYLON.Scene; event: events.Events }) => {
+    const { scene, event } = props;
+    new BABYLON.Sound('loop', assets.startLoop, scene, null, {
         loop: true,
         autoplay: true,
     });
-
-export const menuHover = (props: { scene: BABYLON.Scene }) =>
-    new BABYLON.Sound('Hover', assets.menuHover, props.scene, null, {
+    const hover = new BABYLON.Sound('hover', assets.menuHover, scene, null, {
         loop: false,
         autoplay: false,
     });
-
-export const menuClick = (props: { scene: BABYLON.Scene }) =>
-    new BABYLON.Sound('Click', assets.menuClick, props.scene, null, {
+    const click = new BABYLON.Sound('click', assets.menuClick, scene, null, {
         loop: false,
         autoplay: false,
     });
+    event.onHover.add(() => hover.play());
+    event.onClick.add(() => click.play());
+};

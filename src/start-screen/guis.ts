@@ -1,35 +1,20 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import * as sounds from './sounds';
-
-export type OnStart = () => void;
-export type MenuGuiProps = {
-    scene: BABYLON.Scene;
-    mask: number;
-    onStart: OnStart;
-};
+import * as events from './events';
 
 export class MenuGui {
     private readonly gui: GUI.AdvancedDynamicTexture;
-    private readonly start: GUI.Button;
-    private readonly optionMenu: GUI.Grid;
-    private readonly options: GUI.Button;
-    private readonly camera: BABYLON.Camera;
-    private readonly grid: GUI.Grid;
-    private readonly title: GUI.TextBlock;
-    private readonly menuClick: BABYLON.Sound;
-    private readonly menuHover: BABYLON.Sound;
 
-    constructor(props: MenuGuiProps) {
-        const { scene, mask } = props;
+    constructor(props: { scene: BABYLON.Scene; mask: number; event: events.Events }) {
+        const { scene, mask, event } = props;
         this.gui = this.createGui(mask);
-        this.title = this.createTitle(scene);
+        this.createTitle(scene);
         this.createWIP();
-        this.start = this.createStart(props.onStart);
-        const { openOptionsMenu } = this.createOptionMenu(scene);
-        this.options = this.createOptions(openOptionsMenu);
-        this.menuClick = sounds.menuClick({ scene });
-        this.menuHover = sounds.menuHover({ scene });
+        this.createStart(event);
+        this.createOptionMenu(scene, event);
+        this.createOptions(event);
+        this.createCredits(event);
+        this.createFAQ(event);
     }
 
     private createGui = (mask: number) => {
@@ -80,7 +65,45 @@ export class MenuGui {
         return textBlock;
     };
 
-    private createStart = (onStart: OnStart): GUI.Button => {
+    private createFAQ = (event: events.Events): GUI.Button => {
+        const button = GUI.Button.CreateImageWithCenterTextButton('faq', 'FAQ', 'gui/Blue/ButtonB_Big/Button6.png');
+        button.height = '40px';
+        button.width = '200px';
+        button.color = 'white';
+        button.thickness = 0;
+        button.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+        button.top = '440px';
+        button.background = '';
+        button.hoverCursor = 'pointer';
+        button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
+        button.onPointerDownObservable.add(() => {
+            alert('todo');
+            event.onClick.notifyObservers();
+        });
+        this.gui.addControl(button);
+        return button;
+    };
+
+    private createCredits = (event: events.Events): GUI.Button => {
+        const button = GUI.Button.CreateImageWithCenterTextButton('credits', 'Credits', 'gui/Blue/ButtonB_Big/Button6.png');
+        button.height = '40px';
+        button.width = '200px';
+        button.color = 'white';
+        button.thickness = 0;
+        button.verticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+        button.top = '380px';
+        button.background = '';
+        button.hoverCursor = 'pointer';
+        button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
+        button.onPointerDownObservable.add(() => {
+            alert('todo');
+            event.onClick.notifyObservers();
+        });
+        this.gui.addControl(button);
+        return button;
+    };
+
+    private createStart = (event: events.Events): GUI.Button => {
         const button = GUI.Button.CreateImageWithCenterTextButton('start', 'Start', 'gui/Blue/ButtonB_Big/Button6.png');
         button.height = '40px';
         button.width = '200px';
@@ -90,17 +113,17 @@ export class MenuGui {
         button.top = '260px';
         button.background = '';
         button.hoverCursor = 'pointer';
-        button.onPointerEnterObservable.add(() => this.menuHover.play());
+        button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         button.onPointerDownObservable.add(() => {
-            this.menuClick.play();
-            onStart();
+            event.onClick.notifyObservers();
+            event.onStart.notifyObservers();
         });
         button.onPointerUpObservable.add(() => {});
         this.gui.addControl(button);
         return button;
     };
 
-    private createOptions = (openOptionsMenu: () => void): GUI.Button => {
+    private createOptions = (event: events.Events): GUI.Button => {
         const button = GUI.Button.CreateImageWithCenterTextButton('options', 'Options', 'gui/Blue/ButtonB_Big/Button6.png');
         button.height = '40px';
         button.width = '200px';
@@ -110,23 +133,16 @@ export class MenuGui {
         button.top = '320px';
         button.background = '';
         button.hoverCursor = 'pointer';
-        button.onPointerEnterObservable.add(() => this.menuHover.play());
+        button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         button.onPointerDownObservable.add(() => {
-            this.menuClick.play();
-            openOptionsMenu();
+            event.onOptions.notifyObservers({ toggle: true });
+            event.onClick.notifyObservers();
         });
         this.gui.addControl(button);
         return button;
     };
 
-    private createOptionMenu = (
-        scene: BABYLON.Scene,
-    ): {
-        grid: GUI.Grid;
-        background: GUI.Image;
-        openOptionsMenu: () => void;
-        closeOptionsMenu: () => void;
-    } => {
+    private createOptionMenu = (scene: BABYLON.Scene, event: events.Events) => {
         const width = 0.3;
         const height = 0.5;
         const animationSpeed = 5;
@@ -169,14 +185,14 @@ export class MenuGui {
         toggleSound.heightInPixels = 50;
         toggleSound.hoverCursor = 'pointer';
         toggleSound.isChecked = BABYLON.Engine.audioEngine.unlocked;
-        toggleSound.onPointerEnterObservable.add(() => this.menuHover.play());
+        toggleSound.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         toggleSound.onPointerClickObservable.add(() => {
             if (!BABYLON.Engine.audioEngine.unlocked) {
                 BABYLON.Engine.audioEngine.unlock();
             } else {
                 BABYLON.Engine.audioEngine.lock();
             }
-            this.menuClick.play();
+            event.onClick.notifyObservers();
         });
         grid.addControl(toggleSound, 1, 0);
 
@@ -190,10 +206,10 @@ export class MenuGui {
         toggleFullscreen.heightInPixels = 50;
         toggleFullscreen.hoverCursor = 'pointer';
         toggleFullscreen.isChecked = scene.getEngine().isFullscreen;
-        toggleFullscreen.onPointerEnterObservable.add(() => this.menuHover.play());
+        toggleFullscreen.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
         toggleFullscreen.onPointerDownObservable.add(() => {
-            this.menuClick.play();
             scene.getEngine().switchFullscreen(false);
+            event.onClick.notifyObservers();
         });
         grid.addControl(toggleFullscreen, 2, 0);
 
@@ -214,6 +230,22 @@ export class MenuGui {
             { frame: 60, value: startLocation },
         ]);
 
+        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', 'gui/Blue/ButtonB_Big/Button6.png');
+        closeButton.height = '40px';
+        closeButton.width = '200px';
+        closeButton.color = 'white';
+        closeButton.thickness = 0;
+        closeButton.background = '';
+        closeButton.hoverCursor = 'pointer';
+        closeButton.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
+        closeButton.onPointerDownObservable.add(() => {
+            event.onClick.notifyObservers();
+            event.onOptions.notifyObservers({ toggle: false });
+        });
+        grid.addControl(closeButton, 4, 1);
+        this.gui.addControl(background);
+        this.gui.addControl(grid);
+
         const openOptionsMenu = () => {
             background.animations = [flyIn];
             grid.animations = [flyIn];
@@ -227,23 +259,6 @@ export class MenuGui {
             scene.beginAnimation(grid, 0, 60, false, animationSpeed);
             scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
-
-        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', 'gui/Blue/ButtonB_Big/Button6.png');
-        closeButton.height = '40px';
-        closeButton.width = '200px';
-        closeButton.color = 'white';
-        closeButton.thickness = 0;
-        closeButton.background = '';
-        closeButton.hoverCursor = 'pointer';
-        closeButton.onPointerEnterObservable.add(() => this.menuHover.play());
-        closeButton.onPointerDownObservable.add(() => {
-            this.menuClick.play();
-            closeOptionsMenu();
-        });
-        grid.addControl(closeButton, 4, 1);
-
-        this.gui.addControl(background);
-        this.gui.addControl(grid);
-        return { grid, background, openOptionsMenu, closeOptionsMenu };
+        event.onOptions.add(({ toggle }) => (toggle ? openOptionsMenu() : closeOptionsMenu()));
     };
 }
