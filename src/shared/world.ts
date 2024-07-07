@@ -1,5 +1,5 @@
 import { Scene } from '@babylonjs/core';
-import { EntityManager } from '../globals/entity-manager';
+import { EntityManager } from '../managers/entity-manager';
 
 export abstract class World {
     constructor(

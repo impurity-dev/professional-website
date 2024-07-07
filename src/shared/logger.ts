@@ -1,5 +1,5 @@
 import * as log from 'loglevel';
-import { env } from '../globals/env-manager';
+import { env } from '../managers/env-manager';
 
 log.setLevel(env.logLevel);
 

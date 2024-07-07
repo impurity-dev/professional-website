@@ -1,5 +1,5 @@
 import { Scene, Sound } from '@babylonjs/core';
-import { getSound } from '../globals/asset-manager';
+import { getSound } from '../managers/asset-manager';
 
 export class IntroSound extends Sound {
     constructor(readonly scene: Scene) {

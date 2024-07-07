@@ -1,4 +1,4 @@
-import { EntityManager } from '../globals/entity-manager';
+import { EntityManager } from '../managers/entity-manager';
 import { ControlEvent, FighterEvents } from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as models from '../entities/model';

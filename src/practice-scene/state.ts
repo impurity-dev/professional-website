@@ -1,7 +1,7 @@
 import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
 import { PlanetEntity } from '../entities/planet-entity.js';
 import * as skyboxes from '../shared/skyboxes.js';
-import { State } from '../globals/state.js';
+import { State } from '../shared/state.js';
 
 export class PracticeState extends State {
     run = async (): Promise<void> => {

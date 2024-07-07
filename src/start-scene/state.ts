@@ -1,4 +1,4 @@
-import { State } from '../globals/state.js';
+import { State } from '../shared/state.js';
 import { MenuGui } from './guis.js';
 import * as cameras from './cameras.js';
 import * as sounds from './sounds.js';
