@@ -7,7 +7,7 @@ import { PlanetSolidParticles } from '../solid-particles/planet-solid-particles.
 import { WarpspeedCloudParticles } from '../particles/warpspeed-cloud-particles.js';
 import { WarpspeedStarParticles } from '../particles/warpspeed-star-particles.js';
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from './state.js';
+import { State } from '../globals/state.js';
 import { WarpspeedStarsSolidParticles } from '../solid-particles/warpspeed-stars-solid-particles.js';
 
 export class TravelState extends State {

@@ -7,7 +7,7 @@ import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { StartGui } from '../guis/start-gui.js';
 import { GasCloudParticles } from '../particles/gas-cloud-particles.js';
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from './state.js';
+import { State } from '../globals/state.js';
 import { IntroSound } from '../sounds/intro-sound.js';
 
 export class LaunchState extends State {

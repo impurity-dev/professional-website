@@ -1,4 +1,4 @@
-import { State } from '../states/state.js';
+import { State } from './state.js';
 
 export type GoToMenuProps = { type: 'menu' };
 export type GoToStartProps = { type: 'start' };

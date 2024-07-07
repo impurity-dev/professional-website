@@ -1,9 +1,9 @@
 import { AssetsManager, Scene } from '@babylonjs/core';
-import { GameManager } from '../managers/game-manager.js';
+import { GameManager } from './game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
-import { env } from '../managers/env-manager.js';
+import { env } from './env-manager.js';
 import { logger } from '../shared/logger.js';
-import { EntityManager } from '../managers/entity-manager.js';
+import { EntityManager } from './entity-manager.js';
 
 export abstract class State {
     readonly scene: Scene;

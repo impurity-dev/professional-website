@@ -1,7 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
-import { EntityManager } from '../managers/entity-manager.js';
+import { EntityManager } from '../globals/entity-manager.js';
 import * as models from '../entities/model.js';
-import * as material from '../materials/index.js';
+import * as materials from './materials.js';
 import { World } from '../shared/world.js';
 
 export class StartWorld extends World {
@@ -168,7 +168,7 @@ export class StartWorld extends World {
         pedestal.transform.parent = parent;
         pedestal.transform.position = new BABYLON.Vector3(0, 0, 1);
 
-        const fresnel = material.fresnel(scene);
+        const fresnel = materials.fresnel(scene);
         const blink = new BABYLON.Animation('blink', 'visibility', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
         blink.setKeys([
             { frame: 0, value: 0 },

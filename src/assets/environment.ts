@@ -1,4 +1,4 @@
-import { Asset } from '../managers/entity-manager.js';
+import { Asset } from '../globals/entity-manager.js';
 
 export const COLUMN_1: Asset = { file: 'Column_1.gltf', directory: 'assets/environment/' };
 export const COLUMN_2: Asset = { file: 'Column_2.gltf', directory: 'assets/environment/' };

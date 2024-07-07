@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { GameManager } from '../managers/game-manager';
+import { GameManager } from '../globals/game-manager';
 
 export class MenuCamera {
     public readonly camera: BABYLON.ArcRotateCamera;

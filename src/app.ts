@@ -1,6 +1,6 @@
 import { Engine, Effect } from '@babylonjs/core';
-import { GameManager } from './managers/game-manager.js';
-import { SettingsManager } from './managers/settings-manager.js';
+import { GameManager } from './globals/game-manager.js';
+import { SettingsManager } from './globals/settings-manager.js';
 import { LoadingScreen } from './shared/loading-screen.js';
 
 class App {

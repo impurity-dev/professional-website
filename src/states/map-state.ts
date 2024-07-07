@@ -6,7 +6,7 @@ import { MapSunEntity } from '../entities/map-sun-entity.js';
 import { createMapPlanetLabel } from '../guis/components/map-planet-label.js';
 import { MapGui } from '../guis/map-gui.js';
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from './state.js';
+import { State } from '../globals/state.js';
 
 export class MapState extends State {
     private camera: FollowCamera;

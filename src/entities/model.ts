@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { Asset, EntityManager } from '../managers/entity-manager';
+import { Asset, EntityManager } from '../globals/entity-manager';
 import * as assets from '../assets';
 import { Entity } from './entity';
 

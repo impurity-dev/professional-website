@@ -1,5 +1,5 @@
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from '../states/state.js';
+import { State } from '../globals/state.js';
 import { FighterController } from './inputs.js';
 import { FighterWorld } from './world.js';
 import { FighterCamera } from './camera.js';

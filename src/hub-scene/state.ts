@@ -1,7 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import { SpaceSkybox } from '../shared/space-skybox.js';
 import { IntroSound } from '../sounds/intro-sound.js';
-import { State } from '../states/state.js';
+import { State } from '../globals/state.js';
 import * as worlds from './worlds.js';
 import * as controllers from './inputs.js';
 import { Start2Gui } from './gui.js';
