@@ -10,7 +10,8 @@ export class PracticeState extends State {
         scene.activeCamera = camera;
         camera.attachControl();
 
-        const obj = this.plane({ scene });
+        const size = 10;
+        const obj = this.plane({ scene, size });
         obj.position = position.add(new BABYLON.Vector3(-20, 0, 0));
         obj.material = this.material({ scene });
         camera.target = obj.position;
@@ -25,9 +26,9 @@ export class PracticeState extends State {
         return sphere;
     };
 
-    plane = (props: { scene: BABYLON.Scene }) => {
-        const { scene } = props;
-        const plane: BABYLON.Mesh = BABYLON.MeshBuilder.CreatePlane('plane', { size: 10 }, scene);
+    plane = (props: { scene: BABYLON.Scene; size: number }) => {
+        const { scene, size } = props;
+        const plane: BABYLON.Mesh = BABYLON.MeshBuilder.CreatePlane('plane', { size }, scene);
         plane.rotate(new BABYLON.Vector3(0, 1, 0), (3 * Math.PI) / 2);
         return plane;
     };
@@ -41,8 +42,7 @@ export class PracticeState extends State {
             samplers: ['tex0'],
         });
         const mainTexture = new BABYLON.Texture('./portraits/recruiter.png', scene);
-        console.log(mainTexture.getSize());
-        material.setVector2('resolution', new BABYLON.Vector2(800, 800));
+        material.setFloat('duration', 8.0);
         material.setTexture('tex0', mainTexture);
         scene.registerBeforeRender(() => {
             material.setFloat('time', time);
