@@ -18,16 +18,19 @@ class App {
     };
 
     private preload = async () => {
-        const [utils, mandelbulbFrag, mandelbulbVert, dissolveFrag, dissolveVert] = await Promise.all([
+        const [utils, mandelbulbFrag, mandelbulbVert, dissolveFrag, dissolveVert, portalFrag, portalVert] = await Promise.all([
             fetch('./shaders/utils.fx').then((x) => x.text()),
             fetch('./shaders/mandelbulb.fragment.fx').then((x) => x.text()),
             fetch('./shaders/mandelbulb.vertex.fx').then((x) => x.text()),
             fetch('./shaders/dissolve.fragment.fx').then((x) => x.text()),
             fetch('./shaders/dissolve.vertex.fx').then((x) => x.text()),
+            fetch('./shaders/portal.fragment.fx').then((x) => x.text()),
+            fetch('./shaders/portal.vertex.fx').then((x) => x.text()),
         ]);
         Effect.IncludesShadersStore['utils'] = utils;
         Effect.RegisterShader('mandelbulb', mandelbulbFrag, mandelbulbVert);
         Effect.RegisterShader('dissolve', dissolveFrag, dissolveVert);
+        Effect.RegisterShader('portal', portalFrag, portalVert);
     };
 }
 
