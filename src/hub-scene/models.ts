@@ -29,9 +29,10 @@ export const portal = (props: { scene: BABYLON.Scene }) => {
     left.material = neonMaterial;
     left.parent = parent;
 
+    const texture = new BABYLON.Texture('./portraits/recruiter.png', scene);
     const plane: BABYLON.Mesh = BABYLON.MeshBuilder.CreatePlane('plane', { size: 1 }, scene);
     plane.parent = parent;
     plane.rotate(new BABYLON.Vector3(0, 1, 0), (3 * Math.PI) / 2);
-    plane.material = materials.ripple({ scene });
+    plane.material = materials.ripple({ scene, texture });
     return parent;
 };
