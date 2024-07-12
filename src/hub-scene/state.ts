@@ -6,6 +6,7 @@ import * as worlds from './worlds.js';
 import * as controllers from './inputs.js';
 import { Start2Gui } from './gui.js';
 import * as events from './events.js';
+import * as models from './models.js';
 
 export class StartState extends State {
     private isLaunchable = false;
@@ -27,10 +28,5 @@ export class StartState extends State {
         await this.entityManager.load();
         new IntroSound(scene);
         new SpaceSkybox(scene);
-
-        const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), this.scene);
-        light.intensity = 0.3;
-        light.diffuse = new BABYLON.Color3(1, 1, 1);
-        light.specular = new BABYLON.Color3(1, 1, 1);
     };
 }

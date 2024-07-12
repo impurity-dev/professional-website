@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
+import * as localModels from './models.js';
 import * as materials from './materials.js';
 import { World } from '../shared/world.js';
 
@@ -9,6 +10,8 @@ export class StartWorld extends World {
 
     constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
         super(scene, entityManager);
+        this.lighting();
+        this.portals();
         this.floors();
         this.roof();
         // this.floor2();
@@ -19,6 +22,21 @@ export class StartWorld extends World {
         this.computers();
         this.entry();
     }
+
+    private portals = () => {
+        const { scene } = this;
+        const portal = localModels.portal({ scene });
+        portal.scaling = new BABYLON.Vector3(4, 4, 4);
+        portal.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+        portal.position = new BABYLON.Vector3(18, 2, 0);
+    };
+
+    private lighting = () => {
+        const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), this.scene);
+        light.intensity = 0.3;
+        light.diffuse = new BABYLON.Color3(1, 1, 1);
+        light.specular = new BABYLON.Color3(1, 1, 1);
+    };
 
     private entry = async () => {
         const { scene, entityManager } = this;

@@ -13,3 +13,21 @@ export const fresnel = (scene: BABYLON.Scene) => {
     fresnel.disableLighting = true;
     return fresnel;
 };
+
+export const ripple = (props: { scene: BABYLON.Scene }) => {
+    const { scene } = props;
+    let time = 0;
+    const material = new BABYLON.ShaderMaterial('portal', scene, 'portal', {
+        attributes: ['position', 'normal', 'uv'],
+        uniforms: ['world', 'worldView', 'worldViewProjection', 'view', 'projection', 'time', 'tex0'],
+        samplers: ['tex0'],
+    });
+    const mainTexture = new BABYLON.Texture('./portraits/recruiter.png', scene);
+    material.setFloat('duration', 8.0);
+    material.setTexture('tex0', mainTexture);
+    scene.registerBeforeRender(() => {
+        material.setFloat('time', time);
+        time += 0.01;
+    });
+    return material;
+};
