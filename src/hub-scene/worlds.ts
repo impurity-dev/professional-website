@@ -25,10 +25,13 @@ export class StartWorld extends World {
 
     private portals = () => {
         const { scene } = this;
-        const portal = localModels.portal({ scene });
+        const parent = new BABYLON.TransformNode('porals', scene);
+        const github = new BABYLON.Texture('./textures/github.png', scene);
+        const portal = localModels.portal({ scene, texture: github });
         portal.scaling = new BABYLON.Vector3(4, 4, 4);
         portal.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
         portal.position = new BABYLON.Vector3(18, 2, 0);
+        portal.parent = parent;
     };
 
     private lighting = () => {

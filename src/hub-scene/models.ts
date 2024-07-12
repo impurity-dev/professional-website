@@ -1,8 +1,8 @@
 import * as BABYLON from '@babylonjs/core';
 import * as materials from './materials';
 
-export const portal = (props: { scene: BABYLON.Scene }) => {
-    const { scene } = props;
+export const portal = (props: { scene: BABYLON.Scene; texture: BABYLON.Texture }) => {
+    const { scene, texture } = props;
     const parent = new BABYLON.TransformNode('portal', scene);
     parent.position = new BABYLON.Vector3(-10, 0, 0);
     const gl = new BABYLON.GlowLayer('glow', scene, {
@@ -29,7 +29,6 @@ export const portal = (props: { scene: BABYLON.Scene }) => {
     left.material = neonMaterial;
     left.parent = parent;
 
-    const texture = new BABYLON.Texture('./portraits/recruiter.png', scene);
     const plane: BABYLON.Mesh = BABYLON.MeshBuilder.CreatePlane('plane', { size: 1 }, scene);
     plane.parent = parent;
     plane.rotate(new BABYLON.Vector3(0, 1, 0), (3 * Math.PI) / 2);
