@@ -3,12 +3,12 @@ import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
 import * as localModels from './models.js';
 import * as materials from './materials.js';
+import * as events from './events.js';
 import { World } from '../shared/world.js';
 
 export class StartWorld extends World {
-    public readonly onLaunchOptions: BABYLON.Observable<boolean> = new BABYLON.Observable();
-
-    constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
+    constructor(props: { scene: BABYLON.Scene; entityManager: EntityManager; event: events.HubEvents }) {
+        const { scene, entityManager, event } = props;
         super(scene, entityManager);
         this.lighting();
         this.portals();
@@ -19,7 +19,7 @@ export class StartWorld extends World {
         this.windows();
         // this.stairs();
         this.hologram();
-        this.computers();
+        this.computers({ scene, entityManager, event });
         this.entry();
     }
 
@@ -147,8 +147,8 @@ export class StartWorld extends World {
         rightCornerOuter3.transform.position = position;
     };
 
-    private computers = async () => {
-        const { scene, entityManager } = this;
+    private computers = async (props: { scene: BABYLON.Scene; entityManager: EntityManager; event: events.HubEvents }) => {
+        const { scene, entityManager, event } = props;
         const parent = new BABYLON.TransformNode('computers');
         const rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
         const position = new BABYLON.Vector3(-4, 0, 1);
@@ -167,7 +167,11 @@ export class StartWorld extends World {
                         trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
                         parameter: cameraMesh,
                     },
-                    () => this.onLaunchOptions.notifyObservers(true),
+                    () =>
+                        event.onTrigger.notifyObservers({
+                            type: 'launch',
+                            toggle: true,
+                        }),
                 ),
             );
             root.actionManager.registerAction(
@@ -176,7 +180,11 @@ export class StartWorld extends World {
                         trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
                         parameter: cameraMesh,
                     },
-                    () => this.onLaunchOptions.notifyObservers(false),
+                    () =>
+                        event.onTrigger.notifyObservers({
+                            type: 'launch',
+                            toggle: false,
+                        }),
                 ),
             );
         });

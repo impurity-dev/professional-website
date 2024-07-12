@@ -6,7 +6,7 @@ import { OrbitState } from '../states/orbit-state.js';
 import { MapState } from '../states/map-state.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
-import { StartState } from '../hub-scene/state.js';
+import { HubState } from '../hub-scene/state.js';
 import { MenuState } from '../start-scene/state.js';
 import { FighterState } from '../fighter-scene/index.js';
 import { logger } from '../shared/logger.js';
@@ -31,8 +31,8 @@ export class GameManager extends StateMachine {
         switch (props.type) {
             case 'menu':
                 return this.setState(new MenuState(this));
-            case 'start':
-                return this.setState(new StartState(this));
+            case 'hub':
+                return this.setState(new HubState(this));
             case 'launch':
                 return this.setState(new LaunchState(this));
             case 'travel':

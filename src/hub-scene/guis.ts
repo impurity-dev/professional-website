@@ -1,30 +1,17 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
+import * as event from './events.js';
 
-export type OnLaunch = () => void;
-export type StartGuiProps = {};
-export type TriggerType = {
-    type: 'launch';
-    toggle: boolean;
-};
-export type ActionType = { type: 'launch' };
-
-export class Start2Gui {
-    public readonly triggerAction: BABYLON.Observable<TriggerType> = new BABYLON.Observable();
-    public readonly onAction: BABYLON.Observable<ActionType> = new BABYLON.Observable();
+export class HubGui {
     private readonly gui: GUI.AdvancedDynamicTexture;
 
-    constructor(
-        readonly scene: BABYLON.Scene,
-        readonly props: StartGuiProps,
-    ) {
-        this.gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI');
+    constructor(props: { scene: BABYLON.Scene; event: event.HubEvents }) {
+        const { scene, event } = props;
+        this.gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
         this.gui.idealHeight = 1920;
 
         const toggleLaunchText = this.createToggleLaunchText();
-        this.gui.addControl(toggleLaunchText);
-
-        this.triggerAction.add((event) => {
+        event.onTrigger.add((event) => {
             switch (event.type) {
                 case 'launch': {
                     toggleLaunchText.alpha = event.toggle ? 1 : 0;
@@ -41,6 +28,7 @@ export class Start2Gui {
         text.alpha = 0;
         text.top = 100;
         text.color = 'white';
+        this.gui.addControl(text);
         return text;
     };
 }

@@ -4,24 +4,20 @@ import { IntroSound } from '../sounds/intro-sound.js';
 import { State } from '../shared/state.js';
 import * as worlds from './worlds.js';
 import * as controllers from './inputs.js';
-import { Start2Gui } from './gui.js';
+import * as guis from './guis.js';
 import * as events from './events.js';
-import * as models from './models.js';
 
-export class StartState extends State {
+export class HubState extends State {
     private isLaunchable = false;
 
     run = async (): Promise<void> => {
         const { scene, entityManager } = this;
-        const event = new events.MissionControlEvents();
-        const controller = new controllers.FPSController(scene, new BABYLON.Vector3(-20, 2, 1), new BABYLON.Vector3(2, 2, 0));
-        const world = new worlds.StartWorld(scene, entityManager);
-        const gui = new Start2Gui(scene, {});
-        world.onLaunchOptions.add((toggle) => {
-            gui.triggerAction.notifyObservers({ type: 'launch', toggle });
-            this.isLaunchable = toggle;
-        });
-        controller.onActionPressed.add(() => {
+        const event = new events.HubEvents();
+        const controller = new controllers.FPSController({ scene, location: new BABYLON.Vector3(-20, 2, 1), target: new BABYLON.Vector3(2, 2, 0), event });
+        const world = new worlds.StartWorld({ scene, entityManager, event });
+        const gui = new guis.HubGui({ scene, event });
+        event.onTrigger.add(({ toggle }) => (this.isLaunchable = toggle));
+        event.onAction.add(() => {
             if (!this.isLaunchable) return;
             this.gameManager.goTo({ type: 'fighter' });
         });

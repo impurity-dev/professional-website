@@ -11,7 +11,7 @@ export class MenuState extends State {
         const mainCamera = new cameras.MenuCamera({ scene, gameManager });
         const guiCamera = new cameras.GuiCamera({ scene });
         const event = new events.Events();
-        event.onStart.add(() => gameManager.goTo({ type: 'start' }));
+        event.onStart.add(() => gameManager.goTo({ type: 'hub' }));
         effects.mandelbulb({ scene, camera: mainCamera.camera });
         sounds.sounds({ scene, event });
         await entityManager.load();
