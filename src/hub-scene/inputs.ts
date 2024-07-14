@@ -1,18 +1,15 @@
 import * as BABYLON from '@babylonjs/core';
+import * as events from './events';
 
 export class FPSController {
-    public readonly onActionPressed: BABYLON.Observable<void> = new BABYLON.Observable();
     public readonly camera: BABYLON.UniversalCamera;
     private readonly deviceManager: BABYLON.DeviceSourceManager;
 
-    constructor(
-        private readonly scene: BABYLON.Scene,
-        location: BABYLON.Vector3,
-        target: BABYLON.Vector3,
-    ) {
+    constructor(props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3; event: events.HubEvents }) {
+        const { scene, location, target, event } = props;
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
         this.camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
-        this.scene.activeCamera = this.camera;
+        scene.activeCamera = this.camera;
         this.camera.target = target;
         this.camera.attachControl();
         this.camera.applyGravity = true;
@@ -25,7 +22,7 @@ export class FPSController {
         this.camera.keysLeft.push(65);
         this.camera.keysDown.push(83);
         this.camera.keysRight.push(68);
-        this.scene.activeCamera = this.camera;
+        scene.activeCamera = this.camera;
 
         const framesPerSecond = 60;
         const gravity = -9.81;
@@ -37,30 +34,31 @@ export class FPSController {
             if (event.button === 1) engine.exitPointerlock();
         };
 
-        this.addCrosshair();
+        this.addCrosshair({ scene, camera: this.camera });
         const box = BABYLON.MeshBuilder.CreateBox('camera-box', { size: 10 }, scene);
         box.parent = this.camera;
 
         scene.registerBeforeRender(() => {
             // this.castRay();
-            this.handleControls();
+            this.handleControls({ event });
         });
     }
 
-    handleControls = () => {
+    handleControls = (props: { event: events.HubEvents }) => {
         const { deviceManager } = this;
+        const { event } = props;
         const keyboard = deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
         if (!keyboard) {
             return;
         }
         const E = 69;
         if (keyboard.getInput(E) === 1) {
-            this.onActionPressed.notifyObservers();
+            event.onAction.notifyObservers({ type: 'launch' });
         }
     };
 
-    flashlight = () => {
-        const { scene } = this;
+    flashlight = (props: { scene: BABYLON.Scene }) => {
+        const { scene } = props;
         const light = new BABYLON.SpotLight('spotLight', this.camera.position, this.camera.target, Math.PI / 2, 10, scene);
         light.diffuse = new BABYLON.Color3(1, 1, 1);
         light.specular = new BABYLON.Color3(1, 1, 1);
@@ -72,8 +70,8 @@ export class FPSController {
         return light;
     };
 
-    castRay = () => {
-        const { scene, camera } = this;
+    castRay = (props: { scene: BABYLON.Scene; camera: BABYLON.Camera }) => {
+        const { scene, camera } = props;
         const vecToLocal = (vector, mesh) => {
             const m = mesh.getWorldMatrix();
             const v = BABYLON.Vector3.TransformCoordinates(vector, m);
@@ -97,8 +95,8 @@ export class FPSController {
         }
     };
 
-    addCrosshair = () => {
-        const { scene, camera } = this;
+    addCrosshair = (props: { scene: BABYLON.Scene; camera: BABYLON.Camera }) => {
+        const { scene, camera } = props;
         const w = 128;
 
         const texture = new BABYLON.DynamicTexture('reticule', w, scene, false);

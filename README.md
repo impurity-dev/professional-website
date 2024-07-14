@@ -37,3 +37,8 @@
 ## Corridor
 
 -   https://sketchfab.com/3d-models/016mabc-sky-corridor-b6c3835d53e941e6bde7e933c1e43afd#download
+
+## Ripple
+
+-   https://playground.babylonjs.com/#D8IDR8#91
+-   https://www.shadertoy.com/view/ldBXDD

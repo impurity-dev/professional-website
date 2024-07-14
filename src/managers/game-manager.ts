@@ -4,14 +4,14 @@ import { StateMachine, GoToProps } from './state-machine.js';
 import { TravelState } from '../states/travel-state.js';
 import { OrbitState } from '../states/orbit-state.js';
 import { MapState } from '../states/map-state.js';
-import { PracticeState } from '../states/practice-state.js';
 import { Spector } from 'spectorjs';
 import { env } from './env-manager.js';
-import { StartState } from '../mission-control/state.js';
-import { MenuState } from '../start-screen/state.js';
-import { FighterState } from '../fighter-minigame';
+import { HubState } from '../hub-scene/state.js';
+import { MenuState } from '../start-scene/state.js';
+import { FighterState } from '../fighter-scene/index.js';
 import { logger } from '../shared/logger.js';
 import { SettingsManager } from './settings-manager.js';
+import { PracticeState } from '../practice-scene/index.js';
 
 export class GameManager extends StateMachine {
     constructor(
@@ -31,8 +31,8 @@ export class GameManager extends StateMachine {
         switch (props.type) {
             case 'menu':
                 return this.setState(new MenuState(this));
-            case 'start':
-                return this.setState(new StartState(this));
+            case 'hub':
+                return this.setState(new HubState(this));
             case 'launch':
                 return this.setState(new LaunchState(this));
             case 'travel':

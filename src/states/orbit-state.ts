@@ -4,7 +4,7 @@ import { PlanetEntity } from '../entities/planet-entity.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { OrbitGui } from '../guis/orbit-gui.js';
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from './state.js';
+import { State } from '../shared/state.js';
 
 export class OrbitState extends State {
     private planet: PlanetEntity;

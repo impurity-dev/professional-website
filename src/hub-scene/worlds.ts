@@ -1,14 +1,17 @@
 import * as BABYLON from '@babylonjs/core';
 import { EntityManager } from '../managers/entity-manager.js';
 import * as models from '../entities/model.js';
-import * as material from '../materials/index.js';
+import * as localModels from './models.js';
+import * as materials from './materials.js';
+import * as events from './events.js';
 import { World } from '../shared/world.js';
 
 export class StartWorld extends World {
-    public readonly onLaunchOptions: BABYLON.Observable<boolean> = new BABYLON.Observable();
-
-    constructor(scene: BABYLON.Scene, entityManager: EntityManager) {
+    constructor(props: { scene: BABYLON.Scene; entityManager: EntityManager; event: events.HubEvents }) {
+        const { scene, entityManager, event } = props;
         super(scene, entityManager);
+        this.lighting();
+        this.portals();
         this.floors();
         this.roof();
         // this.floor2();
@@ -16,9 +19,27 @@ export class StartWorld extends World {
         this.windows();
         // this.stairs();
         this.hologram();
-        this.computers();
+        this.computers({ scene, entityManager, event });
         this.entry();
     }
+
+    private portals = () => {
+        const { scene } = this;
+        const parent = new BABYLON.TransformNode('porals', scene);
+        const github = new BABYLON.Texture('./textures/github.png', scene);
+        const portal = localModels.portal({ scene, texture: github });
+        portal.scaling = new BABYLON.Vector3(4, 4, 4);
+        portal.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+        portal.position = new BABYLON.Vector3(18, 2, 0);
+        portal.parent = parent;
+    };
+
+    private lighting = () => {
+        const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), this.scene);
+        light.intensity = 0.3;
+        light.diffuse = new BABYLON.Color3(1, 1, 1);
+        light.specular = new BABYLON.Color3(1, 1, 1);
+    };
 
     private entry = async () => {
         const { scene, entityManager } = this;
@@ -126,8 +147,8 @@ export class StartWorld extends World {
         rightCornerOuter3.transform.position = position;
     };
 
-    private computers = async () => {
-        const { scene, entityManager } = this;
+    private computers = async (props: { scene: BABYLON.Scene; entityManager: EntityManager; event: events.HubEvents }) => {
+        const { scene, entityManager, event } = props;
         const parent = new BABYLON.TransformNode('computers');
         const rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
         const position = new BABYLON.Vector3(-4, 0, 1);
@@ -146,7 +167,11 @@ export class StartWorld extends World {
                         trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
                         parameter: cameraMesh,
                     },
-                    () => this.onLaunchOptions.notifyObservers(true),
+                    () =>
+                        event.onTrigger.notifyObservers({
+                            type: 'launch',
+                            toggle: true,
+                        }),
                 ),
             );
             root.actionManager.registerAction(
@@ -155,7 +180,11 @@ export class StartWorld extends World {
                         trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
                         parameter: cameraMesh,
                     },
-                    () => this.onLaunchOptions.notifyObservers(false),
+                    () =>
+                        event.onTrigger.notifyObservers({
+                            type: 'launch',
+                            toggle: false,
+                        }),
                 ),
             );
         });
@@ -168,7 +197,7 @@ export class StartWorld extends World {
         pedestal.transform.parent = parent;
         pedestal.transform.position = new BABYLON.Vector3(0, 0, 1);
 
-        const fresnel = material.fresnel(scene);
+        const fresnel = materials.fresnel(scene);
         const blink = new BABYLON.Animation('blink', 'visibility', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
         blink.setKeys([
             { frame: 0, value: 0 },
