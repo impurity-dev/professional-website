@@ -301,7 +301,7 @@ export class MenuGui {
 
         const stackPanel = new GUI.StackPanel('credits-list');
         for (let i = 0; i < 50; i++) {
-            const text = new GUI.TextBlock('Hello!', 'Hello!');
+            const text = new GUI.TextBlock('Hello!', 'TODO');
             text.fontFamily = 'Zen Dots';
             text.color = 'white';
             text.fontSize = 30;
