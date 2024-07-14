@@ -1,1 +1,1 @@
-export { StartState } from './state';
+export { HubState } from './state';
