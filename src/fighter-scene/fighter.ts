@@ -1,7 +1,7 @@
 import { EntityManager } from '../managers/entity-manager';
-import { ControlEvent, FighterEvents } from './events';
+import * as events from './events';
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../entities/model';
+import * as models from '../shared/models';
 
 // Our maximum acceleration (units per second per second)
 const MaxThrust = 10;
@@ -15,7 +15,7 @@ const DragCoefficient = 0.25;
 // The ship's current velocity
 const velocity = new BABYLON.Vector3();
 
-export type FighterProps = { scene: BABYLON.Scene; entityManager: EntityManager; events: FighterEvents };
+export type FighterProps = { scene: BABYLON.Scene; entityManager: EntityManager; events: events.FighterEvents };
 export const fighter = (props: FighterProps) => {
     const { events, scene, entityManager } = props;
     const fighter = new models.Model({
@@ -26,7 +26,7 @@ export const fighter = (props: FighterProps) => {
     });
     fighter.transform.rotationQuaternion = BABYLON.Quaternion.Identity();
     events.controls.add((input) => onControls(scene, fighter.transform, input));
-    fighter.addOnLoad(() => {
+    fighter.onLoad.add(() => {
         const fighterMat: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
         const wingsMat: BABYLON.PBRMaterial = scene.getMaterialByName('WINGS') as BABYLON.PBRMaterial;
         events.controls.add((input) => rocketEffect(scene, [fighterMat, wingsMat], input));
@@ -35,7 +35,7 @@ export const fighter = (props: FighterProps) => {
 };
 const lerp = (start: number, end: number, delta: number) => start * delta + end * (1 - delta);
 
-const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], input: ControlEvent) => {
+const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], input: events.ControlEvent) => {
     const { yaw, pitch, w, a, s, d, leftShift } = input;
     materials.forEach((material) => {
         const start = material.emissiveIntensity;
@@ -52,7 +52,7 @@ const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], in
     });
 };
 
-const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: ControlEvent) => {
+const onControls = (scene: BABYLON.Scene, target: BABYLON.TransformNode, input: events.ControlEvent) => {
     const { yaw, pitch, w, a, s, d, leftShift } = input;
     const deltaSecs = scene.getEngine().getDeltaTime() / 1000;
     // Convert Yaw and Pitch to a rotation in quaternion form

@@ -9,7 +9,7 @@ import { env } from './env-manager.js';
 import { HubState } from '../hub-scene/state.js';
 import { MenuState } from '../start-scene/state.js';
 import { FighterState } from '../fighter-scene/index.js';
-import { logger } from '../shared/logger.js';
+import * as logger from '../shared/logger.js';
 import { SettingsManager } from './settings-manager.js';
 import { PracticeState } from '../practice-scene/index.js';
 
