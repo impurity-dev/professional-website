@@ -2,6 +2,7 @@ import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
 import { SettingsManager } from './managers/settings-manager.js';
 import { LoadingScreen } from './shared/loading-screen.js';
+import { env } from './managers/env-manager.js';
 
 class App {
     constructor(
@@ -13,7 +14,7 @@ class App {
         await document.fonts.ready;
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: 'menu' });
+        await this.manager.goTo({ type: env.startScene });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 
