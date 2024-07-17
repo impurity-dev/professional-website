@@ -9,7 +9,6 @@ export class FPSController {
         const { scene, location, target, event } = props;
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
         this.camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
-        scene.activeCamera = this.camera;
         this.camera.target = target;
         this.camera.attachControl();
         this.camera.applyGravity = true;
