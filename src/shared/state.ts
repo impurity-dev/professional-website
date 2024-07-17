@@ -3,6 +3,7 @@ import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
 import * as logger from './logger.js';
 import { EntityManager } from '../managers/entity-manager.js';
+import * as settings from '../managers/settings-manager.js';
 
 export abstract class State {
     readonly scene: Scene;
@@ -17,8 +18,10 @@ export abstract class State {
         logger.debug('Scene Created');
         this.scene = new Scene(this.gameManager.engine);
         this.assetManager = new AssetsManager(this.scene);
+        this.assetManager.useDefaultLoadingScreen = false;
+        this.assetManager.autoHideLoadingUI = false;
         this.entityManager = new EntityManager(this.assetManager);
-        if (gameManager.settings.isBabylonInpectorEnabled) {
+        if (settings.manager.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
         }

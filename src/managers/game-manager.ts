@@ -3,7 +3,7 @@ import { LaunchState } from '../states/launch-state.js';
 import { TravelState } from '../states/travel-state.js';
 import { OrbitState } from '../states/orbit-state.js';
 import { MapState } from '../states/map-state.js';
-import * as Spector from 'spectorjs';
+import * as SPECTOR from 'spectorjs';
 import * as hubScene from '../hub-scene/state.js';
 import * as startScene from '../start-scene/state.js';
 import * as fighterScene from '../fighter-scene/index.js';
@@ -16,12 +16,10 @@ export class GameManager extends sm.StateMachine {
     constructor(
         public readonly canvas: HTMLCanvasElement,
         public readonly engine: BABYLON.Engine,
-        public readonly settings: settings.Manager,
     ) {
         super();
-        if (settings.isWebGLSpectorEnabled) {
-            const spector = new Spector();
-            spector.displayUI();
+        if (settings.manager.isWebGLSpectorEnabled) {
+            new SPECTOR.Spector().displayUI();
         }
     }
 

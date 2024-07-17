@@ -13,7 +13,7 @@ class App {
         await document.fonts.ready;
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: manager.settings.startScene });
+        await this.manager.goTo({ type: settings.manager.startScene });
         this.engine.runRenderLoop(() => this.manager.getState().render());
     };
 
@@ -38,6 +38,6 @@ const loadingDiv = document.getElementById('loading-screen') as HTMLDivElement;
 const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
 const engine = new Engine(canvas, true);
 engine.loadingScreen = new LoadingScreen(loadingDiv);
-const manager = new GameManager(canvas, engine, settings.manager);
+const manager = new GameManager(canvas, engine);
 const app = new App(engine, manager);
 app.start();
