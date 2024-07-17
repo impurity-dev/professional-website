@@ -1,4 +1,4 @@
-import { SpaceSkybox } from '../shared/space-skybox.js';
+import * as skyboxes from '../shared/skyboxes.js';
 import * as states from '../managers/states.js';
 import { FighterController } from './inputs.js';
 import { FighterWorld } from './world.js';
@@ -11,11 +11,11 @@ export class FighterState extends states.State {
         const { scene, entityManager } = this;
         const events = new FighterEvents();
         const world = new FighterWorld({ scene, entityManager, events });
-        const entityLoading = this.entityManager.load();
+        const load = this.entityManager.load();
         new FighterGui({ scene, events });
         new FighterCamera({ scene, target: world.fighterModel.transform });
         new FighterController({ scene, events });
-        new SpaceSkybox(scene);
-        await entityLoading;
+        skyboxes.purpleSpace({ scene });
+        await load;
     };
 }

@@ -5,45 +5,46 @@ import { MapRingEntity } from '../entities/map-ring-entity.js';
 import { MapSunEntity } from '../entities/map-sun-entity.js';
 import { createMapPlanetLabel } from '../guis/components/map-planet-label.js';
 import { MapGui } from '../guis/map-gui.js';
-import { SpaceSkybox } from '../shared/space-skybox.js';
+import * as skyboxes from '../shared/skyboxes.js';
 import { State } from '../managers/states.js';
 
 export class MapState extends State {
     private camera: FollowCamera;
 
     run = async (): Promise<void> => {
-        this.camera = new FollowCamera('Camera', Vector3.Zero(), this.scene);
-        this.scene.activeCamera = this.camera;
+        const { scene } = this;
+        this.camera = new FollowCamera('Camera', Vector3.Zero(), scene);
+        scene.activeCamera = this.camera;
 
-        const sun = new MapSunEntity(this.scene, 100, 200, new Color3(0, 1, 1));
+        const sun = new MapSunEntity(scene, 100, 200, new Color3(0, 1, 1));
         sun.position = this.camera.position.add(new Vector3(0, 100, 1_000));
 
         const rotation = new Vector3(-Math.PI / 8, 0, 0);
 
         const innerRadius = 200;
-        const innerDisc = new MapRingEntity(this.scene, innerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        const innerDisc = new MapRingEntity(scene, innerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
         innerDisc.position = sun.position.clone();
         innerDisc.rotation.addInPlace(rotation);
 
-        const innerPlanet = new MapPlanetEntity(this.scene, 15, 100, new Color3(1, 1, 0));
+        const innerPlanet = new MapPlanetEntity(scene, 15, 100, new Color3(1, 1, 0));
         innerPlanet.position = new Vector3(0, 0, innerRadius);
         innerPlanet.parent = innerDisc;
 
         const middleRadius = 400;
-        const middleDisc = new MapRingEntity(this.scene, middleRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        const middleDisc = new MapRingEntity(scene, middleRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
         middleDisc.position = sun.position.clone();
         middleDisc.rotation.addInPlace(rotation);
 
-        const middlePlanet = new MapPlanetEntity(this.scene, 5, 100, new Color3(1, 1, 0));
+        const middlePlanet = new MapPlanetEntity(scene, 5, 100, new Color3(1, 1, 0));
         middlePlanet.position = new Vector3(0, 0, middleRadius);
         middlePlanet.parent = middleDisc;
 
         const outerRadius = 600;
-        const outerDisc = new MapRingEntity(this.scene, outerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
+        const outerDisc = new MapRingEntity(scene, outerRadius, [new Vector3(0, 0, 0), new Vector3(0, 1, 0)]);
         outerDisc.position = sun.position.clone();
         outerDisc.rotation.addInPlace(rotation);
 
-        const outerPlanet = new MapPlanetEntity(this.scene, 25, 100, new Color3(1, 1, 0));
+        const outerPlanet = new MapPlanetEntity(scene, 25, 100, new Color3(1, 1, 0));
         outerPlanet.position = new Vector3(0, 0, outerRadius);
         outerPlanet.parent = outerDisc;
 
@@ -62,15 +63,15 @@ export class MapState extends State {
                 clearInterval(discAnimationSpeedDecay);
             }
         }, INTERVAL);
-        this.scene.registerAfterRender(() => {
+        scene.registerAfterRender(() => {
             innerDisc.rotate(DISC_AXIS, discSpeed + 0.0005, Space.LOCAL);
             middleDisc.rotate(DISC_AXIS, -discSpeed + 0.0005, Space.LOCAL);
             outerDisc.rotate(DISC_AXIS, discSpeed, Space.LOCAL);
         });
 
-        this.scene.onPointerDown = async () => {
-            const ray = this.scene.createPickingRay(this.scene.pointerX, this.scene.pointerY, Matrix.Identity(), this.camera);
-            const hit = this.scene.pickWithRay(ray);
+        scene.onPointerDown = async () => {
+            const ray = scene.createPickingRay(scene.pointerX, scene.pointerY, Matrix.Identity(), this.camera);
+            const hit = scene.pickWithRay(ray);
             const pickedMesh = hit.pickedMesh;
 
             if (pickedMesh && pickedMesh.metadata != 'skybox' && pickedMesh.metadata?.type == 'map-planet') {
@@ -79,9 +80,9 @@ export class MapState extends State {
             }
         };
 
-        new MapGui(this.scene, async () => await this.gameManager.goTo({ type: 'travel' }));
+        new MapGui(scene, async () => await this.gameManager.goTo({ type: 'travel' }));
 
-        // new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        // new HemisphericLight('light1', new Vector3(1, 1, 0), scene);
+        skyboxes.purpleSpace({ scene });
     };
 }

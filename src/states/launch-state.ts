@@ -6,9 +6,8 @@ import { ShipRockingAnimation } from '../animations/ship-rocking-animation.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { StartGui } from '../guis/start-gui.js';
 import { GasCloudParticles } from '../particles/gas-cloud-particles.js';
-import { SpaceSkybox } from '../shared/space-skybox.js';
+import * as skyboxes from '../shared/skyboxes.js';
 import { State } from '../managers/states.js';
-import { IntroSound } from '../sounds/intro-sound.js';
 
 export class LaunchState extends State {
     private spaceship: SpaceShipEntity;
@@ -19,33 +18,34 @@ export class LaunchState extends State {
     private gasClouds: GasCloudParticles;
 
     run = async (): Promise<void> => {
-        this.spaceship = new SpaceShipEntity(this.scene);
+        const { scene } = this;
+        this.spaceship = new SpaceShipEntity(scene);
         this.spaceship.position = Vector3.Zero();
-        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, this.scene);
+        this.camera = new ArcRotateCamera('ArcRotateCamera', Math.PI / 2, Math.PI / 2.5, 100, this.spaceship.position, scene);
         this.camera.setTarget(this.spaceship.position);
-        this.scene.activeCamera = this.camera;
-        new IntroSound(this.scene);
+        scene.activeCamera = this.camera;
 
         const cameraAnimation = new CameraRotationAnimation(10);
         const shipAnimation = new ShipRockingAnimation(10);
         this.camera.animations.push(cameraAnimation);
         this.spaceship.animations.push(shipAnimation);
-        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, 4 * cameraAnimation.frameRate, true, 0.5);
-        this.shipAnimatable = this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
+        this.cameraAnimatable = scene.beginAnimation(this.camera, 0, 4 * cameraAnimation.frameRate, true, 0.5);
+        this.shipAnimatable = scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
-        new HemisphericLight('LightSource', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new HemisphericLight('LightSource', new Vector3(1, 1, 0), scene);
+        skyboxes.purpleSpace({ scene });
 
-        this.gasClouds = new GasCloudParticles(this.scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
+        this.gasClouds = new GasCloudParticles(scene, 200, new Vector3(0, 0, -1), new Vector3(0, 0, -1));
         this.gasClouds.emitter = this.spaceship.position.add(new Vector3(0, -25, 250));
         this.gasClouds.start();
 
-        new StartGui(this.scene, {
+        new StartGui(scene, {
             onLaunch: this.onLaunch,
         });
     };
 
     private onLaunch = () => {
+        const { scene } = this;
         if (this.isWarping) return;
 
         this.isWarping = true;
@@ -56,12 +56,12 @@ export class LaunchState extends State {
         // Start Launch
         const cameraAnimation = new CameraPrelaunchAnimation(this.camera.alpha, 10);
         this.camera.animations.push(cameraAnimation);
-        this.cameraAnimatable = this.scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
+        this.cameraAnimatable = scene.beginAnimation(this.camera, 0, cameraAnimation.frameRate, false, 1, () => {
             this.gasClouds.stop();
 
             const shipAnimation = new ShipLaunchAnimation(this.spaceship.position, 10);
             this.spaceship.animations.push(shipAnimation);
-            this.scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.gameManager.goTo({ type: 'travel' }));
+            scene.beginAnimation(this.spaceship, 0, shipAnimation.frameRate, false, 1, async () => await this.gameManager.goTo({ type: 'travel' }));
         });
     };
 }
