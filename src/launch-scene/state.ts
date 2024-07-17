@@ -9,7 +9,7 @@ export class LaunchState extends states.State {
         const { scene, entityManager } = this;
         new worlds.LaunchWorld({ scene, entityManager });
         const load = this.entityManager.load();
-        new inputs.FPSController({ scene, location: BABYLON.Vector3.Zero(), target: new BABYLON.Vector3(1, 0, 0) });
+        new inputs.FPSController({ scene, location: new BABYLON.Vector3(0, 28.5, -13.5), target: new BABYLON.Vector3(0, 25, 1) });
         skyboxes.purpleSpace({ scene });
         await load;
     }

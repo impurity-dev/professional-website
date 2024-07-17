@@ -42,3 +42,16 @@
 
 -   https://playground.babylonjs.com/#D8IDR8#91
 -   https://www.shadertoy.com/view/ldBXDD
+
+## Flight controls
+
+-   https://medium.com/@joelmalone/fly-a-spaceship-in-babylonjs-part-3-fly-the-spaceship-d24c328b4cfa -https://codepen.io/joelmalone/pen/OJamGrE?editors=0010
+-   https://spacepirates.babylonjs.com/
+
+## Alarm credit
+
+-   https://www.youtube.com/watch?v=hjirgtS_oAw
+
+## Cockpit credits
+
+"Spacefighter Cockpit (Wasp Interdictor)" (https://skfb.ly/NsXn) by Comrade1280 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
