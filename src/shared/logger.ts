@@ -1,7 +1,6 @@
 import * as log from 'loglevel';
-import { env } from '../managers/env-manager';
-
-log.setLevel(env.logLevel);
+import * as settings from '../managers/settings-manager';
+log.setLevel(settings.manager.logLevel);
 
 export const debug = log.debug;
 export const info = log.info;

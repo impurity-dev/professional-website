@@ -1,7 +1,6 @@
 import { AssetsManager, Scene } from '@babylonjs/core';
 import { GameManager } from '../managers/game-manager.js';
 import { Inspector } from '@babylonjs/inspector';
-import { env } from '../managers/env-manager.js';
 import * as logger from './logger.js';
 import { EntityManager } from '../managers/entity-manager.js';
 
@@ -19,7 +18,7 @@ export abstract class State {
         this.scene = new Scene(this.gameManager.engine);
         this.assetManager = new AssetsManager(this.scene);
         this.entityManager = new EntityManager(this.assetManager);
-        if (env.isBabylonInpectorEnabled) {
+        if (gameManager.settings.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
         }

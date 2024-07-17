@@ -19,7 +19,7 @@ export class MapPlanetEntity extends TransformNode {
         this.sphere.material = this.innerSphereMateral;
         this.sphere.metadata = {
             type: 'map-planet',
-            goTo: () => logger.log('HERHE'),
+            goTo: () => logger.info('HERHE'),
         };
         this.sphere.parent = this;
 
