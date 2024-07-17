@@ -1,6 +1,6 @@
 import { Color3, Engine, GlowLayer, Material, Mesh, ParticleSystem, Scene, StandardMaterial, TransformNode } from '@babylonjs/core';
 import { MapPlanetParticles } from '../particles/map-planet-particles.js';
-import { logger } from '../shared/logger.js';
+import * as logger from '../shared/logger.js';
 
 export class MapPlanetEntity extends TransformNode {
     public readonly sphere: Mesh;
@@ -19,7 +19,7 @@ export class MapPlanetEntity extends TransformNode {
         this.sphere.material = this.innerSphereMateral;
         this.sphere.metadata = {
             type: 'map-planet',
-            goTo: () => logger.log('HERHE'),
+            goTo: () => logger.info('HERHE'),
         };
         this.sphere.parent = this;
 

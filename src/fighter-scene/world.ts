@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../entities/model';
+import * as models from '../shared/models';
 import { EntityManager } from '../managers/entity-manager';
 import { World } from '../shared/world';
 import { fighter } from './fighter';

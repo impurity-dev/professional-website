@@ -1,5 +1,5 @@
 import { ILoadingScreen } from '@babylonjs/core/Loading/loadingScreen';
-import { logger } from '../shared/logger';
+import * as logger from '../shared/logger';
 import Lottie, { AnimationItem } from 'lottie-web';
 
 export class LoadingScreen implements ILoadingScreen {

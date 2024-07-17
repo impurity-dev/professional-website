@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { logger } from '../shared/logger';
+import * as logger from '../shared/logger.js';
 
 export type Asset = { file: string; directory: string };
 
@@ -18,7 +18,7 @@ export class EntityManager {
         this.assetManager.onProgressObservable.add((event: BABYLON.IAssetsProgressEvent) =>
             logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`),
         );
-        this.assetManager.onTasksDoneObservable.add((task: BABYLON.AbstractAssetTask[]) => logger.debug(`Finished loading ${task.length} assets`));
+        this.assetManager.onTasksDoneObservable.add((task: BABYLON.AbstractAssetTask[]) => logger.debug(`Finished loading ${cache.size} assets`));
     }
 
     get isLoaded() {

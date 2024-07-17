@@ -1,6 +1,8 @@
 import * as log from 'loglevel';
-import { env } from '../managers/env-manager';
+import * as settings from '../managers/settings-manager';
+log.setLevel(settings.manager.logLevel);
 
-log.setLevel(env.logLevel);
-
-export const logger = log;
+export const debug = log.debug;
+export const info = log.info;
+export const warn = log.warn;
+export const error = log.error;
