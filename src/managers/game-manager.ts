@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { LaunchState } from '../states/launch-state.js';
+import * as launchScene from '../launch-scene/state.js';
 import { TravelState } from '../states/travel-state.js';
 import { OrbitState } from '../states/orbit-state.js';
 import { MapState } from '../states/map-state.js';
@@ -31,7 +31,7 @@ export class GameManager extends sm.StateMachine {
             case 'hub':
                 return this.setState(new hubScene.HubState(this));
             case 'launch':
-                return this.setState(new LaunchState(this));
+                return this.setState(new launchScene.LaunchState(this));
             case 'travel':
                 return this.setState(new TravelState(this));
             case 'orbit':

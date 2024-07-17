@@ -1,13 +1,13 @@
 import * as BABYLON from '@babylonjs/core';
 import { SpaceSkybox } from '../shared/space-skybox.js';
 import { IntroSound } from '../sounds/intro-sound.js';
-import { State } from '../shared/state.js';
+import * as states from '../managers/states.js';
 import * as worlds from './worlds.js';
 import * as controllers from './inputs.js';
 import * as guis from './guis.js';
 import * as events from './events.js';
 
-export class HubState extends State {
+export class HubState extends states.State {
     private isLaunchable = false;
 
     run = async (): Promise<void> => {

@@ -1,12 +1,12 @@
 import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from '../shared/state.js';
+import * as states from '../managers/states.js';
 import { FighterController } from './inputs.js';
 import { FighterWorld } from './world.js';
 import { FighterCamera } from './camera.js';
 import { FighterEvents } from './events.js';
 import { FighterGui } from './gui.js';
 
-export class FighterState extends State {
+export class FighterState extends states.State {
     run = async (): Promise<void> => {
         const { scene, entityManager } = this;
         const events = new FighterEvents();

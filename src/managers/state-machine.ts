@@ -1,13 +1,13 @@
-import { State } from '../shared/state.js';
+import * as states from './states.js';
 
 export type GoToType = 'menu' | 'orbit' | 'launch' | 'travel' | 'orbit' | 'practice' | 'map' | 'hub' | 'fighter';
 export type GoToProps = { type: GoToType };
 export abstract class StateMachine {
-    private _state: State;
+    private _state: states.State;
 
-    getState = (): State => this._state;
+    getState = (): states.State => this._state;
 
-    protected setState = async (state: State): Promise<void> => {
+    protected setState = async (state: states.State): Promise<void> => {
         const oldState = this._state;
         this._state = state;
         await this._state.start();

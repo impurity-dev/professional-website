@@ -1,11 +1,11 @@
-import { State } from '../shared/state.js';
+import * as states from '../managers/states.js';
 import { MenuGui } from './guis.js';
 import * as cameras from './cameras.js';
 import * as sounds from './sounds.js';
 import * as effects from './effects.js';
 import * as events from './events.js';
 
-export class MenuState extends State {
+export class MenuState extends states.State {
     run = async (): Promise<void> => {
         const { scene, entityManager, gameManager } = this;
         const mainCamera = new cameras.MenuCamera({ scene, gameManager });

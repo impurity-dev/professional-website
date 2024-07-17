@@ -1,9 +1,9 @@
 import { AssetsManager, Scene } from '@babylonjs/core';
-import { GameManager } from '../managers/game-manager.js';
-import { Inspector } from '@babylonjs/inspector';
-import * as logger from './logger.js';
-import { EntityManager } from '../managers/entity-manager.js';
-import * as settings from '../managers/settings-manager.js';
+import { GameManager } from './game-manager.js';
+import * as INSPECTOR from '@babylonjs/inspector';
+import * as logger from '../shared/logger.js';
+import { EntityManager } from './entity-manager.js';
+import * as settings from './settings-manager.js';
 
 export abstract class State {
     readonly scene: Scene;
@@ -79,7 +79,7 @@ export abstract class State {
         // Shift+Ctrl+Alt+I
         if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.code === 'KeyI') {
             logger.debug('Toggle Inspector');
-            Inspector.IsVisible ? Inspector.Hide() : Inspector.Show(this.scene, {});
+            INSPECTOR.Inspector.IsVisible ? INSPECTOR.Inspector.Hide() : INSPECTOR.Inspector.Show(this.scene, {});
         }
     };
 }

@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as skyboxes from '../shared/skyboxes.js';
-import { State } from '../shared/state.js';
+import { State } from '../managers/states.js';
 
 export class PracticeState extends State {
     run = async (): Promise<void> => {
