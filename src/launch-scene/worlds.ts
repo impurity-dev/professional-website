@@ -28,6 +28,7 @@ export class LaunchWorld extends World {
         model.onLoad.subscribe(() => {
             model.flickerMonitorsAsync();
             model.changeThrottleAsync(Math.PI / 4);
+            model.changeSteeringAsync(Math.PI / 4);
         });
     };
 

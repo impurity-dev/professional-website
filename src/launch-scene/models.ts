@@ -38,7 +38,10 @@ export class Cockpit extends models.Model {
                     this._throttle = m;
                     this._throttle.rotationQuaternion = null;
                 }
-                if (m.name === 'steering_center_0') this._steering = m;
+                if (m.name === 'steering_center_0') {
+                    this._steering = m;
+                    this._steering.rotationQuaternion = null;
+                }
             });
         });
     }
@@ -107,5 +110,30 @@ export class Cockpit extends models.Model {
         animation.setKeys(keys);
         this.throttle.animations = [animation];
         this.scene.beginAnimation(this.throttle, 0, 60, false, 0.5);
+    };
+
+    /**
+     * Change the throttle location. -45 brings it back, 0 puts it in
+     * neutral, and 45 pushes it forward.
+     * @param radians - radians to control where the throttle is.
+     */
+    changeSteeringAsync = (radians: number) => {
+        const animation = new BABYLON.Animation(
+            'steering',
+            'rotation.x',
+            60,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+        );
+        const keys = [
+            { frame: 0, value: this.steering.rotation.x },
+            { frame: 60, value: radians },
+        ];
+        const ease = new BABYLON.CubicEase();
+        ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+        animation.setEasingFunction(ease);
+        animation.setKeys(keys);
+        this.steering.animations = [animation];
+        this.scene.beginAnimation(this.steering, 0, 60, false, 0.5);
     };
 }
