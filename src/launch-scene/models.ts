@@ -10,6 +10,21 @@ export const cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityM
         entityManager,
         asset: { file: 'cockpit_4k.glb', directory: 'assets/cockpit/' },
     });
-    cockpitModel.transform.scaling = new BABYLON.Vector3(10, 10, 10);
+    return cockpitModel;
+};
+
+export const corridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+    const { scene, entityManager } = props;
+    const cockpitModel = new models.Model({
+        name: 'corridor',
+        scene,
+        entityManager,
+        asset: { file: 'corridor_4k.glb', directory: 'assets/corridor/' },
+    });
+    cockpitModel.onLoad.add(() => {
+        cockpitModel.transform.getChildTransformNodes().forEach((t) => {
+            if (t.name === 'Stars-Space_4') t.dispose();
+        });
+    });
     return cockpitModel;
 };

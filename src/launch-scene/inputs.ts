@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 
-export class FPSController {
+export class CockpitController {
     public readonly camera: BABYLON.UniversalCamera;
 
     constructor(props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3 }) {
@@ -9,7 +9,7 @@ export class FPSController {
         this.camera.target = target;
         this.camera.attachControl();
         this.camera.minZ = 0.45;
-        this.camera.speed = 0.5;
+        this.camera.speed = 5;
         this.camera.angularSensibility = 4000;
         this.camera.keysUp.push(87);
         this.camera.keysLeft.push(65);
