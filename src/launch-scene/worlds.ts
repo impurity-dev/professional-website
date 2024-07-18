@@ -25,7 +25,10 @@ export class LaunchWorld extends World {
         const model = models.cockpit({ scene, entityManager });
         model.transform.position = new BABYLON.Vector3(0, 0, 0);
         model.transform.scaling = new BABYLON.Vector3(10, 10, 10);
-        model.onLoad.subscribe(() => model.flickerMonitorsAsync());
+        model.onLoad.subscribe(() => {
+            model.flickerMonitorsAsync();
+            model.changeThrottleAsync(Math.PI / 4);
+        });
     };
 
     private corridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
