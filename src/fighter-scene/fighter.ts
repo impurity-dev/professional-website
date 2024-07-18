@@ -26,7 +26,7 @@ export const fighter = (props: FighterProps) => {
     });
     fighter.transform.rotationQuaternion = BABYLON.Quaternion.Identity();
     events.controls.add((input) => onControls(scene, fighter.transform, input));
-    fighter.onLoad.add(() => {
+    fighter.onLoad.subscribe(() => {
         const fighterMat: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
         const wingsMat: BABYLON.PBRMaterial = scene.getMaterialByName('WINGS') as BABYLON.PBRMaterial;
         events.controls.add((input) => rocketEffect(scene, [fighterMat, wingsMat], input));

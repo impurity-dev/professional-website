@@ -1,4 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
+import * as RXJS from 'rxjs';
 import { Asset, EntityManager } from '../managers/entity-manager';
 
 export type Metadata = Record<string, string>;
@@ -24,7 +25,7 @@ export abstract class Entity {
 
 type ModelProps = { entityManager: EntityManager; asset: Asset } & EntityProps;
 export class Model extends Entity {
-    public readonly onLoad: BABYLON.Observable<void> = new BABYLON.Observable();
+    public readonly onLoad: RXJS.Subject<void> = new RXJS.Subject();
     private _entries: BABYLON.InstantiatedEntries | undefined;
 
     constructor(props: ModelProps) {
@@ -46,7 +47,7 @@ export class Model extends Entity {
         this._entries = entries;
     }
 
-    protected load = (task: BABYLON.ContainerAssetTask) => {
+    private load = (task: BABYLON.ContainerAssetTask) => {
         this.entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
         this.entries.rootNodes.forEach((node) => (node.parent = this.transform));
         this.transform.getChildMeshes().forEach((m) => {
@@ -54,6 +55,7 @@ export class Model extends Entity {
             m.checkCollisions = true;
             m.metadata = this.transform.metadata;
         });
-        this.onLoad.notifyObservers();
+        this.onLoad.next();
+        this.onLoad.complete();
     };
 }

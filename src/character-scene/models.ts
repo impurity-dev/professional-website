@@ -21,7 +21,7 @@ export const corridor = (props: { scene: BABYLON.Scene; entityManager: em.Entity
         entityManager,
         asset: { file: 'corridor_4k.glb', directory: 'assets/corridor/' },
     });
-    cockpitModel.onLoad.add(() => {
+    cockpitModel.onLoad.subscribe(() => {
         cockpitModel.transform.getChildTransformNodes().forEach((t) => {
             if (t.name === 'Stars-Space_4') t.dispose();
         });
