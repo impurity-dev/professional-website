@@ -2,6 +2,7 @@ import { Engine, Effect } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
 import * as settings from './managers/settings-manager.js';
 import { LoadingScreen } from './shared/loading-screen.js';
+import { firstValueFrom, forkJoin, from, map, Observable, of, tap } from 'rxjs';
 
 class App {
     constructor(
@@ -18,19 +19,16 @@ class App {
     };
 
     private preload = async () => {
-        const [utils, mandelbulbFrag, mandelbulbVert, dissolveFrag, dissolveVert, portalFrag, portalVert] = await Promise.all([
-            fetch('./shaders/utils.fx').then((x) => x.text()),
-            fetch('./shaders/mandelbulb.fragment.fx').then((x) => x.text()),
-            fetch('./shaders/mandelbulb.vertex.fx').then((x) => x.text()),
-            fetch('./shaders/dissolve.fragment.fx').then((x) => x.text()),
-            fetch('./shaders/dissolve.vertex.fx').then((x) => x.text()),
-            fetch('./shaders/portal.fragment.fx').then((x) => x.text()),
-            fetch('./shaders/portal.vertex.fx').then((x) => x.text()),
-        ]);
-        Effect.IncludesShadersStore['utils'] = utils;
-        Effect.RegisterShader('mandelbulb', mandelbulbFrag, mandelbulbVert);
-        Effect.RegisterShader('dissolve', dissolveFrag, dissolveVert);
-        Effect.RegisterShader('portal', portalFrag, portalVert);
+        const loadShader$ = (title: string) =>
+            forkJoin([
+                from(fetch(`./shaders/${title}.fragment.fx`).then((x) => x.text())),
+                from(fetch(`./shaders/${title}.vertex.fx`).then((x) => x.text())),
+            ]).pipe(tap(([frag, vert]) => Effect.RegisterShader(title, frag, vert)));
+
+        const loadStore$ = (title: string) =>
+            from(fetch(`./shaders/${title}.fx`).then((x) => x.text())).pipe(tap((shader) => (Effect.IncludesShadersStore[title] = shader)));
+
+        await firstValueFrom(forkJoin([loadStore$('utils'), loadShader$('dissolve'), loadShader$('mandelbulb'), loadShader$('portal')]));
     };
 }
 
