@@ -50,6 +50,10 @@
 
 # Credits
 
+## Music
+
+-   https://alkakrab.itch.io/free-sci-fi-music-2
+
 ## Alarm credit
 
 -   https://www.youtube.com/watch?v=hjirgtS_oAw
