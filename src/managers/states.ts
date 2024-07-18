@@ -1,14 +1,16 @@
-import { AssetsManager, Scene } from '@babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
 import { GameManager } from './game-manager.js';
 import * as INSPECTOR from '@babylonjs/inspector';
 import * as logger from '../shared/logger.js';
 import { EntityManager } from './entity-manager.js';
 import * as settings from './settings-manager.js';
+import * as RXJS from 'rxjs';
 
 export abstract class State {
-    readonly scene: Scene;
-    readonly assetManager: AssetsManager;
+    readonly scene: BABYLON.Scene;
+    readonly assetManager: BABYLON.AssetsManager;
     readonly entityManager: EntityManager;
+    readonly start$: RXJS.Subject<void> = new RXJS.Subject();
 
     /**
      * Create a unique state that represents the state of the overall game.
@@ -16,8 +18,8 @@ export abstract class State {
      */
     constructor(protected readonly gameManager: GameManager) {
         logger.debug('Scene Created');
-        this.scene = new Scene(this.gameManager.engine);
-        this.assetManager = new AssetsManager(this.scene);
+        this.scene = new BABYLON.Scene(this.gameManager.engine);
+        this.assetManager = new BABYLON.AssetsManager(this.scene);
         this.assetManager.useDefaultLoadingScreen = false;
         this.assetManager.autoHideLoadingUI = false;
         this.entityManager = new EntityManager(this.assetManager);
@@ -54,6 +56,10 @@ export abstract class State {
         // End loading UI
         await this.scene.whenReadyAsync(true);
         engine.hideLoadingUI();
+
+        // signal completion
+        this.start$.next();
+        this.start$.complete();
     };
 
     /**
