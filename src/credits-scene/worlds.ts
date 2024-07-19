@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../managers/entity-manager.js';
+import * as models from '../shared/models.js';
 import { World } from '../shared/world.js';
 
 export class CreditsWorld extends World {
@@ -7,7 +8,7 @@ export class CreditsWorld extends World {
         const { scene, entityManager } = props;
         super(scene, entityManager);
         this.lights({ scene });
-        this.ground({ scene });
+        this.chamber({ scene, entityManager });
     }
 
     private lights = (props: { scene: BABYLON.Scene }) => {
@@ -18,10 +19,18 @@ export class CreditsWorld extends World {
         light.specular = new BABYLON.Color3(1, 1, 1);
     };
 
-    private ground = (props: { scene: BABYLON.Scene }) => {
-        const { scene } = props;
-        const mesh = BABYLON.MeshBuilder.CreateGround('ground', { width: 100, height: 100, subdivisions: 100 }, scene);
-        mesh.checkCollisions = true;
-        return mesh;
+    private chamber = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+        const { scene, entityManager } = props;
+        const model = new models.Model({
+            name: 'chamber',
+            scene,
+            entityManager,
+            asset: { file: 'chamber_1k.glb', directory: 'assets/chamber/' },
+        });
+        model.transform.scaling = new BABYLON.Vector3(0.05, 0.05, 0.05);
+        model.transform.position = new BABYLON.Vector3(0, -10, -31.5);
+        const box = BABYLON.CreateBox('box', { size: 1 }, scene);
+        box.position = BABYLON.Vector3.Zero();
+        return model;
     };
 }

@@ -9,7 +9,7 @@ export class CreditsState extends states.State {
         const { scene, entityManager } = this;
         new worlds.CreditsWorld({ scene, entityManager });
         const load = this.entityManager.load();
-        new inputs.CharacterController({ scene, location: new BABYLON.Vector3(0, 2, 0), target: new BABYLON.Vector3(0, 2, 1) });
+        new inputs.CreditsController({ scene, target: new BABYLON.Vector3(0, 0, 0) });
         skyboxes.purpleSpace({ scene });
         await load;
     }
