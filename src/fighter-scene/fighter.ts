@@ -2,6 +2,7 @@ import { EntityManager } from '../managers/entity-manager';
 import * as events from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as models from '../shared/models';
+import * as utils from '../shared/utils';
 
 // Our maximum acceleration (units per second per second)
 const MaxThrust = 10;
@@ -26,14 +27,13 @@ export const fighter = (props: FighterProps) => {
     });
     fighter.transform.rotationQuaternion = BABYLON.Quaternion.Identity();
     events.controls.add((input) => onControls(scene, fighter.transform, input));
-    fighter.onLoad.add(() => {
+    fighter.onLoad.subscribe(() => {
         const fighterMat: BABYLON.PBRMaterial = scene.getMaterialByName('BASE') as BABYLON.PBRMaterial;
         const wingsMat: BABYLON.PBRMaterial = scene.getMaterialByName('WINGS') as BABYLON.PBRMaterial;
         events.controls.add((input) => rocketEffect(scene, [fighterMat, wingsMat], input));
     });
     return fighter;
 };
-const lerp = (start: number, end: number, delta: number) => start * delta + end * (1 - delta);
 
 const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], input: events.ControlEvent) => {
     const { yaw, pitch, w, a, s, d, leftShift } = input;
@@ -41,13 +41,13 @@ const rocketEffect = (scene: BABYLON.Scene, materials: BABYLON.PBRMaterial[], in
         const start = material.emissiveIntensity;
         const delta = scene.getEngine().getDeltaTime() / 10;
         if (leftShift) {
-            material.emissiveIntensity = lerp(start, 3, delta);
+            material.emissiveIntensity = utils.lerp(start, 3, delta);
         } else if (w) {
-            material.emissiveIntensity = lerp(start, 2, delta);
+            material.emissiveIntensity = utils.lerp(start, 2, delta);
         } else if (s) {
-            material.emissiveIntensity = lerp(start, 0, delta);
+            material.emissiveIntensity = utils.lerp(start, 0, delta);
         } else {
-            material.emissiveIntensity = lerp(start, 1, delta);
+            material.emissiveIntensity = utils.lerp(start, 1, delta);
         }
     });
 };

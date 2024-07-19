@@ -51,7 +51,7 @@ export class StartWorld extends World {
         entryDoor.transform.parent = parent;
         entryDoor.transform.rotation = rotation;
         entryDoor.transform.position = position;
-        entryDoor.doors.onLoad.add(async () => entryDoor.doors.openAsync(true));
+        entryDoor.doors.onLoad.subscribe(async () => entryDoor.doors.openAsync(true));
 
         const leftEntry = lpModels.wall5({ scene, entityManager });
         rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
@@ -158,7 +158,7 @@ export class StartWorld extends World {
         computer.transform.parent = parent;
         computer.transform.rotation = rotation;
         computer.transform.position = position;
-        computer.onLoad.add(() => {
+        computer.onLoad.subscribe(() => {
             const root = computer.transform.getChildMeshes()[0];
             root.actionManager = new BABYLON.ActionManager(scene);
             const cameraMesh = this.scene.getMeshByName('camera-box');
@@ -220,7 +220,7 @@ export class StartWorld extends World {
             asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
         });
         fighter.transform.parent = parent;
-        fighter.onLoad.add(() => {
+        fighter.onLoad.subscribe(() => {
             fighter.transform.getChildMeshes().forEach((m) => {
                 m.material = fresnel;
                 m.checkCollisions = false;
@@ -254,28 +254,118 @@ export class StartWorld extends World {
     private walls = () => {
         const parent = new BABYLON.TransformNode('walls', this.scene);
         let rotation = new BABYLON.Vector3(0, Math.PI, 0);
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-10, 0, 9), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-6, 0, 9), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-2, 0, 9), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(0, 0, 9), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(4, 0, 9), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.column1, pipes: lpModels.pipes }), position: new BABYLON.Vector3(8, 0, 9), rotation, parent });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-10, 0, 9),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-6, 0, 9),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-2, 0, 9),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(0, 0, 9),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(4, 0, 9),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.column1, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(8, 0, 9),
+            rotation,
+            parent,
+        });
 
         rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, 8), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, 4), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, 0), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, -2), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, -6), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }), position: new BABYLON.Vector3(9, 0, -10), rotation, parent });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, 8),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, 4),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, 0),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, -2),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, -6),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(9, 0, -10),
+            rotation,
+            parent,
+        });
 
         rotation = BABYLON.Vector3.Zero();
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(8, 0, -11), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(4, 0, -11), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(0, 0, -11), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-2, 0, -11), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-6, 0, -11), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-10, 0, -11), rotation, parent });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(8, 0, -11),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(4, 0, -11),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(0, 0, -11),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-2, 0, -11),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-6, 0, -11),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-10, 0, -11),
+            rotation,
+            parent,
+        });
 
         rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
         this.put({
@@ -284,11 +374,36 @@ export class StartWorld extends World {
             rotation,
             parent,
         });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-11, 0, -6), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-11, 0, -2), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-11, 0, 0), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-11, 0, 4), rotation, parent });
-        this.put({ model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }), position: new BABYLON.Vector3(-11, 0, 8), rotation, parent });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-11, 0, -6),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall2, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-11, 0, -2),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-11, 0, 0),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall3, pole: lpModels.columnSlim, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-11, 0, 4),
+            rotation,
+            parent,
+        });
+        this.put({
+            model: lpModels.wall({ wall: lpModels.wall1, pole: lpModels.column1, pipes: lpModels.pipes }),
+            position: new BABYLON.Vector3(-11, 0, 8),
+            rotation,
+            parent,
+        });
     };
 
     private windows = () => {

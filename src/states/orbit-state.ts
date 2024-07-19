@@ -3,8 +3,8 @@ import { ShipRockingAnimation } from '../animations/ship-rocking-animation.js';
 import { PlanetEntity } from '../entities/planet-entity.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { OrbitGui } from '../guis/orbit-gui.js';
-import { SpaceSkybox } from '../shared/space-skybox.js';
-import { State } from '../shared/state.js';
+import * as skyboxes from '../shared/skyboxes.js';
+import { State } from '../managers/states.js';
 
 export class OrbitState extends State {
     private planet: PlanetEntity;
@@ -12,29 +12,30 @@ export class OrbitState extends State {
     private camera: ArcRotateCamera;
 
     run = async (): Promise<void> => {
-        this.spaceship = new SpaceShipEntity(this.scene);
+        const { scene } = this;
+        this.spaceship = new SpaceShipEntity(scene);
         this.spaceship.position = Vector3.Zero();
-        this.camera = new ArcRotateCamera('ArcFollowCamera', 0, Math.PI / 2.5, 100, this.spaceship.position.add(new Vector3(0, 15, 50)), this.scene);
-        this.scene.activeCamera = this.camera;
+        this.camera = new ArcRotateCamera('ArcFollowCamera', 0, Math.PI / 2.5, 100, this.spaceship.position.add(new Vector3(0, 15, 50)), scene);
+        scene.activeCamera = this.camera;
 
         const planetDiameter = 1000;
-        this.planet = new PlanetEntity(this.scene, planetDiameter);
+        this.planet = new PlanetEntity(scene, planetDiameter);
         // this.planet.position = this.spaceship.position.add(new Vector3(-(planetDiameter / 2 + 100), -50, -100));
         this.planet.position = this.spaceship.position.add(new Vector3(-planetDiameter * 2, -planetDiameter / 2, 0));
 
         const shipAnimation = new ShipRockingAnimation(10);
         this.spaceship.animations.push(shipAnimation);
-        this.scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
+        scene.beginAnimation(this.spaceship, 0, 2 * shipAnimation.frameRate, true);
 
         // const planetAnimation = new PlanetRotationAnimation(10);
         // this.planet.animations.push(planetAnimation);
-        // this.scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
+        // scene.beginAnimation(this.planet, 0, planetAnimation.frameRate, true, 0.005);
 
-        new OrbitGui(this.scene, async () => {
+        new OrbitGui(scene, async () => {
             await this.gameManager.goTo({ type: 'travel' });
         });
 
-        new HemisphericLight('light1', new Vector3(1, 1, 0), this.scene);
-        new SpaceSkybox(this.scene);
+        new HemisphericLight('light1', new Vector3(1, 1, 0), scene);
+        skyboxes.purpleSpace({ scene });
     };
 }

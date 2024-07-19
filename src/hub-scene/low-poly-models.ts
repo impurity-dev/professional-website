@@ -11,12 +11,11 @@ export const columnSlim = (props: models.InitProps) => new models.Model({ ...pro
 export class DoorDouble extends models.Model {
     private left: BABYLON.TransformNode;
     private right: BABYLON.TransformNode;
-    private openLeft: BABYLON.Animation;
-    private openRight: BABYLON.Animation;
+    private readonly TRANSITION_SPEED = 0.35;
 
     constructor(props: models.InitProps) {
         super({ ...props, name: 'door-double', asset: assets.DOOR_DOUBLE });
-        this.openLeft = new BABYLON.Animation('openLeftDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
+        const openLeft = new BABYLON.Animation('openLeftDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
         const keys = [
             {
                 frame: 0,
@@ -39,9 +38,22 @@ export class DoorDouble extends models.Model {
                 value: 1.5,
             },
         ];
-        this.openLeft.setKeys(keys.map(({ frame, value }) => ({ frame, value: -value })));
-        this.openRight = new BABYLON.Animation('openRightDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
-        this.openRight.setKeys(keys);
+        openLeft.setKeys(keys.map(({ frame, value }) => ({ frame, value: -value })));
+        const openRight = new BABYLON.Animation('openRightDoorDoubleAnimation', 'position.x', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT);
+        openRight.setKeys(keys);
+
+        this.onLoad.subscribe(() => {
+            this.transform.getChildMeshes().forEach((m) => {
+                if (!m.isAnInstance) m.receiveShadows = true;
+                m.checkCollisions = true;
+            });
+            this.transform.getChildTransformNodes().forEach((t) => {
+                if (t.name === 'Door_Double.L') this.left = t as BABYLON.TransformNode;
+                if (t.name === 'Door_Double.R') this.right = t as BABYLON.TransformNode;
+            });
+            this.left.animations.push(openLeft);
+            this.right.animations.push(openRight);
+        });
     }
 
     get leftDoor() {
@@ -53,28 +65,18 @@ export class DoorDouble extends models.Model {
     }
 
     openAsync = async (isOpen: boolean) => {
-        const speed = 0.35;
+        const { left, right, TRANSITION_SPEED } = this;
         if (isOpen) {
-            return Promise.all([this.scene.beginAnimation(this.left, 0, 60, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 0, 60, false, speed).waitAsync()]);
+            return Promise.all([
+                this.scene.beginAnimation(left, 0, 60, false, TRANSITION_SPEED).waitAsync(),
+                this.scene.beginAnimation(right, 0, 60, false, TRANSITION_SPEED).waitAsync(),
+            ]);
         } else {
-            return Promise.all([this.scene.beginAnimation(this.left, 60, 0, false, speed).waitAsync(), this.scene.beginAnimation(this.right, 60, 0, false, speed).waitAsync()]);
+            return Promise.all([
+                this.scene.beginAnimation(left, 60, 0, false, TRANSITION_SPEED).waitAsync(),
+                this.scene.beginAnimation(right, 60, 0, false, TRANSITION_SPEED).waitAsync(),
+            ]);
         }
-    };
-
-    protected load = (task: BABYLON.ContainerAssetTask) => {
-        const entries = task.loadedContainer.instantiateModelsToScene((n) => n, false, { doNotInstantiate: true });
-        entries.rootNodes.forEach((node) => (node.parent = this.transform));
-        this.transform.getChildMeshes().forEach((m) => {
-            if (!m.isAnInstance) m.receiveShadows = true;
-            m.checkCollisions = true;
-        });
-        this.transform.getChildTransformNodes().forEach((t) => {
-            if (t.name === 'Door_Double.L') this.left = t as BABYLON.TransformNode;
-            if (t.name === 'Door_Double.R') this.right = t as BABYLON.TransformNode;
-        });
-        this.left.animations.push(this.openLeft);
-        this.right.animations.push(this.openRight);
-        this.onLoad.notifyObservers();
     };
 }
 export const doorDouble = (props: models.InitProps) => new DoorDouble({ ...props });
@@ -83,7 +85,8 @@ export const doorSingle = (props: models.InitProps) => new models.Model({ ...pro
 export const floorBasic1 = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-basic-1', asset: assets.FLOORTILE_BASIC });
 export const floorBasic2 = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-basic-2', asset: assets.FLOORTILE_BASIC2 });
 export const floorCorner = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-corner', asset: assets.FLOORTILE_CORNER });
-export const floorDoubleHallway = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-double-hallway', asset: assets.FLOORTILE_DOUBLE_HALLWAY });
+export const floorDoubleHallway = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'floor-double-hallway', asset: assets.FLOORTILE_DOUBLE_HALLWAY });
 export const floorEmpty = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-empty', asset: assets.FLOORTILE_EMPTY });
 export const floorInnerCorner = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-inner-corner', asset: assets.FLOORTILE_INNERCORNER });
 export const floorSide = (props: models.InitProps) => new models.Model({ ...props, name: 'floor-side', asset: assets.FLOORTILE_SIDE });
@@ -110,7 +113,8 @@ export const propsVesselTall = (props: models.InitProps) => new models.Model({ .
 export const roofCornerPipes = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-corner-pipes', asset: assets.ROOFTILE_CORNER_PIPES });
 export const roofDetails = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-details', asset: assets.ROOFTILE_DETAILS });
 export const roofEmpty = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-empty', asset: assets.ROOFTILE_EMPTY });
-export const roofInnerCornerPipes = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-inner-corner-pipes', asset: assets.ROOFTILE_INNERCORNER_PIPES });
+export const roofInnerCornerPipes = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'roof-inner-corner-pipes', asset: assets.ROOFTILE_INNERCORNER_PIPES });
 export const roofOrangeVent = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-orange-vent', asset: assets.ROOFTILE_ORANGEVENT });
 export const roofPipes1 = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-pipes-1', asset: assets.ROOFTILE_PIPES1 });
 export const roofPipes2 = (props: models.InitProps) => new models.Model({ ...props, name: 'roof-pipes-2', asset: assets.ROOFTILE_PIPES2 });
@@ -122,21 +126,31 @@ export const roofVents = (props: models.InitProps) => new models.Model({ ...prop
 // Staircase
 export const staircase = (props: models.InitProps) => new models.Model({ ...props, name: 'staircase', asset: assets.STAIRCASE });
 // Walls
-const doorDoubleWallSideA = (props: models.InitProps) => new models.Model({ ...props, name: 'door-double-wall-side-a', asset: assets.WALLS__DOORDOUBLE_WALL_SIDEA });
-const doorDoubleWallSideB = (props: models.InitProps) => new models.Model({ ...props, name: 'door-double-wall-side-b', asset: assets.WALLS__DOORDOUBLE_WALL_SIDEB });
+const doorDoubleWallSideA = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'door-double-wall-side-a', asset: assets.WALLS__DOORDOUBLE_WALL_SIDEA });
+const doorDoubleWallSideB = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'door-double-wall-side-b', asset: assets.WALLS__DOORDOUBLE_WALL_SIDEB });
 export const doorDoubleLongWallSideA = (props: models.InitProps) =>
     new models.Model({ ...props, name: 'door-double-long-wall-side-a', asset: assets.WALLS__DOORDOUBLELONG_WALL_SIDEA });
-export const doorSingleWallSideA = (props: models.InitProps) => new models.Model({ ...props, name: 'door-single-wall-side-a', asset: assets.WALLS__DOORSINGLE_WALL_SIDEA });
-export const doorSingleWallSideB = (props: models.InitProps) => new models.Model({ ...props, name: 'door-single-wall-side-b', asset: assets.WALLS__DOORSINGLE_WALL_SIDEB });
+export const doorSingleWallSideA = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'door-single-wall-side-a', asset: assets.WALLS__DOORSINGLE_WALL_SIDEA });
+export const doorSingleWallSideB = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'door-single-wall-side-b', asset: assets.WALLS__DOORSINGLE_WALL_SIDEB });
 export const doorSingleLongWallSideA = (props: models.InitProps) =>
     new models.Model({ ...props, name: 'door-single-long-wall-side-a', asset: assets.WALLS__DOORSINGLELONG_WALL_SIDEA });
-export const longWindowWallSideA = (props: models.InitProps) => new models.Model({ ...props, name: 'long-window-wall-side-a', asset: assets.WALLS__LONGWINDOW_WALL_SIDEA });
-export const longWindowWallSideB = (props: models.InitProps) => new models.Model({ ...props, name: 'long-window-wall-side-b', asset: assets.WALLS__LONGWINDOW_WALL_SIDEB });
+export const longWindowWallSideA = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'long-window-wall-side-a', asset: assets.WALLS__LONGWINDOW_WALL_SIDEA });
+export const longWindowWallSideB = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'long-window-wall-side-b', asset: assets.WALLS__LONGWINDOW_WALL_SIDEB });
 export const pipes = (props: models.InitProps) => new models.Model({ ...props, name: 'pipes', asset: assets.WALLS__PIPES });
-export const smallWindowsWallSideA = (props: models.InitProps) => new models.Model({ ...props, name: 'small-window-wall-side-a', asset: assets.WALLS__SMALLWINDOWS_WALL_SIDEA });
-export const smallWindowsWallSideB = (props: models.InitProps) => new models.Model({ ...props, name: 'small-window-wall-side-b', asset: assets.WALLS__SMALLWINDOWS_WALL_SIDEB });
-export const threeWindowsWallSideA = (props: models.InitProps) => new models.Model({ ...props, name: 'three-windows-wall-side-a', asset: assets.WALLS__THREEWINDOWS_WALL_SIDEA });
-export const threeWindowsWallSideB = (props: models.InitProps) => new models.Model({ ...props, name: 'three-windows-wall-side-b', asset: assets.WALLS__THREEWINDOWS_WALL_SIDEB });
+export const smallWindowsWallSideA = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'small-window-wall-side-a', asset: assets.WALLS__SMALLWINDOWS_WALL_SIDEA });
+export const smallWindowsWallSideB = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'small-window-wall-side-b', asset: assets.WALLS__SMALLWINDOWS_WALL_SIDEB });
+export const threeWindowsWallSideA = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'three-windows-wall-side-a', asset: assets.WALLS__THREEWINDOWS_WALL_SIDEA });
+export const threeWindowsWallSideB = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'three-windows-wall-side-b', asset: assets.WALLS__THREEWINDOWS_WALL_SIDEB });
 export const wall1 = (props: models.InitProps) => new models.Model({ ...props, name: 'wall-1', asset: assets.WALLS__WALL_1 });
 export const wall2 = (props: models.InitProps) => new models.Model({ ...props, name: 'wall-2', asset: assets.WALLS__WALL_2 });
 export const wall3 = (props: models.InitProps) => new models.Model({ ...props, name: 'wall-3', asset: assets.WALLS__WALL_3 });
@@ -198,19 +212,29 @@ export const detailsBasic2 = (props: models.InitProps) => new models.Model({ ...
 export const detailsBasic3 = (props: models.InitProps) => new models.Model({ ...props, name: 'details-basic-3', asset: assets.DETAILS__DETAILS_BASIC_3 });
 export const detailsBasic4 = (props: models.InitProps) => new models.Model({ ...props, name: 'details-basic-4', asset: assets.DETAILS__DETAILS_BASIC_4 });
 export const detailsCylinder = (props: models.InitProps) => new models.Model({ ...props, name: 'details-cylinder', asset: assets.DETAILS__DETAILS_CYLINDER });
-export const detailsCylinderLong = (props: models.InitProps) => new models.Model({ ...props, name: 'details-cylinder-long', asset: assets.DETAILS__DETAILS_CYLINDER_LONG });
+export const detailsCylinderLong = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-cylinder-long', asset: assets.DETAILS__DETAILS_CYLINDER_LONG });
 export const detailsDots = (props: models.InitProps) => new models.Model({ ...props, name: 'details-dots', asset: assets.DETAILS__DETAILS_DOTS });
 export const detailsHexagon = (props: models.InitProps) => new models.Model({ ...props, name: 'details-hexagon', asset: assets.DETAILS__DETAILS_HEXAGON });
 export const detailsOutput = (props: models.InitProps) => new models.Model({ ...props, name: 'details-output', asset: assets.DETAILS__DETAILS_OUTPUT });
-export const detailsOutputSmall = (props: models.InitProps) => new models.Model({ ...props, name: 'details-output-small', asset: assets.DETAILS__DETAILS_OUTPUT_SMALL });
-export const detailsPipesLong = (props: models.InitProps) => new models.Model({ ...props, name: 'details-pipes-long', asset: assets.DETAILS__DETAILS_PIPES_LONG });
-export const detailsPipesMedium = (props: models.InitProps) => new models.Model({ ...props, name: 'details-pipes-medium', asset: assets.DETAILS__DETAILS_PIPES_MEDIUM });
-export const detailsPipesSmall = (props: models.InitProps) => new models.Model({ ...props, name: 'details-pipes-small', asset: assets.DETAILS__DETAILS_PIPES_SMALL });
-export const detailsPlateDetails = (props: models.InitProps) => new models.Model({ ...props, name: 'details-plate-details', asset: assets.DETAILS__DETAILS_PLATE_DETAILS });
-export const detailsPlateLarge = (props: models.InitProps) => new models.Model({ ...props, name: 'details-plate-large', asset: assets.DETAILS__DETAILS_PLATE_LARGE });
-export const detailsPlateLong = (props: models.InitProps) => new models.Model({ ...props, name: 'details-plate-long', asset: assets.DETAILS__DETAILS_PLATE_LONG });
-export const detailsPlateSmall = (props: models.InitProps) => new models.Model({ ...props, name: 'details-plate-small', asset: assets.DETAILS__DETAILS_PLATE_SMALL });
-export const detailsTriangles = (props: models.InitProps) => new models.Model({ ...props, name: 'details-triangles', asset: assets.DETAILS__DETAILS_TRIANGLES });
+export const detailsOutputSmall = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-output-small', asset: assets.DETAILS__DETAILS_OUTPUT_SMALL });
+export const detailsPipesLong = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-pipes-long', asset: assets.DETAILS__DETAILS_PIPES_LONG });
+export const detailsPipesMedium = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-pipes-medium', asset: assets.DETAILS__DETAILS_PIPES_MEDIUM });
+export const detailsPipesSmall = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-pipes-small', asset: assets.DETAILS__DETAILS_PIPES_SMALL });
+export const detailsPlateDetails = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-plate-details', asset: assets.DETAILS__DETAILS_PLATE_DETAILS });
+export const detailsPlateLarge = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-plate-large', asset: assets.DETAILS__DETAILS_PLATE_LARGE });
+export const detailsPlateLong = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-plate-long', asset: assets.DETAILS__DETAILS_PLATE_LONG });
+export const detailsPlateSmall = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-plate-small', asset: assets.DETAILS__DETAILS_PLATE_SMALL });
+export const detailsTriangles = (props: models.InitProps) =>
+    new models.Model({ ...props, name: 'details-triangles', asset: assets.DETAILS__DETAILS_TRIANGLES });
 export const detailsVent1 = (props: models.InitProps) => new models.Model({ ...props, name: 'details-vent-1', asset: assets.DETAILS__DETAILS_VENT_1 });
 export const detailsVent2 = (props: models.InitProps) => new models.Model({ ...props, name: 'details-vent-2', asset: assets.DETAILS__DETAILS_VENT_2 });
 export const detailsVent3 = (props: models.InitProps) => new models.Model({ ...props, name: 'details-vent-3', asset: assets.DETAILS__DETAILS_VENT_3 });
