@@ -13,7 +13,6 @@ export class MenuGui {
         this.createStart({ event });
         this.createOptionMenu({ scene, event });
         this.createOptions({ event });
-        this.createCreditsMenu({ scene, event });
         this.createCredits({ event });
         this.createFAQ({ event });
     }
@@ -268,92 +267,5 @@ export class MenuGui {
             scene.beginAnimation(background, 0, 60, false, animationSpeed);
         };
         event.onOptions.add(({ toggle }) => (toggle ? openOptionsMenu() : closeOptionsMenu()));
-    };
-
-    private createCreditsMenu = (props: { scene: BABYLON.Scene; event: events.Events }) => {
-        const { scene, event } = props;
-        const width = 0.8;
-        const height = 0.7;
-        const animationSpeed = 5;
-        const startLocation = 1000;
-
-        const background = new GUI.Image('credits', 'gui/Blue/Panels/Panel6.png');
-        background.width = width;
-        background.height = height;
-        background.zIndex = 1;
-        background.top = startLocation;
-
-        const grid = new GUI.Grid('credits-grid');
-        grid.width = width;
-        grid.height = height;
-        grid.zIndex = 1;
-        grid.top = startLocation;
-        grid.addRowDefinition(0.2);
-        grid.addRowDefinition(0.6);
-        grid.addRowDefinition(0.2);
-        grid.addColumnDefinition(0.6);
-
-        const title2 = new GUI.TextBlock('credits-menu-title-02', 'Credits');
-        title2.fontFamily = 'Zen Dots';
-        title2.color = 'white';
-        title2.fontSize = 30;
-        grid.addControl(title2, 0, 1);
-
-        const stackPanel = new GUI.StackPanel('credits-list');
-        for (let i = 0; i < 50; i++) {
-            const text = new GUI.TextBlock('Hello!', 'TODO');
-            text.fontFamily = 'Zen Dots';
-            text.color = 'white';
-            text.fontSize = 30;
-            text.resizeToFit = true;
-            stackPanel.addControl(text);
-        }
-        const scrollViewer = new GUI.ScrollViewer('credits-scroll-viewer');
-        scrollViewer.thickness = 0;
-        scrollViewer.addControl(stackPanel);
-        grid.addControl(scrollViewer, 1, 1);
-
-        const flyIn = new BABYLON.Animation('fly-in', 'top', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-        flyIn.setKeys([
-            { frame: 0, value: startLocation },
-            { frame: 60, value: 0 },
-        ]);
-
-        const flyOut = new BABYLON.Animation('fly-out', 'top', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
-        flyOut.setKeys([
-            { frame: 0, value: 0 },
-            { frame: 60, value: startLocation },
-        ]);
-
-        const closeButton = GUI.Button.CreateImageWithCenterTextButton('close', 'Close', 'gui/Blue/ButtonB_Big/Button6.png');
-        closeButton.height = '40px';
-        closeButton.width = '200px';
-        closeButton.color = 'white';
-        closeButton.thickness = 0;
-        closeButton.background = '';
-        closeButton.hoverCursor = 'pointer';
-        closeButton.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
-        closeButton.onPointerDownObservable.add(() => {
-            event.onClick.notifyObservers();
-            event.onCredits.notifyObservers({ toggle: false });
-        });
-        grid.addControl(closeButton, 4, 1);
-        this.gui.addControl(background);
-        this.gui.addControl(grid);
-
-        const openOptionsMenu = () => {
-            background.animations = [flyIn];
-            grid.animations = [flyIn];
-            scene.beginAnimation(grid, 0, 60, false, animationSpeed);
-            scene.beginAnimation(background, 0, 60, false, animationSpeed);
-        };
-
-        const closeOptionsMenu = () => {
-            background.animations = [flyOut];
-            grid.animations = [flyOut];
-            scene.beginAnimation(grid, 0, 60, false, animationSpeed);
-            scene.beginAnimation(background, 0, 60, false, animationSpeed);
-        };
-        event.onCredits.add(({ toggle }) => (toggle ? openOptionsMenu() : closeOptionsMenu()));
     };
 }
