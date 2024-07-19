@@ -6,6 +6,10 @@
 -   Generator: http://wwwtyro.github.io/space-3d/
 -   Docs: https://doc.babylonjs.com/divingDeeper/environment/environment_introduction#skybox
 
+## Sunny Skybox
+
+-   https://distantlantern.itch.io/allsky-free
+
 ## Glow
 
 -   Sphere: https://playground.babylonjs.com/#IEW571
@@ -37,43 +41,3 @@
 ## Corridor
 
 -   https://sketchfab.com/3d-models/016mabc-sky-corridor-b6c3835d53e941e6bde7e933c1e43afd#download
-
-## Ripple
-
--   https://playground.babylonjs.com/#D8IDR8#91
--   https://www.shadertoy.com/view/ldBXDD
-
-## Flight controls
-
--   https://medium.com/@joelmalone/fly-a-spaceship-in-babylonjs-part-3-fly-the-spaceship-d24c328b4cfa -https://codepen.io/joelmalone/pen/OJamGrE?editors=0010
--   https://spacepirates.babylonjs.com/
-
-# Credits
-
-## Music
-
--   https://alkakrab.itch.io/free-sci-fi-music-2
-
-## Alarm credit
-
--   https://www.youtube.com/watch?v=hjirgtS_oAw
-
-## Cockpit
-
-"Spacefighter Cockpit (Wasp Interdictor)" (https://skfb.ly/NsXn) by Comrade1280 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-
-## Launch Sequence & Door Openning & interior-engine-loop
-
--   Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=81945">Pixabay</a>
-
-## Alarm Light Model
-
-"Alarm Light" (https://skfb.ly/oHzro) by Bluenoseddonkey is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-
-## Launch Corridor
-
-"Sci Fi Spacestation Corridor" (https://skfb.ly/6RXTF) by Siamak Tavakoli is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-
-## Buildings
-
-"Low Poly Night City Building Skyline" (https://skfb.ly/oPO8T) by 99.Miles is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
