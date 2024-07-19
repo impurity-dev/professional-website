@@ -1,15 +1,16 @@
 import * as BABYLON from '@babylonjs/core';
-import * as launchScene from '../launch-scene/state.js';
-import { TravelState } from '../states/travel-state.js';
-import { OrbitState } from '../states/orbit-state.js';
-import { MapState } from '../states/map-state.js';
 import * as SPECTOR from 'spectorjs';
-import * as hubScene from '../hub-scene/state.js';
-import * as startScene from '../start-scene/state.js';
+import * as creditsScene from '../credits-scene/state.js';
 import * as fighterScene from '../fighter-scene/index.js';
+import * as hubScene from '../hub-scene/state.js';
+import * as launchScene from '../launch-scene/state.js';
+import * as practiceScene from '../practice-scene/state.js';
 import * as logger from '../shared/logger.js';
+import * as startScene from '../start-scene/state.js';
+import { MapState } from '../states/map-state.js';
+import { OrbitState } from '../states/orbit-state.js';
+import { TravelState } from '../states/travel-state.js';
 import * as settings from './settings-manager.js';
-import * as practiceScene from '../practice-scene/index.js';
 import * as sm from './state-machine.js';
 
 export class GameManager extends sm.StateMachine {
@@ -42,6 +43,8 @@ export class GameManager extends sm.StateMachine {
                 return this.setState(new fighterScene.FighterState(this));
             case 'practice':
                 return this.setState(new practiceScene.PracticeState(this));
+            case 'credits':
+                return this.setState(new creditsScene.CreditsState(this));
             default:
                 throw new Error(`Invalid goTo state: ${props}`);
         }
