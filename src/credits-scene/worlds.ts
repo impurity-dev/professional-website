@@ -9,7 +9,14 @@ export class CreditsWorld extends World {
         super(scene, entityManager);
         this.lights({ scene });
         this.chamber({ scene, entityManager });
+        this.items({ scene });
     }
+
+    private items = (props: { scene: BABYLON.Scene }) => {
+        const { scene } = props;
+        const box = BABYLON.CreateBox('box', { size: 1 }, scene);
+        box.position = BABYLON.Vector3.Zero();
+    };
 
     private lights = (props: { scene: BABYLON.Scene }) => {
         const { scene } = props;
@@ -29,8 +36,6 @@ export class CreditsWorld extends World {
         });
         model.transform.scaling = new BABYLON.Vector3(0.05, 0.05, 0.05);
         model.transform.position = new BABYLON.Vector3(0, -10, -31.5);
-        const box = BABYLON.CreateBox('box', { size: 1 }, scene);
-        box.position = BABYLON.Vector3.Zero();
         return model;
     };
 }
