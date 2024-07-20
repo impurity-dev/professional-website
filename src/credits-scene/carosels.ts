@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { tap, withLatestFrom } from 'rxjs';
+import { take, tap, withLatestFrom } from 'rxjs';
 import * as em from '../managers/entity-manager';
 import * as models from '../shared/models';
 import * as events from './events';
@@ -17,6 +17,21 @@ const getItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemProps) => {
             }),
             credits: 'TODO',
         },
+        {
+            name: 'chamber',
+            model: (() => {
+                const model = new models.Model({
+                    name: 'chamber',
+                    scene,
+                    entityManager,
+                    asset: { file: 'chamber_1k.glb', directory: 'assets/chamber/' },
+                });
+                model.transform.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
+                model.transform.position = new BABYLON.Vector3(0, 0, -2.5);
+                return model;
+            })(),
+            credits: 'TODO',
+        },
     ];
 };
 
@@ -29,7 +44,13 @@ export class Carosel {
         if (this.items.length < 1) {
             throw new Error('Not enough items to render in carousel');
         }
-        // this.items.forEach(this.hide);
+        this.items.forEach(this.hide);
+        event.current$
+            .pipe(
+                take(1),
+                tap((current) => this.goTo({ from: 0, to: current.index })),
+            )
+            .subscribe();
         event.goTo$
             .pipe(
                 withLatestFrom(event.current$),
@@ -45,6 +66,6 @@ export class Carosel {
         this.show(this.items[to]);
     };
 
-    private show = (item: CaroselItem) => item.model.transform.getChildMeshes().forEach((m) => (m.visibility = 1));
-    private hide = (item: CaroselItem) => item.model.transform.getChildMeshes().forEach((m) => (m.visibility = 0));
+    private show = (item: CaroselItem) => item.model.transform.setEnabled(true);
+    private hide = (item: CaroselItem) => item.model.transform.setEnabled(false);
 }
