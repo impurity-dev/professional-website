@@ -8,8 +8,7 @@ export class CharacterWorld extends World {
         const { scene, entityManager } = props;
         super(scene, entityManager);
         this.lights({ scene });
-        this.cockpit({ scene, entityManager });
-        this.corridor({ scene, entityManager });
+        this.character({ scene, entityManager });
     }
 
     private lights = (props: { scene: BABYLON.Scene }) => {
@@ -20,25 +19,8 @@ export class CharacterWorld extends World {
         light.specular = new BABYLON.Color3(1, 1, 1);
     };
 
-    private cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+    private character = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
         const { scene, entityManager } = props;
-        const model = models.cockpit({ scene, entityManager });
-        model.transform.position = new BABYLON.Vector3(0, 0, 0);
-        model.transform.scaling = new BABYLON.Vector3(10, 10, 10);
-    };
-
-    private corridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-        const { scene, entityManager } = props;
-        const create = (position: BABYLON.Vector3) => {
-            const model = models.corridor({ scene, entityManager });
-            model.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
-            model.transform.scaling = new BABYLON.Vector3(10, 10, 10);
-            model.transform.position = position;
-            return model;
-        };
-        create(new BABYLON.Vector3(0, 10, -40));
-        create(new BABYLON.Vector3(0, 10, 42));
-        create(new BABYLON.Vector3(0, 10, 124));
-        create(new BABYLON.Vector3(0, 10, 206));
+        return models.worker({ scene, entityManager });
     };
 }
