@@ -38,8 +38,10 @@ const getItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemProps) => {
 type CaroselItem = { name: string; model: models.Model; credits: string };
 export class Carosel {
     private readonly items: CaroselItem[];
+    private readonly event: events.Events;
     constructor(props: { scene: BABYLON.Scene; entityManager: em.EntityManager; event: events.Events }) {
         const { scene, entityManager, event } = props;
+        this.event = event;
         this.items = getItems({ scene, entityManager });
         if (this.items.length < 1) {
             throw new Error('Not enough items to render in carousel');
@@ -62,8 +64,11 @@ export class Carosel {
 
     goTo = (props: { from: number; to: number }) => {
         const { from, to } = props;
-        this.hide(this.items[from]);
-        this.show(this.items[to]);
+        const fromItem = this.items[Math.abs(from) % this.items.length];
+        const toItem = this.items[Math.abs(to) % this.items.length];
+        this.hide(fromItem);
+        this.show(toItem);
+        this.event.credits$.next({ name: toItem.name, credits: toItem.credits });
     };
 
     private show = (item: CaroselItem) => item.model.transform.setEnabled(true);
