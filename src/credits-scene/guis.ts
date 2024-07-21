@@ -11,9 +11,9 @@ export class Gui {
         this.gui = this.createGui({ scene });
         this.createTitle({ event });
         this.createCredits({ event });
+        this.createInstructions();
         this.createGoTo({ event });
         this.createReturnToMainMenu({ event });
-        this.createInstructions();
     }
 
     private createGui = (props: { scene: BABYLON.Scene }) => {
@@ -63,9 +63,9 @@ export class Gui {
         button.background = '';
         button.hoverCursor = 'pointer';
         let goToLink = '';
-        // button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
+        button.onPointerEnterObservable.add(() => event.buttonHover$.next());
         button.onPointerDownObservable.add(() => {
-            // event.onClick.notifyObservers();
+            event.buttonClick$.next();
             window.open(goToLink, '_blank');
         });
         event.credits$
@@ -89,9 +89,9 @@ export class Gui {
         button.left = '900px';
         button.background = '';
         button.hoverCursor = 'pointer';
-        // button.onPointerEnterObservable.add(() => event.onHover.notifyObservers());
+        button.onPointerEnterObservable.add(() => event.buttonHover$.next());
         button.onPointerDownObservable.add(() => {
-            // event.onClick.notifyObservers();
+            event.buttonClick$.next();
             event.returnToMainMenu$.next();
             event.returnToMainMenu$.complete();
         });
