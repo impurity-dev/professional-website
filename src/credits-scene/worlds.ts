@@ -3,6 +3,7 @@ import * as em from '../managers/entity-manager.js';
 import * as models from '../shared/models.js';
 import { World } from '../shared/world.js';
 import { Carosel } from './carosels.js';
+import * as creditItems from './credit-items.js';
 import * as events from './events.js';
 
 export class CreditsWorld extends World {
@@ -44,6 +45,7 @@ export class CreditsWorld extends World {
 
     private carosel = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; event: events.Events }) => {
         const { scene, entityManager, event } = props;
-        return new Carosel({ scene, entityManager, event });
+        const items = creditItems.creditItems({ scene, entityManager });
+        return new Carosel({ items, event });
     };
 }
