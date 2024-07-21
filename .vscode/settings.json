@@ -5,6 +5,7 @@
         "source.fixAll": "explicit",
         "source.organizeImports": "always"
     },
+    "editor.lineNumbers": "relative",
     "eslint.validate": ["javascript", "typescript"],
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "svg.preview.background": "transparent",

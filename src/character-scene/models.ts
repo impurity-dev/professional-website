@@ -1,30 +1,14 @@
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../shared/models.js';
 import * as em from '../managers/entity-manager';
+import * as models from '../shared/models.js';
 
-export const cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const worker = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
     const { scene, entityManager } = props;
     const cockpitModel = new models.Model({
-        name: 'cockpit',
+        name: 'worker',
         scene,
         entityManager,
-        asset: { file: 'cockpit_4k.glb', directory: 'assets/cockpit/' },
-    });
-    return cockpitModel;
-};
-
-export const corridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
-    const cockpitModel = new models.Model({
-        name: 'corridor',
-        scene,
-        entityManager,
-        asset: { file: 'corridor_4k.glb', directory: 'assets/corridor/' },
-    });
-    cockpitModel.onLoad.subscribe(() => {
-        cockpitModel.transform.getChildTransformNodes().forEach((t) => {
-            if (t.name === 'Stars-Space_4') t.dispose();
-        });
+        asset: { file: 'worker.gltf', directory: 'assets/male-characters/' },
     });
     return cockpitModel;
 };
