@@ -14,7 +14,9 @@ export class EntityManager {
             logger.debug(`Finished loading ${task.name}`);
             this.isLoaded = true;
         });
-        this.assetManager.onTaskErrorObservable.add((task: BABYLON.AbstractAssetTask) => logger.error(`Unable to load ${task.name} :: ${task.errorObject.message}`));
+        this.assetManager.onTaskErrorObservable.add((task: BABYLON.AbstractAssetTask) =>
+            logger.error(`Unable to load ${task.name} :: ${task.errorObject.message}`),
+        );
         this.assetManager.onProgressObservable.add((event: BABYLON.IAssetsProgressEvent) =>
             logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`),
         );
