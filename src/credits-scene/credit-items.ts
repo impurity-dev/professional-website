@@ -8,7 +8,7 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
     const { scene, entityManager } = props;
     return [
         {
-            name: 'fighter',
+            name: 'Light Fighter Spaceship',
             link: 'https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
             model: new models.Model({
                 name: 'fighter',
@@ -20,7 +20,7 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
                 '"LIGHT FIGHTER SPACESHIP - FREE" by Kerem Kavalci. https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
         },
         {
-            name: 'chamber',
+            name: 'Cloning Tank Chamber',
             link: 'https://skfb.ly/oODEM',
             model: (() => {
                 const model = new models.Model({
@@ -35,6 +35,22 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
             })(),
             credits:
                 '"Cloning Tank Chamber JFG - Roblox PBR Showcase" (https://skfb.ly/oODEM) by Jesus Fernandez Garcia is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
+        },
+        {
+            name: 'Sci Fi Spacestation Corridor',
+            link: 'https://skfb.ly/6RXTF',
+            model: (() => {
+                const model = new models.Model({
+                    name: 'corridor',
+                    scene,
+                    entityManager,
+                    asset: { file: 'corridor_1k.glb', directory: 'assets/corridor/' },
+                });
+                model.transform.position = new BABYLON.Vector3(3.5, 0, 0);
+                return model;
+            })(),
+            credits:
+                '"Sci Fi Spacestation Corridor" (https://skfb.ly/6RXTF) by Siamak Tavakoli is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
         },
     ];
 };

@@ -45,3 +45,5 @@
 ## Chamber
 
 -   "Cloning Tank Chamber JFG - Roblox PBR Showcase" (https://skfb.ly/oODEM) by Jesus Fernandez Garcia is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+https://sketchfab.com/3d-models/sci-fi-spacestation-corridor-b61116abbd7d4684bc3b6df6f5cf717e

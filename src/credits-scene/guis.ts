@@ -40,7 +40,7 @@ export class Gui {
         textBlock.fontFamily = 'Zen Dots';
         textBlock.color = 'white';
         textBlock.fontSize = 30;
-        textBlock.top = 500;
+        textBlock.top = 475;
         textBlock.textWrapping = true;
         event.credits$.pipe(tap(({ credits }) => (textBlock.text = credits))).subscribe();
         this.gui.addControl(textBlock);
