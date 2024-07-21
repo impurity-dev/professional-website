@@ -9,16 +9,19 @@ const getItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemProps) => {
     return [
         {
             name: 'fighter',
+            link: 'https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
             model: new models.Model({
                 name: 'fighter',
                 scene,
                 entityManager,
                 asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
             }),
-            credits: 'TODO',
+            credits:
+                '"LIGHT FIGHTER SPACESHIP - FREE" by Kerem Kavalci. https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
         },
         {
             name: 'chamber',
+            link: 'https://skfb.ly/oODEM',
             model: (() => {
                 const model = new models.Model({
                     name: 'chamber',
@@ -30,12 +33,13 @@ const getItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemProps) => {
                 model.transform.position = new BABYLON.Vector3(0, 0, -2.5);
                 return model;
             })(),
-            credits: 'TODO',
+            credits:
+                '"Cloning Tank Chamber JFG - Roblox PBR Showcase" (https://skfb.ly/oODEM) by Jesus Fernandez Garcia is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
         },
     ];
 };
 
-type CaroselItem = { name: string; model: models.Model; credits: string };
+type CaroselItem = { name: string; model: models.Model; credits: string; link: string };
 export class Carosel {
     private readonly items: CaroselItem[];
     private readonly event: events.Events;
@@ -68,7 +72,7 @@ export class Carosel {
         const toItem = this.items[Math.abs(to) % this.items.length];
         this.hide(fromItem);
         this.show(toItem);
-        this.event.credits$.next({ name: toItem.name, credits: toItem.credits });
+        this.event.credits$.next({ name: toItem.name, credits: toItem.credits, link: toItem.link });
     };
 
     private show = (item: CaroselItem) => item.model.transform.setEnabled(true);
