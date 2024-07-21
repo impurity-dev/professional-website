@@ -8,15 +8,17 @@ export class Gui {
 
     constructor(props: { scene: BABYLON.Scene; event: events.Events }) {
         const { scene, event } = props;
-        this.gui = this.createGui();
+        this.gui = this.createGui({ scene });
         this.createTitle({ event });
         this.createCredits({ event });
         this.createGoTo({ event });
         this.createReturnToMainMenu({ event });
+        this.createInstructions();
     }
 
-    private createGui = () => {
-        const ui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI');
+    private createGui = (props: { scene: BABYLON.Scene }) => {
+        const { scene } = props;
+        const ui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
         ui.idealHeight = 1080;
         return ui;
     };
@@ -84,5 +86,16 @@ export class Gui {
             event.returnToMainMenu$.complete();
         });
         this.gui.addControl(button);
+    };
+
+    private createInstructions = () => {
+        const textBlock = new GUI.TextBlock('instructions', 'Use "A" and "D" to cycle through all the models utilized in this project.');
+        textBlock.fontFamily = 'Zen Dots';
+        textBlock.color = 'white';
+        textBlock.fontSize = 15;
+        textBlock.top = 300;
+        textBlock.left = 0;
+        textBlock.textWrapping = true;
+        this.gui.addControl(textBlock);
     };
 }
