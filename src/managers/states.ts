@@ -1,16 +1,17 @@
 import * as BABYLON from '@babylonjs/core';
-import { GameManager } from './game-manager.js';
 import * as INSPECTOR from '@babylonjs/inspector';
+import * as RXJS from 'rxjs';
 import * as logger from '../shared/logger.js';
 import { EntityManager } from './entity-manager.js';
+import { GameManager } from './game-manager.js';
 import * as settings from './settings-manager.js';
-import * as RXJS from 'rxjs';
 
 export abstract class State {
     readonly scene: BABYLON.Scene;
     readonly assetManager: BABYLON.AssetsManager;
     readonly entityManager: EntityManager;
     readonly start$: RXJS.Subject<void> = new RXJS.Subject();
+    readonly destroy$: RXJS.Subject<void> = new RXJS.Subject();
 
     /**
      * Create a unique state that represents the state of the overall game.
@@ -71,6 +72,10 @@ export abstract class State {
         window.removeEventListener('keydown', this.attachInspector);
         this.scene.detachControl();
         this.scene.dispose();
+
+        // signal disposal
+        this.destroy$.next();
+        this.destroy$.complete();
     };
 
     /**
