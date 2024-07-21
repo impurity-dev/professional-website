@@ -1,4 +1,4 @@
-import { take, tap, withLatestFrom } from 'rxjs';
+import { take, takeUntil, tap, withLatestFrom } from 'rxjs';
 import * as models from '../shared/models';
 import * as events from './events';
 
@@ -25,6 +25,7 @@ export class Carosel {
                 withLatestFrom(event.current$),
                 tap(([next, current]) => this.goTo({ from: current.index, to: next.index })),
                 tap(([next]) => event.current$.next(next)),
+                takeUntil(event.destroy$),
             )
             .subscribe();
     }

@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { tap } from 'rxjs';
+import { takeUntil, tap } from 'rxjs';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as events from './events.js';
@@ -9,9 +9,14 @@ import * as worlds from './worlds.js';
 
 export class CreditsState extends states.State {
     async run(): Promise<void> {
-        const { scene, entityManager } = this;
-        const event = new events.Events();
-        event.returnToMainMenu$.pipe(tap(() => this.gameManager.goTo({ type: 'menu' }))).subscribe();
+        const { scene, entityManager, destroy$, start$ } = this;
+        const event = new events.Events({ start$, destroy$ });
+        event.returnToMainMenu$
+            .pipe(
+                tap(() => this.gameManager.goTo({ type: 'menu' })),
+                takeUntil(event.destroy$),
+            )
+            .subscribe();
         new worlds.CreditsWorld({ scene, entityManager, event });
         const load = this.entityManager.load();
         new guis.Gui({ scene, event });

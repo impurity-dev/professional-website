@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import { tap } from 'rxjs';
+import { takeUntil, tap } from 'rxjs';
 import * as events from './events';
 
 export class Gui {
@@ -42,7 +42,12 @@ export class Gui {
         textBlock.fontSize = 30;
         textBlock.top = 475;
         textBlock.textWrapping = true;
-        event.credits$.pipe(tap(({ credits }) => (textBlock.text = credits))).subscribe();
+        event.credits$
+            .pipe(
+                tap(({ credits }) => (textBlock.text = credits)),
+                takeUntil(event.destroy$),
+            )
+            .subscribe();
         this.gui.addControl(textBlock);
     };
 
@@ -63,7 +68,12 @@ export class Gui {
             // event.onClick.notifyObservers();
             window.open(goToLink, '_blank');
         });
-        event.credits$.pipe(tap(({ link }) => (goToLink = link))).subscribe();
+        event.credits$
+            .pipe(
+                tap(({ link }) => (goToLink = link)),
+                takeUntil(event.destroy$),
+            )
+            .subscribe();
         this.gui.addControl(button);
     };
 
