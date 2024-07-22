@@ -27,6 +27,7 @@ type ModelProps = { entityManager: EntityManager; asset: Asset } & EntityProps;
 export class Model extends Entity {
     public readonly onLoad: RXJS.Subject<void> = new RXJS.Subject();
     private _entries: BABYLON.InstantiatedEntries | undefined;
+    private _animationGroups: BABYLON.AnimationGroup[] | undefined;
 
     constructor(props: ModelProps) {
         const { name, scene, entityManager, asset, metadata } = props;
@@ -43,8 +44,17 @@ export class Model extends Entity {
         return this._entries;
     }
 
+    get animationGroups() {
+        if (!this._animationGroups) throw new Error('Model is unloaded');
+        return this._animationGroups;
+    }
+
     private set entries(entries: BABYLON.InstantiatedEntries) {
         this._entries = entries;
+    }
+
+    private set animationGroups(animationGroups: BABYLON.AnimationGroup[]) {
+        this._animationGroups = animationGroups;
     }
 
     private load = (task: BABYLON.ContainerAssetTask) => {
@@ -55,6 +65,7 @@ export class Model extends Entity {
             m.checkCollisions = true;
             m.metadata = this.transform.metadata;
         });
+        this._animationGroups = this.entries.animationGroups;
         this.onLoad.next();
         this.onLoad.complete();
     };

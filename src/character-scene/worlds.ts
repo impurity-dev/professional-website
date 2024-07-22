@@ -8,7 +8,7 @@ export class CharacterWorld extends World {
         const { scene, entityManager } = props;
         super(scene, entityManager);
         this.lights({ scene });
-        this.character({ scene, entityManager });
+        this.characters({ scene, entityManager });
     }
 
     private lights = (props: { scene: BABYLON.Scene }) => {
@@ -19,8 +19,9 @@ export class CharacterWorld extends World {
         light.specular = new BABYLON.Color3(1, 1, 1);
     };
 
-    private character = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+    private characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
         const { scene, entityManager } = props;
-        return models.worker({ scene, entityManager });
+        models.worker({ scene, entityManager });
+        models.swat({ scene, entityManager });
     };
 }
