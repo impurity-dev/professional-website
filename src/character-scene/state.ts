@@ -9,7 +9,7 @@ export class CharacterState extends states.State {
         const { scene, entityManager } = this;
         new worlds.CharacterWorld({ scene, entityManager });
         const load = this.entityManager.load();
-        new inputs.CharacterController({ scene, location: new BABYLON.Vector3(0, 1, 5), target: new BABYLON.Vector3(0, 1, 1) });
+        new inputs.CharacterController({ scene, target: new BABYLON.Vector3(0, 1, 1) });
         skyboxes.purpleSpace({ scene });
         await load;
     }

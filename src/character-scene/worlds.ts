@@ -21,7 +21,6 @@ export class CharacterWorld extends World {
 
     private characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
         const { scene, entityManager } = props;
-        models.worker({ scene, entityManager });
-        models.swat({ scene, entityManager });
+        models.maleAdventurer({ scene, entityManager });
     };
 }
