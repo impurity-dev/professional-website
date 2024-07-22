@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
-import * as em from '../managers/entity-manager.js';
-import * as models from '../shared/models.js';
+import * as em from '../models/entity-manager.js';
+import * as models from '../models/models.js';
 import { World } from '../shared/world.js';
 import { Carosel } from './carosels.js';
 import * as creditItems from './credit-items.js';

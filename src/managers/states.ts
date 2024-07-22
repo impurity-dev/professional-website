@@ -1,8 +1,8 @@
 import * as BABYLON from '@babylonjs/core';
 import * as INSPECTOR from '@babylonjs/inspector';
 import * as RXJS from 'rxjs';
+import { EntityManager } from '../models/entity-manager.js';
 import * as logger from '../shared/logger.js';
-import { EntityManager } from './entity-manager.js';
 import { GameManager } from './game-manager.js';
 import * as settings from './settings-manager.js';
 

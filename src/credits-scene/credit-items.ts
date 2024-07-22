@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
-import * as em from '../managers/entity-manager';
-import * as models from '../shared/models';
+import * as em from '../models/entity-manager';
+import * as models from '../models/models';
 import { CaroselItem } from './carosels';
 
 type GetItemProps = { scene: BABYLON.Scene; entityManager: em.EntityManager };

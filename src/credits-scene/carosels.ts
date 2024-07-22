@@ -1,5 +1,5 @@
 import { take, takeUntil, tap, withLatestFrom } from 'rxjs';
-import * as models from '../shared/models';
+import * as models from '../models/models';
 import * as events from './events';
 
 export type CaroselItem = { name: string; model: models.Model; credits: string; link: string };

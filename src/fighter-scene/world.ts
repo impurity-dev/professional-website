@@ -1,9 +1,9 @@
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../shared/models';
-import { EntityManager } from '../managers/entity-manager';
+import { EntityManager } from '../models/entity-manager';
+import * as models from '../models/models';
 import { World } from '../shared/world';
-import { fighter } from './fighter';
 import { FighterEvents } from './events';
+import { fighter } from './fighter';
 
 export class FighterWorld extends World {
     public readonly fighterModel: models.Model;

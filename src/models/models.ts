@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as RXJS from 'rxjs';
-import { Asset, EntityManager } from '../managers/entity-manager';
+import { Asset, EntityManager } from './entity-manager';
 
 export type Metadata = Record<string, string>;
 

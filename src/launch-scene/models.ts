@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../shared/models.js';
-import * as em from '../managers/entity-manager';
+import * as em from '../models/entity-manager';
+import * as models from '../models/models.js';
 
 export const cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
     const { scene, entityManager } = props;

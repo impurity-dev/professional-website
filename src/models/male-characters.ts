@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
-import * as em from '../managers/entity-manager';
-import * as models from '../shared/models.js';
+import * as em from './entity-manager';
+import * as models from './models.js';
 
 const directory = 'assets/male-characters/';
 

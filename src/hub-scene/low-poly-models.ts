@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
+import * as models from '../models/models.js';
 import * as assets from './low-poly-assets.js';
-import * as models from '../shared/models.js';
 
 // Columns
 export const column1 = (props: models.InitProps) => new models.Model({ ...props, name: 'column-1', asset: assets.COLUMN_1 });

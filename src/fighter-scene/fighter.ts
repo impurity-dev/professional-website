@@ -1,8 +1,8 @@
-import { EntityManager } from '../managers/entity-manager';
-import * as events from './events';
 import * as BABYLON from '@babylonjs/core';
-import * as models from '../shared/models';
+import { EntityManager } from '../models/entity-manager';
+import * as models from '../models/models';
 import * as utils from '../shared/utils';
+import * as events from './events';
 
 // Our maximum acceleration (units per second per second)
 const MaxThrust = 10;

@@ -1,11 +1,11 @@
 import * as BABYLON from '@babylonjs/core';
-import { EntityManager } from '../managers/entity-manager.js';
-import * as lpModels from './low-poly-models.js';
-import * as localModels from './models.js';
-import * as models from '../shared/models.js';
-import * as materials from './materials.js';
-import * as events from './events.js';
+import { EntityManager } from '../models/entity-manager.js';
+import * as models from '../models/models.js';
 import { World } from '../shared/world.js';
+import * as events from './events.js';
+import * as lpModels from './low-poly-models.js';
+import * as materials from './materials.js';
+import * as localModels from './models.js';
 
 export class StartWorld extends World {
     constructor(props: { scene: BABYLON.Scene; entityManager: EntityManager; event: events.HubEvents }) {
