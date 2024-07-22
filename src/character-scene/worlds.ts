@@ -1,4 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
+import { tap } from 'rxjs';
 import * as em from '../managers/entity-manager.js';
 import { World } from '../shared/world.js';
 import * as models from './models.js';
@@ -21,6 +22,14 @@ export class CharacterWorld extends World {
 
     private characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
         const { scene, entityManager } = props;
-        models.maleAdventurer({ scene, entityManager });
+        models.station({ scene, entityManager });
+        const m = models.maleAdventurer({ scene, entityManager });
+        m.onLoad
+            .pipe(
+                tap(() => {
+                    m.animationGroups.find((n) => n.name === 'Idle').play(true);
+                }),
+            )
+            .subscribe();
     };
 }
