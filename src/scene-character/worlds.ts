@@ -1,9 +1,9 @@
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import { World } from '../shared/world.js';
-import { CharacterSelector } from './character-selectors';
-import * as localEvents from './events';
-import * as localModels from './models';
+import { CharacterSelector } from './character-selectors.js';
+import * as localEvents from './events.js';
+import * as localModels from './models.js';
 
 export class CharacterWorld extends World {
     constructor(props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) {
