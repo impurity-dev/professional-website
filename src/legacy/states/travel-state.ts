@@ -1,13 +1,13 @@
 import { FollowCamera, HemisphericLight, TransformNode, Vector3 } from '@babylonjs/core';
-import { ShipTravelOscillationAnimation } from '../animations/ship-travel-oscillation-animation.js';
-import { ShipTravelRotationAnimation } from '../animations/ship-travel-rotation-animation.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { TravelGui } from '../guis/travel-gui.js';
-import { PlanetSolidParticles } from '../solid-particles/planet-solid-particles.js';
+import { ShipTravelOscillationAnimation } from '../legacy/animations/ship-travel-oscillation-animation.js';
+import { ShipTravelRotationAnimation } from '../legacy/animations/ship-travel-rotation-animation.js';
+import { State } from '../managers/states.js';
 import { WarpspeedCloudParticles } from '../particles/warpspeed-cloud-particles.js';
 import { WarpspeedStarParticles } from '../particles/warpspeed-star-particles.js';
 import * as skyboxes from '../shared/skyboxes.js';
-import { State } from '../managers/states.js';
+import { PlanetSolidParticles } from '../solid-particles/planet-solid-particles.js';
 import { WarpspeedStarsSolidParticles } from '../solid-particles/warpspeed-stars-solid-particles.js';
 
 export class TravelState extends State {

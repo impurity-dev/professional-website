@@ -1,8 +1,7 @@
 import { Color3, Engine, GlowLayer, Material, Mesh, ParticleSystem, Scene, StandardMaterial, TransformNode } from '@babylonjs/core';
-import { MapPlanetParticles } from '../particles/map-planet-particles.js';
-import * as logger from '../shared/logger.js';
+import { MapPlanetParticles } from '../legacy/particles/map-planet-particles.js';
 
-export class MapPlanetEntity extends TransformNode {
+export class MapSunEntity extends TransformNode {
     public readonly sphere: Mesh;
     private readonly segments = 100;
 
@@ -12,15 +11,11 @@ export class MapPlanetEntity extends TransformNode {
         readonly outerDiameter: number,
         readonly color: Color3,
     ) {
-        super('Map Planet');
+        super('Map Sun');
         const glowLayer = new GlowLayer('Map Planet Glow Layer', scene);
 
         this.sphere = Mesh.CreateSphere('Inner Planet Map Sphere', this.segments, innerDiameter, scene);
-        this.sphere.material = this.innerSphereMateral;
-        this.sphere.metadata = {
-            type: 'map-planet',
-            goTo: () => logger.info('HERHE'),
-        };
+        this.sphere.material = this.innterSphereMateral;
         this.sphere.parent = this;
 
         const mapPlanetParticles: ParticleSystem = new MapPlanetParticles(scene, color, outerDiameter);
@@ -32,8 +27,8 @@ export class MapPlanetEntity extends TransformNode {
         glowLayer.addIncludedOnlyMesh(this.sphere);
     }
 
-    get innerSphereMateral(): Material {
-        const material = new StandardMaterial('Inner Planet Map Sphere Material', this.scene);
+    get innterSphereMateral(): Material {
+        const material = new StandardMaterial('Inner Sun Map Sphere Material', this.scene);
         material.alphaMode = Engine.ALPHA_COMBINE;
         material.disableLighting = true;
         material.emissiveColor = this.color;

@@ -1,5 +1,5 @@
 import { AbstractMesh, AssetsManager, Color3, MeshAssetTask, Node, Scene, StandardMaterial, TransformNode, Vector3 } from '@babylonjs/core';
-import { EngineParticles } from '../particles/engine-particles.js';
+import { EngineParticles } from '../legacy/particles/engine-particles.js';
 import * as logger from '../shared/logger.js';
 
 export class SpaceShipEntity extends TransformNode {

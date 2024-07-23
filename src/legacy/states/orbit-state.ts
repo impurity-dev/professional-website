@@ -1,10 +1,10 @@
 import { ArcRotateCamera, HemisphericLight, Vector3 } from '@babylonjs/core';
-import { ShipRockingAnimation } from '../animations/ship-rocking-animation.js';
 import { PlanetEntity } from '../entities/planet-entity.js';
 import { SpaceShipEntity } from '../entities/spaceship-entity.js';
 import { OrbitGui } from '../guis/orbit-gui.js';
-import * as skyboxes from '../shared/skyboxes.js';
+import { ShipRockingAnimation } from '../legacy/animations/ship-rocking-animation.js';
 import { State } from '../managers/states.js';
+import * as skyboxes from '../shared/skyboxes.js';
 
 export class OrbitState extends State {
     private planet: PlanetEntity;
