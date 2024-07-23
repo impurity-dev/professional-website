@@ -8,8 +8,4 @@ export class Events extends sharedEvents.Events {
     public readonly returnToMainMenu$: rx.Subject<void> = new rx.Subject();
     public readonly buttonHover$: rx.Subject<void> = new rx.Subject();
     public readonly buttonClick$: rx.Subject<void> = new rx.Subject();
-
-    constructor(props: sharedEvents.EventsProps) {
-        super(props);
-    }
 }
