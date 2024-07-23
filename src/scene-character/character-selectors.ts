@@ -63,8 +63,8 @@ export class CharacterSelector {
                 worker: sharedModels.femaleCharaters.worker({ scene, entityManager }),
             },
         };
-        Object.entries(this.lookup).forEach(([key, chunk]) => {
-            Object.entries(chunk).forEach(([_, model]) => {
+        Object.entries(this.lookup).forEach(([, chunk]) => {
+            Object.entries(chunk).forEach(([, model]) => {
                 model.transform.position = new BABYLON.Vector3(location.x, 0, location.z);
                 model.onLoad
                     .pipe(

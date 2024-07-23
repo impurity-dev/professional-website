@@ -1,3 +1,6 @@
+import { LogLevelDesc } from 'loglevel';
+import { GoToType } from './state-machine';
+
 class Manager {
     // User
     isFullScreen = false;
@@ -17,9 +20,6 @@ class Manager {
         this.startScene = props.startScene;
     }
 }
-
-import { LogLevelDesc } from 'loglevel';
-import { GoToType } from './state-machine';
 
 const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
 export const manager = new Manager({

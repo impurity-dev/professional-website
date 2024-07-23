@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import * as SPECTOR from 'spectorjs';
-import * as characterScene from '../scene-character/state.js';
+import * as character from '../scene-character/state.js';
 import * as creditsScene from '../scene-credits/state.js';
 import * as fighterScene from '../scene-fighter/index.js';
 import * as hubScene from '../scene-hub/state.js';
@@ -34,7 +34,7 @@ export class GameManager extends sm.StateMachine {
             case 'fighter':
                 return this.setState(new fighterScene.FighterState(this));
             case 'character':
-                return this.setState(new characterScene.CharacterState(this));
+                return this.setState(new character.State(this));
             case 'practice':
                 return this.setState(new practiceScene.PracticeState(this));
             case 'credits':

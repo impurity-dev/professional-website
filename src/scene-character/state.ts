@@ -5,7 +5,7 @@ import * as localEvents from './events.js';
 import * as inputs from './inputs.js';
 import * as worlds from './worlds.js';
 
-export class CharacterState extends states.State {
+export class State extends states.State {
     async run(): Promise<void> {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
