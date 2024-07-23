@@ -14,10 +14,28 @@ export class CharacterWorld extends World {
 
     private lights = (props: { scene: BABYLON.Scene }) => {
         const { scene } = props;
-        const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), scene);
-        light.intensity = 0.1;
-        light.diffuse = new BABYLON.Color3(1, 1, 1);
-        light.specular = new BABYLON.Color3(1, 1, 1);
+        const light = new BABYLON.PointLight('light', new BABYLON.Vector3(0, 1, 1), scene);
+        light.intensity = 0.4;
+        light.diffuse = new BABYLON.Color3(1, 0, 1);
+        light.specular = new BABYLON.Color3(1, 0, 1);
+        const flicker = new BABYLON.Animation('flicker', 'intensity', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+        const keys = [
+            {
+                frame: 0,
+                value: 0.5,
+            },
+            {
+                frame: 30,
+                value: 1,
+            },
+            {
+                frame: 60,
+                value: 0.5,
+            },
+        ];
+        flicker.setKeys(keys);
+        light.animations = [flicker];
+        scene.beginAnimation(light, 0, 60, true, 0.25);
     };
 
     private station = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
