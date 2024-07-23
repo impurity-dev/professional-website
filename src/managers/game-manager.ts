@@ -1,16 +1,13 @@
 import * as BABYLON from '@babylonjs/core';
 import * as SPECTOR from 'spectorjs';
-import * as characterScene from '../character-scene/state.js';
-import * as creditsScene from '../credits-scene/state.js';
-import * as fighterScene from '../fighter-scene/index.js';
-import * as hubScene from '../hub-scene/state.js';
-import * as launchScene from '../launch-scene/state.js';
-import * as practiceScene from '../practice-scene/state.js';
+import * as characterScene from '../scene-character/state.js';
+import * as creditsScene from '../scene-credits/state.js';
+import * as fighterScene from '../scene-fighter/index.js';
+import * as hubScene from '../scene-hub/state.js';
+import * as launchScene from '../scene-launch/state.js';
+import * as practiceScene from '../scene-practice/state.js';
+import * as startScene from '../scene-start/state.js';
 import * as logger from '../shared/logger.js';
-import * as startScene from '../start-scene/state.js';
-import { MapState } from '../states/map-state.js';
-import { OrbitState } from '../states/orbit-state.js';
-import { TravelState } from '../states/travel-state.js';
 import * as settings from './settings-manager.js';
 import * as sm from './state-machine.js';
 
@@ -34,12 +31,6 @@ export class GameManager extends sm.StateMachine {
                 return this.setState(new hubScene.HubState(this));
             case 'launch':
                 return this.setState(new launchScene.LaunchState(this));
-            case 'travel':
-                return this.setState(new TravelState(this));
-            case 'orbit':
-                return this.setState(new OrbitState(this));
-            case 'map':
-                return this.setState(new MapState(this));
             case 'fighter':
                 return this.setState(new fighterScene.FighterState(this));
             case 'character':
