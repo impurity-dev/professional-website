@@ -12,4 +12,7 @@ export type CharactersEvent =
       };
 export class Events extends sharedEvents.Events {
     readonly character$: Subject<CharactersEvent> = new BehaviorSubject({ gender: 'male', type: 'suit' });
+    readonly startCutscene$: Subject<void> = new Subject();
+    readonly buttonHover$: Subject<void> = new Subject();
+    readonly buttonClick$: Subject<void> = new Subject();
 }
