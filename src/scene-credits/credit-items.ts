@@ -20,6 +20,24 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
                 '"LIGHT FIGHTER SPACESHIP - FREE" by Kerem Kavalci. https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
         },
         {
+            name: 'Bar',
+            link: 'https://skfb.ly/6XytO',
+            model: (() => {
+                const model = new models.Model({
+                    name: 'bar',
+                    scene,
+                    entityManager,
+                    asset: { file: 'cantina_1k.glb', directory: 'assets/cantina/' },
+                });
+                const scale = 0.035;
+                model.transform.scaling = new BABYLON.Vector3(scale, scale, scale);
+                model.transform.position = new BABYLON.Vector3(3.5, 0, 3.5);
+                return model;
+            })(),
+            credits:
+                '"Bar" (https://skfb.ly/6XytO) by Edward Joseph is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
+        },
+        {
             name: 'Cloning Tank Chamber',
             link: 'https://skfb.ly/oODEM',
             model: (() => {
