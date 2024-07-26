@@ -1,15 +1,11 @@
 import { BehaviorSubject, Subject } from 'rxjs';
+import * as sharedModels from '../models';
 import * as sharedEvents from '../shared/events';
 
-export type CharactersEvent =
-    | {
-          gender: 'male';
-          type: 'adventurer' | 'beach' | 'casual' | 'casualHoodie' | 'farmer' | 'king' | 'punk' | 'spacesuit' | 'suit' | 'swat' | 'worker';
-      }
-    | {
-          gender: 'female';
-          type: 'adventurer' | 'casual' | 'formal' | 'medieval' | 'punk' | 'sciFi' | 'soldier' | 'suit' | 'witch' | 'worker';
-      };
 export class Events extends sharedEvents.Events {
-    readonly character$: Subject<CharactersEvent> = new BehaviorSubject({ gender: 'male', type: 'suit' });
+    readonly character$: Subject<sharedModels.CharacterType> = new BehaviorSubject({ gender: 'male', type: 'suit' });
+    readonly startCutscene$: Subject<void> = new Subject();
+    readonly buttonHover$: Subject<void> = new Subject();
+    readonly buttonClick$: Subject<void> = new Subject();
+    readonly dialogue$ = new Subject<{ text: string }>();
 }

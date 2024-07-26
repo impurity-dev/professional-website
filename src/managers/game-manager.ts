@@ -8,10 +8,13 @@ import * as launchScene from '../scene-launch/state.js';
 import * as practiceScene from '../scene-practice/state.js';
 import * as startScene from '../scene-start/state.js';
 import * as logger from '../shared/logger.js';
+import * as sm from '../shared/state-machines.js';
 import * as settings from './settings-manager.js';
-import * as sm from './state-machine.js';
+import * as states from './states.js';
 
-export class GameManager extends sm.StateMachine {
+export type GoToType = 'menu' | 'orbit' | 'launch' | 'travel' | 'orbit' | 'practice' | 'map' | 'hub' | 'fighter' | 'credits' | 'character';
+export type GoToProps = { type: GoToType };
+export class GameManager extends sm.StateMachine<states.State, GoToProps> {
     constructor(
         public readonly canvas: HTMLCanvasElement,
         public readonly engine: BABYLON.Engine,
@@ -22,7 +25,7 @@ export class GameManager extends sm.StateMachine {
         }
     }
 
-    goTo = async (props: sm.GoToProps): Promise<void> => {
+    goTo = async (props: GoToProps): Promise<void> => {
         logger.debug('Going to ' + props.type);
         switch (props.type) {
             case 'menu':
@@ -42,5 +45,12 @@ export class GameManager extends sm.StateMachine {
             default:
                 throw new Error(`Invalid goTo state: ${props}`);
         }
+    };
+
+    protected setState = async (state: states.State): Promise<void> => {
+        const oldState = this.state;
+        this.state = state;
+        await this.state.start();
+        if (oldState) oldState.dispose();
     };
 }

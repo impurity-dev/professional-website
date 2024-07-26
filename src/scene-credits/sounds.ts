@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import { takeUntil, tap } from 'rxjs';
-import * as sharedSounds from '../shared/sounds';
+import * as sharedSounds from '../sounds/gui';
 import * as events from './events';
 
 export const sounds = (props: { scene: BABYLON.Scene; event: events.Events }) => {
