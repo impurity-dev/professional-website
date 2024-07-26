@@ -1,4 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
+import { take, tap } from 'rxjs';
+import * as sharedModels from '../models';
 import * as em from '../models/entity-manager.js';
 import { World } from '../shared/world.js';
 import { CharacterSelector } from './character-selectors.js';
@@ -13,6 +15,7 @@ export class CharacterWorld extends World {
         this.pointLights({ scene });
         this.cantina({ scene, entityManager });
         this.characters({ scene, entityManager, target, events });
+        this.cutscene({ scene, entityManager, target, events });
     }
 
     private pointLights = (props: { scene: BABYLON.Scene }) => {
@@ -80,5 +83,45 @@ export class CharacterWorld extends World {
     private characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
         const { scene, entityManager, target, events } = props;
         return new CharacterSelector({ scene, entityManager, location: target, events });
+    };
+
+    private cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
+        const { scene, entityManager, target, events } = props;
+        const george = sharedModels.george({ scene, entityManager });
+        george.transform.position = new BABYLON.Vector3(target.x, target.y - 1, target.z + 5.5);
+        const scale = 0.25;
+        george.transform.scaling = new BABYLON.Vector3(scale, scale, scale);
+        george.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+        const walkAnimation = new BABYLON.Animation(
+            'georgeWalk',
+            'position.z',
+            60,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE,
+        );
+        walkAnimation.setKeys([
+            { frame: 0, value: george.transform.position.z },
+            { frame: 60, value: target.z + 1.6 },
+        ]);
+        george.transform.animations = [walkAnimation];
+
+        events.startCutscene$
+            .pipe(
+                take(1),
+                tap(() => {
+                    const walk = george.animationGroups.find((a) => a.name === 'Walk');
+                    const idle = george.animationGroups.find((a) => a.name === 'Idle');
+                    walk.enableBlending = true;
+                    walk.blendingSpeed = 0.1;
+                    idle.enableBlending = true;
+                    idle.blendingSpeed = 0.1;
+                    walk.play(true);
+                    scene.beginAnimation(george.transform, 0, 60, false, 0.5, () => {
+                        walk.stop();
+                        idle.play(true);
+                    });
+                }),
+            )
+            .subscribe();
     };
 }
