@@ -1,6 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import * as em from './entity-manager.js';
-import * as models from './models.js';
+import * as models from './';
 
 const femaleDirectory = 'assets/female-characters/';
 const maleDirectory = 'assets/male-characters/';
@@ -8,17 +7,100 @@ const maleDirectory = 'assets/male-characters/';
 export type CharacterType =
     | {
           gender: 'male';
-          type: 'adventurer' | 'beach' | 'casual' | 'casualHoodie' | 'farmer' | 'king' | 'punk' | 'spacesuit' | 'suit' | 'swat' | 'worker';
+          type: 'adventurer' | 'beach' | 'casual' | 'hoodie' | 'farmer' | 'king' | 'punk' | 'spacesuit' | 'suit' | 'swat' | 'worker';
       }
     | {
           gender: 'female';
           type: 'adventurer' | 'casual' | 'formal' | 'medieval' | 'punk' | 'sciFi' | 'soldier' | 'suit' | 'witch' | 'worker';
       };
-export const characterFactory = (props: CharacterType & { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { gender, type, scene, entityManager } = props;
+
+export class Character {
+    private readonly model: models.Model;
+
+    constructor(props: { scene: BABYLON.Scene; entityManager: models.EntityManager; type: CharacterType }) {
+        const { scene, entityManager, type } = props;
+        this.model = characterFactory({ type, scene, entityManager });
+    }
+
+    get transform() {
+        return this.model.transform;
+    }
+
+    get animationGroups() {
+        return this.model.animationGroups;
+    }
+
+    runAnimation = () => {
+        return this.animationGroups.find((a) => a.name === 'Run');
+    };
+
+    idleAnimation = () => {
+        return this.animationGroups.find((a) => a.name === 'Idle');
+    };
+}
+
+export const characterLookup = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
+    const { scene, entityManager } = props;
+    return {
+        male: {
+            adventurer: maleAdventurer({ scene, entityManager }),
+            beach: maleBeach({ scene, entityManager }),
+            casual: maleCasual({ scene, entityManager }),
+            farmer: maleFarmer({ scene, entityManager }),
+            hoodie: maleHoodie({ scene, entityManager }),
+            king: maleKing({ scene, entityManager }),
+            punk: malePunk({ scene, entityManager }),
+            spacesuit: maleSpacesuit({ scene, entityManager }),
+            suit: maleSuit({ scene, entityManager }),
+            swat: maleSwat({ scene, entityManager }),
+            worker: maleWorker({ scene, entityManager }),
+        },
+        female: {
+            adventurer: femaleAdventurer({ scene, entityManager }),
+            casual: femaleCasual({ scene, entityManager }),
+            formal: femaleFormal({ scene, entityManager }),
+            medieval: femaleMedieval({ scene, entityManager }),
+            punk: femalePunk({ scene, entityManager }),
+            sciFi: femaleSciFi({ scene, entityManager }),
+            soldier: femaleSoldier({ scene, entityManager }),
+            suit: femaleSuit({ scene, entityManager }),
+            witch: femaleWitch({ scene, entityManager }),
+            worker: femaleWorker({ scene, entityManager }),
+        },
+    };
+};
+export const characterFactory = (props: { type: CharacterType; scene: BABYLON.Scene; entityManager: models.EntityManager }): models.Model => {
+    const { type, scene, entityManager } = props;
+    if (type.gender === 'male') {
+        if (type.type === 'adventurer') return maleAdventurer({ scene, entityManager });
+        if (type.type === 'beach') return maleBeach({ scene, entityManager });
+        if (type.type === 'casual') return maleCasual({ scene, entityManager });
+        if (type.type === 'farmer') return maleFarmer({ scene, entityManager });
+        if (type.type === 'hoodie') return maleHoodie({ scene, entityManager });
+        if (type.type === 'king') return maleKing({ scene, entityManager });
+        if (type.type === 'punk') return malePunk({ scene, entityManager });
+        if (type.type === 'spacesuit') return maleSpacesuit({ scene, entityManager });
+        if (type.type === 'suit') return maleSuit({ scene, entityManager });
+        if (type.type === 'swat') return maleSwat({ scene, entityManager });
+        if (type.type === 'worker') return maleWorker({ scene, entityManager });
+        throw new Error('Invalid male type');
+    } else if (type.gender === 'female') {
+        if (type.type === 'adventurer') return femaleAdventurer({ scene, entityManager });
+        if (type.type === 'casual') return femaleCasual({ scene, entityManager });
+        if (type.type === 'formal') return femaleFormal({ scene, entityManager });
+        if (type.type === 'medieval') return femaleMedieval({ scene, entityManager });
+        if (type.type === 'sciFi') return femaleSciFi({ scene, entityManager });
+        if (type.type === 'punk') return femalePunk({ scene, entityManager });
+        if (type.type === 'soldier') return femaleSoldier({ scene, entityManager });
+        if (type.type === 'suit') return femaleSuit({ scene, entityManager });
+        if (type.type === 'witch') return femaleWitch({ scene, entityManager });
+        if (type.type === 'worker') return femaleWorker({ scene, entityManager });
+        throw new Error('Invalid female type');
+    }
+    throw new Error('Invalid gender type');
 };
 
-export const femaleAdventurer = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleAdventurer = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-adventurer',
@@ -28,7 +110,7 @@ export const femaleAdventurer = (props: { scene: BABYLON.Scene; entityManager: e
     });
 };
 
-export const femaleCasual = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleCasual = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-casual',
@@ -38,7 +120,7 @@ export const femaleCasual = (props: { scene: BABYLON.Scene; entityManager: em.En
     });
 };
 
-export const femaleFormal = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleFormal = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-formal',
@@ -48,7 +130,7 @@ export const femaleFormal = (props: { scene: BABYLON.Scene; entityManager: em.En
     });
 };
 
-export const femaleMedieval = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleMedieval = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-medieval',
@@ -58,7 +140,7 @@ export const femaleMedieval = (props: { scene: BABYLON.Scene; entityManager: em.
     });
 };
 
-export const femalePunk = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femalePunk = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-punk',
@@ -68,7 +150,7 @@ export const femalePunk = (props: { scene: BABYLON.Scene; entityManager: em.Enti
     });
 };
 
-export const femaleSciFi = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleSciFi = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-scifi',
@@ -78,7 +160,7 @@ export const femaleSciFi = (props: { scene: BABYLON.Scene; entityManager: em.Ent
     });
 };
 
-export const femaleSoldier = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleSoldier = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-soldier',
@@ -88,7 +170,7 @@ export const femaleSoldier = (props: { scene: BABYLON.Scene; entityManager: em.E
     });
 };
 
-export const femaleSuit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleSuit = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-suit',
@@ -98,7 +180,7 @@ export const femaleSuit = (props: { scene: BABYLON.Scene; entityManager: em.Enti
     });
 };
 
-export const femaleWitch = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleWitch = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-witch',
@@ -108,7 +190,7 @@ export const femaleWitch = (props: { scene: BABYLON.Scene; entityManager: em.Ent
     });
 };
 
-export const femaleWorker = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const femaleWorker = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'female-worker',
@@ -118,7 +200,7 @@ export const femaleWorker = (props: { scene: BABYLON.Scene; entityManager: em.En
     });
 };
 
-export const maleAdventurer = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleAdventurer = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-male-adventurer',
@@ -128,7 +210,7 @@ export const maleAdventurer = (props: { scene: BABYLON.Scene; entityManager: em.
     });
 };
 
-export const maleBeach = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleBeach = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-beach',
@@ -138,7 +220,7 @@ export const maleBeach = (props: { scene: BABYLON.Scene; entityManager: em.Entit
     });
 };
 
-export const maleCasual = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleCasual = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-casual',
@@ -148,7 +230,7 @@ export const maleCasual = (props: { scene: BABYLON.Scene; entityManager: em.Enti
     });
 };
 
-export const maleHoodie = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleHoodie = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-casual-hoodie',
@@ -158,7 +240,7 @@ export const maleHoodie = (props: { scene: BABYLON.Scene; entityManager: em.Enti
     });
 };
 
-export const maleFarmer = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleFarmer = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-farmer',
@@ -168,7 +250,7 @@ export const maleFarmer = (props: { scene: BABYLON.Scene; entityManager: em.Enti
     });
 };
 
-export const maleKing = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleKing = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-king',
@@ -178,7 +260,7 @@ export const maleKing = (props: { scene: BABYLON.Scene; entityManager: em.Entity
     });
 };
 
-export const malePunk = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const malePunk = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-punk',
@@ -188,7 +270,7 @@ export const malePunk = (props: { scene: BABYLON.Scene; entityManager: em.Entity
     });
 };
 
-export const maleSpacesuit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleSpacesuit = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-spacesuit',
@@ -198,7 +280,7 @@ export const maleSpacesuit = (props: { scene: BABYLON.Scene; entityManager: em.E
     });
 };
 
-export const maleSuit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleSuit = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-suit',
@@ -208,7 +290,7 @@ export const maleSuit = (props: { scene: BABYLON.Scene; entityManager: em.Entity
     });
 };
 
-export const maleSwat = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleSwat = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-swat',
@@ -218,7 +300,7 @@ export const maleSwat = (props: { scene: BABYLON.Scene; entityManager: em.Entity
     });
 };
 
-export const maleWorker = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+export const maleWorker = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({
         name: 'male-worker',

@@ -10,10 +10,12 @@
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "svg.preview.background": "transparent",
     "workbench.colorCustomizations": {
-        "editor.background": "#000000",
-        "sideBar.background": "#000000",
-        "editorLineNumber.activeForeground": "#00ff00",
-        "editorCursor.foreground": "#00ff00"
+        // "editor.background": "#000000",
+        // "sideBar.background": "#000000",
+        // "editorLineNumber.activeForeground": "#00ff00",
+        // "editorCursor.foreground": "#00ff00"
+        "editorCursor.foreground": "#ff00ff",
+        "editorLineNumber.activeForeground": "#ff00ff"
     },
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
