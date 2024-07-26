@@ -7,4 +7,5 @@ export class Events extends sharedEvents.Events {
     readonly startCutscene$: Subject<void> = new Subject();
     readonly buttonHover$: Subject<void> = new Subject();
     readonly buttonClick$: Subject<void> = new Subject();
+    readonly dialogue$ = new Subject<{ text: string }>();
 }

@@ -1,7 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import { take, tap } from 'rxjs';
 import * as localEvents from './events';
-
 export class CharacterController {
     public readonly camera: BABYLON.ArcRotateCamera;
 

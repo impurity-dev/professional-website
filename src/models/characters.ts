@@ -1,4 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
+import { take, tap } from 'rxjs';
 import * as models from './';
 
 const femaleDirectory = 'assets/female-characters/';
@@ -16,27 +17,34 @@ export type CharacterType =
 
 export class Character {
     private readonly model: models.Model;
+    private _run: BABYLON.AnimationGroup;
+    private _idle: BABYLON.AnimationGroup;
 
     constructor(props: { scene: BABYLON.Scene; entityManager: models.EntityManager; type: CharacterType }) {
         const { scene, entityManager, type } = props;
         this.model = characterFactory({ type, scene, entityManager });
+        this.model.onLoad
+            .pipe(
+                take(1),
+                tap(() => {
+                    this._run = this.model.animationGroups.find((a) => a.name === 'Run');
+                    this._idle = this.model.animationGroups.find((a) => a.name === 'Idle');
+                }),
+            )
+            .subscribe();
     }
 
     get transform() {
         return this.model.transform;
     }
 
-    get animationGroups() {
-        return this.model.animationGroups;
+    get runAnimation() {
+        return this._run;
     }
 
-    runAnimation = () => {
-        return this.animationGroups.find((a) => a.name === 'Run');
-    };
-
-    idleAnimation = () => {
-        return this.animationGroups.find((a) => a.name === 'Idle');
-    };
+    get idleAnimation() {
+        return this._idle;
+    }
 }
 
 export const characterLookup = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
