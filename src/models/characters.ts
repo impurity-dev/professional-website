@@ -5,6 +5,19 @@ import * as models from './models.js';
 const femaleDirectory = 'assets/female-characters/';
 const maleDirectory = 'assets/male-characters/';
 
+export type CharacterType =
+    | {
+          gender: 'male';
+          type: 'adventurer' | 'beach' | 'casual' | 'casualHoodie' | 'farmer' | 'king' | 'punk' | 'spacesuit' | 'suit' | 'swat' | 'worker';
+      }
+    | {
+          gender: 'female';
+          type: 'adventurer' | 'casual' | 'formal' | 'medieval' | 'punk' | 'sciFi' | 'soldier' | 'suit' | 'witch' | 'worker';
+      };
+export const characterFactory = (props: CharacterType & { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+    const { gender, type, scene, entityManager } = props;
+};
+
 export const femaleAdventurer = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
     const { scene, entityManager } = props;
     return new models.Model({

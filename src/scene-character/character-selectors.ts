@@ -90,7 +90,7 @@ export class CharacterSelector {
             .subscribe();
     }
 
-    private changeCharacter = (event: localEvents.CharactersEvent) => {
+    private changeCharacter = (event: sharedModels.CharacterType) => {
         this.currentCharacter?.transform.setEnabled(false);
         this.currentCharacter = this.lookup[event.gender][event.type];
         this.currentCharacter.transform.setEnabled(true);
