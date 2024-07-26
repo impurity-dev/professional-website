@@ -21,7 +21,7 @@ class App {
         await this.preload();
         window.addEventListener('resize', () => this.engine.resize());
         await this.manager.goTo({ type: settings.manager.startScene });
-        this.engine.runRenderLoop(() => this.manager.getState().render());
+        this.engine.runRenderLoop(() => this.manager.state.render());
     };
 
     private preload = async () => {
