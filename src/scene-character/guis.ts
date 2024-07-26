@@ -136,6 +136,7 @@ const animationDialogue = (props: { scene: BABYLON.Scene; events: localEvents.Ev
     events.dialogue$
         .pipe(
             tap(({ text }) => {
+                console.log(text);
                 manager.addText({ text });
             }),
             takeUntil(events.destroy$),

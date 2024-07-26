@@ -16,7 +16,7 @@ export class DialogueManager {
         const { text } = props;
         const { textBlock } = this;
         const speed = 5;
-
+        textBlock.text = '';
         const promise = new Promise<void>((resolve) => {
             const interval = setInterval(() => {
                 if (textBlock.text.length < text.length) {

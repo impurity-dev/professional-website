@@ -1,6 +1,7 @@
 import { Vector3 } from '@babylonjs/core';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
+import * as cameras from './cameras.js';
 import * as localEvents from './events.js';
 import * as guis from './guis.js';
 import * as inputs from './inputs.js';
@@ -15,7 +16,8 @@ export class State extends states.State {
         new worlds.CharacterWorld({ scene, entityManager, target, events });
         const load = this.entityManager.load();
         guis.gui({ scene, events });
-        new inputs.CharacterController({ scene, target, events });
+        cameras.mainCamera({ scene, target, events });
+        inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
         skyboxes.purpleSpace({ scene });
         await load;

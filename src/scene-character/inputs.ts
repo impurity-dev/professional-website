@@ -1,33 +1,40 @@
 import * as BABYLON from '@babylonjs/core';
-import { take, tap } from 'rxjs';
+import { take, takeUntil, tap } from 'rxjs';
+import { fromBabylonObservable } from '../shared/utils';
 import * as localEvents from './events';
-export class CharacterController {
-    public readonly camera: BABYLON.ArcRotateCamera;
 
-    constructor(props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) {
-        const { scene, target, events } = props;
-        this.camera = new BABYLON.ArcRotateCamera('fps-camera', 2.2, 1.2, 5, target, scene);
-        scene.activeCamera = this.camera;
-        const startAnimation = new BABYLON.Animation(
-            'movecamera',
-            'alpha',
-            60,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
-        );
-        const ease = new BABYLON.CubicEase();
-        ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
-        const keys = [
-            { frame: 0, value: 2.2 },
-            { frame: 60, value: 3 },
-        ];
-        startAnimation.setKeys(keys);
-        this.camera.animations = [startAnimation];
-        events.startCutscene$
+export const controller = (props: { scene: BABYLON.Scene; events: localEvents.Events }) => {
+    const { scene, events } = props;
+    const deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
+    deviceManager.onDeviceConnectedObservable.add((device) => {
+        if (device.deviceType !== BABYLON.DeviceType.Keyboard) return;
+        handleKeyboard({ keyboard: device, events });
+    });
+};
+
+const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceType.Keyboard>; events: localEvents.Events }) => {
+    const { keyboard, events } = props;
+    const SPACE = 32;
+    let currentKey: string | undefined;
+    const input$ = fromBabylonObservable(keyboard.onInputChangedObservable);
+    const handleTextChange = () => {
+        input$
             .pipe(
-                take(1),
-                tap(() => scene.beginAnimation(this.camera, 0, 60, false, 1.7)),
+                tap((keyEvent) => {
+                    if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
+                        currentKey = keyEvent.code;
+                        events.dialogue$.next({ text: 'APPLES' });
+                    }
+                    if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
+                }),
+                takeUntil(events.destroy$),
             )
             .subscribe();
-    }
-}
+    };
+    events.startCutscene$
+        .pipe(
+            take(1),
+            tap(() => handleTextChange()),
+        )
+        .subscribe();
+};
