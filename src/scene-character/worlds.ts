@@ -13,6 +13,7 @@ export class CharacterWorld extends World {
         super(scene, entityManager);
         this.globalLights({ scene });
         this.pointLights({ scene });
+        this.spotLights({ scene, target, events });
         this.cantina({ scene, entityManager });
         this.characters({ scene, entityManager, target, events });
         this.cutscene({ scene, entityManager, target, events });
@@ -61,6 +62,38 @@ export class CharacterWorld extends World {
         ]);
         light.animations = [flickerAnim, specularAnim, diffuseAnim];
         scene.beginAnimation(light, 0, 60, true, 0.25);
+    };
+
+    private spotLights = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
+        const { scene, target, events } = props;
+        const characterSpotlight = new BABYLON.SpotLight(
+            'characterSpotlight',
+            new BABYLON.Vector3(target.x, target.y + 2, target.z),
+            new BABYLON.Vector3(0, -1, 0),
+            Math.PI,
+            10,
+            scene,
+        );
+        const intensity = 10;
+        characterSpotlight.intensity = intensity;
+        const characterSpotlightAnim = new BABYLON.Animation(
+            'dimSpotlight',
+            'intensity',
+            60,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE,
+        );
+        characterSpotlightAnim.setKeys([
+            { frame: 0, value: intensity },
+            { frame: 60, value: 0 },
+        ]);
+        characterSpotlight.animations = [characterSpotlightAnim];
+        events.startCutscene$
+            .pipe(
+                take(1),
+                tap(() => scene.beginAnimation(characterSpotlight, 0, 60, false, 2)),
+            )
+            .subscribe();
     };
 
     private globalLights = (props: { scene: BABYLON.Scene }) => {
