@@ -1,3 +1,3 @@
-export * as femaleCharaters from './female-characters';
-export * as maleCharaters from './male-characters';
-export * as station from './stations';
+export * from './characters';
+export * from './entity-manager';
+export * from './models';
