@@ -14,6 +14,33 @@ export type CharacterType =
           gender: 'female';
           type: 'adventurer' | 'casual' | 'formal' | 'medieval' | 'punk' | 'sciFi' | 'soldier' | 'suit' | 'witch' | 'worker';
       };
+export type CharacterLookup = {
+    male: {
+        adventurer: models.Model;
+        beach: models.Model;
+        casual: models.Model;
+        farmer: models.Model;
+        hoodie: models.Model;
+        king: models.Model;
+        punk: models.Model;
+        spacesuit: models.Model;
+        suit: models.Model;
+        swat: models.Model;
+        worker: models.Model;
+    };
+    female: {
+        adventurer: models.Model;
+        casual: models.Model;
+        formal: models.Model;
+        medieval: models.Model;
+        punk: models.Model;
+        sciFi: models.Model;
+        soldier: models.Model;
+        suit: models.Model;
+        witch: models.Model;
+        worker: models.Model;
+    };
+};
 
 export class Character {
     private readonly model: models.Model;
@@ -47,7 +74,7 @@ export class Character {
     }
 }
 
-export const characterLookup = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }) => {
+export const characterLookup = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }): CharacterLookup => {
     const { scene, entityManager } = props;
     return {
         male: {

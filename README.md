@@ -1,5 +1,9 @@
 # Professional Website
 
+## Stellar EDM
+
+-   credit: https://davidkbd.itch.io/stellar-confrontation-edm-metal-music-pack
+
 ## Space Skybox
 
 -   Seed: `2mrlhhgnk3k0`

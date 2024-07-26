@@ -15,6 +15,7 @@ export class DialogueManager {
     addText = (props: { text: string }) => {
         const { text } = props;
         const { textBlock } = this;
+        const speed = 5;
 
         const promise = new Promise<void>((resolve) => {
             const interval = setInterval(() => {
@@ -24,7 +25,7 @@ export class DialogueManager {
                     clearInterval(interval);
                     resolve();
                 }
-            }, 5);
+            }, speed);
         });
         return from(promise);
     };
