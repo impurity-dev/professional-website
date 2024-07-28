@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { take, tap } from 'rxjs';
+import { filter, take, tap } from 'rxjs';
 import * as localEvents from './events';
 
 export const mainCamera = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
@@ -21,8 +21,9 @@ export const mainCamera = (props: { scene: BABYLON.Scene; target: BABYLON.Vector
     ];
     startAnimation.setKeys(keys);
     camera.animations = [startAnimation];
-    events.startCutscene$
+    events.state$
         .pipe(
+            filter((state) => state.type === 'dialogue' && state.index === 0),
             take(1),
             tap(() => scene.beginAnimation(camera, 0, 60, false, 1.7)),
         )
