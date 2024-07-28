@@ -1,4 +1,5 @@
 import { Vector3 } from '@babylonjs/core';
+import { filter, tap } from 'rxjs';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as cameras from './cameras.js';
@@ -16,6 +17,12 @@ export class State extends states.State {
         const target = new Vector3(4, 1, -5);
         worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
+        events.state$
+            .pipe(
+                filter((state) => state.type === 'exit'),
+                tap(() => this.gameManager.goTo({ type: 'launch' })),
+            )
+            .subscribe();
         const { dialogueTextBox } = guis.gui({ scene, events });
         sm.stateMachine({ events, robot: { textBlock: dialogueTextBox } });
         cameras.mainCamera({ scene, target, events });
