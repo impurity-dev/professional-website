@@ -89,7 +89,7 @@ const spotLights = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; even
     characterSpotlight.animations = [characterSpotlightAnim];
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.diaglogue.index === 0),
+            filter((state) => state.type === 'dialogue' && state.props.index === 0),
             take(1),
             tap(() => scene.beginAnimation(characterSpotlight, 0, 60, false, 2)),
         )
@@ -179,7 +179,7 @@ const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager
 
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.diaglogue.index == 0),
+            filter((state) => state.type === 'dialogue' && state.props.index == 0),
             take(1),
             tap(() => {
                 const walk = george.animationGroups.find((a) => a.name === 'Walk');

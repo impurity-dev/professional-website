@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { filter, tap } from 'rxjs';
+import { filter, take, tap } from 'rxjs';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as cameras from './cameras.js';
@@ -20,6 +20,7 @@ export class State extends states.State {
         events.state$
             .pipe(
                 filter((state) => state.type === 'exit'),
+                take(1),
                 tap(() => this.gameManager.goTo({ type: 'launch' })),
             )
             .subscribe();
@@ -32,7 +33,7 @@ export class State extends states.State {
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
-        skyboxes.purpleSpace({ scene });
+        scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
         await load;
     }
 }

@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
-import { filter, take, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { filter, takeUntil, tap, withLatestFrom } from 'rxjs';
 import { fromBabylonObservable } from '../shared/utils';
+import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 
 export const controller = (props: { scene: BABYLON.Scene; events: localEvents.Events }) => {
@@ -16,31 +17,28 @@ const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceTy
     const { keyboard, events } = props;
     const SPACE = 32;
     let currentKey: string | undefined;
-    const handleTextChange = () => {
-        fromBabylonObservable(keyboard.onInputChangedObservable)
-            .pipe(
-                withLatestFrom(events.state$),
-                tap(([keyEvent, state]) => {
-                    if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
-                        currentKey = keyEvent.code;
+    fromBabylonObservable(keyboard.onInputChangedObservable)
+        .pipe(
+            withLatestFrom(events.state$),
+            filter(([, state]) => state.type === 'dialogue'),
+            tap(([keyEvent, state]) => {
+                if (state.type !== 'dialogue') return;
+                if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
+                    currentKey = keyEvent.code;
+                    if (state.props.index + 1 < localDialogues.robotStates.length) {
                         events.state$.next({
                             type: 'dialogue',
-                            diaglogue: {
-                                index: state.type === 'dialogue' ? state.diaglogue.index + 1 : 0,
+                            props: {
+                                index: state.props.index + 1,
                             },
                         });
+                    } else {
+                        events.state$.next({ type: 'exit' });
                     }
-                    if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
-                }),
-                takeUntil(events.destroy$),
-            )
-            .subscribe();
-    };
-    events.state$
-        .pipe(
-            filter((state) => state.type === 'dialogue' && state.diaglogue.index === 0),
-            take(1),
-            tap(() => handleTextChange()),
+                }
+                if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
+            }),
+            takeUntil(events.destroy$),
         )
         .subscribe();
 };

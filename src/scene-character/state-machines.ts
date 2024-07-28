@@ -14,17 +14,23 @@ export const stateMachine = (props: { events: localEvents.Events; textBlock: GUI
     });
 
 export type CharacterState =
-    | { type: 'selection'; character: sharedModels.CharacterType }
-    | { type: 'dialogue'; diaglogue: { index: number } }
+    | {
+          type: 'selection';
+          props: SelectionProps;
+      }
+    | {
+          type: 'dialogue';
+          props: { index: number };
+      }
     | { type: 'exit' };
 type CharacterStateMachineProps = {
     events: localEvents.Events;
     robotSM: sm.StateMachine<sharedDialogues.DialogueState, sharedDialogues.DialogueIndex>;
-    selectionSM: sm.StateMachine<sharedModels.CharacterType, sharedModels.CharacterType>;
+    selectionSM: sm.StateMachine<sharedModels.CharacterType, SelectionProps>;
 };
 export class CharacterStateMachine extends sm.StateMachine<CharacterState, CharacterState> {
     private readonly robotSM: sm.StateMachine<sharedDialogues.DialogueState, sharedDialogues.DialogueIndex>;
-    private readonly selectionSM: sm.StateMachine<sharedModels.CharacterType, sharedModels.CharacterType>;
+    private readonly selectionSM: sm.StateMachine<sharedModels.CharacterType, SelectionProps>;
 
     constructor(props: CharacterStateMachineProps) {
         super();
@@ -44,11 +50,11 @@ export class CharacterStateMachine extends sm.StateMachine<CharacterState, Chara
     public goTo = async (props: CharacterState): Promise<void> => {
         switch (props.type) {
             case 'selection': {
-                this.selectionSM.goTo(props.character);
+                this.selectionSM.goTo(props.props);
                 break;
             }
             case 'dialogue': {
-                this.robotSM.goTo(props.diaglogue);
+                this.robotSM.goTo(props.props);
                 break;
             }
             case 'exit': {
@@ -91,7 +97,9 @@ export type CharacterLookup = {
         worker: sharedModels.Model;
     };
 };
-class SelectionStateMachine extends sm.StateMachine<sharedModels.CharacterType, sharedModels.CharacterType> {
+
+type SelectionProps = { character: sharedModels.CharacterType };
+class SelectionStateMachine extends sm.StateMachine<sharedModels.CharacterType, SelectionProps> {
     private character: sharedModels.Model;
     private readonly lookup: CharacterLookup;
 
@@ -101,8 +109,8 @@ class SelectionStateMachine extends sm.StateMachine<sharedModels.CharacterType, 
         this.lookup = lookup;
     }
 
-    public goTo = async (props: sharedModels.CharacterType): Promise<void> => {
-        this.setState(props);
+    public goTo = async (props: SelectionProps): Promise<void> => {
+        this.setState(props.character);
     };
 
     protected setState = async (state: sharedModels.CharacterType): Promise<void> => {
