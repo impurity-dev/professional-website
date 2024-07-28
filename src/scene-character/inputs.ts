@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { take, takeUntil, tap } from 'rxjs';
+import { filter, take, takeUntil, tap, withLatestFrom } from 'rxjs';
 import { fromBabylonObservable } from '../shared/utils';
 import * as localEvents from './events';
 
@@ -20,10 +20,11 @@ const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceTy
     const handleTextChange = () => {
         input$
             .pipe(
-                tap((keyEvent) => {
+                withLatestFrom(events.state$),
+                tap(([keyEvent, state]) => {
                     if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
                         currentKey = keyEvent.code;
-                        events.dialogue$.next({ text: 'APPLES' });
+                        events.state$.next({ type: 'dialogue', index: state.type !== 'dialogue' ? 0 : state.index + 1 });
                     }
                     if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
                 }),
@@ -31,8 +32,9 @@ const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceTy
             )
             .subscribe();
     };
-    events.startCutscene$
+    events.state$
         .pipe(
+            filter((state) => state.type === 'dialogue' && state.index === 0),
             take(1),
             tap(() => handleTextChange()),
         )
