@@ -16,15 +16,19 @@ const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceTy
     const { keyboard, events } = props;
     const SPACE = 32;
     let currentKey: string | undefined;
-    const input$ = fromBabylonObservable(keyboard.onInputChangedObservable);
     const handleTextChange = () => {
-        input$
+        fromBabylonObservable(keyboard.onInputChangedObservable)
             .pipe(
                 withLatestFrom(events.state$),
                 tap(([keyEvent, state]) => {
                     if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
                         currentKey = keyEvent.code;
-                        events.state$.next({ type: 'dialogue', index: state.type !== 'dialogue' ? 0 : state.index + 1 });
+                        events.state$.next({
+                            type: 'dialogue',
+                            diaglogue: {
+                                index: state.type === 'dialogue' ? state.diaglogue.index + 1 : 0,
+                            },
+                        });
                     }
                     if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
                 }),
@@ -34,7 +38,7 @@ const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceTy
     };
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index === 0),
+            filter((state) => state.type === 'dialogue' && state.diaglogue.index === 0),
             take(1),
             tap(() => handleTextChange()),
         )

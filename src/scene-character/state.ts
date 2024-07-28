@@ -1,4 +1,4 @@
-import { Vector3 } from '@babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
 import { filter, tap } from 'rxjs';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
@@ -14,7 +14,7 @@ export class State extends states.State {
     async run(): Promise<void> {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
-        const target = new Vector3(4, 1, -5);
+        const target = new BABYLON.Vector3(4, 1, -5);
         const { characterLookup } = worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
         events.state$
@@ -26,8 +26,8 @@ export class State extends states.State {
         const { dialogueTextBox } = guis.gui({ scene, events });
         sm.stateMachine({
             events,
-            robotSM: sm.robotSM({ events, textBlock: dialogueTextBox }),
-            selectionSM: sm.selectionSM({ events, lookup: characterLookup }),
+            textBlock: dialogueTextBox,
+            lookup: characterLookup,
         });
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });

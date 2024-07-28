@@ -1,15 +1,17 @@
 import * as GUI from '@babylonjs/gui';
-import { filter, take, takeUntil, tap } from 'rxjs';
+import { take, takeUntil, tap } from 'rxjs';
 import * as sharedDialogues from '../dialogues';
 import * as sharedModels from '../models';
 import * as sm from '../shared/state-machines';
 import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 
-export const robotSM = (props: { events: localEvents.Events; textBlock: GUI.TextBlock }) =>
-    new sharedDialogues.StateMachine({ destroy$: props.events.destroy$, states: localDialogues.robotStates, textBlock: props.textBlock });
-export const selectionSM = (props: { events: localEvents.Events; lookup: CharacterLookup }) => new SelectionStateMachine(props);
-export const stateMachine = (props: CharacterStateMachineProps) => new CharacterStateMachine(props);
+export const stateMachine = (props: { events: localEvents.Events; textBlock: GUI.TextBlock; lookup: CharacterLookup }) =>
+    new CharacterStateMachine({
+        events: props.events,
+        selectionSM: new SelectionStateMachine({ lookup: props.lookup }),
+        robotSM: new sharedDialogues.StateMachine({ destroy$: props.events.destroy$, states: localDialogues.robotStates, textBlock: props.textBlock }),
+    });
 
 export type CharacterState =
     | { type: 'selection'; character: sharedModels.CharacterType }
@@ -29,7 +31,14 @@ export class CharacterStateMachine extends sm.StateMachine<CharacterState, Chara
         const { events, robotSM, selectionSM } = props;
         this.robotSM = robotSM;
         this.selectionSM = selectionSM;
-        events.state$.pipe(tap(this.setState), takeUntil(events.destroy$)).subscribe();
+        events.start$
+            .pipe(
+                take(1),
+                tap(() => {
+                    events.state$.pipe(tap(this.goTo), takeUntil(events.destroy$)).subscribe();
+                }),
+            )
+            .subscribe();
     }
 
     public goTo = async (props: CharacterState): Promise<void> => {
@@ -86,24 +95,10 @@ class SelectionStateMachine extends sm.StateMachine<sharedModels.CharacterType, 
     private character: sharedModels.Model;
     private readonly lookup: CharacterLookup;
 
-    constructor(props: { events: localEvents.Events; lookup: CharacterLookup }) {
+    constructor(props: { lookup: CharacterLookup }) {
         super();
-        const { events, lookup } = props;
+        const { lookup } = props;
         this.lookup = lookup;
-        events.start$
-            .pipe(
-                take(1),
-                tap(() => {
-                    events.state$
-                        .pipe(
-                            filter((state) => state.type === 'selection'),
-                            tap((state) => this.goTo(state.character)),
-                            takeUntil(events.destroy$),
-                        )
-                        .subscribe();
-                }),
-            )
-            .subscribe();
     }
 
     public goTo = async (props: sharedModels.CharacterType): Promise<void> => {

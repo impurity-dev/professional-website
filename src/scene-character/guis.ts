@@ -73,7 +73,7 @@ const createStartCutSceneButton = (props: { ui: GUI.AdvancedDynamicTexture; even
     button.onPointerEnterObservable.add(() => events.buttonHover$.next());
     button.onPointerDownObservable.add(() => {
         events.buttonClick$.next();
-        events.state$.next({ type: 'dialogue', index: 0 });
+        events.state$.next({ type: 'dialogue', diaglogue: { index: 0 } });
     });
     ui.addControl(button);
     return button;
@@ -117,7 +117,7 @@ const animateOnStartCutscene = (props: {
     });
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index === 0),
+            filter((state) => state.type === 'dialogue' && state.diaglogue.index === 0),
             take(1),
             tap(() => animationGroup.play()),
         )
