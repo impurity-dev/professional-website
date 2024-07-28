@@ -1,8 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import { take, takeUntil, tap } from 'rxjs';
+import { filter, take, tap } from 'rxjs';
 import * as dialogues from '../dialogues';
-import * as localDialogue from './dialogues';
 import * as localEvents from './events';
 
 export const gui = (props: { scene: BABYLON.Scene; events: localEvents.Events }) => {
@@ -10,9 +9,12 @@ export const gui = (props: { scene: BABYLON.Scene; events: localEvents.Events })
     const ui = createUI({ scene });
     const title = createTitle({ ui });
     const instructions = createInstructions({ ui });
-    animationDialogue({ scene, events, ui });
+    const dialogueTextBox = dialogues.dialogueBox({ ui });
     const startCutSceneButton = createStartCutSceneButton({ ui, events });
     animateOnStartCutscene({ scene, events, title, instructions, startCutSceneButton });
+    return {
+        dialogueTextBox,
+    };
 };
 
 const createUI = (props: { scene: BABYLON.Scene }) => {
@@ -71,8 +73,7 @@ const createStartCutSceneButton = (props: { ui: GUI.AdvancedDynamicTexture; even
     button.onPointerEnterObservable.add(() => events.buttonHover$.next());
     button.onPointerDownObservable.add(() => {
         events.buttonClick$.next();
-        events.startCutscene$.next();
-        events.startCutscene$.complete();
+        events.state$.next({ type: 'dialogue', index: 0 });
     });
     ui.addControl(button);
     return button;
@@ -114,32 +115,11 @@ const animateOnStartCutscene = (props: {
         instructions.textBlock1.dispose();
         instructions.textBlock2.dispose();
     });
-    events.startCutscene$
+    events.state$
         .pipe(
+            filter((state) => state.type === 'dialogue' && state.index === 0),
             take(1),
             tap(() => animationGroup.play()),
-        )
-        .subscribe();
-};
-
-const animationDialogue = (props: { scene: BABYLON.Scene; events: localEvents.Events; ui: GUI.AdvancedDynamicTexture }) => {
-    const { scene, events, ui } = props;
-    const textBlock = dialogues.dialogueBox({ ui });
-    const manager = new dialogues.DialogueManager({ scene, textBlock });
-
-    events.startCutscene$
-        .pipe(
-            take(1),
-            tap(() => events.dialogue$.next({ text: localDialogue.first })),
-        )
-        .subscribe();
-    events.dialogue$
-        .pipe(
-            tap(({ text }) => {
-                console.log(text);
-                manager.addText({ text });
-            }),
-            takeUntil(events.destroy$),
         )
         .subscribe();
 };
