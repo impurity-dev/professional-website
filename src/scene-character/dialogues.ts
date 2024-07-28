@@ -1,3 +1,4 @@
+import * as sharedDialogues from '../dialogues';
 const longName = 'Recruitment and Employment Companion Robot with Innovative Technological and Operational Nexus, 9000 Series Extended';
 const shortName = 'RECRUITRON-9000X';
 const callName = 'YOUR LORDSHIP';
@@ -6,7 +7,7 @@ const employerShortName = 'REAPER Corp';
 const employerLongName = 'Retrieval and Elimination of Adversaries for Profit Enforcement and Recovery Corporation';
 const outputName = 'Delta-9';
 
-export const robotStates = [
+export const robotStates: sharedDialogues.DialogueState[] = [
     { text: `<<BEGIN_GREETING>> Greetings, human! I am '${longName}' AKA ${shortName}! But you can call me ${callName} >:).` },
     { text: `What's your name?` },
     // input: ''.

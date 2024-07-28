@@ -2,7 +2,7 @@ import * as GUI from '@babylonjs/gui';
 import { interval, merge, Subject, takeUntil, tap } from 'rxjs';
 import * as sm from '../shared/state-machines';
 
-export type DialogueState = { text: string };
+export type DialogueState = { text: string; buttons?: string[]; input?: string };
 export type DialogueIndex = { index: number };
 export class StateMachine extends sm.StateMachine<DialogueState, DialogueIndex> {
     private readonly states: DialogueState[];
