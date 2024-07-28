@@ -2,7 +2,6 @@ import * as BABYLON from '@babylonjs/core';
 import { filter, take, tap } from 'rxjs';
 import * as sharedModels from '../models';
 import * as em from '../models/entity-manager.js';
-import { CharacterSelector } from './character-selectors.js';
 import * as localEvents from './events.js';
 import * as localModels from './models.js';
 
@@ -12,8 +11,11 @@ export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityMan
     pointLights({ scene });
     spotLights({ scene, target, events });
     cantina({ scene, entityManager });
-    characters({ scene, entityManager, target, events });
+    const characterLookup = characters({ scene, entityManager, target });
     cutscene({ scene, entityManager, target, events });
+    return {
+        characterLookup,
+    };
 };
 
 const pointLights = (props: { scene: BABYLON.Scene }) => {
@@ -87,7 +89,7 @@ const spotLights = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; even
     characterSpotlight.animations = [characterSpotlightAnim];
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index == 0),
+            filter((state) => state.type === 'dialogue' && state.diaglogue.index === 0),
             take(1),
             tap(() => scene.beginAnimation(characterSpotlight, 0, 60, false, 2)),
         )
@@ -111,9 +113,48 @@ const cantina = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager 
     return model;
 };
 
-const characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
-    const { scene, entityManager, target, events } = props;
-    return new CharacterSelector({ scene, entityManager, location: target, events });
+const characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3 }) => {
+    const { scene, entityManager, target } = props;
+    const lookup = {
+        male: {
+            adventurer: sharedModels.maleAdventurer({ scene, entityManager }),
+            beach: sharedModels.maleBeach({ scene, entityManager }),
+            casual: sharedModels.maleCasual({ scene, entityManager }),
+            farmer: sharedModels.maleFarmer({ scene, entityManager }),
+            hoodie: sharedModels.maleHoodie({ scene, entityManager }),
+            king: sharedModels.maleKing({ scene, entityManager }),
+            punk: sharedModels.malePunk({ scene, entityManager }),
+            spacesuit: sharedModels.maleSpacesuit({ scene, entityManager }),
+            suit: sharedModels.maleSuit({ scene, entityManager }),
+            swat: sharedModels.maleSwat({ scene, entityManager }),
+            worker: sharedModels.maleWorker({ scene, entityManager }),
+        },
+        female: {
+            adventurer: sharedModels.femaleAdventurer({ scene, entityManager }),
+            casual: sharedModels.femaleCasual({ scene, entityManager }),
+            formal: sharedModels.femaleFormal({ scene, entityManager }),
+            medieval: sharedModels.femaleMedieval({ scene, entityManager }),
+            punk: sharedModels.femalePunk({ scene, entityManager }),
+            sciFi: sharedModels.femaleSciFi({ scene, entityManager }),
+            soldier: sharedModels.femaleSoldier({ scene, entityManager }),
+            suit: sharedModels.femaleSuit({ scene, entityManager }),
+            witch: sharedModels.femaleWitch({ scene, entityManager }),
+            worker: sharedModels.femaleWorker({ scene, entityManager }),
+        },
+    };
+    Object.entries(lookup).forEach(([, chunk]) => {
+        Object.entries(chunk).forEach(([, model]) => {
+            model.transform.position = new BABYLON.Vector3(target.x, 0, target.z);
+            model.onLoad
+                .pipe(
+                    take(1),
+                    tap(() => model.animationGroups.find((a) => a.name === 'Idle').play(true)),
+                    tap(() => model.transform.setEnabled(false)),
+                )
+                .subscribe();
+        });
+    });
+    return lookup;
 };
 
 const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
@@ -138,7 +179,7 @@ const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager
 
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index == 0),
+            filter((state) => state.type === 'dialogue' && state.diaglogue.index == 0),
             take(1),
             tap(() => {
                 const walk = george.animationGroups.find((a) => a.name === 'Walk');

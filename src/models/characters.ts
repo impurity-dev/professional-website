@@ -14,33 +14,6 @@ export type CharacterType =
           gender: 'female';
           type: 'adventurer' | 'casual' | 'formal' | 'medieval' | 'punk' | 'sciFi' | 'soldier' | 'suit' | 'witch' | 'worker';
       };
-export type CharacterLookup = {
-    male: {
-        adventurer: models.Model;
-        beach: models.Model;
-        casual: models.Model;
-        farmer: models.Model;
-        hoodie: models.Model;
-        king: models.Model;
-        punk: models.Model;
-        spacesuit: models.Model;
-        suit: models.Model;
-        swat: models.Model;
-        worker: models.Model;
-    };
-    female: {
-        adventurer: models.Model;
-        casual: models.Model;
-        formal: models.Model;
-        medieval: models.Model;
-        punk: models.Model;
-        sciFi: models.Model;
-        soldier: models.Model;
-        suit: models.Model;
-        witch: models.Model;
-        worker: models.Model;
-    };
-};
 
 export class Character {
     private readonly model: models.Model;
@@ -74,36 +47,6 @@ export class Character {
     }
 }
 
-export const characterLookup = (props: { scene: BABYLON.Scene; entityManager: models.EntityManager }): CharacterLookup => {
-    const { scene, entityManager } = props;
-    return {
-        male: {
-            adventurer: maleAdventurer({ scene, entityManager }),
-            beach: maleBeach({ scene, entityManager }),
-            casual: maleCasual({ scene, entityManager }),
-            farmer: maleFarmer({ scene, entityManager }),
-            hoodie: maleHoodie({ scene, entityManager }),
-            king: maleKing({ scene, entityManager }),
-            punk: malePunk({ scene, entityManager }),
-            spacesuit: maleSpacesuit({ scene, entityManager }),
-            suit: maleSuit({ scene, entityManager }),
-            swat: maleSwat({ scene, entityManager }),
-            worker: maleWorker({ scene, entityManager }),
-        },
-        female: {
-            adventurer: femaleAdventurer({ scene, entityManager }),
-            casual: femaleCasual({ scene, entityManager }),
-            formal: femaleFormal({ scene, entityManager }),
-            medieval: femaleMedieval({ scene, entityManager }),
-            punk: femalePunk({ scene, entityManager }),
-            sciFi: femaleSciFi({ scene, entityManager }),
-            soldier: femaleSoldier({ scene, entityManager }),
-            suit: femaleSuit({ scene, entityManager }),
-            witch: femaleWitch({ scene, entityManager }),
-            worker: femaleWorker({ scene, entityManager }),
-        },
-    };
-};
 export const characterFactory = (props: { type: CharacterType; scene: BABYLON.Scene; entityManager: models.EntityManager }): models.Model => {
     const { type, scene, entityManager } = props;
     if (type.gender === 'male') {

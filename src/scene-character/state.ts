@@ -15,7 +15,7 @@ export class State extends states.State {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
         const target = new Vector3(4, 1, -5);
-        worlds.world({ scene, entityManager, target, events });
+        const { characterLookup } = worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
         events.state$
             .pipe(
@@ -24,7 +24,11 @@ export class State extends states.State {
             )
             .subscribe();
         const { dialogueTextBox } = guis.gui({ scene, events });
-        sm.stateMachine({ events, robot: { textBlock: dialogueTextBox } });
+        sm.stateMachine({
+            events,
+            robotSM: sm.robotSM({ events, textBlock: dialogueTextBox }),
+            selectionSM: sm.selectionSM({ events, lookup: characterLookup }),
+        });
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
