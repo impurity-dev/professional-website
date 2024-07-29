@@ -1,6 +1,9 @@
 import { LogLevelDesc } from 'loglevel';
 import * as gm from './game-manager';
-class Manager {
+
+const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
+
+class Global {
     // User
     isFullScreen = false;
     isVolumeEnabled = false;
@@ -20,10 +23,17 @@ class Manager {
     }
 }
 
-const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
-export const manager = new Manager({
+export const global = new Global({
     isWebGLSpectorEnabled: toBool(import.meta.env.VITE_ENABLE_WEBGL_SPECTOR),
     isBabylonInpectorEnabled: toBool(import.meta.env.VITE_ENABLE_BABYLON_INSPECTOR),
     logLevel: import.meta.env.VITE_LOG_LEVEL as LogLevelDesc,
     startScene: import.meta.env.VITE_START_SCENE as gm.GoToType,
 });
+
+class Game {
+    name: string;
+    email: string;
+    character: string;
+}
+
+export const game = new Game();

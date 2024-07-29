@@ -1,6 +1,6 @@
 import { Effect, Engine } from '@babylonjs/core';
 import { GameManager } from './managers/game-manager.js';
-import * as settings from './managers/settings-manager.js';
+import * as settings from './managers/settings.js';
 import dissolveFrag from './shaders/dissolve.fragment.fx?raw';
 import dissolveVert from './shaders/dissolve.vertex.fx?raw';
 import mandelbulbFrag from './shaders/mandelbulb.fragment.fx?raw';
@@ -17,10 +17,9 @@ class App {
     ) {}
 
     start = async (): Promise<void> => {
-        await document.fonts.ready;
-        await this.preload();
+        await Promise.all([document.fonts.ready, this.preload()]);
         window.addEventListener('resize', () => this.engine.resize());
-        await this.manager.goTo({ type: settings.manager.startScene });
+        await this.manager.goTo({ type: settings.global.startScene });
         this.engine.runRenderLoop(() => this.manager.state.render());
     };
 
