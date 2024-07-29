@@ -1,5 +1,5 @@
-import { Effect, Engine } from '@babylonjs/core';
-import { GameManager } from './managers/game-manager.js';
+import * as BABYLON from '@babylonjs/core';
+import * as gm from './managers/game-manager.js';
 import * as settings from './managers/settings.js';
 import dissolveFrag from './shaders/dissolve.fragment.fx?raw';
 import dissolveVert from './shaders/dissolve.vertex.fx?raw';
@@ -8,12 +8,12 @@ import mandelbulbVert from './shaders/mandelbulb.vertex.fx?raw';
 import portalFrag from './shaders/portal.fragment.fx?raw';
 import portalVert from './shaders/portal.vertex.fx?raw';
 import utils from './shaders/utils.fx?raw';
-import { LoadingScreen } from './shared/loading-screen.js';
+import * as loading from './shared/loading-screen.js';
 
 class App {
     constructor(
-        private readonly engine: Engine,
-        private readonly manager: GameManager,
+        private readonly engine: BABYLON.Engine,
+        private readonly manager: gm.GameManager,
     ) {}
 
     start = async (): Promise<void> => {
@@ -24,17 +24,17 @@ class App {
     };
 
     private preload = async () => {
-        Effect.RegisterShader('mandelbulb', mandelbulbFrag, mandelbulbVert);
-        Effect.RegisterShader('dissolve', dissolveFrag, dissolveVert);
-        Effect.RegisterShader('portal', portalFrag, portalVert);
-        Effect.IncludesShadersStore['utils'] = utils;
+        BABYLON.Effect.RegisterShader('mandelbulb', mandelbulbFrag, mandelbulbVert);
+        BABYLON.Effect.RegisterShader('dissolve', dissolveFrag, dissolveVert);
+        BABYLON.Effect.RegisterShader('portal', portalFrag, portalVert);
+        BABYLON.Effect.IncludesShadersStore['utils'] = utils;
     };
 }
 
 const loadingDiv = document.getElementById('loading-screen') as HTMLDivElement;
 const canvas = document.getElementById('game-screen') as HTMLCanvasElement;
-const engine = new Engine(canvas, true);
-engine.loadingScreen = new LoadingScreen(loadingDiv);
-const manager = new GameManager(canvas, engine);
+const engine = new BABYLON.Engine(canvas, true);
+engine.loadingScreen = new loading.LoadingScreen(loadingDiv);
+const manager = new gm.GameManager(canvas, engine);
 const app = new App(engine, manager);
 app.start();

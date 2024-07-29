@@ -1,3 +1,4 @@
+import * as localSm from './state-machines';
 import * as BABYLON from '@babylonjs/core';
 import { filter, take, tap } from 'rxjs';
 import * as sharedModels from '../models';
@@ -11,10 +12,10 @@ export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityMan
     pointLights({ scene });
     spotLights({ scene, target, events });
     cantina({ scene, entityManager });
-    const characterLookup = characters({ scene, entityManager, target });
+    const charactersList = characters({ scene, entityManager, target });
     cutscene({ scene, entityManager, target, events });
     return {
-        characterLookup,
+        charactersList,
     };
 };
 
@@ -115,46 +116,42 @@ const cantina = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager 
 
 const characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3 }) => {
     const { scene, entityManager, target } = props;
-    const lookup = {
-        male: {
-            adventurer: sharedModels.maleAdventurer({ scene, entityManager }),
-            beach: sharedModels.maleBeach({ scene, entityManager }),
-            casual: sharedModels.maleCasual({ scene, entityManager }),
-            farmer: sharedModels.maleFarmer({ scene, entityManager }),
-            hoodie: sharedModels.maleHoodie({ scene, entityManager }),
-            king: sharedModels.maleKing({ scene, entityManager }),
-            punk: sharedModels.malePunk({ scene, entityManager }),
-            spacesuit: sharedModels.maleSpacesuit({ scene, entityManager }),
-            suit: sharedModels.maleSuit({ scene, entityManager }),
-            swat: sharedModels.maleSwat({ scene, entityManager }),
-            worker: sharedModels.maleWorker({ scene, entityManager }),
-        },
-        female: {
-            adventurer: sharedModels.femaleAdventurer({ scene, entityManager }),
-            casual: sharedModels.femaleCasual({ scene, entityManager }),
-            formal: sharedModels.femaleFormal({ scene, entityManager }),
-            medieval: sharedModels.femaleMedieval({ scene, entityManager }),
-            punk: sharedModels.femalePunk({ scene, entityManager }),
-            sciFi: sharedModels.femaleSciFi({ scene, entityManager }),
-            soldier: sharedModels.femaleSoldier({ scene, entityManager }),
-            suit: sharedModels.femaleSuit({ scene, entityManager }),
-            witch: sharedModels.femaleWitch({ scene, entityManager }),
-            worker: sharedModels.femaleWorker({ scene, entityManager }),
-        },
-    };
-    Object.entries(lookup).forEach(([, chunk]) => {
-        Object.entries(chunk).forEach(([, model]) => {
-            model.transform.position = new BABYLON.Vector3(target.x, 0, target.z);
-            model.onLoad
-                .pipe(
-                    take(1),
-                    tap(() => model.animationGroups.find((a) => a.name === 'Idle').play(true)),
-                    tap(() => model.transform.setEnabled(false)),
-                )
-                .subscribe();
-        });
+    const list: localSm.CharacterMetadata[] = [
+        // Male
+        { type: 'adventurer', gender: 'male', model: sharedModels.maleAdventurer({ scene, entityManager }) },
+        { type: 'beach', gender: 'male', model: sharedModels.maleBeach({ scene, entityManager }) },
+        { type: 'casual', gender: 'male', model: sharedModels.maleCasual({ scene, entityManager }) },
+        { type: 'hoodie', gender: 'male', model: sharedModels.maleHoodie({ scene, entityManager }) },
+        { type: 'farmer', gender: 'male', model: sharedModels.maleFarmer({ scene, entityManager }) },
+        { type: 'king', gender: 'male', model: sharedModels.maleKing({ scene, entityManager }) },
+        { type: 'punk', gender: 'male', model: sharedModels.malePunk({ scene, entityManager }) },
+        { type: 'spacesuit', gender: 'male', model: sharedModels.maleSpacesuit({ scene, entityManager }) },
+        { type: 'suit', gender: 'male', model: sharedModels.maleSuit({ scene, entityManager }) },
+        { type: 'swat', gender: 'male', model: sharedModels.maleSwat({ scene, entityManager }) },
+        { type: 'worker', gender: 'male', model: sharedModels.maleWorker({ scene, entityManager }) },
+        // Female
+        { type: 'adventurer', gender: 'female', model: sharedModels.femaleAdventurer({ scene, entityManager }) },
+        { type: 'casual', gender: 'female', model: sharedModels.femaleCasual({ scene, entityManager }) },
+        { type: 'formal', gender: 'female', model: sharedModels.femaleFormal({ scene, entityManager }) },
+        { type: 'medieval', gender: 'female', model: sharedModels.femaleMedieval({ scene, entityManager }) },
+        { type: 'punk', gender: 'female', model: sharedModels.femalePunk({ scene, entityManager }) },
+        { type: 'sciFi', gender: 'female', model: sharedModels.femaleSciFi({ scene, entityManager }) },
+        { type: 'soldier', gender: 'female', model: sharedModels.femaleSoldier({ scene, entityManager }) },
+        { type: 'suit', gender: 'female', model: sharedModels.femaleSuit({ scene, entityManager }) },
+        { type: 'witch', gender: 'female', model: sharedModels.femaleWitch({ scene, entityManager }) },
+        { type: 'worker', gender: 'female', model: sharedModels.femaleWorker({ scene, entityManager }) },
+    ];
+    list.forEach(({ model }) => {
+        model.transform.position = new BABYLON.Vector3(target.x, 0, target.z);
+        model.onLoad
+            .pipe(
+                take(1),
+                tap(() => model.animationGroups.find((a) => a.name === 'Idle').play(true)),
+                tap(() => model.transform.setEnabled(false)),
+            )
+            .subscribe();
     });
-    return lookup;
+    return list;
 };
 
 const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {

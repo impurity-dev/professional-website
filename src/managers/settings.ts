@@ -1,15 +1,10 @@
 import { LogLevelDesc } from 'loglevel';
 import * as gm from './game-manager';
+import * as sharedModels from '../models';
 
-const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
+export const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
 
-class Global {
-    // User
-    isFullScreen = false;
-    isVolumeEnabled = false;
-    volume = 0;
-
-    // Dev
+export class Global {
     readonly isWebGLSpectorEnabled: boolean;
     readonly isBabylonInpectorEnabled: boolean;
     readonly logLevel: LogLevelDesc;
@@ -30,10 +25,19 @@ export const global = new Global({
     startScene: import.meta.env.VITE_START_SCENE as gm.GoToType,
 });
 
-class Game {
+export class Game {
     name: string;
     email: string;
-    character: string;
+    character: sharedModels.CharacterType;
+    isFullScreen: boolean;
+    isVolumeEnabled: boolean;
+    volume: number;
+
+    constructor() {
+        this.isFullScreen = false;
+        this.isVolumeEnabled = false;
+        this.volume = 0;
+    }
 }
 
 export const game = new Game();

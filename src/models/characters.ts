@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import { take, tap } from 'rxjs';
-import * as models from './';
+import * as models from '.';
 
 const femaleDirectory = 'assets/female-characters/';
 const maleDirectory = 'assets/male-characters/';

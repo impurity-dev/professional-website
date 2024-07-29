@@ -5,11 +5,12 @@ import * as sharedModels from '../models';
 import * as sm from '../shared/state-machines';
 import * as localDialogues from './dialogues';
 import * as localEvents from './events';
+import * as settings from '../managers/settings';
 
-export const stateMachine = (props: { events: localEvents.Events; textBlock: GUI.TextBlock; lookup: CharacterLookup }) =>
+export const stateMachine = (props: { events: localEvents.Events; textBlock: GUI.TextBlock; characters: CharacterMetadata[] }) =>
     new CharacterStateMachine({
         events: props.events,
-        selectionSM: new SelectionStateMachine({ lookup: props.lookup }),
+        selectionSM: new SelectionStateMachine({ characters: props.characters }),
         robotSM: new sharedDialogues.StateMachine({ destroy$: props.events.destroy$, states: localDialogues.robotStates, textBlock: props.textBlock }),
     });
 
@@ -26,11 +27,11 @@ export type CharacterState =
 type CharacterStateMachineProps = {
     events: localEvents.Events;
     robotSM: sm.StateMachine<sharedDialogues.DialogueState, sharedDialogues.DialogueIndex>;
-    selectionSM: sm.StateMachine<sharedModels.CharacterType, SelectionProps>;
+    selectionSM: sm.StateMachine<SelectionState, SelectionProps>;
 };
 export class CharacterStateMachine extends sm.StateMachine<CharacterState, CharacterState> {
     private readonly robotSM: sm.StateMachine<sharedDialogues.DialogueState, sharedDialogues.DialogueIndex>;
-    private readonly selectionSM: sm.StateMachine<sharedModels.CharacterType, SelectionProps>;
+    private readonly selectionSM: sm.StateMachine<SelectionState, SelectionProps>;
 
     constructor(props: CharacterStateMachineProps) {
         super();
@@ -70,52 +71,28 @@ export class CharacterStateMachine extends sm.StateMachine<CharacterState, Chara
     };
 }
 
-export type CharacterLookup = {
-    male: {
-        adventurer: sharedModels.Model;
-        beach: sharedModels.Model;
-        casual: sharedModels.Model;
-        farmer: sharedModels.Model;
-        hoodie: sharedModels.Model;
-        king: sharedModels.Model;
-        punk: sharedModels.Model;
-        spacesuit: sharedModels.Model;
-        suit: sharedModels.Model;
-        swat: sharedModels.Model;
-        worker: sharedModels.Model;
-    };
-    female: {
-        adventurer: sharedModels.Model;
-        casual: sharedModels.Model;
-        formal: sharedModels.Model;
-        medieval: sharedModels.Model;
-        punk: sharedModels.Model;
-        sciFi: sharedModels.Model;
-        soldier: sharedModels.Model;
-        suit: sharedModels.Model;
-        witch: sharedModels.Model;
-        worker: sharedModels.Model;
-    };
-};
+export type CharacterMetadata = { model: sharedModels.Model } & sharedModels.CharacterType;
+type SelectionState = { character: sharedModels.CharacterType };
+type SelectionProps = { index: number };
+class SelectionStateMachine extends sm.StateMachine<SelectionState, SelectionProps> {
+    private current: CharacterMetadata;
+    private readonly characters: CharacterMetadata[];
 
-type SelectionProps = { character: sharedModels.CharacterType };
-class SelectionStateMachine extends sm.StateMachine<sharedModels.CharacterType, SelectionProps> {
-    private character: sharedModels.Model;
-    private readonly lookup: CharacterLookup;
-
-    constructor(props: { lookup: CharacterLookup }) {
+    constructor(props: { characters: CharacterMetadata[] }) {
         super();
-        const { lookup } = props;
-        this.lookup = lookup;
+        this.characters = props.characters;
     }
 
     public goTo = async (props: SelectionProps): Promise<void> => {
-        this.setState(props.character);
+        this.setState({
+            character: this.characters[Math.abs(props.index) % this.characters.length],
+        });
     };
 
-    protected setState = async (state: sharedModels.CharacterType): Promise<void> => {
-        this.character?.transform.setEnabled(false);
-        this.character = this.lookup[state.gender][state.type];
-        this.character.transform.setEnabled(true);
+    protected setState = async (state: SelectionState): Promise<void> => {
+        this.current?.model.transform.setEnabled(false);
+        this.current = this.characters.find((character) => character.gender === state.character.gender && character.type === state.character.type);
+        this.current?.model.transform.setEnabled(true);
+        settings.game.character = state.character;
     };
 }

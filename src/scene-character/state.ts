@@ -15,7 +15,7 @@ export class State extends states.State {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
         const target = new BABYLON.Vector3(4, 1, -5);
-        const { characterLookup } = worlds.world({ scene, entityManager, target, events });
+        const { charactersList } = worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
         events.state$
             .pipe(
@@ -28,7 +28,7 @@ export class State extends states.State {
         sm.stateMachine({
             events,
             textBlock: dialogueTextBox,
-            lookup: characterLookup,
+            characters: charactersList,
         });
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });

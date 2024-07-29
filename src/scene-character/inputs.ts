@@ -16,25 +16,32 @@ export const controller = (props: { scene: BABYLON.Scene; events: localEvents.Ev
 const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceType.Keyboard>; events: localEvents.Events }) => {
     const { keyboard, events } = props;
     const SPACE = 32;
+    const A = 65;
+    const D = 68;
     let currentKey: string | undefined;
     fromBabylonObservable(keyboard.onInputChangedObservable)
         .pipe(
             withLatestFrom(events.state$),
-            filter(([, state]) => state.type === 'dialogue'),
             tap(([keyEvent, state]) => {
-                if (state.type !== 'dialogue') return;
-                if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
+                const isKey = (key: number) => keyboard.getInput(key) === 1 && keyEvent.type == 'keydown' && !currentKey;
+                if (state.type === 'dialogue' && isKey(SPACE)) {
                     currentKey = keyEvent.code;
                     if (state.props.index + 1 < localDialogues.robotStates.length) {
                         events.state$.next({
                             type: 'dialogue',
-                            props: {
-                                index: state.props.index + 1,
-                            },
+                            props: { index: state.props.index + 1 },
                         });
                     } else {
                         events.state$.next({ type: 'exit' });
                     }
+                }
+                if (state.type === 'selection' && isKey(A)) {
+                    currentKey = keyEvent.code;
+                    events.state$.next({ type: 'selection', props: { index: state.props.index - 1 } });
+                }
+                if (state.type === 'selection' && isKey(D)) {
+                    currentKey = keyEvent.code;
+                    events.state$.next({ type: 'selection', props: { index: state.props.index + 1 } });
                 }
                 if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
             }),
