@@ -2,7 +2,7 @@ import { interval, merge, Subject, takeUntil, tap } from 'rxjs';
 import * as sm from '../shared/state-machines';
 import * as sharedDialogues from '../dialogues';
 
-export type DialogueState = { text: string; buttons?: string[]; input?: string };
+export type DialogueState = { name: string; text: string; buttons?: string[]; input?: string };
 export type DialogueIndex = { index: number };
 export class StateMachine extends sm.StateMachine<DialogueState, DialogueIndex> {
     private readonly states: DialogueState[];
@@ -30,6 +30,7 @@ export class StateMachine extends sm.StateMachine<DialogueState, DialogueIndex> 
         this.dialogueBox.text = '';
         this.next$.next();
         const finished$ = new Subject<void>();
+        this.dialogueBox.title = state.name;
         interval(this.DIALOGUE_SPEED)
             .pipe(
                 tap(() => {

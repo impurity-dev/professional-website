@@ -8,10 +8,11 @@ import * as localModels from './models.js';
 
 export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
     const { scene, entityManager, target, events } = props;
-    globalLights({ scene });
-    pointLights({ scene });
+    const clubAnimation = clubAnimations();
+    globalLights({ scene, clubAnimation });
+    pointLights({ scene, clubAnimation });
     characterSpotLight({ scene, target, events });
-    clubSpotLight({ scene, target, events });
+    clubSpotLight({ scene, target, events, clubAnimation });
     cantina({ scene, entityManager });
     const characters = characterMetadata({ scene, entityManager, target });
     cutscene({ scene, entityManager, target, events });
@@ -20,32 +21,61 @@ export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityMan
     };
 };
 
-const pointLights = (props: { scene: BABYLON.Scene }) => {
-    const { scene } = props;
-    const light = new BABYLON.PointLight('light', new BABYLON.Vector3(0, 1, 1), scene);
-    light.intensity = 0.5;
-    light.radius = 10;
-    const color = new BABYLON.Color3(1, 0.5, 0);
-    light.diffuse = color;
-    light.specular = color;
+type ClubAnimation = {
+    color: BABYLON.Color3;
+    diffuseAnim: BABYLON.Animation;
+    specularAnim: BABYLON.Animation;
+};
+const clubAnimations = (): ClubAnimation => {
+    const color = new BABYLON.Color3(1, 0, 0);
     const colorKeys = [
         {
             frame: 0,
             value: color,
         },
         {
-            frame: 30,
+            frame: 10,
+            value: new BABYLON.Color3(1, 1, 0),
+        },
+        {
+            frame: 20,
             value: new BABYLON.Color3(1, 0, 1),
+        },
+        {
+            frame: 30,
+            value: new BABYLON.Color3(0, 1, 1),
+        },
+        {
+            frame: 40,
+            value: new BABYLON.Color3(0, 0, 1),
+        },
+        {
+            frame: 50,
+            value: new BABYLON.Color3(1, 1, 0),
         },
         {
             frame: 60,
             value: color,
         },
     ];
-    const diffuseAnim = new BABYLON.Animation('color', 'diffuse', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    const diffuseAnim = new BABYLON.Animation('color', 'diffuse', 60, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     diffuseAnim.setKeys(colorKeys);
-    const specularAnim = new BABYLON.Animation('color', 'specular', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    const specularAnim = new BABYLON.Animation('color', 'specular', 60, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     specularAnim.setKeys(colorKeys);
+    return {
+        color,
+        diffuseAnim,
+        specularAnim,
+    };
+};
+
+const pointLights = (props: { scene: BABYLON.Scene; clubAnimation: ClubAnimation }) => {
+    const { scene, clubAnimation } = props;
+    const light = new BABYLON.PointLight('light', new BABYLON.Vector3(0, 1, 1), scene);
+    light.intensity = 0.5;
+    light.radius = 10;
+    light.diffuse = clubAnimation.color;
+    light.specular = clubAnimation.color;
     const flickerAnim = new BABYLON.Animation('flicker', 'intensity', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     flickerAnim.setKeys([
         {
@@ -61,7 +91,7 @@ const pointLights = (props: { scene: BABYLON.Scene }) => {
             value: 5,
         },
     ]);
-    light.animations = [flickerAnim, specularAnim, diffuseAnim];
+    light.animations = [flickerAnim, clubAnimation.specularAnim, clubAnimation.diffuseAnim];
     scene.beginAnimation(light, 0, 60, true, 0.25);
 };
 
@@ -98,31 +128,12 @@ const characterSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vecto
         .subscribe();
 };
 
-const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
-    const { scene, target } = props;
+const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events; clubAnimation: ClubAnimation }) => {
+    const { scene, target, clubAnimation } = props;
     const clubStartDirection = new BABYLON.Vector3(0, -1, 5);
     const light = new BABYLON.SpotLight('clubSpotlight', new BABYLON.Vector3(target.x, target.y + 2, target.z), clubStartDirection, Math.PI / 12, 1, scene);
-    const color = new BABYLON.Color3(1, 0.5, 0);
-    light.diffuse = color;
-    light.specular = color;
-    const colorKeys = [
-        {
-            frame: 0,
-            value: color,
-        },
-        {
-            frame: 30,
-            value: new BABYLON.Color3(1, 0, 1),
-        },
-        {
-            frame: 60,
-            value: color,
-        },
-    ];
-    const diffuseAnim = new BABYLON.Animation('color', 'diffuse', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-    diffuseAnim.setKeys(colorKeys);
-    const specularAnim = new BABYLON.Animation('color', 'specular', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-    specularAnim.setKeys(colorKeys);
+    light.diffuse = clubAnimation.color;
+    light.specular = clubAnimation.color;
     light.intensity = 500;
     const clubSpotlightAnim = new BABYLON.Animation(
         'dimSpotlight',
@@ -138,17 +149,18 @@ const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; e
         { frame: 45, value: new BABYLON.Vector3(-5, -1, -5) },
         { frame: 60, value: clubStartDirection },
     ]);
-    light.animations = [clubSpotlightAnim, diffuseAnim, specularAnim];
+    light.animations = [clubSpotlightAnim, clubAnimation.diffuseAnim, clubAnimation.specularAnim];
     scene.beginAnimation(light, 0, 60, true, 0.5);
 };
 
-const globalLights = (props: { scene: BABYLON.Scene }) => {
-    const { scene } = props;
+const globalLights = (props: { scene: BABYLON.Scene; clubAnimation: ClubAnimation }) => {
+    const { scene, clubAnimation } = props;
     const light = new BABYLON.DirectionalLight('directionLight', new BABYLON.Vector3(0, 1, 1), scene);
     light.intensity = 0.5;
-    const color = new BABYLON.Color3(1, 0.5, 0);
-    light.diffuse = color;
-    light.specular = color;
+    light.diffuse = clubAnimation.color;
+    light.specular = clubAnimation.color;
+    light.animations = [clubAnimation.diffuseAnim, clubAnimation.specularAnim];
+    scene.beginAnimation(light, 0, 60, true, 0.5);
 };
 
 const cantina = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
