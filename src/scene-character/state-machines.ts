@@ -7,11 +7,11 @@ import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 import * as settings from '../managers/settings';
 
-export const stateMachine = (props: { events: localEvents.Events; textBlock: GUI.TextBlock; characters: CharacterMetadata[] }) =>
+export const stateMachine = (props: { events: localEvents.Events; dialogueBox: sharedDialogues.DialogueBox; characters: CharacterMetadata[] }) =>
     new CharacterStateMachine({
         events: props.events,
         selectionSM: new SelectionStateMachine({ characters: props.characters }),
-        robotSM: new sharedDialogues.StateMachine({ destroy$: props.events.destroy$, states: localDialogues.robotStates, textBlock: props.textBlock }),
+        robotSM: new sharedDialogues.StateMachine({ destroy$: props.events.destroy$, states: localDialogues.robotStates, dialogueBox: props.dialogueBox }),
     });
 
 export type CharacterState =

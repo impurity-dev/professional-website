@@ -15,7 +15,7 @@ export class State extends states.State {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
         const target = new BABYLON.Vector3(4, 1, -5);
-        const { charactersList } = worlds.world({ scene, entityManager, target, events });
+        const { characters } = worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
         events.state$
             .pipe(
@@ -24,12 +24,8 @@ export class State extends states.State {
                 tap(() => this.gameManager.goTo({ type: 'launch' })),
             )
             .subscribe();
-        const { dialogueTextBox } = guis.gui({ scene, events });
-        sm.stateMachine({
-            events,
-            textBlock: dialogueTextBox,
-            characters: charactersList,
-        });
+        const { dialogueBox } = guis.gui({ scene, events });
+        sm.stateMachine({ events, dialogueBox, characters });
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });

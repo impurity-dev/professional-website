@@ -9,11 +9,11 @@ export const gui = (props: { scene: BABYLON.Scene; events: localEvents.Events })
     const ui = createUI({ scene });
     const title = createTitle({ ui });
     const instructions = createInstructions({ ui });
-    const dialogueTextBox = dialogues.dialogueBox({ ui });
+    const dialogueBox = createDialogueBox({ ui, events });
     const startCutSceneButton = createStartCutSceneButton({ ui, events });
     animateOnStartCutscene({ scene, events, title, instructions, startCutSceneButton });
     return {
-        dialogueTextBox,
+        dialogueBox,
     };
 };
 
@@ -22,6 +22,20 @@ const createUI = (props: { scene: BABYLON.Scene }) => {
     const ui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
     ui.idealHeight = 1080;
     return ui;
+};
+
+const createDialogueBox = (props: { ui: GUI.AdvancedDynamicTexture; events: localEvents.Events }) => {
+    const { ui, events } = props;
+    const dialogueBox = new dialogues.DialogueBox({ ui });
+    dialogueBox.toggle(false);
+    events.state$
+        .pipe(
+            filter((state) => state.type === 'dialogue' && state.props.index === 0),
+            take(1),
+            tap(() => dialogueBox.toggle(true)),
+        )
+        .subscribe();
+    return dialogueBox;
 };
 
 const createTitle = (props: { ui: GUI.AdvancedDynamicTexture }) => {

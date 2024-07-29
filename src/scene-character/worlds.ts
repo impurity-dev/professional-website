@@ -10,12 +10,13 @@ export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityMan
     const { scene, entityManager, target, events } = props;
     globalLights({ scene });
     pointLights({ scene });
-    spotLights({ scene, target, events });
+    characterSpotLight({ scene, target, events });
+    clubSpotLight({ scene, target, events });
     cantina({ scene, entityManager });
-    const charactersList = characters({ scene, entityManager, target });
+    const characters = characterMetadata({ scene, entityManager, target });
     cutscene({ scene, entityManager, target, events });
     return {
-        charactersList,
+        characters,
     };
 };
 
@@ -64,7 +65,7 @@ const pointLights = (props: { scene: BABYLON.Scene }) => {
     scene.beginAnimation(light, 0, 60, true, 0.25);
 };
 
-const spotLights = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
+const characterSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
     const { scene, target, events } = props;
     const characterSpotlight = new BABYLON.SpotLight(
         'characterSpotlight',
@@ -97,6 +98,50 @@ const spotLights = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; even
         .subscribe();
 };
 
+const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
+    const { scene, target } = props;
+    const clubStartDirection = new BABYLON.Vector3(0, -1, 5);
+    const light = new BABYLON.SpotLight('clubSpotlight', new BABYLON.Vector3(target.x, target.y + 2, target.z), clubStartDirection, Math.PI / 12, 1, scene);
+    const color = new BABYLON.Color3(1, 0.5, 0);
+    light.diffuse = color;
+    light.specular = color;
+    const colorKeys = [
+        {
+            frame: 0,
+            value: color,
+        },
+        {
+            frame: 30,
+            value: new BABYLON.Color3(1, 0, 1),
+        },
+        {
+            frame: 60,
+            value: color,
+        },
+    ];
+    const diffuseAnim = new BABYLON.Animation('color', 'diffuse', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    diffuseAnim.setKeys(colorKeys);
+    const specularAnim = new BABYLON.Animation('color', 'specular', 30, BABYLON.Animation.ANIMATIONTYPE_COLOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    specularAnim.setKeys(colorKeys);
+    light.intensity = 500;
+    const clubSpotlightAnim = new BABYLON.Animation(
+        'dimSpotlight',
+        'direction',
+        60,
+        BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+        BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE,
+    );
+    clubSpotlightAnim.setKeys([
+        { frame: 0, value: clubStartDirection },
+        { frame: 15, value: new BABYLON.Vector3(5, -1, 5) },
+        { frame: 30, value: new BABYLON.Vector3(5, -1, -5) },
+        { frame: 45, value: new BABYLON.Vector3(-5, -1, -5) },
+        { frame: 60, value: clubStartDirection },
+    ]);
+    light.animations = [clubSpotlightAnim, diffuseAnim, specularAnim];
+    scene.beginAnimation(light, 0, 60, true, 0.5);
+};
+
 const globalLights = (props: { scene: BABYLON.Scene }) => {
     const { scene } = props;
     const light = new BABYLON.DirectionalLight('directionLight', new BABYLON.Vector3(0, 1, 1), scene);
@@ -114,7 +159,7 @@ const cantina = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager 
     return model;
 };
 
-const characters = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3 }) => {
+const characterMetadata = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3 }) => {
     const { scene, entityManager, target } = props;
     const list: localSm.CharacterMetadata[] = [
         // Male
