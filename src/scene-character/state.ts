@@ -1,4 +1,5 @@
-import { Vector3 } from '@babylonjs/core';
+import * as BABYLON from '@babylonjs/core';
+import { filter, take, tap } from 'rxjs';
 import * as states from '../managers/states.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as cameras from './cameras.js';
@@ -13,15 +14,22 @@ export class State extends states.State {
     async run(): Promise<void> {
         const { scene, entityManager, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
-        const target = new Vector3(4, 1, -5);
-        worlds.world({ scene, entityManager, target, events });
+        const target = new BABYLON.Vector3(4, 1, -5);
+        const { characters } = worlds.world({ scene, entityManager, target, events });
         const load = this.entityManager.load();
-        const { dialogueTextBox } = guis.gui({ scene, events });
-        sm.stateMachine({ events, robot: { textBlock: dialogueTextBox } });
+        events.state$
+            .pipe(
+                filter((state) => state.type === 'exit'),
+                take(1),
+                tap(() => this.gameManager.goTo({ type: 'launch' })),
+            )
+            .subscribe();
+        const { dialogueBox } = guis.gui({ scene, events });
+        sm.stateMachine({ events, dialogueBox, characters });
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
-        skyboxes.purpleSpace({ scene });
+        scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
         await load;
     }
 }

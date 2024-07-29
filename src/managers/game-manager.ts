@@ -9,7 +9,7 @@ import * as practiceScene from '../scene-practice/state.js';
 import * as startScene from '../scene-start/state.js';
 import * as logger from '../shared/logger.js';
 import * as sm from '../shared/state-machines.js';
-import * as settings from './settings-manager.js';
+import * as settings from './settings.js';
 import * as states from './states.js';
 
 export type GoToType = 'menu' | 'orbit' | 'launch' | 'travel' | 'orbit' | 'practice' | 'map' | 'hub' | 'fighter' | 'credits' | 'character';
@@ -20,7 +20,7 @@ export class GameManager extends sm.StateMachine<states.State, GoToProps> {
         public readonly engine: BABYLON.Engine,
     ) {
         super();
-        if (settings.manager.isWebGLSpectorEnabled) {
+        if (settings.global.isWebGLSpectorEnabled) {
             new SPECTOR.Spector().displayUI();
         }
     }

@@ -1,12 +1,10 @@
 import { LogLevelDesc } from 'loglevel';
 import * as gm from './game-manager';
-class Manager {
-    // User
-    isFullScreen = false;
-    isVolumeEnabled = false;
-    volume = 0;
+import * as sharedModels from '../models';
 
-    // Dev
+export const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
+
+export class Global {
     readonly isWebGLSpectorEnabled: boolean;
     readonly isBabylonInpectorEnabled: boolean;
     readonly logLevel: LogLevelDesc;
@@ -20,10 +18,26 @@ class Manager {
     }
 }
 
-const toBool = (str: string): boolean => (str === 'false' ? false : !!str);
-export const manager = new Manager({
+export const global = new Global({
     isWebGLSpectorEnabled: toBool(import.meta.env.VITE_ENABLE_WEBGL_SPECTOR),
     isBabylonInpectorEnabled: toBool(import.meta.env.VITE_ENABLE_BABYLON_INSPECTOR),
     logLevel: import.meta.env.VITE_LOG_LEVEL as LogLevelDesc,
     startScene: import.meta.env.VITE_START_SCENE as gm.GoToType,
 });
+
+export class Game {
+    name: string;
+    email: string;
+    character: sharedModels.CharacterType;
+    isFullScreen: boolean;
+    isVolumeEnabled: boolean;
+    volume: number;
+
+    constructor() {
+        this.isFullScreen = false;
+        this.isVolumeEnabled = false;
+        this.volume = 0;
+    }
+}
+
+export const game = new Game();

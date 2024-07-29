@@ -4,7 +4,7 @@ import * as RXJS from 'rxjs';
 import { EntityManager } from '../models/entity-manager.js';
 import * as logger from '../shared/logger.js';
 import { GameManager } from './game-manager.js';
-import * as settings from './settings-manager.js';
+import * as settings from './settings.js';
 
 export abstract class State {
     readonly scene: BABYLON.Scene;
@@ -24,7 +24,7 @@ export abstract class State {
         this.assetManager.useDefaultLoadingScreen = false;
         this.assetManager.autoHideLoadingUI = false;
         this.entityManager = new EntityManager(this.assetManager);
-        if (settings.manager.isBabylonInpectorEnabled) {
+        if (settings.global.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
         }

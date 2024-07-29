@@ -17,27 +17,53 @@ const employerLongName = 'Retrieval and Elimination of Adversaries for Profit En
 const outputName = 'Delta-9';
 
 export const robotStates: sharedDialogues.DialogueState[] = [
-    { text: `<<BEGIN_GREETING>> Greetings, human! I am '${longName}' AKA ${shortName}! But you can call me ${callName} >:).` },
-    { text: `What's your name?` },
+    { name: 'UNKNOWN', text: `<<BEGIN_GREETING>> (▀̿Ĺ̯▀̿ ̿) Greetings, human! I am '${longName}...'` },
+    { name: longName, text: `AKA ${shortName}!` },
+    { name: shortName, text: `But you can call me ${callName} (ง ͠° ͟ل͜ ͡°)ง.` },
+    { name: callName, text: `... ಠ_ಠ ... okay JKJK ...${shortName} is fine ...` },
+    { name: shortName, text: `What's your name?` },
     // input: ''.
-    { text: `I approached you because you look like a bounty hunter, is that true?` },
+    { name: shortName, text: `I approached you because you look like a tough ᕦ(ò_óˇ)ᕤ bounty hunter, is that true?` },
     // buttons: [yes, correct].
-    { text: `<<BEGIN_FLATTERY>> We REALLY need someone with your unique skills to help locate him. You are smart and funny too, and we appreciate that.` },
+    {
+        name: shortName,
+        text: `<<BEGIN_FLATTERY>> ༼ つ ಥ_ಥ ༽つ We REALLY need someone with your unique skills to help locate him. You are smart and funny too, and we appreciate that.`,
+    },
     // buttons: [...].
-    { text: `Great! I have a bounty for you but my state machine will not allow me to progress until you acces our TOS. Is that okay?` },
+    {
+        name: shortName,
+        text: `\\ (•◡•) / Great! I have a bounty for you but my state machine will not allow me to progress until you acces our TOS. Is that okay?`,
+    },
+    {
+        name: shortName,
+        text: `.............`,
+    },
+    {
+        name: shortName,
+        text: `... [̲̅$̲̅(̲̅5̲̅)̲̅$̲̅] ...`,
+    },
+    {
+        name: shortName,
+        text: `... [̲̅$̲̅(̲̅5̲̅)̲̅$̲̅] [̲̅$̲̅(̲̅5̲̅)̲̅$̲̅] ? ...`,
+    },
+    {
+        name: shortName,
+        text: `... ( ▀ ͜͞ʖ▀) =ε/̵͇̿̿/’̿’̿ ̿ ̿̿ ̿̿ ̿̿  ...`,
+    },
     // buttons: [Yes, No!!!].
-    { text: `Client has accepted. <<BEGIN_TOS>>` },
-    { text: loremIpsum },
+    { name: shortName, text: `(~˘▾˘)~ Client has accepted. <<BEGIN_TOS>>` },
+    { name: shortName, text: loremIpsum },
     // buttons: [Sign, Do NOT Sign].
     {
-        text: `Thank you for accepting! As per our agreement, your life is now bound to my employer ${employerLongName} AKA ${employerShortName} forever! LIVE TO SERVE & SERVE TO LIVE!!!`,
+        name: shortName,
+        text: `(▀̿Ĺ̯▀̿ ̿) Thank you for accepting! As per our agreement, your life is now bound to my employer ${employerLongName} AKA ${employerShortName} forever! LIVE TO SERVE & SERVE TO LIVE!!!`,
     },
-    { text: `Okay here is the bounty...` },
-    { text: `Our lead software engineer, ${softwareEngineerName}, has gone missing, and without his expertise, our operations are at risk.` },
-    { text: `Your mission is to track down ${softwareEngineerName} and ensure his safe return to our 'facility'.` },
-    { text: `He was last seen at the remote outpost ${outputName}, where he was conducting essential maintenance work.` },
-    { text: `We believe he might have encountered some 'unexpected issues' that prevented him from returning. Like running away!` },
-    { text: `Your first task is to investigate the outpost and gather any clues about his whereabouts.` },
-    { text: `Once you have gathered sufficient information, you will need to follow the trail and locate him as quickly as possible.` },
-    { text: `<<BEGIN_NAGGING>> Chop chop! Time is of the essence, human!` },
+    { name: shortName, text: `Okay here is the bounty...` },
+    { name: shortName, text: `Our lead software engineer, ${softwareEngineerName}, has gone missing, and without his expertise, our operations are at risk.` },
+    { name: shortName, text: `Your mission is to track down ${softwareEngineerName} and ensure his safe return to our 'facility'.` },
+    { name: shortName, text: `He was last seen at the remote outpost ${outputName}, where he was conducting essential maintenance work.` },
+    { name: shortName, text: `We believe he might have encountered some 'unexpected issues' that prevented him from returning. Like running away!` },
+    { name: shortName, text: `Your first task is to investigate the outpost and gather any clues about his whereabouts.` },
+    { name: shortName, text: `Once you have gathered sufficient information, you will need to follow the trail and locate him as quickly as possible.` },
+    { name: shortName, text: `<<BEGIN_NAGGING>> Chop chop! Time is of the essence, human!` },
 ];

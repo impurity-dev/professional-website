@@ -23,7 +23,7 @@ export const mainCamera = (props: { scene: BABYLON.Scene; target: BABYLON.Vector
     camera.animations = [startAnimation];
     events.state$
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index === 0),
+            filter((state) => state.type === 'dialogue' && state.props.index === 0),
             take(1),
             tap(() => scene.beginAnimation(camera, 0, 60, false, 1.7)),
         )

@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
-import { filter, take, takeUntil, tap, withLatestFrom } from 'rxjs';
+import { filter, takeUntil, tap, withLatestFrom } from 'rxjs';
 import { fromBabylonObservable } from '../shared/utils';
+import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 
 export const controller = (props: { scene: BABYLON.Scene; events: localEvents.Events }) => {
@@ -15,28 +16,36 @@ export const controller = (props: { scene: BABYLON.Scene; events: localEvents.Ev
 const handleKeyboard = (props: { keyboard: BABYLON.DeviceSource<BABYLON.DeviceType.Keyboard>; events: localEvents.Events }) => {
     const { keyboard, events } = props;
     const SPACE = 32;
+    const A = 65;
+    const D = 68;
     let currentKey: string | undefined;
-    const input$ = fromBabylonObservable(keyboard.onInputChangedObservable);
-    const handleTextChange = () => {
-        input$
-            .pipe(
-                withLatestFrom(events.state$),
-                tap(([keyEvent, state]) => {
-                    if (keyboard.getInput(SPACE) === 1 && keyEvent.type == 'keydown' && !currentKey) {
-                        currentKey = keyEvent.code;
-                        events.state$.next({ type: 'dialogue', index: state.type !== 'dialogue' ? 0 : state.index + 1 });
-                    }
-                    if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
-                }),
-                takeUntil(events.destroy$),
-            )
-            .subscribe();
-    };
-    events.state$
+    fromBabylonObservable(keyboard.onInputChangedObservable)
         .pipe(
-            filter((state) => state.type === 'dialogue' && state.index === 0),
-            take(1),
-            tap(() => handleTextChange()),
+            withLatestFrom(events.state$),
+            tap(([keyEvent, state]) => {
+                const isKey = (key: number) => keyboard.getInput(key) === 1 && keyEvent.type == 'keydown' && !currentKey;
+                if (state.type === 'dialogue' && isKey(SPACE)) {
+                    currentKey = keyEvent.code;
+                    if (state.props.index + 1 < localDialogues.robotStates.length) {
+                        events.state$.next({
+                            type: 'dialogue',
+                            props: { index: state.props.index + 1 },
+                        });
+                    } else {
+                        events.state$.next({ type: 'exit' });
+                    }
+                }
+                if (state.type === 'selection' && isKey(A)) {
+                    currentKey = keyEvent.code;
+                    events.state$.next({ type: 'selection', props: { index: state.props.index - 1 } });
+                }
+                if (state.type === 'selection' && isKey(D)) {
+                    currentKey = keyEvent.code;
+                    events.state$.next({ type: 'selection', props: { index: state.props.index + 1 } });
+                }
+                if (keyEvent.type == 'keyup' && currentKey == keyEvent.code) currentKey = undefined;
+            }),
+            takeUntil(events.destroy$),
         )
         .subscribe();
 };
