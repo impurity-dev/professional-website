@@ -4,7 +4,7 @@ import * as skyboxes from '../shared/skyboxes.js';
 import * as inputs from './inputs.js';
 import * as BABYLON from '@babylonjs/core';
 
-export class LaunchState extends states.State {
+export class State extends states.State {
     async run(): Promise<void> {
         const { scene, entityManager } = this;
         new worlds.LaunchWorld({ scene, entityManager });

@@ -2,12 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 
 export const purpleSpace = (props: { scene: BABYLON.Scene }) => {
     const { scene } = props;
-    return skybox({ scene, file: 'skyboxes/purple', id: 'purple-skybox' });
-};
-
-export const yellowSpace = (props: { scene: BABYLON.Scene }) => {
-    const { scene } = props;
-    return skybox({ scene, file: 'skyboxes/yellow', id: 'yellow-skybox' });
+    return skybox({ scene, file: 'skyboxes/purple/skybox', id: 'purple-skybox' });
 };
 
 const skybox = (props: { file: string; scene: BABYLON.Scene; id: string }) => {

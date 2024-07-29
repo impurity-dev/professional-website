@@ -29,7 +29,7 @@ export class State extends states.State {
         cameras.mainCamera({ scene, target, events });
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
-        scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
+        skyboxes.purpleSpace({ scene });
         await load;
     }
 }
