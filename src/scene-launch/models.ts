@@ -137,3 +137,20 @@ export class Cockpit extends models.Model {
         this.scene.beginAnimation(this.steering, 0, 60, false, 0.5);
     };
 }
+
+export const skyCorridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
+    const { scene, entityManager } = props;
+    return new SkyCorridor({ scene, entityManager });
+};
+
+export class SkyCorridor extends models.Model {
+    constructor(props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) {
+        const { scene, entityManager } = props;
+        super({ name: 'sky-corridor', scene, entityManager, asset: { file: 'sky_corridor_4k.glb', directory: 'assets/sky-corridor/' } });
+        this.onLoad.subscribe(() => console.log(this.transform.getChildMeshes().map((m) => m.name)));
+    }
+
+    get straight() {
+        return this.transform.getChildMeshes().find((m) => m.name === 'apples');
+    }
+}
