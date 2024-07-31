@@ -59,6 +59,7 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
         .pipe(
             filter((state) => state.type === 'launch'),
             take(1),
+            mergeMap(() => cockpit.changeThrottle$(Math.PI / 4)),
             mergeMap(() => cockpit.launch$(new BABYLON.Vector3(0, 0, 10000))),
             tap(() => events.state$.next({ type: 'space' })),
             takeUntil(events.destroy$),
