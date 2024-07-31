@@ -6,7 +6,7 @@ import * as worlds from './worlds.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as inputs from './inputs.js';
 import * as BABYLON from '@babylonjs/core';
-import { delay, Observable, take, tap } from 'rxjs';
+import { delay, take, tap } from 'rxjs';
 
 export class State extends states.State {
     async run(): Promise<void> {
@@ -17,9 +17,10 @@ export class State extends states.State {
         sm.launchSequence({ events });
         const { playerCamera } = cameras.playerCamera({
             scene,
-            location: new BABYLON.Vector3(0, 2.75, -1.5),
-            target: new BABYLON.Vector3(0, 1, 25),
+            location: new BABYLON.Vector3(0, 2.6, -1.3),
+            target: new BABYLON.Vector3(0, 0.85, 25),
             parent: cockpit.transform,
+            events,
         });
         inputs.controls({ camera: playerCamera });
         skyboxes.purpleSpace({ scene });
@@ -27,8 +28,10 @@ export class State extends states.State {
         events.state$
             .pipe(
                 take(1),
-                delay(5000),
-                tap(() => events.state$.next({ type: 'launch' })),
+                delay(1_000),
+                tap(() => events.state$.next({ type: 'dialogue' })),
+                delay(1_000),
+                tap(() => events.state$.next({ type: 'monitors' })),
             )
             .subscribe();
     }

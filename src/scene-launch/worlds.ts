@@ -1,9 +1,8 @@
-import * as animations from './animations';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import * as models from './models.js';
-import { filter, skip, take, takeUntil, tap } from 'rxjs';
+import { delay, filter, flatMap, map, mapTo, mergeMap, skip, switchMapTo, take, takeUntil, tap } from 'rxjs';
 
 export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
     const { scene, entityManager, events } = props;
@@ -28,17 +27,40 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
     const cockpit = models.cockpit({ scene, entityManager });
     cockpit.transform.position = new BABYLON.Vector3(-1, 0, 0);
     cockpit.transform.scaling = new BABYLON.Vector3(10, 10, 10);
+    cockpit.onLoad
+        .pipe(
+            take(1),
+            tap(() => {
+                cockpit.monitors.visibility = 0;
+            }),
+        )
+        .subscribe();
+    events.state$
+        .pipe(
+            filter((state) => state.type === 'monitors'),
+            take(1),
+            mergeMap(() => cockpit.flickerMonitors$()),
+            delay(5_000),
+            tap(() => events.state$.next({ type: 'engines' })),
+            takeUntil(events.destroy$),
+        )
+        .subscribe();
+    events.state$
+        .pipe(
+            filter((state) => state.type === 'engines'),
+            take(1),
+            mergeMap(() => cockpit.engineStart$()),
+            delay(5_000),
+            tap(() => events.state$.next({ type: 'launch' })),
+            takeUntil(events.destroy$),
+        )
+        .subscribe();
     events.state$
         .pipe(
             filter((state) => state.type === 'launch'),
             take(1),
-            tap(() => {
-                const start = cockpit.transform.position;
-                const end = new BABYLON.Vector3().addInPlace(start).add(new BABYLON.Vector3(0, 0, 10000));
-                const animation = animations.engineStart({ start, end });
-                cockpit.transform.animations = [animation];
-                scene.beginAnimation(cockpit.transform, 0, 60, false, 1);
-            }),
+            mergeMap(() => cockpit.launch$(new BABYLON.Vector3(0, 0, 10000))),
+            tap(() => events.state$.next({ type: 'space' })),
             takeUntil(events.destroy$),
         )
         .subscribe();

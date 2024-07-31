@@ -2,16 +2,12 @@ import { take, takeUntil, tap } from 'rxjs';
 import * as sm from '../shared/state-machines';
 import * as localEvents from './events';
 
-export const launchSequence = (props: { events: localEvents.Events }) => new LaunchSequence({ events: props.events, states: launchStates });
-export type LaunchState = { type: 'enter' | 'dialogue' | 'start' | 'move' | 'engines' | 'launch' };
-const launchStates: LaunchState[] = [{ type: 'enter' }, { type: 'dialogue' }, { type: 'start' }, { type: 'move' }, { type: 'engines' }, { type: 'launch' }];
+export const launchSequence = (props: { events: localEvents.Events }) => new LaunchSequence({ events: props.events });
+export type LaunchState = { type: 'enter' | 'dialogue' | 'monitors' | 'engines' | 'launch' | 'space' };
 class LaunchSequence extends sm.StateMachine<LaunchState, LaunchState> {
-    private readonly states: LaunchState[];
-
-    constructor(props: { events: localEvents.Events; states: LaunchState[] }) {
+    constructor(props: { events: localEvents.Events }) {
         super();
-        const { states, events } = props;
-        this.states = states;
+        const { events } = props;
         events.start$
             .pipe(
                 take(1),

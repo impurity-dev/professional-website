@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager';
 import * as models from '../models/models.js';
+import { Observable, Subject } from 'rxjs';
 
 export const cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
     const { scene, entityManager } = props;
@@ -61,7 +62,38 @@ export class Cockpit extends models.Model {
         return this._steering;
     }
 
-    flickerMonitorsAsync = () => {
+    launch$ = (end: BABYLON.Vector3) => {
+        const animation = new BABYLON.Animation(
+            'engineStart',
+            'position',
+            60,
+            BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+            true,
+        );
+        const ease = new BABYLON.ExponentialEase();
+        ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIN);
+        animation.setEasingFunction(ease);
+        animation.setKeys([
+            {
+                frame: 0,
+                value: this.transform.position,
+            },
+            {
+                frame: 60,
+                value: new BABYLON.Vector3().add(this.transform.position).add(end),
+            },
+        ]);
+        this.transform.animations = [animation];
+        const finished$ = new Subject<void>();
+        this.scene.beginAnimation(this.transform, 0, 60, false, 1, () => {
+            finished$.next();
+            finished$.complete();
+        });
+        return finished$;
+    };
+
+    flickerMonitors$ = (): Observable<void> => {
         const animation = new BABYLON.Animation(
             'flicker',
             'visibility',
@@ -84,7 +116,12 @@ export class Cockpit extends models.Model {
         ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
         animation.setEasingFunction(ease);
         this.monitors.animations = [animation];
-        this.scene.beginAnimation(this.monitors, 0, 100, false, 1);
+        const finished$ = new Subject<void>();
+        this.scene.beginAnimation(this.monitors, 0, 100, false, 1, () => {
+            finished$.next();
+            finished$.complete();
+        });
+        return finished$;
     };
 
     /**
@@ -92,7 +129,7 @@ export class Cockpit extends models.Model {
      * neutral, and 45 pushes it forward.
      * @param radians - radians to control where the throttle is.
      */
-    changeThrottleAsync = (radians: number) => {
+    changeThrottle$ = (radians: number): Observable<void> => {
         const animation = new BABYLON.Animation(
             'throttle',
             'rotation.x',
@@ -109,7 +146,12 @@ export class Cockpit extends models.Model {
         animation.setEasingFunction(ease);
         animation.setKeys(keys);
         this.throttle.animations = [animation];
-        this.scene.beginAnimation(this.throttle, 0, 60, false, 0.5);
+        const finished$ = new Subject<void>();
+        this.scene.beginAnimation(this.throttle, 0, 60, false, 0.5, () => {
+            finished$.next();
+            finished$.complete();
+        });
+        return finished$;
     };
 
     /**
@@ -117,7 +159,7 @@ export class Cockpit extends models.Model {
      * neutral, and 45 pushes it forward.
      * @param radians - radians to control where the throttle is.
      */
-    changeSteeringAsync = (radians: number) => {
+    changeSteering$ = (radians: number): Observable<void> => {
         const animation = new BABYLON.Animation(
             'steering',
             'rotation.x',
@@ -134,7 +176,37 @@ export class Cockpit extends models.Model {
         animation.setEasingFunction(ease);
         animation.setKeys(keys);
         this.steering.animations = [animation];
-        this.scene.beginAnimation(this.steering, 0, 60, false, 0.5);
+        const finished$ = new Subject<void>();
+        this.scene.beginAnimation(this.steering, 0, 60, false, 0.5, () => {
+            finished$.next();
+            finished$.complete();
+        });
+        return finished$;
+    };
+
+    engineStart$ = (): Observable<void> => {
+        const animation = new BABYLON.Animation(
+            'steering',
+            'position.y',
+            60,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+        );
+        const keys = [
+            { frame: 0, value: this.transform.position.y },
+            { frame: 60, value: this.transform.position.y - 2 },
+        ];
+        const ease = new BABYLON.QuadraticEase();
+        ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
+        animation.setEasingFunction(ease);
+        animation.setKeys(keys);
+        this.transform.animations = [animation];
+        const finished$ = new Subject<void>();
+        this.scene.beginAnimation(this.transform, 0, 60, false, 1, () => {
+            finished$.next();
+            finished$.complete();
+        });
+        return finished$;
     };
 }
 
