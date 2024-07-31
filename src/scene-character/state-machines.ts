@@ -41,9 +41,7 @@ export class CharacterStateMachine extends sm.StateMachine<CharacterState, Chara
         events.start$
             .pipe(
                 take(1),
-                tap(() => {
-                    events.state$.pipe(tap(this.goTo), takeUntil(events.destroy$)).subscribe();
-                }),
+                tap(() => events.state$.pipe(tap(this.goTo), takeUntil(events.destroy$)).subscribe()),
             )
             .subscribe();
     }

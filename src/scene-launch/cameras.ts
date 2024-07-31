@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 
-export const cockpitController = (props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3 }) => {
+export const playerCamera = (props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3 }) => {
     const { scene, location, target } = props;
     const camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
     camera.target = target;
@@ -13,4 +13,5 @@ export const cockpitController = (props: { scene: BABYLON.Scene; location: BABYL
     camera.keysDown.push(83);
     camera.keysRight.push(68);
     scene.activeCamera = camera;
+    return camera;
 };

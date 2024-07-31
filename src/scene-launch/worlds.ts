@@ -1,9 +1,10 @@
+import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import * as models from './models.js';
 
-export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
+export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
+    const { scene, entityManager, events } = props;
     createLights({ scene });
     const cockpit = createCockpit({ scene, entityManager });
     createCorridor({ scene, entityManager });
