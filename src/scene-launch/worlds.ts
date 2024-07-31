@@ -1,12 +1,14 @@
+import * as animations from './animations';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import * as models from './models.js';
+import { filter, skip, take, takeUntil, tap } from 'rxjs';
 
 export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
     const { scene, entityManager, events } = props;
     createLights({ scene });
-    const cockpit = createCockpit({ scene, entityManager });
+    const cockpit = createCockpit({ scene, entityManager, events });
     createCorridor({ scene, entityManager });
     return {
         cockpit,
@@ -21,12 +23,26 @@ const createLights = (props: { scene: BABYLON.Scene }) => {
     light.specular = new BABYLON.Color3(1, 1, 1);
 };
 
-const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
-    const model = models.cockpit({ scene, entityManager });
-    model.transform.position = new BABYLON.Vector3(0, 0, 0);
-    model.transform.scaling = new BABYLON.Vector3(10, 10, 10);
-    return model;
+const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
+    const { scene, entityManager, events } = props;
+    const cockpit = models.cockpit({ scene, entityManager });
+    cockpit.transform.position = new BABYLON.Vector3(-1, 0, 0);
+    cockpit.transform.scaling = new BABYLON.Vector3(10, 10, 10);
+    events.state$
+        .pipe(
+            filter((state) => state.type === 'launch'),
+            take(1),
+            tap(() => {
+                const start = cockpit.transform.position;
+                const end = new BABYLON.Vector3().addInPlace(start).add(new BABYLON.Vector3(0, 0, 10000));
+                const animation = animations.engineStart({ start, end });
+                cockpit.transform.animations = [animation];
+                scene.beginAnimation(cockpit.transform, 0, 60, false, 1);
+            }),
+            takeUntil(events.destroy$),
+        )
+        .subscribe();
+    return cockpit;
 };
 
 const createCorridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
@@ -38,8 +54,8 @@ const createCorridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityM
         model.transform.position = position;
         return model;
     };
-    create(new BABYLON.Vector3(30, 70, -100));
-    create(new BABYLON.Vector3(30, 70, 200));
-    create(new BABYLON.Vector3(30, 70, 500));
-    create(new BABYLON.Vector3(30, 70, 800));
+    const offset = 300;
+    for (let i = 0; i < 20; i++) {
+        create(new BABYLON.Vector3(30, 70, -100 + i * offset));
+    }
 };
