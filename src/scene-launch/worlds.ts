@@ -3,7 +3,7 @@ import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import * as models from './models.js';
-import { delay, filter, mergeMap, take, takeUntil, tap } from 'rxjs';
+import { delay, filter, merge, mergeMap, take, takeUntil, tap } from 'rxjs';
 
 export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
     const { scene, entityManager, events } = props;
@@ -40,7 +40,7 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
         .pipe(
             filter((state) => state.type === 'monitors'),
             take(1),
-            mergeMap(() => cockpit.flickerMonitors$()),
+            mergeMap(() => merge(cockpit.flickerMonitors$(), cockpit.flickerLights$())),
             delay(5_000),
             tap(() => events.state$.next({ type: 'engines' })),
             takeUntil(events.destroy$),
@@ -87,7 +87,7 @@ const createCorridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityM
         return model;
     };
     const offset = 300;
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
         create(new BABYLON.Vector3(30, 70, -100 + i * offset));
     }
 };
