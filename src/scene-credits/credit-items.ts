@@ -55,20 +55,38 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
                 '"Cloning Tank Chamber JFG - Roblox PBR Showcase" (https://skfb.ly/oODEM) by Jesus Fernandez Garcia is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
         },
         {
-            name: 'Sci Fi Spacestation Corridor',
-            link: 'https://skfb.ly/6RXTF',
+            name: '016Mabc Sky Corridor',
+            link: 'https://skfb.ly/R8qX',
             model: (() => {
                 const model = new models.Model({
-                    name: 'corridor',
+                    name: 'sky-corridor',
                     scene,
                     entityManager,
-                    asset: { file: 'corridor_1k.glb', directory: 'assets/corridor/' },
+                    asset: { file: 'sky_corridor_1k.glb', directory: 'assets/sky-corridor/' },
                 });
-                model.transform.position = new BABYLON.Vector3(3.5, 0, 0);
+                model.transform.position = new BABYLON.Vector3(4, 0, -2.8);
+                model.transform.scaling = new BABYLON.Vector3(2, 2, 2);
                 return model;
             })(),
             credits:
-                '"Sci Fi Spacestation Corridor" (https://skfb.ly/6RXTF) by Siamak Tavakoli is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
+                '"016Mabc Sky Corridor" (https://skfb.ly/R8qX) by d880 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
+        },
+        {
+            name: 'Spacefighter Cockpit (Wasp Interdictor)',
+            link: 'https://skfb.ly/NsXn',
+            model: (() => {
+                const model = new models.Model({
+                    name: 'cockpit',
+                    scene,
+                    entityManager,
+                    asset: { file: 'cockpit_1k.glb', directory: 'assets/cockpit/' },
+                });
+                model.transform.position = new BABYLON.Vector3(0, -5, 3.5);
+                model.transform.scaling = new BABYLON.Vector3(3, 3, 3);
+                return model;
+            })(),
+            credits:
+                '"Spacefighter Cockpit (Wasp Interdictor)" (https://skfb.ly/NsXn) by Comrade1280 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
         },
     ];
 };

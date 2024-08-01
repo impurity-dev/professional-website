@@ -26,6 +26,41 @@ export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height:
     anchor.position = position;
     anchor.rotation.x = Math.PI / 2 + Math.PI;
     system.emitter = anchor as unknown as Vector3;
+
+    const minScaleX = 1,
+        maxScaleX = 10;
+    const scaleXSpeed = 0.15;
+    let warpMode = false;
+    let scaleX = minScaleX;
+    scene.onKeyboardObservable.add((kbInfo) => {
+        switch (kbInfo.type) {
+            case BABYLON.KeyboardEventTypes.KEYDOWN:
+                if (kbInfo.event.keyCode === 32) {
+                    warpMode = true;
+                    if (scaleX < maxScaleX) {
+                        scaleX += scaleXSpeed;
+                    } else {
+                        scaleX = maxScaleX;
+                    }
+                    system.minScaleX = system.maxScaleX = scaleX;
+                }
+                break;
+            case BABYLON.KeyboardEventTypes.KEYUP:
+                if (kbInfo.event.keyCode === 32) {
+                    warpMode = false;
+                }
+                break;
+        }
+    });
+
+    scene.onBeforeRenderObservable.add(() => {
+        if (!warpMode) {
+            if (scaleX > minScaleX) {
+                scaleX -= scaleXSpeed;
+            }
+            system.minScaleX = system.maxScaleX = scaleX;
+        }
+    });
     return system;
 };
 
