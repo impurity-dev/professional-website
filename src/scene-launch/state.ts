@@ -6,7 +6,7 @@ import * as worlds from './worlds.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as inputs from './inputs.js';
 import * as BABYLON from '@babylonjs/core';
-import { delay, take, tap } from 'rxjs';
+import { delay, filter, take, tap } from 'rxjs';
 
 export class State extends states.State {
     async run(): Promise<void> {
@@ -32,6 +32,14 @@ export class State extends states.State {
                 tap(() => events.state$.next({ type: 'dialogue' })),
                 delay(1_000),
                 tap(() => events.state$.next({ type: 'monitors' })),
+            )
+            .subscribe();
+        events.state$
+            .pipe(
+                filter((state) => state.type === 'space'),
+                take(1),
+                delay(5_000),
+                tap(() => this.gameManager.goTo({ type: 'hub' })),
             )
             .subscribe();
     }
