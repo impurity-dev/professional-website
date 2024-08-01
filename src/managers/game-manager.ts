@@ -4,7 +4,7 @@ import * as character from '../scene-character/state.js';
 import * as creditsScene from '../scene-credits/state.js';
 import * as fighterScene from '../scene-fighter/index.js';
 import * as hubScene from '../scene-hub/state.js';
-import * as launchScene from '../scene-launch/state.js';
+import * as launch from '../scene-launch/state.js';
 import * as practiceScene from '../scene-practice/state.js';
 import * as startScene from '../scene-start/state.js';
 import * as logger from '../shared/logger.js';
@@ -33,7 +33,7 @@ export class GameManager extends sm.StateMachine<states.State, GoToProps> {
             case 'hub':
                 return this.setState(new hubScene.HubState(this));
             case 'launch':
-                return this.setState(new launchScene.LaunchState(this));
+                return this.setState(new launch.State(this));
             case 'fighter':
                 return this.setState(new fighterScene.FighterState(this));
             case 'character':

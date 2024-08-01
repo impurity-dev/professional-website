@@ -20,7 +20,38 @@ export class PracticeState extends State {
         camera.target = portal.position;
 
         new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
-        skyboxes.purpleSpace({ scene });
+        this.skybox({ scene });
+    };
+
+    skybox = (props: { scene: BABYLON.Scene }) => {
+        const { scene } = props;
+        const id = 'skybox';
+        const file = 'skyboxes/purple/purple';
+        const skybox = BABYLON.MeshBuilder.CreateBox(`${id}-mesh`, { size: 10000 }, scene);
+        const skyboxMaterial = new BABYLON.StandardMaterial(`${id}-material`, scene);
+        const texture = new BABYLON.CubeTexture(
+            file,
+            scene,
+            undefined,
+            undefined,
+            undefined,
+            () => {
+                console.log('HERE');
+            },
+            (msg, err) => {
+                console.log(msg);
+            },
+        );
+        skyboxMaterial.backFaceCulling = false;
+        skyboxMaterial.reflectionTexture = texture;
+        skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+        skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+        skybox.material = skyboxMaterial;
+        skybox.infiniteDistance = true;
+        skybox.material = skyboxMaterial;
+        skybox.metadata = 'skybox';
+        return skybox;
     };
 
     sphere = (props: { scene: BABYLON.Scene }) => {
