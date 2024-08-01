@@ -25,14 +25,14 @@ export class State extends states.State {
         inputs.controls({ camera: playerCamera });
         skyboxes.purpleSpace({ scene });
         await load;
-        events.state$
-            .pipe(
-                take(1),
-                delay(1_000),
-                tap(() => events.state$.next({ type: 'dialogue' })),
-                delay(1_000),
-                tap(() => events.state$.next({ type: 'monitors' })),
-            )
-            .subscribe();
+        // events.state$
+        //     .pipe(
+        //         take(1),
+        //         delay(1_000),
+        //         tap(() => events.state$.next({ type: 'dialogue' })),
+        //         delay(1_000),
+        //         tap(() => events.state$.next({ type: 'monitors' })),
+        //     )
+        //     .subscribe();
     }
 }

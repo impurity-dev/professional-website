@@ -1,3 +1,4 @@
+import * as particles from './particles';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
@@ -55,6 +56,15 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
             takeUntil(events.destroy$),
         )
         .subscribe();
+    particles
+        .warpspeed({
+            scene,
+            radius: 100,
+            height: 100,
+            position: cockpit.transform.position.add(new BABYLON.Vector3(0, 0, 100)),
+            direction: new BABYLON.Vector3(0, 0, -1),
+        })
+        .start();
     events.state$
         .pipe(
             filter((state) => state.type === 'launch'),
@@ -62,6 +72,17 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
             mergeMap(() => cockpit.changeThrottle$(Math.PI / 4)),
             mergeMap(() => cockpit.launch$(new BABYLON.Vector3(0, 0, 10000))),
             tap(() => events.state$.next({ type: 'space' })),
+            tap(() => {
+                particles
+                    .warpspeed({
+                        scene,
+                        radius: 100,
+                        height: 100,
+                        position: cockpit.transform.position.add(new BABYLON.Vector3(0, 0, 100)),
+                        direction: new BABYLON.Vector3(0, 0, -1),
+                    })
+                    .start();
+            }),
             takeUntil(events.destroy$),
         )
         .subscribe();
