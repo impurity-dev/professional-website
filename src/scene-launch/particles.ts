@@ -17,7 +17,7 @@ export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height:
     system.minEmitPower = 200;
     system.maxEmitPower = 200;
     system.updateSpeed = 0.05;
-    system.emitRate = 1_000;
+    system.emitRate = 2_000;
     system.preWarmCycles = 100;
     system.preWarmStepOffset = 5;
     system.minSize = 1;
@@ -27,7 +27,7 @@ export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height:
     system.addColorGradient(0, new BABYLON.Color4(0, 0, 1, 0.5));
     system.addColorGradient(0.25, new BABYLON.Color4(0, 1, 1, 1));
     system.addColorGradient(1, new BABYLON.Color4(1, 0, 1, 0));
-    system.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
+    system.createDirectedCylinderEmitter(radius * 2, height * 2, 0.8, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
 
     const anchor = new BABYLON.TransformNode('particle-system-anchor');
     anchor.parent = parent;
