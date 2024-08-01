@@ -4,32 +4,46 @@ import * as BABYLON from '@babylonjs/core';
 
 export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height: number; position: BABYLON.Vector3; parent: BABYLON.TransformNode }) => {
     const { scene, radius, height, position, parent } = props;
+
+    const minScaleX = 1;
+    const maxScaleX = 10;
+    const scaleXSpeed = 0.15;
+
     const system = new BABYLON.ParticleSystem('WarpspeedStarParticles', 10_000, scene);
     system.particleTexture = new BABYLON.Texture('textures/sun.png', scene);
-    system.minLifeTime = 10;
-    system.maxLifeTime = 10;
-    system.blendMode = BABYLON.ParticleSystem.BLENDMODE_STANDARD;
+    system.minLifeTime = 4;
+    system.maxLifeTime = 4;
+    system.blendMode = BABYLON.ParticleSystem.BLENDMODE_ADD;
     system.minEmitPower = 200;
     system.maxEmitPower = 200;
     system.updateSpeed = 0.05;
-    system.emitRate = 500;
+    system.emitRate = 1_000;
+    system.preWarmCycles = 100;
+    system.preWarmStepOffset = 5;
     system.minSize = 1;
     system.maxSize = 1;
+    system.minScaleX = system.maxScaleX = minScaleX;
     system.isLocal = true;
     system.addColorGradient(0, new BABYLON.Color4(0, 0, 1, 0.5));
     system.addColorGradient(0.25, new BABYLON.Color4(0, 1, 1, 1));
     system.addColorGradient(1, new BABYLON.Color4(1, 0, 1, 0));
     system.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
-    system.preWarmCycles = 100;
+
     const anchor = new BABYLON.TransformNode('particle-system-anchor');
     anchor.parent = parent;
     anchor.position = position;
     anchor.rotation.x = Math.PI / 2 + Math.PI;
     system.emitter = anchor as unknown as Vector3;
 
-    const minScaleX = 1,
-        maxScaleX = 10;
-    const scaleXSpeed = 0.15;
+    const oldFunc = BABYLON.Particle.prototype._inheritParticleInfoToSubEmitters.bind(BABYLON.Particle.prototype._inheritParticleInfoToSubEmitters);
+    BABYLON.Particle.prototype._inheritParticleInfoToSubEmitters = function () {
+        oldFunc();
+        this.angle = Math.atan2(this.position.y - 5, this.position.x);
+    };
+    scene.onDisposeObservable.add(() => {
+        BABYLON.Particle.prototype._inheritParticleInfoToSubEmitters = oldFunc;
+    });
+
     let warpMode = false;
     let scaleX = minScaleX;
     scene.onKeyboardObservable.add((kbInfo) => {

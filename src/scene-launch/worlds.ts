@@ -61,7 +61,7 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
         radius: 50,
         height: 50,
         parent: cockpit.transform,
-        position: new BABYLON.Vector3(0, 0, 500),
+        position: new BABYLON.Vector3(0, 0, 400),
     });
     events.state$
         .pipe(
