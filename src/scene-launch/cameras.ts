@@ -20,6 +20,7 @@ export const playerCamera = (props: {
         .pipe(
             filter((state) => state.type === 'launch'),
             take(1),
+            delay(2_000),
             mergeMap(() => fastFov$({ camera, scene })),
             takeUntil(events.destroy$),
         )
@@ -70,7 +71,7 @@ const slowFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene
     const animation = new BABYLON.Animation('slowFov', 'fov', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE, true);
     camera.animations = [animation];
     const ease = new BABYLON.ExponentialEase();
-    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIN);
+    ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEOUT);
     animation.setEasingFunction(ease);
     animation.setKeys([
         {

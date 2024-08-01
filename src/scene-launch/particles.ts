@@ -2,28 +2,30 @@ import { Color4, MeshBuilder, Scene, SolidParticle, SolidParticleSystem, Vector3
 import { randomPointOnCylinder } from '../shared/utils.js';
 import * as BABYLON from '@babylonjs/core';
 
-export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height: number; position: BABYLON.Vector3; direction: BABYLON.Vector3 }) => {
-    const { scene, radius, height, position, direction } = props;
+export const warpspeed = (props: { scene: BABYLON.Scene; radius: number; height: number; position: BABYLON.Vector3; parent: BABYLON.TransformNode }) => {
+    const { scene, radius, height, position, parent } = props;
     const system = new BABYLON.ParticleSystem('WarpspeedStarParticles', 10_000, scene);
-    system.particleTexture = new BABYLON.Texture('textures/square.png', scene);
+    system.particleTexture = new BABYLON.Texture('textures/sun.png', scene);
     system.minLifeTime = 10;
     system.maxLifeTime = 10;
-    system.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+    system.blendMode = BABYLON.ParticleSystem.BLENDMODE_STANDARD;
     system.minEmitPower = 200;
     system.maxEmitPower = 200;
     system.updateSpeed = 0.05;
     system.emitRate = 500;
     system.minSize = 1;
     system.maxSize = 1;
+    system.isLocal = true;
     system.addColorGradient(0, new BABYLON.Color4(0, 0, 1, 0.5));
     system.addColorGradient(0.25, new BABYLON.Color4(0, 1, 1, 1));
     system.addColorGradient(1, new BABYLON.Color4(1, 0, 1, 0));
-    system.createDirectedCylinderEmitter(radius, height, 0.5, direction);
-
-    const anchor = new BABYLON.TransformNode('');
+    system.createDirectedCylinderEmitter(radius, height, 0.5, new Vector3(0, 1, 0), new Vector3(0, 1, 0));
+    system.preWarmCycles = 100;
+    const anchor = new BABYLON.TransformNode('particle-system-anchor');
+    anchor.parent = parent;
     anchor.position = position;
     anchor.rotation.x = Math.PI / 2 + Math.PI;
-    system.emitter = anchor.position;
+    system.emitter = anchor as unknown as Vector3;
     return system;
 };
 

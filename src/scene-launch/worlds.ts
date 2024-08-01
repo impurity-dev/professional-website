@@ -3,7 +3,7 @@ import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager.js';
 import * as models from './models.js';
-import { delay, filter, flatMap, map, mapTo, mergeMap, skip, switchMapTo, take, takeUntil, tap } from 'rxjs';
+import { delay, filter, mergeMap, take, takeUntil, tap } from 'rxjs';
 
 export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
     const { scene, entityManager, events } = props;
@@ -56,33 +56,21 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
             takeUntil(events.destroy$),
         )
         .subscribe();
-    particles
-        .warpspeed({
-            scene,
-            radius: 100,
-            height: 100,
-            position: cockpit.transform.position.add(new BABYLON.Vector3(0, 0, 100)),
-            direction: new BABYLON.Vector3(0, 0, -1),
-        })
-        .start();
+    const warpspeed = particles.warpspeed({
+        scene,
+        radius: 50,
+        height: 50,
+        parent: cockpit.transform,
+        position: new BABYLON.Vector3(0, 0, 500),
+    });
     events.state$
         .pipe(
             filter((state) => state.type === 'launch'),
             take(1),
             mergeMap(() => cockpit.changeThrottle$(Math.PI / 4)),
+            tap(() => warpspeed.start()),
             mergeMap(() => cockpit.launch$(new BABYLON.Vector3(0, 0, 10000))),
             tap(() => events.state$.next({ type: 'space' })),
-            tap(() => {
-                particles
-                    .warpspeed({
-                        scene,
-                        radius: 100,
-                        height: 100,
-                        position: cockpit.transform.position.add(new BABYLON.Vector3(0, 0, 100)),
-                        direction: new BABYLON.Vector3(0, 0, -1),
-                    })
-                    .start();
-            }),
             takeUntil(events.destroy$),
         )
         .subscribe();
