@@ -1,27 +1,11 @@
 import * as BABYLON from '@babylonjs/core';
 import * as em from '../models/entity-manager';
-import * as models from '../models/models.js';
-import { Observable, Subject } from 'rxjs';
+import * as models from '../models';
+import { Observable, Subject, take, tap } from 'rxjs';
 
 export const cockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
     const { scene, entityManager } = props;
     return new Cockpit({ scene, entityManager });
-};
-
-export const corridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
-    const cockpitModel = new models.Model({
-        name: 'corridor',
-        scene,
-        entityManager,
-        asset: { file: 'corridor_4k.glb', directory: 'assets/corridor/' },
-    });
-    cockpitModel.onLoad.subscribe(() => {
-        cockpitModel.transform.getChildTransformNodes().forEach((t) => {
-            if (t.name === 'Stars-Space_4') t.dispose();
-        });
-    });
-    return cockpitModel;
 };
 
 export class Cockpit extends models.Model {
@@ -254,14 +238,48 @@ export const skyCorridor = (props: { scene: BABYLON.Scene; entityManager: em.Ent
     return new SkyCorridor({ scene, entityManager });
 };
 
-export class SkyCorridor extends models.Model {
+export class SkyCorridor extends models.Entity {
+    private readonly corridor: models.Model;
+    private readonly light: models.Light14;
     constructor(props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) {
         const { scene, entityManager } = props;
-        super({ name: 'sky-corridor', scene, entityManager, asset: { file: 'sky_corridor_4k.glb', directory: 'assets/sky-corridor/' } });
-        this.onLoad.subscribe(() => console.log(this.transform.getChildMeshes().map((m) => m.name)));
-    }
-
-    get straight() {
-        return this.transform.getChildMeshes().find((m) => m.name === 'apples');
+        super({ name: 'sky-corridor', scene });
+        this.corridor = new models.Model({
+            name: 'corridor',
+            scene,
+            entityManager,
+            asset: { file: 'sky_corridor_1k.glb', directory: 'assets/sky-corridor/' },
+        });
+        this.corridor.transform.parent = this.transform;
+        this.light = models.light14({ scene, entityManager });
+        this.light.transform.parent = this.transform;
+        this.light.transform.position = new BABYLON.Vector3(-2.1, -0.1, -0.2);
+        this.light.transform.scaling = new BABYLON.Vector3(0.001, 0.001, 0.001);
+        this.light.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
+        this.light.transform.rotate(new BABYLON.Vector3(0, 0, 1), Math.PI);
+        this.light.onLoad
+            .pipe(
+                take(1),
+                tap(() => {
+                    this.light.toggle = true;
+                    this.light.color = new BABYLON.Color3(0, 0, 1);
+                }),
+            )
+            .subscribe();
+        const straightMeshes = ['__root__', 'Object_11', 'Object_22', 'Object_24', 'Object_25', 'Object_8'];
+        this.corridor.onLoad
+            .pipe(
+                take(1),
+                tap(() => {
+                    const includeMeshes = [];
+                    this.corridor.transform.getChildMeshes().forEach((m) => {
+                        const isValid = straightMeshes.includes(m.name);
+                        m.setEnabled(isValid);
+                        if (isValid) includeMeshes.push(m);
+                    });
+                    this.light.includeMeshes = includeMeshes;
+                }),
+            )
+            .subscribe();
     }
 }

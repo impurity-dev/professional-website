@@ -18,7 +18,7 @@ export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityMan
 const createLights = (props: { scene: BABYLON.Scene }) => {
     const { scene } = props;
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), scene);
-    light.intensity = 0.3;
+    light.intensity = 0.01;
     light.diffuse = new BABYLON.Color3(1, 1, 1);
     light.specular = new BABYLON.Color3(1, 1, 1);
 };

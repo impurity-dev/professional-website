@@ -31,16 +31,6 @@ export class EntityManager {
         this._isLoaded = isLoaded;
     }
 
-    test = (asset: Asset): void => {
-        const id = this.getId(asset);
-        if (this.cache.has(id)) return;
-        const task = this.assetManager.addContainerTask(`${id} task`, '', asset.directory, asset.file);
-        const observable = new BABYLON.Observable<BABYLON.ContainerAssetTask>();
-        observable.notifyIfTriggered = true;
-        task.onSuccess = (task: BABYLON.ContainerAssetTask) => observable.notifyObservers(task);
-        this.cache.set(id, observable);
-    };
-
     queue = (asset: Asset): BABYLON.Observable<BABYLON.ContainerAssetTask> => {
         const id = this.getId(asset);
         if (this.cache.has(id)) return this.cache.get(id);

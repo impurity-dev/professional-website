@@ -16,9 +16,6 @@ export class Light14 extends models.Model {
             entityManager,
             asset: { file: 'scifi_light_14.glb', directory: 'assets/lights/' },
         });
-        this.transform.position = new BABYLON.Vector3(-2, 0, 0);
-        this.transform.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
-        this.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
         this.onLoad
             .pipe(
                 take(1),
@@ -43,7 +40,7 @@ export class Light14 extends models.Model {
 
     set toggle(isOn: boolean) {
         this.lightMesh.visibility = isOn ? 1 : 0;
-        this.pointLight.intensity = isOn ? 1 : 0;
+        this.pointLight.intensity = isOn ? 1000 : 0;
     }
 
     set includeMeshes(meshes: BABYLON.AbstractMesh[]) {
