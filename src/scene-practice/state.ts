@@ -1,10 +1,11 @@
 import * as BABYLON from '@babylonjs/core';
 import * as skyboxes from '../shared/skyboxes.js';
 import { State } from '../managers/states.js';
+import * as sharedModels from '../models';
 
 export class PracticeState extends State {
     run = async (): Promise<void> => {
-        const { scene } = this;
+        const { scene, entityManager } = this;
         const position = new BABYLON.Vector3(0, 0, 0);
         const camera = new BABYLON.FreeCamera('camera', position, scene);
         scene.activeCamera = camera;
@@ -15,12 +16,25 @@ export class PracticeState extends State {
         // obj.position = position.add(new BABYLON.Vector3(-20, 0, 0));
         // obj.material = this.material({ scene });
         // camera.target = obj.position;
-        const portal = this.frame({ scene });
-        portal.translate(new BABYLON.Vector3(1, 0, 0), -1);
-        camera.target = portal.position;
+        // const portal = this.frame({ scene });
+        // portal.translate(new BABYLON.Vector3(1, 0, 0), -1);
 
+        const light = sharedModels.light14({ scene, entityManager });
+        const load = entityManager.load();
+        await load;
+        light.transform.position = new BABYLON.Vector3(-2, 0, 0);
+        light.transform.scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+        light.color = new BABYLON.Color3(1, 0, 0);
+        camera.target = light.transform.position;
+
+        skyboxes.purpleSpace({ scene });
+
+        let toggle = false;
+        setInterval(() => {
+            light.toggle = toggle;
+            toggle = !toggle;
+        }, 1_000);
         new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 1, 0), scene);
-        this.skybox({ scene });
     };
 
     skybox = (props: { scene: BABYLON.Scene }) => {

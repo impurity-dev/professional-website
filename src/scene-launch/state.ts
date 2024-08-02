@@ -38,7 +38,7 @@ export class State extends states.State {
             .pipe(
                 filter((state) => state.type === 'space'),
                 take(1),
-                delay(5_000),
+                delay(10_000),
                 // tap(() => this.gameManager.goTo({ type: 'hub' })),
             )
             .subscribe();

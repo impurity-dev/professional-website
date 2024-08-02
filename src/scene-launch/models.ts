@@ -34,7 +34,9 @@ export class Cockpit extends models.Model {
         const { scene, entityManager } = props;
         super({ name: 'cockpit', scene, entityManager, asset: { file: 'cockpit_4k.glb', directory: 'assets/cockpit/' } });
         this.onLoad.subscribe(() => {
-            this.transform.getChildMeshes().forEach((m) => {
+            const children = this.transform.getChildMeshes();
+            this.lights.includedOnlyMeshes = children;
+            children.forEach((m) => {
                 if (m.name === 'monitors_displ_0') this._monitors = m;
                 if (m.name === 'throttle_center_0') {
                     this._throttle = m;
