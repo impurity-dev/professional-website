@@ -1,21 +1,20 @@
+import * as assets from './assets';
 import * as localSm from './state-machines';
 import * as BABYLON from '@babylonjs/core';
 import { filter, take, tap } from 'rxjs';
-import * as sharedModels from '../models';
-import * as em from '../models/entity-manager.js';
 import * as localEvents from './events.js';
-import * as localModels from './models.js';
+import { AssetFactory } from '../nodes/nodes';
 
-export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
-    const { scene, entityManager, target, events } = props;
+export const world = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3; events: localEvents.Events }) => {
+    const { assetFactory, target, events } = props;
     const clubAnimation = clubAnimations();
-    globalLights({ scene, clubAnimation });
-    pointLights({ scene, clubAnimation });
-    characterSpotLight({ scene, target, events });
-    clubSpotLight({ scene, target, events, clubAnimation });
-    cantina({ scene, entityManager });
-    const characters = characterMetadata({ scene, entityManager, target });
-    cutscene({ scene, entityManager, target, events });
+    globalLights({ assetFactory, clubAnimation });
+    pointLights({ assetFactory, clubAnimation });
+    characterSpotLight({ assetFactory, target, events });
+    clubSpotLight({ assetFactory, target, events, clubAnimation });
+    cantina({ assetFactory });
+    const characters = characterMetadata({ assetFactory, target });
+    cutscene({ assetFactory, target, events });
     return {
         characters,
     };
@@ -69,9 +68,9 @@ const clubAnimations = (): ClubAnimation => {
     };
 };
 
-const pointLights = (props: { scene: BABYLON.Scene; clubAnimation: ClubAnimation }) => {
-    const { scene, clubAnimation } = props;
-    const light = new BABYLON.PointLight('light', new BABYLON.Vector3(0, 1, 1), scene);
+const pointLights = (props: { assetFactory: AssetFactory; clubAnimation: ClubAnimation }) => {
+    const { assetFactory, clubAnimation } = props;
+    const light = new BABYLON.PointLight('light', new BABYLON.Vector3(0, 1, 1), assetFactory.scene);
     light.intensity = 0.5;
     light.radius = 10;
     light.diffuse = clubAnimation.color;
@@ -92,18 +91,18 @@ const pointLights = (props: { scene: BABYLON.Scene; clubAnimation: ClubAnimation
         },
     ]);
     light.animations = [flickerAnim, clubAnimation.specularAnim, clubAnimation.diffuseAnim];
-    scene.beginAnimation(light, 0, 60, true, 0.25);
+    assetFactory.scene.beginAnimation(light, 0, 60, true, 0.25);
 };
 
-const characterSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events }) => {
-    const { scene, target, events } = props;
+const characterSpotLight = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3; events: localEvents.Events }) => {
+    const { assetFactory, target, events } = props;
     const characterSpotlight = new BABYLON.SpotLight(
         'characterSpotlight',
         new BABYLON.Vector3(target.x, target.y + 2, target.z),
         new BABYLON.Vector3(0, -1, 0),
         Math.PI,
         10,
-        scene,
+        assetFactory.scene,
     );
     const intensity = 10;
     characterSpotlight.intensity = intensity;
@@ -123,15 +122,22 @@ const characterSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vecto
         .pipe(
             filter((state) => state.type === 'dialogue' && state.props.index === 0),
             take(1),
-            tap(() => scene.beginAnimation(characterSpotlight, 0, 60, false, 2)),
+            tap(() => assetFactory.scene.beginAnimation(characterSpotlight, 0, 60, false, 2)),
         )
         .subscribe();
 };
 
-const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; events: localEvents.Events; clubAnimation: ClubAnimation }) => {
-    const { scene, target, clubAnimation } = props;
+const clubSpotLight = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3; events: localEvents.Events; clubAnimation: ClubAnimation }) => {
+    const { assetFactory, target, clubAnimation } = props;
     const clubStartDirection = new BABYLON.Vector3(0, -1, 5);
-    const light = new BABYLON.SpotLight('clubSpotlight', new BABYLON.Vector3(target.x, target.y + 2, target.z), clubStartDirection, Math.PI / 12, 1, scene);
+    const light = new BABYLON.SpotLight(
+        'clubSpotlight',
+        new BABYLON.Vector3(target.x, target.y + 2, target.z),
+        clubStartDirection,
+        Math.PI / 12,
+        1,
+        assetFactory.scene,
+    );
     light.diffuse = clubAnimation.color;
     light.specular = clubAnimation.color;
     light.intensity = 500;
@@ -150,74 +156,69 @@ const clubSpotLight = (props: { scene: BABYLON.Scene; target: BABYLON.Vector3; e
         { frame: 60, value: clubStartDirection },
     ]);
     light.animations = [clubSpotlightAnim, clubAnimation.diffuseAnim, clubAnimation.specularAnim];
-    scene.beginAnimation(light, 0, 60, true, 0.5);
+    assetFactory.scene.beginAnimation(light, 0, 60, true, 0.5);
 };
 
-const globalLights = (props: { scene: BABYLON.Scene; clubAnimation: ClubAnimation }) => {
-    const { scene, clubAnimation } = props;
-    const light = new BABYLON.DirectionalLight('directionLight', new BABYLON.Vector3(0, 1, 1), scene);
+const globalLights = (props: { assetFactory: AssetFactory; clubAnimation: ClubAnimation }) => {
+    const { assetFactory, clubAnimation } = props;
+    const light = new BABYLON.DirectionalLight('directionLight', new BABYLON.Vector3(0, 1, 1), assetFactory.scene);
     light.intensity = 0.5;
     light.diffuse = clubAnimation.color;
     light.specular = clubAnimation.color;
     light.animations = [clubAnimation.diffuseAnim, clubAnimation.specularAnim];
-    scene.beginAnimation(light, 0, 60, true, 0.5);
+    assetFactory.scene.beginAnimation(light, 0, 60, true, 0.5);
 };
 
-const cantina = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
-    const model = localModels.cantina({ scene, entityManager });
-    model.transform.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
-    model.transform.rotate(new BABYLON.Vector3(0, 1, 0), -Math.PI / 2);
+const cantina = (props: { assetFactory: AssetFactory }) => {
+    const { assetFactory } = props;
+    const model = assets.cantina({ assetFactory });
+    model.scaling = new BABYLON.Vector3(0.03, 0.03, 0.03);
+    model.rotate(new BABYLON.Vector3(0, 1, 0), -Math.PI / 2);
     return model;
 };
 
-const characterMetadata = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3 }) => {
-    const { scene, entityManager, target } = props;
+const characterMetadata = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3 }) => {
+    const { assetFactory, target } = props;
     const list: localSm.CharacterMetadata[] = [
         // Male
-        { type: 'adventurer', gender: 'male', model: sharedModels.maleAdventurer({ scene, entityManager }) },
-        { type: 'beach', gender: 'male', model: sharedModels.maleBeach({ scene, entityManager }) },
-        { type: 'casual', gender: 'male', model: sharedModels.maleCasual({ scene, entityManager }) },
-        { type: 'hoodie', gender: 'male', model: sharedModels.maleHoodie({ scene, entityManager }) },
-        { type: 'farmer', gender: 'male', model: sharedModels.maleFarmer({ scene, entityManager }) },
-        { type: 'king', gender: 'male', model: sharedModels.maleKing({ scene, entityManager }) },
-        { type: 'punk', gender: 'male', model: sharedModels.malePunk({ scene, entityManager }) },
-        { type: 'spacesuit', gender: 'male', model: sharedModels.maleSpacesuit({ scene, entityManager }) },
-        { type: 'suit', gender: 'male', model: sharedModels.maleSuit({ scene, entityManager }) },
-        { type: 'swat', gender: 'male', model: sharedModels.maleSwat({ scene, entityManager }) },
-        { type: 'worker', gender: 'male', model: sharedModels.maleWorker({ scene, entityManager }) },
+        { type: 'adventurer', gender: 'male', model: assets.maleAdventurer({ assetFactory }) },
+        { type: 'beach', gender: 'male', model: assets.maleBeach({ assetFactory }) },
+        { type: 'casual', gender: 'male', model: assets.maleCasual({ assetFactory }) },
+        { type: 'hoodie', gender: 'male', model: assets.maleHoodie({ assetFactory }) },
+        { type: 'farmer', gender: 'male', model: assets.maleFarmer({ assetFactory }) },
+        { type: 'king', gender: 'male', model: assets.maleKing({ assetFactory }) },
+        { type: 'punk', gender: 'male', model: assets.malePunk({ assetFactory }) },
+        { type: 'spacesuit', gender: 'male', model: assets.maleSpacesuit({ assetFactory }) },
+        { type: 'suit', gender: 'male', model: assets.maleSuit({ assetFactory }) },
+        { type: 'swat', gender: 'male', model: assets.maleSwat({ assetFactory }) },
+        { type: 'worker', gender: 'male', model: assets.maleWorker({ assetFactory }) },
         // Female
-        { type: 'adventurer', gender: 'female', model: sharedModels.femaleAdventurer({ scene, entityManager }) },
-        { type: 'casual', gender: 'female', model: sharedModels.femaleCasual({ scene, entityManager }) },
-        { type: 'formal', gender: 'female', model: sharedModels.femaleFormal({ scene, entityManager }) },
-        { type: 'medieval', gender: 'female', model: sharedModels.femaleMedieval({ scene, entityManager }) },
-        { type: 'punk', gender: 'female', model: sharedModels.femalePunk({ scene, entityManager }) },
-        { type: 'sciFi', gender: 'female', model: sharedModels.femaleSciFi({ scene, entityManager }) },
-        { type: 'soldier', gender: 'female', model: sharedModels.femaleSoldier({ scene, entityManager }) },
-        { type: 'suit', gender: 'female', model: sharedModels.femaleSuit({ scene, entityManager }) },
-        { type: 'witch', gender: 'female', model: sharedModels.femaleWitch({ scene, entityManager }) },
-        { type: 'worker', gender: 'female', model: sharedModels.femaleWorker({ scene, entityManager }) },
+        { type: 'adventurer', gender: 'female', model: assets.femaleAdventurer({ assetFactory }) },
+        { type: 'casual', gender: 'female', model: assets.femaleCasual({ assetFactory }) },
+        { type: 'formal', gender: 'female', model: assets.femaleFormal({ assetFactory }) },
+        { type: 'medieval', gender: 'female', model: assets.femaleMedieval({ assetFactory }) },
+        { type: 'punk', gender: 'female', model: assets.femalePunk({ assetFactory }) },
+        { type: 'sciFi', gender: 'female', model: assets.femaleSciFi({ assetFactory }) },
+        { type: 'soldier', gender: 'female', model: assets.femaleSoldier({ assetFactory }) },
+        { type: 'suit', gender: 'female', model: assets.femaleSuit({ assetFactory }) },
+        { type: 'witch', gender: 'female', model: assets.femaleWitch({ assetFactory }) },
+        { type: 'worker', gender: 'female', model: assets.femaleWorker({ assetFactory }) },
     ];
     list.forEach(({ model }) => {
-        model.transform.position = new BABYLON.Vector3(target.x, 0, target.z);
-        model.onLoad
-            .pipe(
-                take(1),
-                tap(() => model.animationGroups.find((a) => a.name === 'Idle').play(true)),
-                tap(() => model.transform.setEnabled(false)),
-            )
-            .subscribe();
+        model.position = new BABYLON.Vector3(target.x, 0, target.z);
+        model.animationGroups.find((a) => a.name === 'Idle').play(true);
+        model.setEnabled(false);
     });
     return list;
 };
 
-const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; target: BABYLON.Vector3; events: localEvents.Events }) => {
-    const { scene, entityManager, target, events } = props;
-    const george = sharedModels.george({ scene, entityManager });
-    george.transform.position = new BABYLON.Vector3(target.x, target.y - 1, target.z + 5.5);
+const cutscene = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3; events: localEvents.Events }) => {
+    const { assetFactory, target, events } = props;
+    const george = assets.george({ assetFactory });
+    george.position = new BABYLON.Vector3(target.x, target.y - 1, target.z + 5.5);
     const scale = 0.25;
-    george.transform.scaling = new BABYLON.Vector3(scale, scale, scale);
-    george.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
+    george.scaling = new BABYLON.Vector3(scale, scale, scale);
+    george.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI);
     const walkAnimation = new BABYLON.Animation(
         'georgeWalk',
         'position.z',
@@ -226,10 +227,10 @@ const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager
         BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE,
     );
     walkAnimation.setKeys([
-        { frame: 0, value: george.transform.position.z },
+        { frame: 0, value: george.position.z },
         { frame: 60, value: target.z + 1.6 },
     ]);
-    george.transform.animations = [walkAnimation];
+    george.animations = [walkAnimation];
 
     events.state$
         .pipe(
@@ -243,7 +244,7 @@ const cutscene = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager
                 idle.enableBlending = true;
                 idle.blendingSpeed = 0.1;
                 walk.play(true);
-                scene.beginAnimation(george.transform, 0, 60, false, 0.5, () => {
+                assetFactory.scene.beginAnimation(george, 0, 60, false, 0.5, () => {
                     walk.stop();
                     idle.play(true);
                 });

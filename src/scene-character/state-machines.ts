@@ -1,4 +1,3 @@
-import * as GUI from '@babylonjs/gui';
 import { take, takeUntil, tap } from 'rxjs';
 import * as sharedDialogues from '../dialogues';
 import * as sharedModels from '../models';
@@ -6,6 +5,7 @@ import * as sm from '../shared/state-machines';
 import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 import * as settings from '../managers/settings';
+import { AssetNode } from '../nodes/nodes';
 
 export const stateMachine = (props: { events: localEvents.Events; dialogueBox: sharedDialogues.DialogueBox; characters: CharacterMetadata[] }) =>
     new CharacterStateMachine({
@@ -69,7 +69,7 @@ export class CharacterStateMachine extends sm.StateMachine<CharacterState, Chara
     };
 }
 
-export type CharacterMetadata = { model: sharedModels.Model } & sharedModels.CharacterType;
+export type CharacterMetadata = { model: AssetNode } & sharedModels.CharacterType;
 type SelectionState = { character: sharedModels.CharacterType };
 type SelectionProps = { index: number };
 class SelectionStateMachine extends sm.StateMachine<SelectionState, SelectionProps> {
@@ -88,9 +88,9 @@ class SelectionStateMachine extends sm.StateMachine<SelectionState, SelectionPro
     };
 
     protected setState = async (state: SelectionState): Promise<void> => {
-        this.current?.model.transform.setEnabled(false);
+        this.current?.model.setEnabled(false);
         this.current = this.characters.find((character) => character.gender === state.character.gender && character.type === state.character.type);
-        this.current?.model.transform.setEnabled(true);
+        this.current?.model.setEnabled(true);
         settings.game.character = state.character;
     };
 }

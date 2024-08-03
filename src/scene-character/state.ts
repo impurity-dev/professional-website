@@ -9,14 +9,40 @@ import * as inputs from './inputs.js';
 import * as localSounds from './sounds.js';
 import * as sm from './state-machines.js';
 import * as worlds from './worlds.js';
+import * as assets from './assets.js';
 
 export class State extends states.State {
-    async run(): Promise<void> {
-        const { scene, entityManager, start$, destroy$ } = this;
+    assets = [
+        assets.CANTINA_ASSET,
+        assets.GEORGE_ASSET,
+        assets.FEMALE_ADVENTURER,
+        assets.FEMALE_CASUAL,
+        assets.FEMALE_FORMAL,
+        assets.FEMALE_MEDIEVAL,
+        assets.FEMALE_PUNK,
+        assets.FEMALE_SCIFI,
+        assets.FEMALE_SOLDIER,
+        assets.FEMALE_SUIT,
+        assets.FEMALE_WITCH,
+        assets.FEMALE_WORKER,
+        assets.MALE_ADVENTURER,
+        assets.MALE_BEACH,
+        assets.MALE_CASUAL,
+        assets.MALE_HOODIE,
+        assets.MALE_FARMER,
+        assets.MALE_KING,
+        assets.MALE_PUNK,
+        assets.MALE_SPACESUIT,
+        assets.MALE_SUIT,
+        assets.MALE_SWAT,
+        assets.MALE_WORKER,
+    ];
+
+    build = async () => {
+        const { scene, assetFactory, start$, destroy$ } = this;
         const events = new localEvents.Events({ start$, destroy$ });
         const target = new BABYLON.Vector3(4, 1, -5);
-        const { characters } = worlds.world({ scene, entityManager, target, events });
-        const load = this.entityManager.load();
+        const { characters } = worlds.world({ assetFactory, target, events });
         events.state$
             .pipe(
                 filter((state) => state.type === 'exit'),
@@ -30,6 +56,5 @@ export class State extends states.State {
         inputs.controller({ scene, events });
         localSounds.sounds({ scene, events });
         skyboxes.purpleSpace({ scene });
-        await load;
-    }
+    };
 }
