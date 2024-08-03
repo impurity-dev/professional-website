@@ -9,7 +9,7 @@ import * as sounds from './sounds.js';
 import * as worlds from './worlds.js';
 import * as assets from './assets.js';
 
-export class CreditsState extends states.State {
+export class State extends states.State {
     assets = [assets.BAR_ASSET, assets.CHAMBER_ASSET, assets.COCKPIT_ASSET, assets.FIGHTER_ASSET, assets.SKYCORRIDOR_ASSET];
 
     build = async () => {

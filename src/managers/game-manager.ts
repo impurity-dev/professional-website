@@ -1,9 +1,9 @@
 import * as BABYLON from '@babylonjs/core';
 import * as SPECTOR from 'spectorjs';
 import * as character from '../scene-character/state.js';
-import * as creditsScene from '../scene-credits/state.js';
-import * as fighterScene from '../scene-fighter/index.js';
-import * as hubScene from '../scene-hub/state.js';
+import * as credits from '../scene-credits/state.js';
+import * as fighter from '../scene-fighter/state.js';
+import * as hub from '../scene-hub/state.js';
 import * as launch from '../scene-launch/state.js';
 import * as practice from '../scene-practice/state.js';
 import * as menu from '../scene-menu/state.js';
@@ -31,17 +31,17 @@ export class GameManager extends sm.StateMachine<states.State, GoToProps> {
             case 'menu':
                 return this.setState(new menu.State(this));
             case 'hub':
-                return this.setState(new hubScene.HubState(this));
+                return this.setState(new hub.State(this));
             case 'launch':
                 return this.setState(new launch.State(this));
             case 'fighter':
-                return this.setState(new fighterScene.FighterState(this));
+                return this.setState(new fighter.State(this));
             case 'character':
                 return this.setState(new character.State(this));
             case 'practice':
                 return this.setState(new practice.State(this));
             case 'credits':
-                return this.setState(new creditsScene.CreditsState(this));
+                return this.setState(new credits.State(this));
             default:
                 throw new Error(`Invalid goTo state: ${props}`);
         }

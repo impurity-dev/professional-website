@@ -6,7 +6,7 @@ import { FighterCamera } from './camera.js';
 import { FighterEvents } from './events.js';
 import { FighterGui } from './gui.js';
 
-export class FighterState extends states.State {
+export class State extends states.State {
     run = async (): Promise<void> => {
         const { scene, entityManager } = this;
         const events = new FighterEvents();

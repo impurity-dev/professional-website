@@ -9,7 +9,6 @@ export class AssetFactory {
     readonly scene: BABYLON.Scene;
     private _isLoaded: boolean = false;
     private readonly assetManager: BABYLON.AssetsManager;
-    private readonly taskCache = new Map<string, NodeAsset>();
     private readonly assetCache = {
         container: new Map<string, BABYLON.ContainerAssetTask>(),
         mesh: new Map<string, BABYLON.MeshAssetTask>(),
@@ -30,7 +29,10 @@ export class AssetFactory {
             logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`);
             this.scene.getEngine().loadingUIText = `Loading ${event.totalCount - event.remainingCount}/${event.totalCount} assets...`;
         });
-        this.assetManager.onTasksDoneObservable.add(() => logger.debug(`Finished loading ${this.taskCache.size} assets`));
+        this.assetManager.onTasksDoneObservable.add(() => {
+            const count = this.assetCache.container.size + this.assetCache.mesh.size;
+            logger.debug(`Finished loading ${count} assets`);
+        });
     }
 
     get isLoaded() {
