@@ -1,13 +1,14 @@
-import * as BABYLON from '@babylonjs/core';
+import * as sharedEvents from '../shared/events';
+import { BehaviorSubject, Subject } from 'rxjs';
 
-export type OnLaunch = () => void;
-export type StartGuiProps = {};
-export type TriggerType = {
-    type: 'launch';
-    toggle: boolean;
+export type Interactables = {
+    type: 'fighter' | 'github' | 'none';
+};
+export type Actions = {
+    type: 'fighter';
 };
 export type ActionType = { type: 'launch' };
-export class HubEvents {
-    public readonly onTrigger: BABYLON.Observable<TriggerType> = new BABYLON.Observable();
-    public readonly onAction: BABYLON.Observable<ActionType> = new BABYLON.Observable();
+export class Events extends sharedEvents.Events {
+    public readonly interactables$: BehaviorSubject<Interactables> = new BehaviorSubject<Interactables>({ type: 'none' });
+    public readonly actions$: Subject<Actions> = new Subject<Actions>();
 }

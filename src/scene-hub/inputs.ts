@@ -1,12 +1,12 @@
 import * as BABYLON from '@babylonjs/core';
-import * as events from './events';
+import * as localEvents from './events';
 
 export class FPSController {
     public readonly camera: BABYLON.UniversalCamera;
     private readonly deviceManager: BABYLON.DeviceSourceManager;
 
-    constructor(props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3; event: events.HubEvents }) {
-        const { scene, location, target, event } = props;
+    constructor(props: { scene: BABYLON.Scene; location: BABYLON.Vector3; target: BABYLON.Vector3; events: localEvents.Events }) {
+        const { scene, location, target, events } = props;
         this.deviceManager = new BABYLON.DeviceSourceManager(scene.getEngine());
         this.camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
         this.camera.target = target;
@@ -39,20 +39,20 @@ export class FPSController {
 
         scene.registerBeforeRender(() => {
             // this.castRay();
-            this.handleControls({ event });
+            this.handleControls({ events });
         });
     }
 
-    handleControls = (props: { event: events.HubEvents }) => {
+    handleControls = (props: { events: localEvents.Events }) => {
         const { deviceManager } = this;
-        const { event } = props;
+        const { events } = props;
         const keyboard = deviceManager.getDeviceSource(BABYLON.DeviceType.Keyboard);
         if (!keyboard) {
             return;
         }
         const E = 69;
         if (keyboard.getInput(E) === 1) {
-            event.onAction.notifyObservers({ type: 'launch' });
+            events.actions$.next({ type: 'fighter' });
         }
     };
 

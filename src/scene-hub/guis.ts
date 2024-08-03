@@ -1,34 +1,39 @@
 import * as BABYLON from '@babylonjs/core';
 import * as GUI from '@babylonjs/gui';
-import * as event from './events.js';
+import * as localEvents from './events.js';
+import { takeUntil, tap } from 'rxjs';
 
-export class HubGui {
-    private readonly gui: GUI.AdvancedDynamicTexture;
+export const gui = (props: { scene: BABYLON.Scene; events: localEvents.Events }) => {
+    const { scene, events } = props;
+    const ui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
+    ui.idealWidth = 1920;
 
-    constructor(props: { scene: BABYLON.Scene; event: event.HubEvents }) {
-        const { scene, event } = props;
-        this.gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI('UI', true, scene);
-        this.gui.idealHeight = 1920;
-
-        const toggleLaunchText = this.createToggleLaunchText();
-        event.onTrigger.add((event) => {
-            switch (event.type) {
-                case 'launch': {
-                    toggleLaunchText.alpha = event.toggle ? 1 : 0;
-                    break;
+    const toggleLaunchText = createToggleLaunchText({ ui });
+    events.interactables$
+        .pipe(
+            tap((interactable) => {
+                switch (interactable.type) {
+                    case 'fighter': {
+                        toggleLaunchText.alpha = 1;
+                        break;
+                    }
+                    default: {
+                        toggleLaunchText.alpha = 0;
+                        break;
+                    }
                 }
-                default:
-                    break;
-            }
-        });
-    }
+            }),
+            takeUntil(events.destroy$),
+        )
+        .subscribe();
+};
 
-    private createToggleLaunchText = () => {
-        const text = new GUI.TextBlock('launch-options', 'Press E to Launch');
-        text.alpha = 0;
-        text.top = 100;
-        text.color = 'white';
-        this.gui.addControl(text);
-        return text;
-    };
-}
+const createToggleLaunchText = (props: { ui: GUI.AdvancedDynamicTexture }) => {
+    const { ui } = props;
+    const text = new GUI.TextBlock('launch-options', 'Press E to Launch');
+    text.alpha = 0;
+    text.top = 100;
+    text.color = 'white';
+    ui.addControl(text);
+    return text;
+};
