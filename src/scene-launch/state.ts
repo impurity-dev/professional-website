@@ -6,20 +6,14 @@ import * as worlds from './worlds.js';
 import * as skyboxes from '../shared/skyboxes.js';
 import * as inputs from './inputs.js';
 import * as BABYLON from '@babylonjs/core';
-import { delay, filter, firstValueFrom, take, tap } from 'rxjs';
-import { AssetFactory } from '../nodes/nodes';
+import { delay, filter, take, tap } from 'rxjs';
 import * as temp from './temp';
 
 export class State extends states.State {
-    assetFactory = new AssetFactory({ scene: this.scene, assetManager: this.assetManager });
-    load$ = () => {
-        const { assetFactory } = this;
-        assetFactory.queue(temp.SKYCORRIDOR_ASSET, temp.COCKPIT_ASSET, temp.LIGHT14_ASSET);
-        return assetFactory.load$();
-    };
-    async run(): Promise<void> {
+    assets = [temp.SKYCORRIDOR_ASSET, temp.COCKPIT_ASSET, temp.LIGHT14_ASSET];
+
+    build = async () => {
         const { scene, start$, destroy$, assetFactory } = this;
-        await firstValueFrom(this.load$());
         const events = new localEvents.Events({ start$, destroy$ });
         const { cockpit } = worlds.world({ events, assetFactory });
         sm.launchSequence({ events });
@@ -50,5 +44,5 @@ export class State extends states.State {
                 // tap(() => this.gameManager.goTo({ type: 'hub' })),
             )
             .subscribe();
-    }
+    };
 }

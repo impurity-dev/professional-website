@@ -1,17 +1,24 @@
 import * as BABYLON from '@babylonjs/core';
 import * as INSPECTOR from '@babylonjs/inspector';
-import * as RXJS from 'rxjs';
 import { EntityManager } from '../models/entity-manager.js';
 import * as logger from '../shared/logger.js';
 import { GameManager } from './game-manager.js';
 import * as settings from './settings.js';
+import { AssetFactory, NodeAsset } from '../nodes/nodes.js';
+import { firstValueFrom, Subject } from 'rxjs';
 
 export abstract class State {
     readonly scene: BABYLON.Scene;
     readonly assetManager: BABYLON.AssetsManager;
     readonly entityManager: EntityManager;
-    readonly start$: RXJS.Subject<void> = new RXJS.Subject();
-    readonly destroy$: RXJS.Subject<void> = new RXJS.Subject();
+    readonly assetFactory: AssetFactory;
+    readonly start$: Subject<void> = new Subject();
+    readonly destroy$: Subject<void> = new Subject();
+
+    /**
+     * All assets to be loaded
+     */
+    abstract assets: NodeAsset[];
 
     /**
      * Create a unique state that represents the state of the overall game.
@@ -23,6 +30,7 @@ export abstract class State {
         this.assetManager = new BABYLON.AssetsManager(this.scene);
         this.assetManager.useDefaultLoadingScreen = false;
         this.assetManager.autoHideLoadingUI = false;
+        this.assetFactory = new AssetFactory({ scene: this.scene, assetManager: this.assetManager });
         // this.entityManager = new EntityManager(this.assetManager);
         if (settings.global.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
@@ -48,15 +56,18 @@ export abstract class State {
         logger.debug('Scene Started');
 
         // Start loading UI
-        const { engine } = this.gameManager;
-        engine.displayLoadingUI();
+        this.scene.getEngine().displayLoadingUI();
 
-        // Render scene
-        await this.run();
+        // Load assets
+        this.assetFactory.queue(...this.assets);
+        await firstValueFrom(this.assetFactory.load$());
+
+        // Build scene
+        await this.build();
 
         // End loading UI
         await this.scene.whenReadyAsync(true);
-        engine.hideLoadingUI();
+        this.scene.getEngine().hideLoadingUI();
 
         // signal completion
         this.start$.next();
@@ -79,11 +90,11 @@ export abstract class State {
     };
 
     /**
-     * Unique run method required to be implemented by a state.
+     * Unique build method required to be implemented by a state.
      * This defines what is in our unique state and the entities we
      * want to add to the scene.
      */
-    abstract run(): Promise<void>;
+    abstract build(): Promise<void>;
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     private attachInspector = (ev: KeyboardEvent) => {
