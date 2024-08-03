@@ -7,7 +7,7 @@ import * as skyboxes from '../shared/skyboxes.js';
 import * as inputs from './inputs.js';
 import * as BABYLON from '@babylonjs/core';
 import { delay, filter, take, tap } from 'rxjs';
-import * as temp from './temp';
+import * as temp from './assets';
 
 export class State extends states.State {
     assets = [temp.SKYCORRIDOR_ASSET, temp.COCKPIT_ASSET, temp.LIGHT14_ASSET];

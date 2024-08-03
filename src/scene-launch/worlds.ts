@@ -1,4 +1,4 @@
-import * as temp from './temp';
+import * as assets from './assets';
 import * as particles from './particles';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
@@ -25,7 +25,7 @@ const createLights = (props: { assetFactory: AssetFactory }) => {
 
 const createCockpit = (props: { assetFactory: AssetFactory; events: localEvents.Events }) => {
     const { assetFactory, events } = props;
-    const cockpit = temp.cockpit({ assetFactory });
+    const cockpit = assets.cockpit({ assetFactory });
     cockpit.position = new BABYLON.Vector3(-1, 0, 0);
     cockpit.scaling = new BABYLON.Vector3(10, 10, 10);
     cockpit.monitors.visibility = 0;
@@ -73,7 +73,7 @@ const createCockpit = (props: { assetFactory: AssetFactory; events: localEvents.
 const createCorridor = (props: { assetFactory: AssetFactory }) => {
     const { assetFactory } = props;
     const create = (position: BABYLON.Vector3) => {
-        const model = temp.skyCorridor({ assetFactory });
+        const model = assets.skyCorridor({ assetFactory });
         model.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
         model.scaling = new BABYLON.Vector3(100, 100, 100);
         model.position = position;
