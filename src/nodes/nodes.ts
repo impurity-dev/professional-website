@@ -1,13 +1,13 @@
 import * as BABYLON from '@babylonjs/core';
 import * as logger from '../shared/logger.js';
-import { Observable } from 'rxjs';
+import { from, tap } from 'rxjs';
 
 export type NodeAsset = ContainerNodeAsset | MeshNodeAsset;
 export type ContainerNodeAsset = { type: 'container'; file: string; directory: string; meshes?: string[] };
 export type MeshNodeAsset = { type: 'mesh'; file: string; directory: string; meshes?: string[] };
 export class AssetFactory {
+    readonly scene: BABYLON.Scene;
     private _isLoaded: boolean = false;
-    private readonly scene: BABYLON.Scene;
     private readonly assetManager: BABYLON.AssetsManager;
     private readonly taskCache = new Map<string, NodeAsset>();
     private readonly assetCache = {
@@ -53,12 +53,9 @@ export class AssetFactory {
 
     load$ = () => {
         if (this.isLoaded) throw new Error('Container factory already loaded!');
-        return new Observable((subscriber) => {
-            this.taskCache.forEach(this.loadAsset);
-            this.assetManager.load();
-            subscriber.next();
-            subscriber.complete();
-        });
+        logger.info('Loading assets...');
+        this.taskCache.forEach(this.loadAsset);
+        return from(this.assetManager.loadAsync()).pipe(tap(() => logger.info('Finished loading assets.')));
     };
 
     getContainer = (
@@ -66,9 +63,10 @@ export class AssetFactory {
         args: { cloneMaterials: boolean; doNotInstantiate: boolean } = { cloneMaterials: false, doNotInstantiate: true },
     ) => {
         const id = this.getId(asset);
-        if (this.assetCache[asset.type].has(id)) throw new Error(`Asset ${JSON.stringify(asset)} has not loaded.`);
+        if (!this.assetCache[asset.type].has(id)) throw new Error(`Asset ${id} has not loaded.`);
         const { cloneMaterials, doNotInstantiate } = args;
-        const entries = this.assetCache[asset.type].get(id).loadedContainer.instantiateModelsToScene((n) => n, cloneMaterials, { doNotInstantiate });
+        const predicate = asset.meshes ? (p) => asset.meshes.includes(p.name) : undefined;
+        const entries = this.assetCache[asset.type].get(id).loadedContainer.instantiateModelsToScene((n) => n, cloneMaterials, { doNotInstantiate, predicate });
         return new AssetNode({
             name: id,
             scene: this.scene,
@@ -78,11 +76,11 @@ export class AssetFactory {
 
     getMesh = (asset: MeshNodeAsset) => {
         const id = this.getId(asset);
-        if (this.assetCache[asset.type].has(id)) throw new Error(`Asset ${JSON.stringify(asset)} has not loaded.`);
+        if (!this.assetCache[asset.type].has(id)) throw new Error(`Asset ${JSON.stringify(asset)} has not loaded.`);
         return this.assetCache[asset.type].get(id).loadedMeshes;
     };
 
-    private getId = (asset: NodeAsset) => (asset.meshes ? `${asset.directory}/${asset.file}/${asset.meshes.join(',')}` : `${asset.directory}/${asset.file}`);
+    private getId = (asset: NodeAsset) => (asset.meshes ? `${asset.directory}${asset.file}/${asset.meshes.join(',')}` : `${asset.directory}${asset.file}`);
     private loadAsset = (asset: NodeAsset, id: string) => {
         switch (asset.type) {
             case 'container': {

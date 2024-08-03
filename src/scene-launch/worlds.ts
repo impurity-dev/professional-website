@@ -1,41 +1,34 @@
+import * as temp from './temp';
 import * as particles from './particles';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
-import * as em from '../models/entity-manager.js';
-import * as models from './models.js';
 import { delay, filter, merge, mergeMap, take, takeUntil, tap } from 'rxjs';
+import { AssetFactory } from '../nodes/nodes';
 
-export const world = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
-    const { scene, entityManager, events } = props;
-    createLights({ scene });
-    const cockpit = createCockpit({ scene, entityManager, events });
-    createCorridor({ scene, entityManager });
+export const world = (props: { events: localEvents.Events; assetFactory: AssetFactory }) => {
+    const { events, assetFactory } = props;
+    createLights({ assetFactory });
+    const cockpit = createCockpit({ assetFactory, events });
+    createCorridor({ assetFactory });
     return {
         cockpit,
     };
 };
 
-const createLights = (props: { scene: BABYLON.Scene }) => {
-    const { scene } = props;
+const createLights = (props: { assetFactory: AssetFactory }) => {
+    const scene = props.assetFactory.scene;
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 1), scene);
     light.intensity = 0.01;
     light.diffuse = new BABYLON.Color3(1, 1, 1);
     light.specular = new BABYLON.Color3(1, 1, 1);
 };
 
-const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager; events: localEvents.Events }) => {
-    const { scene, entityManager, events } = props;
-    const cockpit = models.cockpit({ scene, entityManager });
-    cockpit.transform.position = new BABYLON.Vector3(-1, 0, 0);
-    cockpit.transform.scaling = new BABYLON.Vector3(10, 10, 10);
-    cockpit.onLoad
-        .pipe(
-            take(1),
-            tap(() => {
-                cockpit.monitors.visibility = 0;
-            }),
-        )
-        .subscribe();
+const createCockpit = (props: { assetFactory: AssetFactory; events: localEvents.Events }) => {
+    const { assetFactory, events } = props;
+    const cockpit = temp.cockpit({ assetFactory });
+    cockpit.position = new BABYLON.Vector3(-1, 0, 0);
+    cockpit.scaling = new BABYLON.Vector3(10, 10, 10);
+    cockpit.monitors.visibility = 0;
     events.state$
         .pipe(
             filter((state) => state.type === 'monitors'),
@@ -57,10 +50,10 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
         )
         .subscribe();
     const warpspeed = particles.warpspeed({
-        scene,
+        scene: assetFactory.scene,
         radius: 50,
         height: 50,
-        parent: cockpit.transform,
+        parent: cockpit,
         position: new BABYLON.Vector3(0, 0, 400),
     });
     events.state$
@@ -77,13 +70,13 @@ const createCockpit = (props: { scene: BABYLON.Scene; entityManager: em.EntityMa
     return cockpit;
 };
 
-const createCorridor = (props: { scene: BABYLON.Scene; entityManager: em.EntityManager }) => {
-    const { scene, entityManager } = props;
+const createCorridor = (props: { assetFactory: AssetFactory }) => {
+    const { assetFactory } = props;
     const create = (position: BABYLON.Vector3) => {
-        const model = models.skyCorridor({ scene, entityManager });
-        model.transform.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
-        model.transform.scaling = new BABYLON.Vector3(100, 100, 100);
-        model.transform.position = position;
+        const model = temp.skyCorridor({ assetFactory });
+        model.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
+        model.scaling = new BABYLON.Vector3(100, 100, 100);
+        model.position = position;
         return model;
     };
     const offset = 300;

@@ -23,7 +23,7 @@ export abstract class State {
         this.assetManager = new BABYLON.AssetsManager(this.scene);
         this.assetManager.useDefaultLoadingScreen = false;
         this.assetManager.autoHideLoadingUI = false;
-        this.entityManager = new EntityManager(this.assetManager);
+        // this.entityManager = new EntityManager(this.assetManager);
         if (settings.global.isBabylonInpectorEnabled) {
             logger.debug('Attach Inspector');
             window.addEventListener('keydown', this.attachInspector);
