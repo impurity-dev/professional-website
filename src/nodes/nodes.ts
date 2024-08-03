@@ -41,20 +41,17 @@ export class AssetFactory {
         this._isLoaded = isLoaded;
     }
 
-    queue = (...assets: NodeAsset[]) =>
-        assets.forEach((asset) => {
-            const id = this.getId(asset);
-            if (this.taskCache.has(id)) {
-                logger.warn(`Asset ${JSON.stringify(asset)} has already been queued`);
-                return;
-            }
-            this.taskCache.set(id, asset);
-        });
-
-    load$ = () => {
+    load$ = (...assets: NodeAsset[]) => {
         if (this.isLoaded) throw new Error('Container factory already loaded!');
         logger.info('Loading assets...');
-        this.taskCache.forEach(this.loadAsset);
+        assets.forEach((asset) => {
+            const id = this.getId(asset);
+            if (this.assetCache[asset.type].has(id)) {
+                logger.warn(`Asset ${JSON.stringify(asset)} has already been added.`);
+                return;
+            }
+            this.addTask(asset, id);
+        });
         return from(this.assetManager.loadAsync()).pipe(tap(() => logger.info('Finished loading assets.')));
     };
 
@@ -81,16 +78,16 @@ export class AssetFactory {
     };
 
     private getId = (asset: NodeAsset) => (asset.meshes ? `${asset.directory}${asset.file}/${asset.meshes.join(',')}` : `${asset.directory}${asset.file}`);
-    private loadAsset = (asset: NodeAsset, id: string) => {
+    private addTask = (asset: NodeAsset, id: string) => {
         switch (asset.type) {
             case 'container': {
                 const task = this.assetManager.addContainerTask(id, asset.meshes ?? '', asset.directory, asset.file);
-                task.onSuccess = (task) => this.assetCache.container.set(id, task);
+                this.assetCache.container.set(id, task);
                 return;
             }
             case 'mesh': {
                 const task = this.assetManager.addMeshTask(id, asset.meshes ?? '', asset.directory, asset.file);
-                task.onSuccess = (task) => this.assetCache.mesh.set(id, task);
+                this.assetCache.mesh.set(id, task);
                 return;
             }
             default:

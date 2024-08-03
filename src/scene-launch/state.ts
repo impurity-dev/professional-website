@@ -11,13 +11,11 @@ import * as temp from './assets';
 
 export class State extends states.State {
     assets = [temp.SKYCORRIDOR_ASSET, temp.COCKPIT_ASSET, temp.LIGHT14_ASSET];
-    build = async (assetLoad$: Promise<void>) => {
+    build = async () => {
         const { scene, start$, destroy$, assetFactory } = this;
         const events = new localEvents.Events({ start$, destroy$ });
-        await assetLoad$;
         const { cockpit } = worlds.world({ events, assetFactory });
         sm.launchSequence({ events });
-        console.log('HERE');
         const { playerCamera } = cameras.playerCamera({
             scene,
             location: new BABYLON.Vector3(0, 2.6, -1.3),
@@ -41,7 +39,7 @@ export class State extends states.State {
                 filter((state) => state.type === 'space'),
                 take(1),
                 delay(10_000),
-                // tap(() => this.gameManager.goTo({ type: 'hub' })),
+                tap(() => this.gameManager.goTo({ type: 'hub' })),
             )
             .subscribe();
     };

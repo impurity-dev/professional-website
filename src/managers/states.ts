@@ -63,10 +63,10 @@ export abstract class State {
         this.scene.getEngine().displayLoadingUI();
 
         // Load assets
-        this.assetFactory.queue(...this.assets);
+        await firstValueFrom(this.assetFactory.load$(...this.assets));
 
         // Build scene
-        await this.build(firstValueFrom(this.assetFactory.load$()));
+        await this.build();
 
         // End loading UI
         await this.scene.whenReadyAsync(true);
@@ -97,7 +97,7 @@ export abstract class State {
      * This defines what is in our unique state and the entities we
      * want to add to the scene.
      */
-    abstract build(assetLoad$: Promise<void>): Promise<void>;
+    abstract build(): Promise<void>;
 
     // eslint-disable-next-line @typescript-eslint/member-ordering
     private attachInspector = (ev: KeyboardEvent) => {
