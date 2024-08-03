@@ -3,7 +3,7 @@ import { AssetFactory, AssetNode, ContainerNodeAsset } from '../nodes/nodes';
 import { Observable, Subject } from 'rxjs';
 
 export const cockpit = (props: { assetFactory: AssetFactory }) => new Cockpit(props);
-export const COCKPIT_ASSET: ContainerNodeAsset = { type: 'container', file: 'cockpit_4k.glb', directory: 'assets/cockpit/' };
+export const COCKPIT_ASSET: ContainerNodeAsset = { type: 'container', file: 'cockpit_1k.glb', directory: 'assets/cockpit/' };
 export class Cockpit extends BABYLON.TransformNode {
     readonly monitors: BABYLON.AbstractMesh;
     readonly throttle: BABYLON.AbstractMesh;
@@ -61,7 +61,7 @@ export class Cockpit extends BABYLON.TransformNode {
         ]);
         this.animations = [animation];
         const finished$ = new Subject<void>();
-        this.assetFactory.scene.beginAnimation(this, 0, 60, false, 1, () => {
+        this.assetFactory.scene.beginAnimation(this, 0, 60, false, 0.5, () => {
             finished$.next();
             finished$.complete();
         });
