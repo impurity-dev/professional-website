@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export type NodeAsset = ContainerNodeAsset | MeshNodeAsset;
 export type ContainerNodeAsset = { type: 'container'; file: string; directory: string; meshes?: string[] };
 export type MeshNodeAsset = { type: 'mesh'; file: string; directory: string; meshes?: string[] };
-export class NodeFactory {
+export class AssetFactory {
     private _isLoaded: boolean = false;
     private readonly scene: BABYLON.Scene;
     private readonly assetManager: BABYLON.AssetsManager;
@@ -103,11 +103,13 @@ export class NodeFactory {
 
 export class AssetNode extends BABYLON.TransformNode {
     private readonly entries: BABYLON.InstantiatedEntries;
+    private readonly scene: BABYLON.Scene;
     constructor(props: { name: string; scene: BABYLON.Scene; entries: BABYLON.InstantiatedEntries }) {
         const { name, scene, entries } = props;
         super(name, scene, false);
         this.entries = entries;
         this.entries.rootNodes.forEach((node) => (node.parent = this));
+        this.scene = scene;
     }
 
     get animationGroups() {
@@ -120,4 +122,6 @@ export class AssetNode extends BABYLON.TransformNode {
             m.checkCollisions = isCollidable;
         });
     }
+
+    clone = () => new AssetNode({ name: this.name, scene: this.scene, entries: this.entries });
 }
