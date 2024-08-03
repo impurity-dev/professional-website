@@ -7,13 +7,15 @@ import * as guis from './guis.js';
 import * as inputs from './inputs.js';
 import * as sounds from './sounds.js';
 import * as worlds from './worlds.js';
+import * as assets from './assets.js';
 
 export class CreditsState extends states.State {
-    async run(): Promise<void> {
-        const { scene, entityManager, destroy$, start$ } = this;
+    assets = [assets.BAR_ASSET, assets.CHAMBER_ASSET, assets.COCKPIT_ASSET, assets.FIGHTER_ASSET, assets.SKYCORRIDOR_ASSET];
+
+    build = async () => {
+        const { scene, destroy$, start$, assetFactory } = this;
         const event = new events.Events({ start$, destroy$ });
-        new worlds.CreditsWorld({ scene, entityManager, event });
-        const load = this.entityManager.load();
+        new worlds.CreditsWorld({ assetFactory, event });
         event.returnToMainMenu$
             .pipe(
                 tap(() => this.gameManager.goTo({ type: 'menu' })),
@@ -24,6 +26,5 @@ export class CreditsState extends states.State {
         new guis.Gui({ scene, event });
         new inputs.CreditsController({ scene, target: new BABYLON.Vector3(0, 0, 0), event });
         skyboxes.purpleSpace({ scene });
-        await load;
-    }
+    };
 }

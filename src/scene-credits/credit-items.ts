@@ -1,21 +1,15 @@
 import * as BABYLON from '@babylonjs/core';
-import * as em from '../models/entity-manager';
-import * as models from '../models/models';
 import { CaroselItem } from './carosels';
+import { AssetFactory } from '../nodes/nodes';
+import * as assets from './assets';
 
-type GetItemProps = { scene: BABYLON.Scene; entityManager: em.EntityManager };
-export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemProps) => {
-    const { scene, entityManager } = props;
+export const creditItems: (props: { assetFactory: AssetFactory }) => CaroselItem[] = (props: { assetFactory: AssetFactory }) => {
+    const { assetFactory } = props;
     return [
         {
             name: 'Light Fighter Spaceship',
             link: 'https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
-            model: new models.Model({
-                name: 'fighter',
-                scene,
-                entityManager,
-                asset: { file: 'fighter.glb', directory: 'assets/fighter/' },
-            }),
+            model: assetFactory.getContainer(assets.FIGHTER_ASSET),
             credits:
                 '"LIGHT FIGHTER SPACESHIP - FREE" by Kerem Kavalci. https://sketchfab.com/3d-models/light-fighter-spaceship-free-51616ef53af84fe595c5603cd3e0f3e1',
         },
@@ -23,15 +17,10 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
             name: 'Bar',
             link: 'https://skfb.ly/6XytO',
             model: (() => {
-                const model = new models.Model({
-                    name: 'bar',
-                    scene,
-                    entityManager,
-                    asset: { file: 'cantina_1k.glb', directory: 'assets/cantina/' },
-                });
+                const model = assetFactory.getContainer(assets.BAR_ASSET);
                 const scale = 0.035;
-                model.transform.scaling = new BABYLON.Vector3(scale, scale, scale);
-                model.transform.position = new BABYLON.Vector3(3.5, 0, 3.5);
+                model.scaling = new BABYLON.Vector3(scale, scale, scale);
+                model.position = new BABYLON.Vector3(3.5, 0, 3.5);
                 return model;
             })(),
             credits:
@@ -41,14 +30,9 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
             name: 'Cloning Tank Chamber',
             link: 'https://skfb.ly/oODEM',
             model: (() => {
-                const model = new models.Model({
-                    name: 'chamber',
-                    scene,
-                    entityManager,
-                    asset: { file: 'chamber_1k.glb', directory: 'assets/chamber/' },
-                });
-                model.transform.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
-                model.transform.position = new BABYLON.Vector3(0, 0, -2.5);
+                const model = assetFactory.getContainer(assets.CHAMBER_ASSET);
+                model.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
+                model.position = new BABYLON.Vector3(0, 0, -2.5);
                 return model;
             })(),
             credits:
@@ -58,14 +42,9 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
             name: '016Mabc Sky Corridor',
             link: 'https://skfb.ly/R8qX',
             model: (() => {
-                const model = new models.Model({
-                    name: 'sky-corridor',
-                    scene,
-                    entityManager,
-                    asset: { file: 'sky_corridor_1k.glb', directory: 'assets/sky-corridor/' },
-                });
-                model.transform.position = new BABYLON.Vector3(4, 0, -2.8);
-                model.transform.scaling = new BABYLON.Vector3(2, 2, 2);
+                const model = assetFactory.getContainer(assets.SKYCORRIDOR_ASSET);
+                model.position = new BABYLON.Vector3(4, 0, -2.8);
+                model.scaling = new BABYLON.Vector3(2, 2, 2);
                 return model;
             })(),
             credits:
@@ -75,14 +54,9 @@ export const creditItems: (x: GetItemProps) => CaroselItem[] = (props: GetItemPr
             name: 'Spacefighter Cockpit (Wasp Interdictor)',
             link: 'https://skfb.ly/NsXn',
             model: (() => {
-                const model = new models.Model({
-                    name: 'cockpit',
-                    scene,
-                    entityManager,
-                    asset: { file: 'cockpit_1k.glb', directory: 'assets/cockpit/' },
-                });
-                model.transform.position = new BABYLON.Vector3(0, -5, 3.5);
-                model.transform.scaling = new BABYLON.Vector3(3, 3, 3);
+                const model = assetFactory.getContainer(assets.COCKPIT_ASSET);
+                model.position = new BABYLON.Vector3(0, -5, 3.5);
+                model.scaling = new BABYLON.Vector3(3, 3, 3);
                 return model;
             })(),
             credits:

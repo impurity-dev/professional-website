@@ -1,8 +1,8 @@
 import { take, takeUntil, tap, withLatestFrom } from 'rxjs';
-import * as models from '../models/models';
 import * as events from './events';
+import { TransformNode } from '@babylonjs/core';
 
-export type CaroselItem = { name: string; model: models.Model; credits: string; link: string };
+export type CaroselItem = { name: string; model: TransformNode; credits: string; link: string };
 export class Carosel {
     private readonly items: CaroselItem[];
     private readonly event: events.Events;
@@ -39,6 +39,6 @@ export class Carosel {
         this.event.credits$.next({ name: toItem.name, credits: toItem.credits, link: toItem.link });
     };
 
-    private show = (item: CaroselItem) => item.model.transform.setEnabled(true);
-    private hide = (item: CaroselItem) => item.model.transform.setEnabled(false);
+    private show = (item: CaroselItem) => item.model.setEnabled(true);
+    private hide = (item: CaroselItem) => item.model.setEnabled(false);
 }
