@@ -30,7 +30,7 @@ export const playerCamera = (props: {
         .pipe(
             filter((state) => state.type === 'space'),
             take(1),
-            delay(2_000),
+            delay(250),
             mergeMap(() => slowFov$({ camera, scene, motionBlur })),
             takeUntil(events.destroy$),
         )
