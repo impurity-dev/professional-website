@@ -2,7 +2,7 @@ import * as BABYLON from '@babylonjs/core';
 
 export const controls = (props: { camera: BABYLON.UniversalCamera }) => {
     const { camera } = props;
-    cameraControls({ enabled: true, camera });
+    cameraControls({ enabled: false, camera });
 };
 
 const cameraControls = (props: { enabled: boolean; camera: BABYLON.UniversalCamera }) => {

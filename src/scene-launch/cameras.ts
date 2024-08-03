@@ -15,13 +15,14 @@ export const playerCamera = (props: {
     camera.target = target;
     camera.minZ = 0.1;
     scene.activeCamera = camera;
+    const motionBlur = new BABYLON.MotionBlurPostProcess('mb', scene, 1.0, camera);
 
     events.state$
         .pipe(
             filter((state) => state.type === 'launch'),
             take(1),
             delay(2_000),
-            mergeMap(() => fastFov$({ camera, scene })),
+            mergeMap(() => fastFov$({ camera, scene, motionBlur })),
             takeUntil(events.destroy$),
         )
         .subscribe();
@@ -30,7 +31,7 @@ export const playerCamera = (props: {
             filter((state) => state.type === 'space'),
             take(1),
             delay(2_000),
-            mergeMap(() => slowFov$({ camera, scene })),
+            mergeMap(() => slowFov$({ camera, scene, motionBlur })),
             takeUntil(events.destroy$),
         )
         .subscribe();
@@ -41,10 +42,9 @@ export const playerCamera = (props: {
 
 const START_FOV = 0.8;
 const END_FOV = 1.2;
-const fastFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene }): Observable<void> => {
-    const { camera, scene } = props;
+const fastFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene; motionBlur: BABYLON.MotionBlurPostProcess }): Observable<void> => {
+    const { camera, scene, motionBlur } = props;
     const animation = new BABYLON.Animation('fastFov', 'fov', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE, true);
-    camera.animations = [animation];
     const ease = new BABYLON.ExponentialEase();
     ease.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIN);
     animation.setEasingFunction(ease);
@@ -58,6 +58,8 @@ const fastFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene
             value: END_FOV,
         },
     ]);
+    camera.animations = [animation];
+    motionBlur.motionStrength = 1_000;
     const finished$ = new Subject<void>();
     scene.beginAnimation(camera, 0, 60, false, 1, () => {
         finished$.next();
@@ -66,8 +68,8 @@ const fastFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene
     return finished$;
 };
 
-const slowFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene }): Observable<void> => {
-    const { camera, scene } = props;
+const slowFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene; motionBlur: BABYLON.MotionBlurPostProcess }): Observable<void> => {
+    const { camera, scene, motionBlur } = props;
     const animation = new BABYLON.Animation('slowFov', 'fov', 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE, true);
     camera.animations = [animation];
     const ease = new BABYLON.ExponentialEase();
@@ -83,6 +85,7 @@ const slowFov$ = (props: { camera: BABYLON.UniversalCamera; scene: BABYLON.Scene
             value: START_FOV,
         },
     ]);
+    motionBlur.motionStrength = 0;
     const finished$ = new Subject<void>();
     scene.beginAnimation(camera, 0, 60, false, 3, () => {
         finished$.next();

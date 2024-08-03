@@ -4,12 +4,14 @@ import Lottie, { AnimationItem } from 'lottie-web';
 
 export class LoadingScreen implements ILoadingScreen {
     public loadingUIBackgroundColor: string = '#000000';
-    loadingUIText: string = 'Loading...';
+
     private readonly animation: AnimationItem;
+    private readonly textNode: HTMLElement;
 
     constructor(private readonly html: HTMLDivElement) {
+        this.textNode = document.getElementById('loading-text');
         this.animation = Lottie.loadAnimation({
-            container: html,
+            container: document.getElementById('loading-loader'),
             renderer: 'svg',
             loop: true,
             autoplay: true,
@@ -17,11 +19,19 @@ export class LoadingScreen implements ILoadingScreen {
         });
     }
 
+    get loadingUIText() {
+        return this.textNode.textContent;
+    }
+
+    set loadingUIText(text: string) {
+        this.textNode.textContent = text;
+    }
+
     displayLoadingUI = () => {
         this.animation.play();
         logger.debug('Loading...');
         this.html.style.opacity = '1';
-        this.html.style.display = 'initial';
+        this.html.style.display = 'flex';
     };
 
     hideLoadingUI = () => {

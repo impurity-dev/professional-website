@@ -28,7 +28,7 @@ export class AssetFactory {
         );
         this.assetManager.onProgressObservable.add((event: BABYLON.IAssetsProgressEvent) => {
             logger.debug(`Assets loaded: ${event.totalCount - event.remainingCount}/${event.totalCount}`);
-            this.scene.getEngine().loadingUIText = `${event.totalCount - event.remainingCount}/${event.totalCount}`;
+            this.scene.getEngine().loadingUIText = `Loading ${event.totalCount - event.remainingCount}/${event.totalCount} assets...`;
         });
         this.assetManager.onTasksDoneObservable.add(() => logger.debug(`Finished loading ${this.taskCache.size} assets`));
     }
