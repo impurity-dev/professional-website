@@ -5,7 +5,7 @@ import * as creditsScene from '../scene-credits/state.js';
 import * as fighterScene from '../scene-fighter/index.js';
 import * as hubScene from '../scene-hub/state.js';
 import * as launch from '../scene-launch/state.js';
-import * as practiceScene from '../scene-practice/state.js';
+import * as practice from '../scene-practice/state.js';
 import * as menu from '../scene-menu/state.js';
 import * as logger from '../shared/logger.js';
 import * as sm from '../shared/state-machines.js';
@@ -39,7 +39,7 @@ export class GameManager extends sm.StateMachine<states.State, GoToProps> {
             case 'character':
                 return this.setState(new character.State(this));
             case 'practice':
-                return this.setState(new practiceScene.PracticeState(this));
+                return this.setState(new practice.State(this));
             case 'credits':
                 return this.setState(new creditsScene.CreditsState(this));
             default:
