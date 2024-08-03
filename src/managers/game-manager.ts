@@ -6,7 +6,7 @@ import * as fighterScene from '../scene-fighter/index.js';
 import * as hubScene from '../scene-hub/state.js';
 import * as launch from '../scene-launch/state.js';
 import * as practiceScene from '../scene-practice/state.js';
-import * as startScene from '../scene-start/state.js';
+import * as menu from '../scene-menu/state.js';
 import * as logger from '../shared/logger.js';
 import * as sm from '../shared/state-machines.js';
 import * as settings from './settings.js';
@@ -29,7 +29,7 @@ export class GameManager extends sm.StateMachine<states.State, GoToProps> {
         logger.debug('Going to ' + props.type);
         switch (props.type) {
             case 'menu':
-                return this.setState(new startScene.MenuState(this));
+                return this.setState(new menu.State(this));
             case 'hub':
                 return this.setState(new hubScene.HubState(this));
             case 'launch':
