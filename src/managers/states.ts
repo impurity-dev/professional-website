@@ -3,7 +3,7 @@ import * as INSPECTOR from '@babylonjs/inspector';
 import * as logger from '../shared/logger.js';
 import { GameManager } from './game-manager.js';
 import * as settings from './settings.js';
-import { AssetFactory, NodeAsset } from '../nodes/nodes.js';
+import { AssetFactory, NodeAsset } from './asset-factory.js';
 import { firstValueFrom, Subject, take, tap } from 'rxjs';
 
 export abstract class State {

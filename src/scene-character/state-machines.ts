@@ -5,7 +5,7 @@ import * as sm from '../shared/state-machines';
 import * as localDialogues from './dialogues';
 import * as localEvents from './events';
 import * as settings from '../managers/settings';
-import { AssetNode } from '../nodes/nodes';
+import { AssetNode } from '../managers/asset-factory';
 
 export const stateMachine = (props: { events: localEvents.Events; dialogueBox: sharedDialogues.DialogueBox; characters: CharacterMetadata[] }) =>
     new CharacterStateMachine({

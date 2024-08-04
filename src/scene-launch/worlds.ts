@@ -3,7 +3,7 @@ import * as particles from './particles';
 import * as localEvents from './events';
 import * as BABYLON from '@babylonjs/core';
 import { delay, filter, merge, mergeMap, take, takeUntil, tap } from 'rxjs';
-import { AssetFactory } from '../nodes/nodes';
+import { AssetFactory } from '../managers/asset-factory';
 
 export const world = (props: { events: localEvents.Events; assetFactory: AssetFactory }) => {
     const { events, assetFactory } = props;

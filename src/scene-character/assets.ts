@@ -1,4 +1,4 @@
-import { AssetFactory, ContainerNodeAsset } from '../nodes/nodes';
+import { AssetFactory, ContainerNodeAsset } from '../managers/asset-factory';
 
 export const CANTINA_ASSET: ContainerNodeAsset = { type: 'container', file: 'cantina_2k.glb', directory: 'assets/cantina/' };
 export const cantina = (props: { assetFactory: AssetFactory }) => props.assetFactory.getContainer(CANTINA_ASSET);

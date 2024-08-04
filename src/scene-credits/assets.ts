@@ -1,4 +1,4 @@
-import { ContainerNodeAsset } from '../nodes/nodes';
+import { ContainerNodeAsset } from '../managers/asset-factory';
 
 export const COCKPIT_ASSET: ContainerNodeAsset = { type: 'container', file: 'cockpit_1k.glb', directory: 'assets/cockpit/' };
 export const SKYCORRIDOR_ASSET: ContainerNodeAsset = { type: 'container', file: 'sky_corridor_1k.glb', directory: 'assets/sky-corridor/' };

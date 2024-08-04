@@ -3,7 +3,7 @@ import * as localSm from './state-machines';
 import * as BABYLON from '@babylonjs/core';
 import { filter, take, tap } from 'rxjs';
 import * as localEvents from './events.js';
-import { AssetFactory } from '../nodes/nodes';
+import { AssetFactory } from '../managers/asset-factory';
 
 export const world = (props: { assetFactory: AssetFactory; target: BABYLON.Vector3; events: localEvents.Events }) => {
     const { assetFactory, target, events } = props;

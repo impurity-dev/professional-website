@@ -1,5 +1,5 @@
 import * as BABYLON from '@babylonjs/core';
-import { AssetFactory, AssetNode, ContainerNodeAsset } from '../nodes/nodes';
+import { AssetFactory, AssetNode, ContainerNodeAsset } from '../managers/asset-factory';
 import { Observable, Subject } from 'rxjs';
 
 export const cockpit = (props: { assetFactory: AssetFactory }) => new Cockpit(props);
@@ -225,7 +225,6 @@ export const SKYCORRIDOR_ASSET: ContainerNodeAsset = {
     type: 'container',
     file: 'sky_corridor_1k.glb',
     directory: 'assets/sky-corridor/',
-    meshes: ['Sketchfab_model', 'ox2.obj.cleaner.gles', 'Object_2', '__root__', 'Object_11', 'Object_22', 'Object_24', 'Object_25', 'Object_8'],
 };
 export class SkyCorridor extends BABYLON.TransformNode {
     private readonly corridor: AssetNode;
@@ -234,7 +233,17 @@ export class SkyCorridor extends BABYLON.TransformNode {
     constructor(props: { assetFactory: AssetFactory }) {
         const { assetFactory } = props;
         super(`sky-corridor`, assetFactory.scene, true);
-        this.corridor = assetFactory.getContainer(SKYCORRIDOR_ASSET);
+        this.corridor = assetFactory.getContainer(SKYCORRIDOR_ASSET, [
+            'Sketchfab_model',
+            'ox2.obj.cleaner.gles',
+            'Object_2',
+            '__root__',
+            'Object_11',
+            'Object_22',
+            'Object_24',
+            'Object_25',
+            'Object_8',
+        ]);
         this.corridor.parent = this;
 
         this.light = light14({ assetFactory });

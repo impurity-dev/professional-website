@@ -1,6 +1,6 @@
 import * as BABYLON from '@babylonjs/core';
 import { CaroselItem } from './carosels';
-import { AssetFactory } from '../nodes/nodes';
+import { AssetFactory } from '../managers/asset-factory';
 import * as assets from './assets';
 
 export const creditItems: (props: { assetFactory: AssetFactory }) => CaroselItem[] = (props: { assetFactory: AssetFactory }) => {

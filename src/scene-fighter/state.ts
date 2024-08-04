@@ -1,21 +1,20 @@
 import * as skyboxes from '../shared/skyboxes.js';
 import * as states from '../managers/states.js';
-import { FighterController } from './inputs.js';
-import { FighterWorld } from './world.js';
-import { FighterCamera } from './camera.js';
-import { FighterEvents } from './events.js';
-import { FighterGui } from './gui.js';
+import * as worlds from './world.js';
+import * as localEvents from './events.js';
+import * as cameras from './cameras.js';
+import * as inputs from './inputs.js';
+import * as assets from './assets.js';
 
 export class State extends states.State {
-    run = async (): Promise<void> => {
-        const { scene, entityManager } = this;
-        const events = new FighterEvents();
-        const world = new FighterWorld({ scene, entityManager, events });
-        const load = this.entityManager.load();
-        new FighterGui({ scene, events });
-        new FighterCamera({ scene, target: world.fighterModel.transform });
-        new FighterController({ scene, events });
+    assets = [assets.FIGHTER_ASSET];
+
+    build = async () => {
+        const { scene, assetFactory } = this;
+        const events = new localEvents.Events();
+        const { fighter } = worlds.world({ assetFactory, events });
+        cameras.mainCamera({ scene, target: fighter });
+        inputs.controller({ scene, events });
         skyboxes.purpleSpace({ scene });
-        await load;
     };
 }

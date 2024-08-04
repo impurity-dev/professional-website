@@ -4,7 +4,7 @@ import * as assets from './assets.js';
 import { Carosel } from './carosels.js';
 import * as creditItems from './credit-items.js';
 import * as events from './events.js';
-import { AssetFactory } from '../nodes/nodes.js';
+import { AssetFactory } from '../managers/asset-factory.js';
 
 export class CreditsWorld {
     constructor(props: { assetFactory: AssetFactory; event: events.Events }) {

@@ -1,7 +1,7 @@
 import * as BABYLON from '@babylonjs/core';
 import * as assets from './assets';
 import * as localEvents from './events';
-import { AssetFactory } from '../nodes/nodes.js';
+import { AssetFactory } from '../managers/asset-factory.js';
 
 export const world = (props: { assetFactory: AssetFactory; events: localEvents.Events }) => {
     const { assetFactory } = props;

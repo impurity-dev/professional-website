@@ -29,7 +29,8 @@ export class LoadingScreen implements ILoadingScreen {
 
     displayLoadingUI = () => {
         this.animation.play();
-        logger.debug('Loading...');
+        logger.debug('Loading assets...');
+        this.loadingUIText = 'Loading...';
         this.html.style.opacity = '1';
         this.html.style.display = 'flex';
     };

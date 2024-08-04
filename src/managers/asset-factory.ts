@@ -3,8 +3,8 @@ import * as logger from '../shared/logger.js';
 import { from, tap } from 'rxjs';
 
 export type NodeAsset = ContainerNodeAsset | MeshNodeAsset;
-export type ContainerNodeAsset = { type: 'container'; file: string; directory: string; meshes?: string[] };
-export type MeshNodeAsset = { type: 'mesh'; file: string; directory: string; meshes?: string[] };
+export type ContainerNodeAsset = { type: 'container'; file: string; directory: string };
+export type MeshNodeAsset = { type: 'mesh'; file: string; directory: string };
 export class AssetFactory {
     readonly scene: BABYLON.Scene;
     private _isLoaded: boolean = false;
@@ -57,14 +57,11 @@ export class AssetFactory {
         return from(this.assetManager.loadAsync()).pipe(tap(() => logger.info('Finished loading assets.')));
     };
 
-    getContainer = (
-        asset: ContainerNodeAsset,
-        args: { cloneMaterials: boolean; doNotInstantiate: boolean } = { cloneMaterials: false, doNotInstantiate: true },
-    ) => {
+    getContainer = (asset: ContainerNodeAsset, include?: string[], args?: { cloneMaterials: boolean; doNotInstantiate: boolean }) => {
         const id = this.getId(asset);
         if (!this.assetCache[asset.type].has(id)) throw new Error(`Asset ${id} has not loaded.`);
-        const { cloneMaterials, doNotInstantiate } = args;
-        const predicate = asset.meshes ? (p) => asset.meshes.includes(p.name) : undefined;
+        const { cloneMaterials, doNotInstantiate } = args ?? { cloneMaterials: false, doNotInstantiate: true };
+        const predicate = include ? (p) => include.includes(p.name) : undefined;
         const entries = this.assetCache[asset.type].get(id).loadedContainer.instantiateModelsToScene((n) => n, cloneMaterials, { doNotInstantiate, predicate });
         return new AssetNode({
             name: id,
@@ -79,16 +76,16 @@ export class AssetFactory {
         return this.assetCache[asset.type].get(id).loadedMeshes;
     };
 
-    private getId = (asset: NodeAsset) => (asset.meshes ? `${asset.directory}${asset.file}/${asset.meshes.join(',')}` : `${asset.directory}${asset.file}`);
+    private getId = (asset: NodeAsset) => `${asset.directory}${asset.file}`;
     private addTask = (asset: NodeAsset, id: string) => {
         switch (asset.type) {
             case 'container': {
-                const task = this.assetManager.addContainerTask(id, asset.meshes ?? '', asset.directory, asset.file);
+                const task = this.assetManager.addContainerTask(id, '', asset.directory, asset.file);
                 this.assetCache.container.set(id, task);
                 return;
             }
             case 'mesh': {
-                const task = this.assetManager.addMeshTask(id, asset.meshes ?? '', asset.directory, asset.file);
+                const task = this.assetManager.addMeshTask(id, '', asset.directory, asset.file);
                 this.assetCache.mesh.set(id, task);
                 return;
             }

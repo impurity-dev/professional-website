@@ -9,7 +9,7 @@ export type ControlEvent = {
     d: boolean;
     leftShift: boolean;
 };
-export class FighterEvents {
+export class Events {
     readonly controls: BABYLON.Observable<ControlEvent> = new BABYLON.Observable();
     readonly fire: BABYLON.Observable<void> = new BABYLON.Observable();
     readonly pause: BABYLON.Observable<void> = new BABYLON.Observable();
