@@ -103,7 +103,7 @@ export class AssetNode extends BABYLON.TransformNode {
     private readonly scene: BABYLON.Scene;
     constructor(props: { name: string; scene: BABYLON.Scene; entries: BABYLON.InstantiatedEntries }) {
         const { name, scene, entries } = props;
-        super(name, scene, false);
+        super(name, scene, true);
         this.entries = entries;
         this.entries.rootNodes.forEach((node) => (node.parent = this));
         this.scene = scene;

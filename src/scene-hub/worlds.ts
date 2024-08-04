@@ -1,13 +1,12 @@
 import * as BABYLON from '@babylonjs/core';
 import * as assets from './assets';
-import * as events from './events.js';
-import * as materials from './materials.js';
-import * as localModels from './models.js';
 import * as localEvents from './events';
 import { AssetFactory } from '../nodes/nodes.js';
 
 export const world = (props: { assetFactory: AssetFactory; events: localEvents.Events }) => {
-    const { assetFactory, events } = props;
+    const { assetFactory } = props;
+    const node = assets.spacecolony({ assetFactory });
+    new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 0, 0));
 };
 
 // export class StartWorld {

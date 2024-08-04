@@ -63,3 +63,7 @@ https://sketchfab.com/3d-models/hypergate-091e8a66b797452bb478fdf3697f7191
 https://sketchfab.com/3d-models/scifi-light-15-f4042c38c5c44aafb6058fc772d15937
 
 https://sketchfab.com/3d-models/scifi-light-14-4215b12e46044cdb9b1cab7b5503b19f
+
+## Space COLONY
+
+"Space Colony Modular Kit Bash" (https://skfb.ly/ovVRF) by R-LAB is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
