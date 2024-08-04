@@ -11,7 +11,7 @@ export class FPSController {
         this.camera = new BABYLON.UniversalCamera('fps-camera', location, scene);
         this.camera.target = target;
         this.camera.attachControl();
-        this.camera.applyGravity = true;
+        // this.camera.applyGravity = true;
         this.camera.checkCollisions = true;
         this.camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
         this.camera.minZ = 0.45;
