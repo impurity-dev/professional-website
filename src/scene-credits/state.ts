@@ -10,7 +10,7 @@ import * as worlds from './worlds.js';
 import * as assets from './assets.js';
 
 export class State extends states.State {
-    assets = [assets.BAR_ASSET, assets.CHAMBER_ASSET, assets.COCKPIT_ASSET, assets.FIGHTER_ASSET, assets.SKYCORRIDOR_ASSET];
+    assets = [assets.BAR_ASSET, assets.CHAMBER_ASSET, assets.COCKPIT_ASSET, assets.FIGHTER_ASSET, assets.SKYCORRIDOR_ASSET, assets.SPACECOLONY_ASSET];
 
     build = async () => {
         const { scene, destroy$, start$, assetFactory } = this;

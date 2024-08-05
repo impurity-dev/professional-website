@@ -12,6 +12,6 @@ export const world = (props: { assetFactory: AssetFactory; events: localEvents.E
             .map((n) => n.name)
             .join(','),
     );
-    const stairs = assets.straightTunnel({ assetFactory });
+    assets.test({ assetFactory });
     new BABYLON.DirectionalLight('light', new BABYLON.Vector3(1, 0, 0));
 };

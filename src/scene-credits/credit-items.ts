@@ -62,5 +62,21 @@ export const creditItems: (props: { assetFactory: AssetFactory }) => CaroselItem
             credits:
                 '"Spacefighter Cockpit (Wasp Interdictor)" (https://skfb.ly/NsXn) by Comrade1280 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).',
         },
+        {
+            name: 'Space Colony Modular Kit Bash',
+            link: 'https://skfb.ly/ovVRF',
+            model: (() => {
+                const model = assetFactory.getContainer(assets.SPACECOLONY_ASSET);
+                model.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
+                model.rotate(new BABYLON.Vector3(0, 1, 0), Math.PI / 2);
+                model.position = new BABYLON.Vector3(4, 0, -4);
+                model
+                    .getChildTransformNodes()
+                    .find((n) => n.name === 'Text')
+                    .dispose();
+                return model;
+            })(),
+            credits: `"Space Colony Modular Kit Bash" (https://skfb.ly/ovVRF) by R-LAB is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).`,
+        },
     ];
 };

@@ -116,6 +116,4 @@ export class AssetNode extends BABYLON.TransformNode {
             m.checkCollisions = isCollidable;
         });
     }
-
-    clone = () => new AssetNode({ name: this.name, scene: this.scene, entries: this.entries });
 }

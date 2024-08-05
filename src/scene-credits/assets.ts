@@ -5,3 +5,4 @@ export const SKYCORRIDOR_ASSET: ContainerNodeAsset = { type: 'container', file: 
 export const CHAMBER_ASSET: ContainerNodeAsset = { type: 'container', file: 'chamber_1k.glb', directory: 'assets/chamber/' };
 export const BAR_ASSET: ContainerNodeAsset = { type: 'container', file: 'cantina_1k.glb', directory: 'assets/cantina/' };
 export const FIGHTER_ASSET: ContainerNodeAsset = { type: 'container', file: 'fighter.glb', directory: 'assets/fighter/' };
+export const SPACECOLONY_ASSET: ContainerNodeAsset = { type: 'container', file: 'space_colony_modular_kit_bash_1k.glb', directory: 'assets/space-colony/' };

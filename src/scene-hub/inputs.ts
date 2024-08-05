@@ -27,11 +27,11 @@ export class FPSController {
         const gravity = -9.81;
         scene.gravity = new BABYLON.Vector3(0, gravity / framesPerSecond, 0);
         scene.collisionsEnabled = true;
-        scene.onPointerDown = (event) => {
-            const engine = scene.getEngine() as BABYLON.Engine;
-            if (event.button === 0) engine.enterPointerlock();
-            if (event.button === 1) engine.exitPointerlock();
-        };
+        // scene.onPointerDown = (event) => {
+        //     const engine = scene.getEngine() as BABYLON.Engine;
+        //     if (event.button === 0) engine.enterPointerlock();
+        //     if (event.button === 1) engine.exitPointerlock();
+        // };
 
         this.addCrosshair({ scene, camera: this.camera });
         const box = BABYLON.MeshBuilder.CreateBox('camera-box', { size: 10 }, scene);
