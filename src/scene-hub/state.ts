@@ -15,7 +15,7 @@ export class State extends states.State {
     build = async () => {
         const { scene, start$, destroy$, assetFactory } = this;
         const events = new localEvents.Events({ start$, destroy$ });
-        new controllers.FPSController({ scene, location: new BABYLON.Vector3(-20, 2, 1), target: new BABYLON.Vector3(2, 2, 0), events });
+        new controllers.FPSController({ scene, location: new BABYLON.Vector3(-20, 0, 1), target: new BABYLON.Vector3(1, 0, 0), events });
         worlds.world({ assetFactory, events });
         guis.gui({ scene, events });
         // sounds.trailerMusic({ scene });

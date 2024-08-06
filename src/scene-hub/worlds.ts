@@ -12,6 +12,7 @@ export const world = (props: { assetFactory: AssetFactory; events: localEvents.E
             .map((n) => n.name)
             .join(','),
     );
-    assets.test({ assetFactory });
-    new BABYLON.DirectionalLight('light', new BABYLON.Vector3(1, 0, 0));
+    const test = assets.test({ assetFactory });
+    test.position = new BABYLON.Vector3(-12, 0, 1);
+    new BABYLON.HemisphericLight('light', new BABYLON.Vector3(1, 1, 1));
 };
