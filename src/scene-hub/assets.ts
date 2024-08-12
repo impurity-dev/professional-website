@@ -18,6 +18,11 @@ const withScale = (builder: () => BABYLON.TransformNode, scale: BABYLON.Vector3)
     transform.scaling = scale;
     return transform;
 };
+const withOffset = (builder: () => BABYLON.TransformNode, position: BABYLON.Vector3) => () => {
+    const transform = builder();
+    transform.getChildMeshes().forEach((m) => (m.position = position));
+    return transform;
+};
 
 const withInvertedMesh = (builder: () => BABYLON.TransformNode) => () => {
     const transform = builder();
@@ -326,10 +331,10 @@ export const spaceColony = (props: { assetFactory: AssetFactory }) => ({
         },
     },
     tunnels: {
-        straight: build({ name: 'tunnel-straight', meshName: 'Circle.018', ...props }),
-        elbow: build({ name: 'tunnel-elbow', meshName: 'Circle.021', ...props }),
-        cross: build({ name: 'tunnel-cross', meshName: 'Circle.022', ...props }),
-        end: build({ name: 'tunnel-end', meshName: 'Circle.024', ...props }),
+        straight: withOffset(build({ name: 'tunnel-straight', meshName: 'Circle.018', ...props }), new BABYLON.Vector3(0, 1.6, 0)),
+        elbow: withOffset(build({ name: 'tunnel-elbow', meshName: 'Circle.021', ...props }), new BABYLON.Vector3(0, 1.671, 0)),
+        cross: withOffset(build({ name: 'tunnel-cross', meshName: 'Circle.022', ...props }), new BABYLON.Vector3(-0.15, 3.5, 0)),
+        end: withOffset(build({ name: 'tunnel-end', meshName: 'Circle.024', ...props }), new BABYLON.Vector3(0, 1.55, 0)),
     },
     letters: {
         a: build({ name: 'letter-a', meshName: 'Cube.3590', ...props }),
